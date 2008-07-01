@@ -45,7 +45,8 @@ if (version_compare(PHP_VERSION , '5.2.2', '<')) {
  */
 class Application extends /*Nette::*/Object
 {
-	const MAX_LOOP = 20;
+	/** @var int */
+	public static $maxLoop = 20;
 
 	/** @var array */
 	public $defaultServices = array(
@@ -64,6 +65,9 @@ class Application extends /*Nette::*/Object
 
 	/** @var array of function(Application $sender) */
 	public $onRouted;
+
+	/** @var array of string */
+	public $allowedMethods = array('GET', 'POST', 'HEAD');
 
 	/** @var string */
 	public $errorPresenter = 'Error';
@@ -105,19 +109,21 @@ class Application extends /*Nette::*/Object
 		}
 
 		// check HTTP method
-		$method = $httpRequest->getMethod();
-		$allowed = array('GET' => 1, 'POST' => 1, 'HEAD' => 1);
-		if (!isset($allowed[$method])) {
-			$httpResponse->setCode(/*Nette::Web::*/IHttpResponse::S501_NOT_IMPLEMENTED);
-			$httpResponse->setHeader('Allow: ' . implode(', ', array_keys($allowed)), TRUE);
-			die("Method $method not allowed.");
+		if ($this->allowedMethods) {
+			$method = $httpRequest->getMethod();
+			if (!in_array($method, $this->allowedMethods, TRUE)) {
+				$httpResponse->setCode(/*Nette::Web::*/IHttpResponse::S501_NOT_IMPLEMENTED);
+				$httpResponse->setHeader('Allow: ' . implode(',', $this->allowedMethods), TRUE);
+				$method = htmlSpecialChars($method);
+				die("<h1>Method $method is not implemented</h1>");
+			}
 		}
 
 		// dispatching
 		$request = NULL;
 		$this->hasError = FALSE;
 		do {
-			if (count($this->requests) > self::MAX_LOOP) {
+			if (count($this->requests) > self::$maxLoop) {
 				throw new ApplicationException('Infinite loop.');
 			}
 
