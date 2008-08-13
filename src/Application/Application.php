@@ -23,6 +23,7 @@
 /*use Nette::Environment;*/
 
 
+
 require_once dirname(__FILE__) . '/../Object.php';
 
 
@@ -194,17 +195,6 @@ class Application extends /*Nette::*/Object
 
 			} catch (Exception $e) {
 				// fault barrier
-				if ($hasError) {
-					if (version_compare(PHP_VERSION , '5.3', '<')) {
-						throw new ApplicationException('Cannot load error presenter');
-					} else {
-						throw new ApplicationException('Cannot load error presenter', 0, $e);
-					}
-				}
-
-				$hasError = TRUE;
-				$this->onError($this, $e);
-
 				if ($this->catchExceptions === NULL) {
 					$this->catchExceptions = Environment::isLive();
 				}
@@ -212,6 +202,14 @@ class Application extends /*Nette::*/Object
 				if (!$this->catchExceptions) {
 					throw $e;
 				}
+
+				if ($hasError) {
+					throw new ApplicationException('An error occured while executing error-presenter', 0, $e);
+				}
+
+				$hasError = TRUE;
+
+				$this->onError($this, $e);
 
 				if ($this->errorPresenter) {
 					$request = new PresenterRequest(
@@ -308,7 +306,7 @@ class Application extends /*Nette::*/Object
 
 
 	/**
-	 * Change router. (experimental)
+	 * Changes router.
 	 * @param  IRouter
 	 * @return void
 	 */
