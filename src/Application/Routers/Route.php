@@ -29,7 +29,7 @@ require_once dirname(__FILE__) . '/../Application/IRouter.php';
 
 
 /**
- * The bidirectional route is responsible for mapping.
+ * The bidirectional route is responsible for mapping
  * HTTP request to a PresenterRoute object for dispatch and vice-versa.
  *
  * @author     David Grudl
@@ -41,18 +41,20 @@ class Route extends /*Nette::*/Object implements IRouter
 	const PRESENTER_KEY = 'presenter';
 	const MODULE_KEY = 'module';
 
-	// flags
+	/** flag */
 	const CASE_SENSITIVE = 256;
 
-	// uri type
+	/**#@+ uri type */
 	const HOST = 1;
 	const PATH = 2;
 	const RELATIVE = 3;
+	/**#@-*/
 
-	// keys
+	/**#@+ key used in {@link Route::$styles} */
 	const PATTERN = 'pattern';
 	const FILTER_IN = 'filterIn';
 	const FILTER_OUT = 'filterOut';
+	/**#@-*/
 
 	/** @var bool */
 	public static $defaultFlags = 0;

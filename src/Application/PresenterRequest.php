@@ -30,10 +30,10 @@ require_once dirname(__FILE__) . '/../Object.php';
  * @author     David Grudl
  * @copyright  Copyright (c) 2004, 2008 David Grudl
  * @package    Nette::Application
- * @property mixed
  */
 final class PresenterRequest extends /*Nette::*/Object
 {
+	/** method */
 	const FORWARD = 'FORWARD';
 
 	/** @var string */
@@ -128,8 +128,8 @@ final class PresenterRequest extends /*Nette::*/Object
 
 
 	/**
-	 * @internal
 	 * @return array
+	 * @internal
 	 */
 	public function modify($var, $key, $value = NULL)
 	{

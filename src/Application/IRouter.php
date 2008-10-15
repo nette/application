@@ -23,7 +23,7 @@
 
 
 /**
- *
+ * The bi-directional router.
  *
  * @author     David Grudl
  * @copyright  Copyright (c) 2004, 2008 David Grudl
@@ -31,9 +31,10 @@
  */
 interface IRouter
 {
-	// flags
+	/**#@+ flag */
 	const ONE_WAY = 1;
 	const SECURED = 2;
+	/**#@-*/
 
 	/**
 	 * Maps HTTP request to a PresenterRequest object.
