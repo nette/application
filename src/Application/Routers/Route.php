@@ -154,7 +154,7 @@ class Route extends /*Nette::*/Object implements IRouter
 		}
 
 		$path = rtrim($path, '/') . '/';
-		$path = String::fixEncoding($path);
+		$path = /*Nette::*/String::fixEncoding($path);
 
 		if (!preg_match($this->re, $path, $matches)) {
 			// stop, not matched
@@ -449,7 +449,7 @@ class Route extends /*Nette::*/Object implements IRouter
 			$tmp = str_replace('-', '___', $name); // dirty trick to enable '-' in parameter name
 			if (isset($meta['fixed'])) { // has default value?
 				if (!$optional) {
-					throw new /*::*/InvalidArgumentException("Parameter '$name' must not be optional because parameters standing on the right are not optional.");
+					throw new /*::*/InvalidArgumentException("Parameter '$name' must not be optional because parameters standing on the right side are not optional.");
 				}
 				$re = '(?:(?P<' . $tmp . '>' . $pattern . ')' . $re . ')?';
 				$metadata[$name]['fixed'] = 1;
@@ -496,6 +496,7 @@ class Route extends /*Nette::*/Object implements IRouter
 				return $presenter . $m[self::PRESENTER_KEY]['default'];
 			}
 		}
+		return NULL;
 	}
 
 
