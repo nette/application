@@ -73,17 +73,14 @@ abstract class Presenter extends Control implements IPresenter
 	/** @var bool  automatically call canonicalize() */
 	public $autoCanonicalize = TRUE;
 
-	/**
-	 * Lists of all components identified by a uniqueId starting from this page.
-	 * @var array of Nette\IComponent
-	 */
-	private $globalComponents = array();
-
 	/** @var array */
 	private $globalParams;
 
 	/** @var array */
 	private $globalState;
+
+	/** @var array */
+	private $globalStateSince;
 
 	/** @var string */
 	private $view;
@@ -109,10 +106,10 @@ abstract class Presenter extends Control implements IPresenter
 	/** @var Application */
 	private $application;
 
-	/** @var IRouter  cached value for createRequest() & createSubRequest() */
+	/** @var IRouter  cached value for createRequest() */
 	private $router;
 
-	/** @var IPresenterLoader  cached value for createRequest() & createSubRequest() */
+	/** @var IPresenterLoader  cached value for createRequest() */
 	private $presenterLoader;
 
 	/** @var Nette\Web\IHttpRequest  cached value for better performance */
@@ -198,7 +195,6 @@ abstract class Presenter extends Control implements IPresenter
 				self::$outputAllowed = FALSE;
 			}
 			$this->initGlobalParams();
-			$this->registerComponent($this->getUniqueId(), $this);
 			$this->startup();
 			// calls $this->present{view}();
 			$this->tryCall($this->formatPresentMethod($this->getView()), $this->params);
@@ -220,12 +216,6 @@ abstract class Presenter extends Control implements IPresenter
 			$this->phase = self::PHASE_SIGNAL;
 			$this->processSignal();
 
-			// save component tree persistent state
-			$this->saveGlobalState();
-			if ($this->isAjax()) {
-				$this->ajaxDriver->updateState($this->globalState[NULL]);
-			}
-
 			// PHASE 4: RENDERING SCENE
 			$this->phase = self::PHASE_RENDER;
 
@@ -234,6 +224,10 @@ abstract class Presenter extends Control implements IPresenter
 			$this->tryCall($this->formatRenderMethod($this->getScene()), $this->params);
 			$this->afterRender();
 
+			// save component tree persistent state
+			$this->saveGlobalState();
+
+			// finish template rendering
 			$this->renderTemplate();
 
 		} catch (AbortException $e) {
@@ -244,7 +238,6 @@ abstract class Presenter extends Control implements IPresenter
 				$this->ajaxDriver->close();
 			}
 			$this->phase = self::PHASE_SHUTDOWN;
-			$this->unregisterComponent($this);
 			$this->shutdown();
 			if (isset($e)) throw $e;
 		}
@@ -323,12 +316,11 @@ abstract class Presenter extends Control implements IPresenter
 	{
 		if ($this->signal === NULL) return;
 
-		if (!isset($this->globalComponents[$this->signalReceiver])) {
+		$component = $this->signalReceiver === '' ? $this : $this->getComponent($this->signalReceiver, FALSE);
+		if ($component === NULL) {
 			throw new BadSignalException("The signal receiver component '$this->signalReceiver' is not found.");
-		}
 
-		$component = $this->globalComponents[$this->signalReceiver];
-		if (!$component instanceof ISignalReceiver) {
+		} elseif (!$component instanceof ISignalReceiver) {
 			throw new BadSignalException("The signal receiver component '$this->signalReceiver' is not ISignalReceiver implementor.");
 		}
 
@@ -468,6 +460,10 @@ abstract class Presenter extends Control implements IPresenter
 	 */
 	protected function renderTemplate()
 	{
+		if ($this->isAjax()) {
+			$this->ajaxDriver->updateState($this->getGlobalState());
+		}
+
 		$template = $this->getTemplate();
 		if (!$template) return;
 
@@ -671,7 +667,7 @@ abstract class Presenter extends Control implements IPresenter
 					$destination = substr($destination, 0, $a);
 				}
 
-				return $this->createRequest($destination, $args);
+				return $this->constructUrl($this->createRequest($destination, $args));
 			}
 
 		} catch (InvalidLinkException $e) {
@@ -698,7 +694,7 @@ abstract class Presenter extends Control implements IPresenter
 			array_shift($args);
 		}
 
-		throw new ForwardingException($this->createRequest($destination, $args, FALSE));
+		throw new ForwardingException($this->createRequest($destination, $args));
 	}
 
 
@@ -754,7 +750,7 @@ abstract class Presenter extends Control implements IPresenter
 	public function canonicalize()
 	{
 		if (!$this->isAjax() && ($this->request->isMethod('get') || $this->request->isMethod('head'))) {
-			$uri = $this->createRequest('self', array());
+			$uri = $this->constructUrl($this->createRequest('this', array()));
 			if ($uri !== NULL && !$this->httpRequest->getUri()->isEqual($uri)) {
 				throw new RedirectingException($uri, /*Nette\Web\*/IHttpResponse::S301_MOVED_PERMANENTLY);
 			}
@@ -835,49 +831,27 @@ abstract class Presenter extends Control implements IPresenter
 
 
 	/**
-	 * Invalid link handler.
-	 * @param  InvalidLinkException
-	 * @return string
-	 * @throws InvalidLinkException
-	 */
-	protected function handleInvalidLink($e)
-	{
-		if (self::$invalidLinkMode === NULL) {
-			self::$invalidLinkMode = Environment::isLive()
-				? self::INVALID_LINK_SILENT : self::INVALID_LINK_WARNING;
-		}
-
-		if (self::$invalidLinkMode === self::INVALID_LINK_SILENT) {
-			return '#';
-
-		} elseif (self::$invalidLinkMode === self::INVALID_LINK_WARNING) {
-			return 'error: ' . htmlSpecialChars($e->getMessage());
-
-		} else { // self::INVALID_LINK_EXCEPTION
-			throw $e;
-		}
-	}
-
-
-
-	/**
 	 * PresenterRequest/URL factory.
 	 * @param  string   destination in format "[[module:]presenter:]view"
 	 * @param  array    array of arguments
-	 * @param  bool     return PresenterRequest or URL?
-	 * @return string|PresenterRequest
+	 * @param  string   optional signal executor
+	 * @param  string   optional signal to execute
+	 * @return PresenterRequest
 	 * @throws InvalidLinkException
+	 * @internal
 	 */
-	protected function createRequest($destination, array $args, $returnUri = TRUE)
+	final protected function createRequest($destination, array $args, $componentId = NULL, $signal = NULL)
 	{
-		// TODO: add cache here!
+		// note: createRequest supposes that saveState(), run() & tryCall() behaviour is final
+
+		// parse destination
 		if ($destination == NULL) {  // intentionally ==
 			throw new InvalidLinkException("Destination must be non-empty string.");
 		}
 
 		$a = strrpos($destination, ':');
 		if ($a === FALSE) {
-			$view = $destination === 'this' || $destination === 'self' ? $this->view : $destination;
+			$view = $destination === 'this' ? $this->view : $destination;
 			$presenter = $this->getName();
 			$presenterClass = $this->getClass();
 
@@ -901,13 +875,24 @@ abstract class Presenter extends Control implements IPresenter
 			$presenterClass = $this->presenterLoader->getPresenterClass($presenter);
 		}
 
+		// process arguments
 		if (is_subclass_of($presenterClass, __CLASS__)) {
 			if ($view === '') {
 				/*$view = $presenterClass::$defaultView;*/ // in PHP 5.3
 				/**/$view = self::$defaultView;/**/
 			}
 
-			if ($args) {
+			if ($args || $destination === 'this') {
+				// prefix component parameters
+				if ($componentId != '') { // intentionally ==
+					$prefix = $componentId . self::NAME_SEPARATOR;
+					foreach ($args as $key => $val) {
+						unset($args[$key]);
+						$args[$prefix . $key] = $val;
+					}
+				}
+
+				// counterpart of run() & tryCall()
 				/*$method = $presenterClass::formatPresentMethod($view);*/ // in PHP 5.3
 				/**/$method = call_user_func(array($presenterClass, 'formatPresentMethod'), $view);/**/
 				if (!PresenterHelpers::isMethodCallable($presenterClass, $method)) {
@@ -918,94 +903,39 @@ abstract class Presenter extends Control implements IPresenter
 					}
 				}
 
-				if ($method !== NULL) {
-					PresenterHelpers::argsToParams($presenterClass, $method, $args);
+				// convert indexed parameters to named
+				if ($method === NULL) {
+					if (array_key_exists(0, $args)) {
+						throw new InvalidLinkException("Extra parameter for '$presenter:$view'.");
+					}
 
-				} elseif (array_key_exists(0, $args)) { // is needed argument -> params convertion?
-					throw new InvalidLinkException("Extra parameter for '$presenter:$view'.");
+				} elseif ($destination === 'this') {
+					PresenterHelpers::argsToParams($presenterClass, $method, $args, $this->params);
+
+				} else {
+					PresenterHelpers::argsToParams($presenterClass, $method, $args);
 				}
 			}
 
-			$this->saveGlobalState();
-			$this->saveState($args, $presenterClass);
-
-			if ($destination === 'self') { // experimental
-				$args += $this->request->getParams();
+			// counterpart of IStatePersistent
+			if ($args && array_intersect_key($args, PresenterHelpers::getPersistentParams($presenterClass))) {
+				$this->saveState($args, $presenterClass);
 			}
+
+			$args += $this->getGlobalState($destination === 'this' ? NULL : $presenterClass);
 		}
 
+		// add view & signal
 		$args[self::VIEW_KEY] = $view;
+		if ($signal != NULL) { // intentionally ==
+			$args[self::SIGNAL_KEY] = ($componentId === '' ? '' : $componentId . self::NAME_SEPARATOR) . strtolower($signal);
+		}
 
-		$request = new PresenterRequest(
+		return new PresenterRequest(
 			$presenter,
 			PresenterRequest::FORWARD,
 			$args
 		);
-
-		return $returnUri ? $this->constructUrl($request) : $request;
-	}
-
-
-
-	/**
-	 * PresenterRequest/URL factory.
-	 * @param  string   optional signal executor
-	 * @param  string   optional signal to execute
-	 * @param  array    optional signal arguments
-	 * @param  bool     return PresenterRequest or URL?
-	 * @return string|PresenterRequest
-	 * @throws InvalidLinkException
-	 */
-	protected function createSubRequest($componentId, $signal, $cparams, $returnUri = TRUE)
-	{
-		// TODO: add cache here!
-		$presenterClass = $this->getClass();
-		$view = $this->view;
-		$params = array();
-
-		$method = $this->formatPresentMethod($view);
-		if (!PresenterHelpers::isMethodCallable($presenterClass, $method)) {
-			$method = $this->formatRenderMethod($view);
-			if (!PresenterHelpers::isMethodCallable($presenterClass, $method)) {
-				$method = NULL;
-			}
-		}
-		if ($method !== NULL) {
-			foreach (PresenterHelpers::getMethodParams($presenterClass, $method) as $name => $def) {
-				if (isset($this->params[$name])) {
-					$params[$name] = $this->params[$name];
-				}
-			}
-		}
-
-		if ($componentId === '') { // self
-			if ($signal != NULL) { // intentionally ==
-				$params[self::SIGNAL_KEY] = strtolower($signal);
-			}
-			$params = $cparams + $params;
-
-		} elseif ($componentId !== NULL) {
-			$prefix = $componentId . self::NAME_SEPARATOR;
-			if ($signal != NULL) { // intentionally ==
-				$params[self::SIGNAL_KEY] = $prefix . strtolower($signal);
-			}
-			foreach ($cparams as $key => $val) {
-				$params[$prefix . $key] = $val;
-			}
-		}
-
-		$this->saveGlobalState();
-		$this->saveState($params, $presenterClass);
-		$params += $this->globalState[NULL];
-		$params[self::VIEW_KEY] = $view;
-
-		$request = new PresenterRequest(
-			$this->getName(),
-			PresenterRequest::FORWARD,
-			$params
-		);
-
-		return $returnUri ? $this->constructUrl($request) : $request;
 	}
 
 
@@ -1033,106 +963,135 @@ abstract class Presenter extends Control implements IPresenter
 
 
 
+	/**
+	 * Invalid link handler.
+	 * @param  InvalidLinkException
+	 * @return string
+	 * @throws InvalidLinkException
+	 */
+	protected function handleInvalidLink($e)
+	{
+		if (self::$invalidLinkMode === NULL) {
+			self::$invalidLinkMode = Environment::isLive()
+				? self::INVALID_LINK_SILENT : self::INVALID_LINK_WARNING;
+		}
+
+		if (self::$invalidLinkMode === self::INVALID_LINK_SILENT) {
+			return '#';
+
+		} elseif (self::$invalidLinkMode === self::INVALID_LINK_WARNING) {
+			return 'error: ' . htmlSpecialChars($e->getMessage());
+
+		} else { // self::INVALID_LINK_EXCEPTION
+			throw $e;
+		}
+	}
+
+
+
 	/********************* interface IStatePersistent ****************d*g**/
 
 
 
 	/**
-	 * Saves state informations for next request.
-	 * @param  array
-	 * @param  portion specified by class name (used by Presenter)
-	 * @return void
-	 */
-	public function saveState(array & $params, $forClass = NULL)
-	{
-		foreach (PresenterHelpers::getPersistentParams($forClass) as $nm => $l)
-		{
-			if (isset($params[$nm])) {
-				$val = $params[$nm]; // injected value
-
-			} elseif (array_key_exists($nm, $params)) {
-				continue; // i.e. $params[$nm] === NULL -> means skip
-
-			} elseif ($this instanceof $l['since']) {
-				$val = $this->$nm; // object property value
-
-			} else {
-				continue; // foreign parameter which is not set
-			}
-
-			if (is_object($val)) {
-				if ($val instanceof IStatePersistent) { // and $state
-					$nm = $val->getUniqueId();
-					if (isset($this->globalState[$nm])) {
-						$params += $this->globalState[$nm];
-					}
-				} else {
-					throw new InvalidStateException("Persistent parameter must be scalar, array or IStatePersistent, '$this->class::\$$nm' is " . gettype($val));
-				}
-
-			} else {
-				if ($l['type'] === NULL) {
-					if ((string) $val === '') $val = NULL; // unnecessary
-				} else {
-					settype($val, $l['type']);
-					if ($val === $l['def']) $val = NULL;
-				}
-				$params[$nm] = $val;
-			}
-		}
-	}
-
-
-
-	/**
 	 * Saves state information for all subcomponents to $this->globalState.
-	 * @return void
+	 * @return array
 	 */
-	protected function saveGlobalState()
+	private function getGlobalState($forClass = NULL)
 	{
-		if ($this->phase >= self::PHASE_SHUTDOWN) {
-			throw new /*\*/InvalidStateException("Presenter is shutting down, cannot save state.");
-		}
+		$sinces = & $this->globalStateSince;
 
-		if ($this->globalState === NULL || $this->phase <= self::PHASE_SIGNAL) {
-			$state = array();
-			foreach ($this->globalComponents as $id => $component)
-			{
-				if ($component instanceof IStatePersistent) {
-					$params = array();
-					$component->saveState($params);
-					if ($id === '') { // presenter itself
-						$state[NULL] = $params;
-					} else {
-						$prefix = $id . self::NAME_SEPARATOR;
-						$prefix2 = substr($prefix, 0, strpos($prefix, self::NAME_SEPARATOR));
-						foreach ($params as $key => $val) {
-							$state[NULL][$prefix . $key] = $val;
-							$state[$prefix2][$prefix . $key] = $val;
-						}
-					}
+		if ($this->globalState === NULL) {
+			if ($this->phase >= self::PHASE_SHUTDOWN) {
+				throw new /*\*/InvalidStateException("Presenter is shutting down, cannot save state.");
+			}
+
+			if ($sinces === NULL) {
+				// sinces base
+				$sinces = PresenterHelpers::getPersistentComponents(get_class($this));
+				foreach (PresenterHelpers::getPersistentParams(get_class($this)) as $nm => $l) {
+					$sinces[$nm] = $l['since'];
 				}
 			}
-			$this->globalState = $state;
+
+			$state = array();
+			foreach ($this->globalParams as $id => $params) {
+				$prefix = $id . self::NAME_SEPARATOR;
+				foreach ($params as $key => $val) {
+					$state[$prefix . $key] = $val;
+				}
+			}
+
+			$this->saveState($state, $forClass);
+
+			$iterator = $this->getComponents(TRUE, 'Nette\Application\IStatePersistent');
+			foreach ($iterator as $id => $component)
+			{
+				if ($iterator->getDepth() === 0) {
+					$since = isset($sinces[$id]) ? $sinces[$id] : FALSE; // FALSE = nonpersistent
+				}
+				$prefix = $component->getUniqueId() . self::NAME_SEPARATOR;
+				$params = array();
+				$component->saveState($params);
+				foreach ($params as $key => $val) {
+					$state[$prefix . $key] = $val;
+					$sinces[$prefix . $key] = $since; // additional sinces for speed-up
+				}
+			}
+
+		} else {
+			$state = $this->globalState;
 		}
+
+		if ($forClass !== NULL) {
+			$since = NULL;
+			foreach ($state as $key => $foo) {
+				if (!isset($sinces[$key])) {
+					$x = strpos($key, self::NAME_SEPARATOR);
+					$x = $x === FALSE ? $key : substr($key, 0, $x);
+					$sinces[$key] = isset($sinces[$x]) ? $sinces[$x] : FALSE;
+				}
+				if ($since !== $sinces[$key]) {
+					$since = $sinces[$key];
+					$ok = $since && (is_subclass_of($forClass, $since) || $forClass === $since);
+				}
+				if (!$ok) {
+					unset($state[$key]);
+				}
+			}
+		}
+
+		return $state;
 	}
 
 
 
 	/**
-	 * Initializes $this->globalParams, $this->signal & $this->signalReceiver, $this->view, $this->scene.
+	 * Permanently saves state information for all subcomponents to $this->globalState.
+	 * @return void
+	 */
+	private function saveGlobalState()
+	{
+		$this->globalParams = array();
+		$this->globalState = $this->getGlobalState();
+	}
+
+
+
+	/**
+	 * Initializes $this->globalParams, $this->signal & $this->signalReceiver, $this->view, $this->scene. Called by run().
 	 * @return void
 	 * @throws BadRequestException if view name is not valid
 	 */
 	private function initGlobalParams()
 	{
 		// init $this->globalParams
-		$self = $this->getUniqueId();
 		$this->globalParams = array();
-		$selfParams = & $this->globalParams[$self];
 		$selfParams = array();
 
-		foreach ($this->request->getParams() as $key => $value) {
+		$params = $this->request->getParams();
+		// TODO: $params += $this->request->getPost();
+		foreach ($params as $key => $value) {
 			$a = strlen($key) > 2 ? strrpos($key, self::NAME_SEPARATOR, -2) : FALSE;
 			if ($a === FALSE) {
 				$selfParams[$key] = $value;
@@ -1145,7 +1104,7 @@ abstract class Presenter extends Control implements IPresenter
 		$this->changeView(isset($selfParams[self::VIEW_KEY]) ? $selfParams[self::VIEW_KEY] : self::$defaultView);
 
 		// init $this->signalReceiver and key 'signal' in appropriate params array
-		$this->signalReceiver = $self;
+		$this->signalReceiver = $this->getUniqueId();
 		if (!empty($selfParams[self::SIGNAL_KEY])) {
 			$param = $selfParams[self::SIGNAL_KEY];
 			$pos = strrpos($param, '-');
@@ -1153,55 +1112,34 @@ abstract class Presenter extends Control implements IPresenter
 				$this->signalReceiver = substr($param, 0, $pos);
 				$this->signal = substr($param, $pos + 1);
 			} else {
-				$this->signalReceiver = $self;
+				$this->signalReceiver = $this->getUniqueId();
 				$this->signal = $param;
 			}
 			if ($this->signal == NULL) { // intentionally ==
 				$this->signal = NULL;
 			}
 		}
-	}
 
-
-
-	/********************* hierarchy tree ****************d*g**/
-
-
-
-	/**
-	 * @param  string
-	 * @param  Nette\IComponent
-	 * @return bool
-	 */
-	final public function registerComponent($id, /*Nette\*/IComponent $component)
-	{
-		if (isset($this->globalComponents[$id])) {
-			return FALSE;
-		}
-
-		$this->globalComponents[$id] = $component;
-		if (isset($this->globalParams[$id]) && $component instanceof IStatePersistent) {
-			$component->loadState($this->globalParams[$id]);
-		}
-
-		return TRUE;
+		$this->loadState($selfParams);
 	}
 
 
 
 	/**
-	 * @param  Nette\IComponent
-	 * @return bool
+	 * Pops parameters for specified component.
+	 * @param  string  component id
+	 * @return array
 	 */
-	final public function unregisterComponent(/*Nette\*/IComponent $component)
+	final public function popGlobalParams($id)
 	{
-		foreach ($this->globalComponents as $id => $c) {
-			if ($c === $component) {
-				unset($this->globalComponents[$id]);
-				return TRUE;
-			}
+		if (isset($this->globalParams[$id])) {
+			$res = $this->globalParams[$id];
+			unset($this->globalParams[$id]);
+			return $res;
+
+		} else {
+			return array();
 		}
-		return FALSE;
 	}
 
 }
