@@ -38,7 +38,7 @@ require_once dirname(__FILE__) . '/../Application/IAjaxDriver.php';
 class AjaxDriver extends /*Nette\*/Object implements IAjaxDriver
 {
 	/** @var array */
-	private $data = array();
+	private $data;
 
 	/** @var Nette\Web\IHttpResponse */
 	private $httpResponse;
@@ -74,28 +74,18 @@ class AjaxDriver extends /*Nette\*/Object implements IAjaxDriver
 	 */
 	public function close()
 	{
+		if ($this->data === NULL) {
+			return; // response handled by user?
+		}
+
 		$this->httpResponse->setContentType('application/x-javascript', 'utf-8');
 		echo json_encode($this->data);
-		$this->data = array();
+		$this->data = NULL;
 	}
 
 
 
 	/********************* AJAX response ****************d*g**/
-
-
-
-	/**
-	 * @param  string
-	 * @param  mixed
-	 * @return void
-	 */
-	public function fireEvent($event, $arg)
-	{
-		$args = func_get_args();
-		array_shift($args);
-		$this->data['events'][] = array('event' => $event, 'args' => $args);
-	}
 
 
 
@@ -148,6 +138,26 @@ class AjaxDriver extends /*Nette\*/Object implements IAjaxDriver
 	public function __unset($name)
 	{
 		unset($this->data[$name]);
+	}
+
+
+
+	/** @deprecated */
+	public function fireEvent($event, $arg)
+	{
+		trigger_error('Deprecated: use $presenter->ajaxDriver->events[] = array($event, $arg, ...); instead.', E_USER_WARNING);
+		$args = func_get_args();
+		array_shift($args);
+		$this->data['events'][] = array('event' => $event, 'args' => $args);
+	}
+
+
+
+	/** @deprecated */
+	public function updateSnippet($id, $content)
+	{
+		trigger_error('Deprecated: use $presenter->ajaxDriver->snippet[$id] = $content; instead.', E_USER_WARNING);
+		$this->data['snippets'][$id] = (string) $content;
 	}
 
 }
