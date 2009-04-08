@@ -92,8 +92,6 @@ abstract class Control extends PresenterComponent implements IPartiallyRenderabl
 
 		// default helpers
 		$template->registerHelper('escape', 'Nette\Templates\TemplateHelpers::escapeHtml');
-		$template->registerHelper('escapeJs', 'Nette\Templates\TemplateHelpers::escapeJs');
-		$template->registerHelper('escapeCss', 'Nette\Templates\TemplateHelpers::escapeCss');
 		$template->registerHelper('cache', 'Nette\Templates\CachingHelper::create');
 		$template->registerHelper('snippet', 'Nette\Templates\SnippetHelper::create');
 		$template->registerHelper('lower', 'Nette\String::lower');
@@ -101,6 +99,7 @@ abstract class Control extends PresenterComponent implements IPartiallyRenderabl
 		$template->registerHelper('capitalize', 'Nette\String::capitalize');
 		$template->registerHelper('stripTags', 'strip_tags');
 		$template->registerHelper('strip', 'Nette\Templates\TemplateHelpers::strip');
+		$template->registerHelper('indent', 'Nette\Templates\TemplateHelpers::indent');
 		$template->registerHelper('date', 'Nette\Templates\TemplateHelpers::date');
 		$template->registerHelper('nl2br', 'nl2br');
 		$template->registerHelper('truncate', 'Nette\String::truncate');
