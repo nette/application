@@ -21,52 +21,17 @@
 
 
 
-require_once dirname(__FILE__) . '/../../Object.php';
-
-require_once dirname(__FILE__) . '/../../Application/IPresenterResponse.php';
+require_once dirname(__FILE__) . '/../../Application/Exceptions/InvalidLinkException.php';
 
 
 
 /**
- * Forwards to new request.
+ * The exception that is thrown when a presenter cannot be loaded.
  *
  * @author     David Grudl
  * @copyright  Copyright (c) 2004, 2009 David Grudl
  * @package    Nette\Application
  */
-class ForwardingResponse extends /*Nette\*/Object implements IPresenterResponse
+class InvalidPresenterException extends InvalidLinkException
 {
-	/** @var PresenterRequest */
-	private $request;
-
-
-
-	/**
-	 * @param  PresenterRequest  new request
-	 */
-	public function __construct(PresenterRequest $request)
-	{
-		$this->request = $request;
-	}
-
-
-
-	/**
-	 * @return PresenterRequest
-	 */
-	final public function getRequest()
-	{
-		return $this->request;
-	}
-
-
-
-	/**
-	 * Sends response to output.
-	 * @return void
-	 */
-	public function send()
-	{
-	}
-
 }

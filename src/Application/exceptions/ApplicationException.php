@@ -21,52 +21,24 @@
 
 
 
-require_once dirname(__FILE__) . '/../../Object.php';
-
-require_once dirname(__FILE__) . '/../../Application/IPresenterResponse.php';
-
-
-
 /**
- * Forwards to new request.
+ * Application fatal error.
  *
  * @author     David Grudl
  * @copyright  Copyright (c) 2004, 2009 David Grudl
  * @package    Nette\Application
  */
-class ForwardingResponse extends /*Nette\*/Object implements IPresenterResponse
+class ApplicationException extends /*\*/Exception
 {
-	/** @var PresenterRequest */
-	private $request;
-
-
-
-	/**
-	 * @param  PresenterRequest  new request
-	 */
-	public function __construct(PresenterRequest $request)
+	/**/
+	function __construct($message = '', $code = 0, /*\*/Exception $previous = NULL)
 	{
-		$this->request = $request;
+		if (version_compare(PHP_VERSION , '5.3', '<')) {
+			$this->previous = $previous;
+			parent::__construct($message, $code);
+		} else {
+			parent::__construct($message, $code, $previous);
+		}
 	}
-
-
-
-	/**
-	 * @return PresenterRequest
-	 */
-	final public function getRequest()
-	{
-		return $this->request;
-	}
-
-
-
-	/**
-	 * Sends response to output.
-	 * @return void
-	 */
-	public function send()
-	{
-	}
-
+	/**/
 }
