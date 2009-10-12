@@ -268,19 +268,19 @@ class Route extends /*Nette\*/Object implements IRouter
 		$metadata = $this->metadata;
 
 		$presenter = $appRequest->getPresenterName();
-		if (isset($metadata[self::MODULE_KEY])) {
-			if (isset($metadata[self::MODULE_KEY]['fixity'])) {
-				$a = strlen($metadata[self::MODULE_KEY][self::VALUE]);
-				if (substr($presenter, $a, 1) !== ':') {
-					return NULL; // module not match
-				}
+		$params[self::PRESENTER_KEY] = $presenter;
+
+		if (isset($metadata[self::MODULE_KEY])) { // try split into module and [submodule:]presenter parts
+			$module = $metadata[self::MODULE_KEY];
+			if (isset($module['fixity']) && strncasecmp($presenter, $module[self::VALUE] . ':', strlen($module[self::VALUE]) + 1) === 0) {
+				$a = strlen($module[self::VALUE]);
 			} else {
 				$a = strrpos($presenter, ':');
 			}
-			$params[self::MODULE_KEY] = substr($presenter, 0, $a);
-			$params[self::PRESENTER_KEY] = substr($presenter, $a + 1);
-		} else {
-			$params[self::PRESENTER_KEY] = $presenter;
+			if ($a !== FALSE) {
+				$params[self::MODULE_KEY] = substr($presenter, 0, $a);
+				$params[self::PRESENTER_KEY] = substr($presenter, $a + 1);
+			}
 		}
 
 		foreach ($metadata as $name => $meta) {
