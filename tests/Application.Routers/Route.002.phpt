@@ -13,7 +13,7 @@ use Nette\Application\Route;
 
 
 
-require __DIR__ . '/../NetteTest/initialize.php';
+require __DIR__ . '/../initialize.php';
 
 require __DIR__ . '/Route.inc';
 
@@ -34,14 +34,14 @@ __halt_compiler() ?>
 ------EXPECT------
 ==> /index.php
 
-string(14) "querypresenter"
+"querypresenter"
 
-array(2) {
-	"action" => string(7) "default"
-	"test" => string(9) "testvalue"
-}
+array(
+	"action" => "default"
+	"test" => "testvalue"
+)
 
-string(50) "/index.php?test=testvalue&presenter=querypresenter"
+"/index.php?test=testvalue&presenter=querypresenter"
 
 ==> /
 
