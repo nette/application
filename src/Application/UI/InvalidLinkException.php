@@ -9,20 +9,17 @@
  * the file license.txt that was distributed with this source code.
  */
 
-namespace Nette\Application;
+namespace Nette\Application\UI;
 
 use Nette;
 
 
 
 /**
- * Signal exception.
+ * Link generation exception.
  *
  * @author     David Grudl
  */
-class BadSignalException extends BadRequestException
+class InvalidLinkException extends \Exception
 {
-	/** @var int */
-	protected $defaultCode = 403;
-
 }

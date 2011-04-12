@@ -16,24 +16,13 @@ use Nette;
 
 
 /**
- *
+ * Signal exception.
  *
  * @author     David Grudl
  */
-interface IRenderable
+class BadSignalException extends Nette\Application\BadRequestException
 {
-
-	/**
-	 * Forces control to repaint.
-	 * @param  string
-	 * @return void
-	 */
-	function invalidateControl();
-
-	/**
-	 * Is required to repaint the control?
-	 * @return bool
-	 */
-	function isControlInvalid();
+	/** @var int */
+	protected $defaultCode = 403;
 
 }

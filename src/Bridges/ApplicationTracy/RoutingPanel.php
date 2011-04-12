@@ -9,9 +9,12 @@
  * the file license.txt that was distributed with this source code.
  */
 
-namespace Nette\Application;
+namespace Nette\Application\Diagnostics;
 
-use Nette;
+use Nette,
+	Nette\Application\Routers,
+	Nette\Application\UI\Presenter, // templates
+	Nette\Diagnostics\Debugger;
 
 
 
@@ -20,27 +23,27 @@ use Nette;
  *
  * @author     David Grudl
  */
-class RoutingDebugger extends Nette\DebugPanel
+class RoutingPanel extends Nette\Diagnostics\Panel
 {
-	/** @var IRouter */
+	/** @var Nette\Application\IRouter */
 	private $router;
 
-	/** @var Nette\Web\IHttpRequest */
+	/** @var Nette\Http\IRequest */
 	private $httpRequest;
 
 	/** @var array */
 	private $routers = array();
 
-	/** @var PresenterRequest */
+	/** @var Nette\Application\Request */
 	private $request;
 
 
 
-	public function __construct(IRouter $router, Nette\Web\IHttpRequest $httpRequest)
+	public function __construct(Nette\Application\IRouter $router, Nette\Http\IRequest $httpRequest)
 	{
 		$this->router = $router;
 		$this->httpRequest = $httpRequest;
-		parent::__construct('RoutingDebugger', array($this, 'renderTab'), array($this, 'renderPanel'));
+		parent::__construct('RoutingPanel', array($this, 'renderTab'), array($this, 'renderPanel'));
 	}
 
 
@@ -52,7 +55,7 @@ class RoutingDebugger extends Nette\DebugPanel
 	public function renderTab()
 	{
 		$this->analyse($this->router);
-		require __DIR__ . '/templates/RoutingDebugger.tab.phtml';
+		require __DIR__ . '/templates/RoutingPanel.tab.phtml';
 	}
 
 
@@ -63,19 +66,19 @@ class RoutingDebugger extends Nette\DebugPanel
 	 */
 	public function renderPanel()
 	{
-		require __DIR__ . '/templates/RoutingDebugger.panel.phtml';
+		require __DIR__ . '/templates/RoutingPanel.panel.phtml';
 	}
 
 
 
 	/**
 	 * Analyses simple route.
-	 * @param  IRouter
+	 * @param  Nette\Application\IRouter
 	 * @return void
 	 */
 	private function analyse($router)
 	{
-		if ($router instanceof MultiRouter) {
+		if ($router instanceof Routers\RouteList) {
 			foreach ($router as $subRouter) {
 				$this->analyse($subRouter);
 			}
@@ -92,8 +95,8 @@ class RoutingDebugger extends Nette\DebugPanel
 		$this->routers[] = array(
 			'matched' => $matched,
 			'class' => get_class($router),
-			'defaults' => $router instanceof Route || $router instanceof SimpleRouter ? $router->getDefaults() : array(),
-			'mask' => $router instanceof Route ? $router->getMask() : NULL,
+			'defaults' => $router instanceof Routers\Route || $router instanceof Routers\SimpleRouter ? $router->getDefaults() : array(),
+			'mask' => $router instanceof Routers\Route ? $router->getMask() : NULL,
 			'request' => $request,
 		);
 	}

@@ -9,24 +9,32 @@
  * the file license.txt that was distributed with this source code.
  */
 
-namespace Nette\Application;
+namespace Nette\Application\UI;
 
 use Nette;
 
 
 
 /**
- * Any response returned by presenter.
+ *
  *
  * @author     David Grudl
  */
-interface IPresenterResponse
+interface IPartiallyRenderable extends IRenderable
 {
 
 	/**
-	 * Sends response to output.
+	 * Forces control or its snippet to repaint.
+	 * @param  string
 	 * @return void
 	 */
-	function send(Nette\Web\IHttpRequest $httpRequest, Nette\Web\IHttpResponse $httpResponse);
+	//function invalidateControl($snippet = NULL);
+
+	/**
+	 * Is required to repaint the control or its snippet?
+	 * @param  string  snippet name
+	 * @return bool
+	 */
+	//function isControlInvalid($snippet = NULL);
 
 }
