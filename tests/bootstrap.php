@@ -1,0 +1,36 @@
+<?php
+
+
+if (@!include __DIR__ . '/../vendor/autoload.php') {
+	echo 'Install Nette Tester using `composer update --dev`';
+	exit(1);
+}
+
+
+Tester\Environment::setup();
+date_default_timezone_set('Europe/Prague');
+
+
+function test(\Closure $function)
+{
+	$function();
+}
+
+
+class Notes
+{
+	static public $notes = array();
+
+	public static function add($message)
+	{
+		self::$notes[] = $message;
+	}
+
+	public static function fetch()
+	{
+		$res = self::$notes;
+		self::$notes = array();
+		return $res;
+	}
+
+}
