@@ -70,6 +70,11 @@ class TemplateFactory extends Nette\Object implements UI\ITemplateFactory
 			$control->templatePrepareFilters($template);
 		};
 
+		$latte->addFilter('url', 'rawurlencode'); // back compatiblity
+		foreach (array('normalize', 'toAscii', 'webalize', 'padLeft', 'padRight', 'reverse') as $name) {
+			$latte->addFilter($name, 'Nette\Utils\Strings::' . $name);
+		}
+
 		// default parameters
 		$template->control = $template->_control = $control;
 		$template->presenter = $template->_presenter = $presenter;
