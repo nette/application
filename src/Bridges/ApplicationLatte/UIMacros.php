@@ -66,7 +66,7 @@ if (empty($_l->extends) && !empty($_control->snippetMode)) {
 	{
 		$words = $node->tokenizer->fetchWords();
 		if (!$words) {
-			throw new CompileException("Missing control name in {control}");
+			throw new CompileException('Missing control name in {control}');
 		}
 		$name = $writer->formatWord($words[0]);
 		$method = isset($words[1]) ? ucfirst($words[1]) : '';
