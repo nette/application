@@ -42,7 +42,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @internal special parameter key */
 	const SIGNAL_KEY = 'do',
 		ACTION_KEY = 'action',
-		FLASH_KEY = '_fid',
+		FLASH_KEY = Application\IMessageStorage::FLASH_KEY,
 		DEFAULT_ACTION = 'default';
 
 	/** @var int */
@@ -126,6 +126,9 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @var ITemplateFactory */
 	private $templateFactory;
 
+	/** @var Application\IMessageStorage */
+	private $messageStorage;
+
 
 	public function __construct()
 	{
@@ -180,6 +183,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			}
 
 			$this->initGlobalParameters();
+			$this->messageStorage->setId($this->getParameter(self::FLASH_KEY));
 			$this->checkRequirements($this->getReflection());
 			$this->startup();
 			if (!$this->startupCheck) {
@@ -234,9 +238,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 				}
 			} catch (Application\AbortException $e) { }
 
-			if ($this->hasFlashSession()) {
-				$this->getFlashSession()->setExpiration($this->response instanceof Responses\RedirectResponse ? '+ 30 seconds' : '+ 3 seconds');
-			}
+			$this->messageStorage->setExpiration($this->response instanceof Responses\RedirectResponse ? '+ 30 seconds' : '+ 3 seconds');
 
 			// SHUTDOWN
 			$this->onShutdown($this, $this->response);
@@ -954,7 +956,10 @@ abstract class Presenter extends Control implements Application\IPresenter
 			$args[self::SIGNAL_KEY] = $component->getParameterId($signal);
 			$current = $current && $args[self::SIGNAL_KEY] === $this->getParameter(self::SIGNAL_KEY);
 		}
-		if (($mode === 'redirect' || $mode === 'forward') && $this->hasFlashSession()) {
+		if (($mode === 'redirect' || $mode === 'forward') && $this->messageStorage->hasMessages()) {
+			if (empty($this->params[self::FLASH_KEY])) {
+				$this->params[self::FLASH_KEY] = $this->messageStorage->getId();
+			}
 			$args[self::FLASH_KEY] = $this->getParameter(self::FLASH_KEY);
 		}
 
@@ -1284,28 +1289,35 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function hasFlashSession()
 	{
-		return !empty($this->params[self::FLASH_KEY])
-			&& $this->session->hasSection('Nette.Application.Flash/' . $this->params[self::FLASH_KEY]);
+		return $this->messageStorage->hasMessages();
 	}
 
 
 	/**
-	 * Returns session namespace provided to pass temporary data between redirects.
+	 * @return Application\MessageStorage
+	 */
+	public function getFlashStorage()
+	{
+		return $this->messageStorage;
+	}
+
+
+	/**
+	 * @deprecated
 	 * @return Nette\Http\SessionSection
 	 */
 	public function getFlashSession()
 	{
-		if (empty($this->params[self::FLASH_KEY])) {
-			$this->params[self::FLASH_KEY] = Nette\Utils\Random::generate(4);
-		}
-		return $this->session->getSection('Nette.Application.Flash/' . $this->params[self::FLASH_KEY]);
+		return $this->getFlashStorage()->getSession();
 	}
 
 
 	/********************* services ****************d*g**/
 
 
-	public function injectPrimary(Nette\DI\Container $context, Nette\Application\IPresenterFactory $presenterFactory, Nette\Application\IRouter $router, Http\IRequest $httpRequest, Http\IResponse $httpResponse, Http\Session $session, Nette\Security\User $user, ITemplateFactory $templateFactory)
+	public function injectPrimary(Nette\DI\Container $context, Nette\Application\IPresenterFactory $presenterFactory, Nette\Application\IRouter $router,
+		Http\IRequest $httpRequest, Http\IResponse $httpResponse, Http\Session $session, Nette\Security\User $user, ITemplateFactory $templateFactory,
+		Application\IMessageStorage $messageStorage)
 	{
 		if ($this->presenterFactory !== NULL) {
 			throw new Nette\InvalidStateException("Method " . __METHOD__ . " is intended for initialization and should not be called more than once.");
@@ -1319,6 +1331,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		$this->session = $session;
 		$this->user = $user;
 		$this->templateFactory = $templateFactory;
+		$this->messageStorage = $messageStorage;
 	}
 
 

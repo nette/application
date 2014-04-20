@@ -3,8 +3,67 @@
 
 class MockSession extends Nette\Http\Session
 {
-	public function __construct()
+	public $mockSection;
+
+	public $sectionName;
+
+	public function __construct() {}
+
+	public function getSection($section, $class = 'Nette\Http\SessionSection')
+	{
+		return $this->mockSection;
+	}
+
+	public function hasSection($section)
+	{
+		return $section === $this->sectionName;
+	}
+}
+
+
+class MockSessionSection extends Nette\Object implements \ArrayAccess
+{
+	public $name;
+	public $value;
+
+	public function __isset($name)
+	{
+		return $name === $this->name;
+	}
+
+	public function __set($name, $value)
+	{
+		$this->name = $name;
+		$this->value = $value;
+	}
+
+	public function &__get($name)
+	{
+		return $this->value;
+	}
+
+	public function setExpiration($expiraton, $variables = NULL)
 	{}
+
+	public function offsetExists($name)
+	{
+		return $this->__isset($name);
+	}
+
+	public function offsetSet($name, $value)
+	{
+		$this->__set($name, $value);
+	}
+
+	public function offsetGet($name)
+	{
+		return $this->__get($name);
+	}
+
+	public function offsetUnset($name)
+	{
+		$this->__unset($name);
+	}
 }
 
 
@@ -38,6 +97,13 @@ class MockRouter extends Nette\Object implements Nette\Application\IRouter
 
 
 class MockHttpRequest extends Nette\Http\Request
+{
+	public function __construct()
+	{}
+}
+
+
+class MockMessageStorage extends Nette\Application\MessageStorage
 {
 	public function __construct()
 	{}
