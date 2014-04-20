@@ -85,9 +85,12 @@ class TemplateFactory extends Nette\Object implements UI\ITemplateFactory
 		$template->basePath = preg_replace('#https?://[^/]+#A', '', $template->baseUrl);
 		$template->flashes = array();
 
-		if ($presenter instanceof UI\Presenter && $presenter->hasFlashSession()) {
-			$id = $control->getParameterId('flash');
-			$template->flashes = (array) $presenter->getFlashSession()->$id;
+		if ($presenter instanceof UI\Presenter) {
+			$flashStorage = $presenter->getFlashStorage();
+			if ($flashStorage->isOpened()) {
+				$id = $control->getParameterId('flash');
+				$template->flashes = (array) $flashStorage->getMessages($id);
+			}
 		}
 
 		return $template;

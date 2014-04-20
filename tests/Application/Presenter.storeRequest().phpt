@@ -102,6 +102,12 @@ class MockHttpRequest extends Http\Request
 	public function __construct() {}
 }
 
+class MockMessagesStorage extends \Nette\Application\MessagesStorage
+{
+	public function __construct()
+	{}
+}
+
 class MockTemplateFactory extends Nette\Bridges\ApplicationLatte\TemplateFactory
 {
 	public function __construct()
@@ -118,7 +124,8 @@ $presenter->injectPrimary(
 	new Http\Response,
 	$session = new MockSession,
 	$user = new MockUser,
-	new MockTemplateFactory
+	new MockTemplateFactory,
+	new MockMessagesStorage
 );
 
 $section = $session->testSection = new MockSessionSection($session);
