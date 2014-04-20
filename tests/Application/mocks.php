@@ -69,8 +69,15 @@ class MockSessionSection extends Nette\Object implements \ArrayAccess
 
 class MockUser extends Nette\Security\User
 {
+	public $mockIdentity;
+
 	public function __construct()
 	{}
+
+	public function getIdentity()
+	{
+		return $this->mockIdentity;
+	}
 }
 
 
@@ -98,12 +105,24 @@ class MockRouter extends Nette\Object implements Nette\Application\IRouter
 
 class MockHttpRequest extends Nette\Http\Request
 {
+	public function __construct() {}
+}
+
+
+class MockResponse extends \Nette\Http\Response
+{
+	public function __construct() {}
+}
+
+
+class MockMessagesStorage extends Nette\Application\MessagesStorage
+{
 	public function __construct()
 	{}
 }
 
 
-class MockMessagesStorage extends Nette\Application\MessagesStorage
+class MockRequestStorage extends Nette\Application\RequestStorage
 {
 	public function __construct()
 	{}
