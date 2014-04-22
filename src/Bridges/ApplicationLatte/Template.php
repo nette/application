@@ -105,13 +105,13 @@ class Template extends Nette\Object implements Nette\Application\UI\ITemplate
 	 * Alias for addFilterLoader()
 	 * @deprecated
 	 */
-	public function registerHelperLoader($callback)
+	public function registerHelperLoader($loader)
 	{
 		trigger_error(__METHOD__ . '() is deprecated, use dynamic getLatte()->addFilter().', E_USER_DEPRECATED);
 		$latte = $this->latte;
-		$this->latte->addFilter(NULL, function($name) use ($callback, $latte) {
-			if ($res = call_user_func($callback, $name)) {
-				$latte->addFilter($name, $res);
+		$this->latte->addFilter(NULL, function($name) use ($loader, $latte) {
+			if ($callback = call_user_func($loader, $name)) {
+				$latte->addFilter($name, $callback);
 			}
 		});
 		return $this;
