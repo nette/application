@@ -22,7 +22,7 @@ use Nette,
  */
 class TemplateFactory extends Nette\Object implements UI\ITemplateFactory
 {
-	/** @var Nette\Bridges\Framework\ILatteFactory */
+	/** @var Nette\Bridges\ApplicationLatte\ILatteFactory */
 	private $latteFactory;
 
 	/** @var Nette\Http\IRequest */
@@ -38,7 +38,7 @@ class TemplateFactory extends Nette\Object implements UI\ITemplateFactory
 	private $cacheStorage;
 
 
-	public function __construct(Nette\Bridges\Framework\ILatteFactory $latteFactory, Nette\Http\IRequest $httpRequest = NULL,
+	public function __construct(ILatteFactory $latteFactory, Nette\Http\IRequest $httpRequest = NULL,
 		Nette\Http\IResponse $httpResponse = NULL, Nette\Security\User $user = NULL, Nette\Caching\IStorage $cacheStorage = NULL)
 	{
 		$this->latteFactory = $latteFactory;

@@ -116,7 +116,7 @@ class MicroPresenter extends Nette\Object implements Application\IPresenter
 	 */
 	public function createTemplate($class = NULL, $latteFactory = NULL)
 	{
-		$latte = $latteFactory ? $latteFactory() : $this->getContext()->getByType('Nette\Bridges\Framework\ILatteFactory')->create();
+		$latte = $latteFactory ? $latteFactory() : $this->getContext()->getByType('Nette\Bridges\ApplicationLatte\ILatteFactory')->create();
 		$template = $class ? new $class : new Nette\Bridges\ApplicationLatte\Template($latte);
 
 		$template->setParameters($this->request->getParameters());
