@@ -62,13 +62,13 @@ class TemplateFactory extends Nette\Object implements UI\ITemplateFactory
 			$latte->setLoader(new Loader($control));
 		}
 
-		$latte->onCompile[] = function($latte) use ($control, $template) {
+		array_unshift($latte->onCompile, function($latte) use ($control, $template) {
 			$latte->getParser()->shortNoEscape = TRUE;
 			$latte->getCompiler()->addMacro('cache', new Nette\Bridges\CacheLatte\CacheMacro($latte->getCompiler()));
 			UIMacros::install($latte->getCompiler());
 			Nette\Bridges\FormsLatte\FormMacros::install($latte->getCompiler());
 			$control->templatePrepareFilters($template);
-		};
+		});
 
 		$latte->addFilter('url', 'rawurlencode'); // back compatiblity
 		foreach (array('normalize', 'toAscii', 'webalize', 'padLeft', 'padRight', 'reverse') as $name) {
