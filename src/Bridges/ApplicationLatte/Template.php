@@ -148,10 +148,7 @@ class Template extends Nette\Object implements Nette\Application\UI\ITemplate
 	 */
 	public function setFile($file)
 	{
-		$this->file = realpath($file);
-		if (!$this->file) {
-			throw new Nette\FileNotFoundException("Missing template file '$file'.");
-		}
+		$this->file = $file;
 		return $this;
 	}
 
