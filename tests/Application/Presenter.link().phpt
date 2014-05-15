@@ -10,7 +10,6 @@ use Nette\Http,
 
 
 require __DIR__ . '/../bootstrap.php';
-require __DIR__ . '/mocks.php';
 
 
 class TestControl extends Application\UI\Control
@@ -157,19 +156,28 @@ class OtherPresenter extends TestPresenter
 }
 
 
+class MockPresenterFactory extends Nette\Object implements Nette\Application\IPresenterFactory
+{
+	function getPresenterClass(& $name)
+	{
+		return str_replace(':', 'Module\\', $name) . 'Presenter';
+	}
+
+	function createPresenter($name)
+	{}
+}
+
+
 $url = new Http\UrlScript('http://localhost/index.php');
 $url->setScriptPath('/index.php');
 
 $presenter = new TestPresenter;
 $presenter->injectPrimary(
-	new Nette\DI\Container,
+	NULL,
 	new MockPresenterFactory,
 	new Application\Routers\SimpleRouter,
 	new Http\Request($url),
-	new Http\Response,
-	new MockSession,
-	new MockUser,
-	new MockTemplateFactory
+	new Http\Response
 );
 
 $presenter->invalidLinkMode = TestPresenter::INVALID_LINK_WARNING;
