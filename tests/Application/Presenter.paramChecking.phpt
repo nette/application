@@ -10,7 +10,6 @@ use Nette\Http,
 
 
 require __DIR__ . '/../bootstrap.php';
-require __DIR__ . '/mocks.php';
 
 
 class TestPresenter extends Application\UI\Presenter
@@ -19,22 +18,25 @@ class TestPresenter extends Application\UI\Presenter
 	public $bool = TRUE;
 
 	function actionDefault($a, $b = NULL, array $c, array $d = NULL, $e = 1, $f = 1.0, $g = FALSE)
-	{
-	}
+	{}
 
+}
+
+
+class MockHttpRequest extends Nette\Http\Request
+{
+	public function __construct()
+	{}
 }
 
 
 $presenter = new TestPresenter;
 $presenter->injectPrimary(
-	new Nette\DI\Container,
-	new MockPresenterFactory,
-	new MockRouter,
+	NULL,
+	NULL,
+	NULL,
 	new MockHttpRequest,
-	new Http\Response,
-	new MockSession,
-	new MockUser,
-	new MockTemplateFactory
+	new Http\Response
 );
 
 
