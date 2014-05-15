@@ -218,7 +218,9 @@ abstract class Presenter extends Control implements Application\IPresenter
 			}
 
 			// finish template rendering
-			$this->sendTemplate();
+			if ($this->getTemplate()) {
+				$this->sendTemplate();
+			}
 
 		} catch (Application\AbortException $e) {
 			// continue with shutting down
@@ -445,11 +447,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	public function sendTemplate()
 	{
 		$template = $this->getTemplate();
-		if (!$template) {
-			return;
-		}
-
-		if (!$template->getFile()) { // content template
+		if (!$template->getFile()) {
 			$files = $this->formatTemplateFiles();
 			foreach ($files as $file) {
 				if (is_file($file)) {
