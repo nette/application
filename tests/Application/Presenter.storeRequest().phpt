@@ -18,7 +18,7 @@ require __DIR__ . '/../bootstrap.php';
 
 class TestPresenter extends Application\UI\Presenter
 {
-	public function sendTemplate($value='') {}
+	public function getTemplate() {}
 }
 
 class MockSession extends Http\Session
