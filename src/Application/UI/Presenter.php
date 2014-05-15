@@ -505,11 +505,12 @@ abstract class Presenter extends Control implements Application\IPresenter
 	public function formatTemplateFiles(): array
 	{
 		[, $presenter] = Helpers::splitName($this->getName());
-		$dir = dirname($this->getReflection()->getFileName());
-		$dir = is_dir("$dir/templates") ? $dir : dirname($dir);
+		$presenterDir = dirname($this->getReflection()->getFileName());
+		$dir = is_dir("$presenterDir/templates") ? $presenterDir : dirname($presenterDir);
 		return [
 			"$dir/templates/$presenter/$this->view.latte",
 			"$dir/templates/$presenter.$this->view.latte",
+			"$presenterDir/templates/$this->view.latte",
 		];
 	}
 

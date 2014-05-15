@@ -22,6 +22,7 @@ test(function () { // with subdir templates
 	Assert::same([
 		__DIR__ . DIRECTORY_SEPARATOR . 'one/templates/One/view.latte',
 		__DIR__ . DIRECTORY_SEPARATOR . 'one/templates/One.view.latte',
+		__DIR__ . DIRECTORY_SEPARATOR . 'one/templates/view.latte',
 	], $presenter->formatTemplateFiles());
 });
 
@@ -34,6 +35,7 @@ test(function () { // without subdir templates
 	Assert::same([
 		__DIR__ . '/templates/Two/view.latte',
 		__DIR__ . '/templates/Two.view.latte',
+		__DIR__ . DIRECTORY_SEPARATOR . 'two/templates/view.latte',
 	], $presenter->formatTemplateFiles());
 });
 
@@ -46,6 +48,7 @@ test(function () { // with module & subdir templates
 	Assert::same([
 		__DIR__ . DIRECTORY_SEPARATOR . 'one/templates/One/view.latte',
 		__DIR__ . DIRECTORY_SEPARATOR . 'one/templates/One.view.latte',
+		__DIR__ . DIRECTORY_SEPARATOR . 'one/templates/view.latte',
 	], $presenter->formatTemplateFiles());
 });
 
@@ -58,5 +61,6 @@ test(function () { // with module & without subdir templates
 	Assert::same([
 		__DIR__ . '/templates/Two/view.latte',
 		__DIR__ . '/templates/Two.view.latte',
+		__DIR__ . DIRECTORY_SEPARATOR . 'two/templates/view.latte',
 	], $presenter->formatTemplateFiles());
 });
