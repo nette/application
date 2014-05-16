@@ -36,7 +36,9 @@ $presenter->injectPrimary(
 	new Http\Response,
 	new MockSession,
 	new MockUser,
-	new MockTemplateFactory
+	new MockTemplateFactory,
+	new MockMessagesStorage,
+	new MockRequestStorage
 );
 
 

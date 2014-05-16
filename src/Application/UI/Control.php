@@ -87,14 +87,10 @@ abstract class Control extends PresenterComponent implements IRenderable
 	 */
 	public function flashMessage($message, $type = 'info')
 	{
+		$storage = $this->getPresenter()->getFlashStorage();
 		$id = $this->getParameterId('flash');
-		$messages = $this->getPresenter()->getFlashSession()->$id;
-		$messages[] = $flash = (object) array(
-			'message' => $message,
-			'type' => $type,
-		);
-		$this->getTemplate()->flashes = $messages;
-		$this->getPresenter()->getFlashSession()->$id = $messages;
+		$flash = $storage->addMessage($message, $type, $id);
+		$this->getTemplate()->flashes = $storage->getMessages($id);
 		return $flash;
 	}
 
