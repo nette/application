@@ -2,8 +2,6 @@
 
 /**
  * Test: TemplateFactory in Bridge properly handles Latte::onCompile
- *
- * @author     Filip Procházka
  */
 
 use Nette\Bridges\ApplicationLatte\TemplateFactory,

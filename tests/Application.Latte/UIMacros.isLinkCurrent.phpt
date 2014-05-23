@@ -2,8 +2,6 @@
 
 /**
  * Test: isLinkCurrent()
- *
- * @author     David Grudl
  */
 
 use Nette\Bridges\ApplicationLatte\UIMacros,

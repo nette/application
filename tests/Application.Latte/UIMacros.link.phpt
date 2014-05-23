@@ -2,8 +2,6 @@
 
 /**
  * Test: UIMacros: {link ...}
- *
- * @author     David Grudl
  */
 
 use Nette\Bridges\ApplicationLatte\UIMacros,

@@ -2,8 +2,6 @@
 
 /**
  * Test: general snippets test.
- *
- * @author     David Grudl
  */
 
 use Nette\Utils\Html,
