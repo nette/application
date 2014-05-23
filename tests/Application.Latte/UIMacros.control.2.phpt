@@ -2,8 +2,6 @@
 
 /**
  * Test: {control ...}
- *
- * @author     David Grudl
  */
 
 use Nette\Object,

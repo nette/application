@@ -2,8 +2,6 @@
 
 /**
  * Test: UIMacros and renderSnippets.
- *
- * @author     Jan Skrasek
  */
 
 use Nette\Bridges\ApplicationLatte\UIMacros,

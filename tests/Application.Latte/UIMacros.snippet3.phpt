@@ -2,8 +2,6 @@
 
 /**
  * Test: snippets.
- *
- * @author     David Grudl
  */
 
 use Nette\Bridges\ApplicationLatte\UIMacros,

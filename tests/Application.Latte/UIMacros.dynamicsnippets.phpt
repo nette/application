@@ -2,8 +2,6 @@
 
 /**
  * Test: dynamic snippets test.
- *
- * @author     David Grudl
  */
 
 use Nette\Bridges\ApplicationLatte\UIMacros,

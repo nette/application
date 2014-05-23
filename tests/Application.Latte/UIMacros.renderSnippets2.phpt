@@ -2,8 +2,6 @@
 
 /**
  * Test: UIMacros, renderSnippets and control with two templates.
- *
- * @author     Jan Skrasek
  */
 
 use Nette\Bridges\ApplicationLatte\UIMacros,
