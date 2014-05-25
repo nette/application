@@ -29,6 +29,9 @@
 		"nette/tester": "~1.0",
 		"latte/latte": "~2.2"
 	},
+	"conflict": {
+		"nette/nette": "<2.2"
+	},
 	"autoload": {
 		"classmap": ["src/"]
 	},
