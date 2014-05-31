@@ -33,13 +33,16 @@ class FileResponse extends Nette\Object implements Nette\Application\IResponse
 	/** @var bool */
 	public $resuming = TRUE;
 
+	/** @var bool */
+	private $forceDownload;
+
 
 	/**
 	 * @param  string  file path
 	 * @param  string  imposed file name
 	 * @param  string  MIME content type
 	 */
-	public function __construct($file, $name = NULL, $contentType = NULL)
+	public function __construct($file, $name = NULL, $contentType = NULL, $forceDownload = TRUE)
 	{
 		if (!is_file($file)) {
 			throw new Nette\Application\BadRequestException("File '$file' doesn't exist.");
@@ -48,6 +51,7 @@ class FileResponse extends Nette\Object implements Nette\Application\IResponse
 		$this->file = $file;
 		$this->name = $name ? $name : basename($file);
 		$this->contentType = $contentType ? $contentType : 'application/octet-stream';
+		$this->forceDownload = $forceDownload;
 	}
 
 
@@ -88,7 +92,8 @@ class FileResponse extends Nette\Object implements Nette\Application\IResponse
 	public function send(Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse)
 	{
 		$httpResponse->setContentType($this->contentType);
-		$httpResponse->setHeader('Content-Disposition', 'attachment; filename="' . $this->name . '"');
+		$httpResponse->setHeader('Content-Disposition',
+			($this->forceDownload ? 'attachment' : 'inline') . '; filename="' . $this->name . '"');
 
 		$filesize = $length = filesize($this->file);
 		$handle = fopen($this->file, 'r');
