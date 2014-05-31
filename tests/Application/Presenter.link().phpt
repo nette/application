@@ -172,7 +172,8 @@ $presenter->injectPrimary(
 	new MockSession,
 	new MockUser,
 	new MockTemplateFactory,
-	new MockMessageStorage
+	new MockMessageStorage,
+	new MockRequestStorage
 );
 
 $presenter->invalidLinkMode = TestPresenter::INVALID_LINK_WARNING;

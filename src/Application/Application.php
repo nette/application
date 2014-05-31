@@ -67,13 +67,17 @@ class Application extends Nette\Object
 	/** @var IRouter */
 	private $router;
 
+	/** @var IRequestStorage */
+	private $requestStorage;
 
-	public function __construct(IPresenterFactory $presenterFactory, IRouter $router, Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse)
+
+	public function __construct(IPresenterFactory $presenterFactory, IRouter $router, Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse, IRequestStorage $requestStorage)
 	{
 		$this->httpRequest = $httpRequest;
 		$this->httpResponse = $httpResponse;
 		$this->presenterFactory = $presenterFactory;
 		$this->router = $router;
+		$this->requestStorage = $requestStorage;
 	}
 
 
@@ -111,7 +115,7 @@ class Application extends Nette\Object
 	 */
 	public function createInitialRequest()
 	{
-		$request = $this->router->match($this->httpRequest);
+		$request = $this->requestStorage->getRequest($this->httpRequest) ?: $this->router->match($this->httpRequest);
 
 		if (!$request instanceof Request) {
 			throw new BadRequestException('No route for HTTP request.');
