@@ -87,10 +87,12 @@ $presenter->injectPrimary(
 	NULL,
 	NULL,
 	new Application\Routers\SimpleRouter,
-	new Http\Request(new Http\UrlScript),
+	new Http\Request($url = new Http\UrlScript),
 	new Http\Response,
 	$session = new MockSession,
-	$user = new MockUser
+	$user = new MockUser,
+	NULL,
+	new Application\RequestStorage($session, $user)
 );
 
 $section = $session->testSection = new MockSessionSection($session);
@@ -105,4 +107,6 @@ Assert::same($expiration, $section->testExpiration);
 Assert::same($key, $section->testExpirationVariables);
 Assert::same($key, $section->testedKeyExistence);
 Assert::same($key, $section->storedKey);
-Assert::same([$user->getId(), $applicationRequest], $section->storedValue);
+Assert::equal($applicationRequest, $section->storedValue[0]);
+Assert::equal($url, $section->storedValue[1]);
+Assert::same($user->getId(), $section->storedValue[2]);
