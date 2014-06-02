@@ -50,7 +50,7 @@ class UIMacros extends Latte\Macros\MacroSet
 		$prolog = '
 // snippets support
 if (empty($_l->extends) && !empty($_control->snippetMode)) {
-	return Nette\Bridges\ApplicationLatte\UIMacros::renderSnippets($_control, $_l, get_defined_vars());
+	return Nette\Bridges\ApplicationLatte\UIMacros::renderSnippets($_control, $_b, get_defined_vars());
 }';
 		return array($prolog, '');
 	}

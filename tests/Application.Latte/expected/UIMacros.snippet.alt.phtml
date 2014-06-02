@@ -6,7 +6,7 @@
 //
 // block _outer
 //
-if (!function_exists($_l->blocks['_outer'][] = '_%[a-z0-9]+%__outer')) { function _%[a-z0-9]+%__outer($_l, $_args) { foreach ($_args as $__k => $__v) $$__k = $__v; $_control->redrawControl('outer', FALSE)
+if (!function_exists($_b->blocks['_outer'][] = '_%[a-z0-9]+%__outer')) { function _%[a-z0-9]+%__outer($_b, $_args) { foreach ($_args as $__k => $__v) $$__k = $__v; $_control->redrawControl('outer', FALSE)
 ?>	<p>Outer</p>
 <?php
 }}
@@ -14,7 +14,7 @@ if (!function_exists($_l->blocks['_outer'][] = '_%[a-z0-9]+%__outer')) { functio
 //
 // block _inner
 //
-if (!function_exists($_l->blocks['_inner'][] = '_%[a-z0-9]+%__inner')) { function _%[a-z0-9]+%__inner($_l, $_args) { foreach ($_args as $__k => $__v) $$__k = $__v; $_control->redrawControl('inner', FALSE)
+if (!function_exists($_b->blocks['_inner'][] = '_%[a-z0-9]+%__inner')) { function _%[a-z0-9]+%__inner($_b, $_args) { foreach ($_args as $__k => $__v) $$__k = $__v; $_control->redrawControl('inner', FALSE)
 ?>	<p>Inner</p>
 <?php
 }}
@@ -22,7 +22,7 @@ if (!function_exists($_l->blocks['_inner'][] = '_%[a-z0-9]+%__inner')) { functio
 //
 // block _gallery
 //
-if (!function_exists($_l->blocks['_gallery'][] = '_%[a-z0-9]+%__gallery')) { function _%[a-z0-9]+%__gallery($_l, $_args) { foreach ($_args as $__k => $__v) $$__k = $__v; $_control->redrawControl('gallery', FALSE)
+if (!function_exists($_b->blocks['_gallery'][] = '_%[a-z0-9]+%__gallery')) { function _%[a-z0-9]+%__gallery($_b, $_args) { foreach ($_args as $__k => $__v) $$__k = $__v; $_control->redrawControl('gallery', FALSE)
 ;
 }}
 
@@ -40,7 +40,7 @@ if ($_l->extends) { ob_start();}
 
 // snippets support
 if (empty($_l->extends) && !empty($_control->snippetMode)) {
-	return Nette\Bridges\ApplicationLatte\UIMacros::renderSnippets($_control, $_l, get_defined_vars());
+	return Nette\Bridges\ApplicationLatte\UIMacros::renderSnippets($_control, $_b, get_defined_vars());
 }
 
 //
@@ -48,12 +48,12 @@ if (empty($_l->extends) && !empty($_control->snippetMode)) {
 //
 ?>	<div class="test"<?php echo ' id="' . $_control->getSnippetId('outer') . '"' ?>>
 <?php if ($_l->extends) { ob_end_clean(); return $template->renderChildTemplate($_l->extends, get_defined_vars()); }
-call_user_func(reset($_l->blocks['_outer']), $_l, $template->getParameters()) ?>
+call_user_func(reset($_b->blocks['_outer']), $_b, $template->getParameters()) ?>
 	</div>
 
 	<div class="test"<?php echo ' id="' . $_control->getSnippetId('inner') . '"' ?>>
-<?php call_user_func(reset($_l->blocks['_inner']), $_l, $template->getParameters())  ?>	</div>
+<?php call_user_func(reset($_b->blocks['_inner']), $_b, $template->getParameters())  ?>	</div>
 
 	<div class="<?php echo Latte\Runtime\Filters::escapeHtml('class', ENT_COMPAT) ?>
-"<?php echo ' id="' . $_control->getSnippetId('gallery') . '"' ?>><?php call_user_func(reset($_l->blocks['_gallery']), $_l, $template->getParameters()) ?>
+"<?php echo ' id="' . $_control->getSnippetId('gallery') . '"' ?>><?php call_user_func(reset($_b->blocks['_gallery']), $_b, $template->getParameters()) ?>
 </div>
