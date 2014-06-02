@@ -183,7 +183,7 @@ class Template extends Nette\Object implements Nette\Application\UI\ITemplate
 	 */
 	public function setParameters(array $params)
 	{
-		$this->params = $params;
+		$this->params = $params + $this->params;
 		return $this;
 	}
 
