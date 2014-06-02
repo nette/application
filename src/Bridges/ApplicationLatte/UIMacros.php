@@ -75,10 +75,10 @@ if (empty($_l->extends) && !empty($_control->snippetMode)) {
 		if (!Strings::contains($node->args, '=>')) {
 			$param = substr($param, 6, -1); // removes array()
 		}
-		return ($name[0] === '$' ? "if (is_object($name)) \$_ctrl = $name; else " : '')
-			. '$_ctrl = $_control->getComponent(' . $name . '); '
-			. 'if ($_ctrl instanceof Nette\Application\UI\IRenderable) $_ctrl->redrawControl(NULL, FALSE); '
-			. ($node->modifiers === '' ? "\$_ctrl->$method($param)" : $writer->write("ob_start(); \$_ctrl->$method($param); echo %modify(ob_get_clean())"));
+		return ($name[0] === '$' ? "if (is_object($name)) \$_l->tmp = $name; else " : '')
+			. '$_l->tmp = $_control->getComponent(' . $name . '); '
+			. 'if ($_l->tmp instanceof Nette\Application\UI\IRenderable) $_l->tmp->redrawControl(NULL, FALSE); '
+			. ($node->modifiers === '' ? "\$_l->tmp->$method($param)" : $writer->write("ob_start(); \$_l->tmp->$method($param); echo %modify(ob_get_clean())"));
 	}
 
 

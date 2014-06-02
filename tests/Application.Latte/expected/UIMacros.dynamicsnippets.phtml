@@ -8,13 +8,13 @@
 //
 if (!function_exists($_b->blocks['_outer'][] = '_%[a-z0-9]+%__outer')) { function _%[a-z0-9]+%__outer($_b, $_args) { foreach ($_args as $__k => $__v) $$__k = $__v; $_control->redrawControl('outer', FALSE)
 ;$iterations = 0; foreach (array(1,2,3) as $id) { ?>
-<div id="<?php echo $_dynSnippetId = $_control->getSnippetId("inner-$id") ?>"><?php ob_start() ?>
+<div id="<?php echo $_l->dynSnippetId = $_control->getSnippetId("inner-$id") ?>"><?php ob_start() ?>
 				#<?php echo Latte\Runtime\Filters::escapeHtml($id, ENT_NOQUOTES) ?>
 
-<?php $_dynSnippets[$_dynSnippetId] = ob_get_flush() ?>
+<?php $_l->dynSnippets[$_l->dynSnippetId] = ob_get_flush() ?>
 </div>
 <?php $iterations++; } ?>
-	<?php if (isset($_dynSnippets)) return $_dynSnippets;
+	<?php if (isset($_l->dynSnippets)) return $_l->dynSnippets;
 }}
 
 //
@@ -23,7 +23,7 @@ if (!function_exists($_b->blocks['_outer'][] = '_%[a-z0-9]+%__outer')) { functio
 
 // template extending
 
-$_l->extends = empty($template->_extended) && isset($_control) && $_control instanceof Nette\Application\UI\Presenter ? $_control->findLayoutTemplateFile() : NULL; $template->_extended = $_extended = TRUE;
+$_l->extends = empty($_g->extended) && isset($_control) && $_control instanceof Nette\Application\UI\Presenter ? $_control->findLayoutTemplateFile() : NULL; $_g->extended = TRUE;
 
 if ($_l->extends) { ob_start();}
 
