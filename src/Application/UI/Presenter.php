@@ -129,6 +129,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	public function __construct()
 	{
+		$this->payload = new \stdClass;
 	}
 
 
@@ -172,7 +173,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		try {
 			// STARTUP
 			$this->request = $request;
-			$this->payload = new \stdClass;
+			$this->payload = $this->payload ?: new \stdClass;
 			$this->setParent($this->getParent(), $request->getPresenterName());
 
 			if (!$this->httpResponse->isSent()) {

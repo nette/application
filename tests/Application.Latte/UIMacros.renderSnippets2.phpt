@@ -47,18 +47,6 @@ class InnerControl extends Nette\Application\UI\Control
 
 class TestPresenter extends Nette\Application\UI\Presenter
 {
-	private $payload;
-
-	function __construct()
-	{
-		$this->payload = new stdClass;
-	}
-
-	function getPayload()
-	{
-		return $this->payload;
-	}
-
 	function createComponentMulti()
 	{
 		return new Nette\Application\UI\Multiplier(function() {
