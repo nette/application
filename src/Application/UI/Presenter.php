@@ -42,7 +42,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @internal special parameter key */
 	const SIGNAL_KEY = 'do',
 		ACTION_KEY = 'action',
-		FLASH_KEY = '_fid',
+		FLASH_KEY = Http\Session::FLASH_KEY,
 		DEFAULT_ACTION = 'default';
 
 	/** @var int */
@@ -236,10 +236,6 @@ abstract class Presenter extends Control implements Application\IPresenter
 					$this->sendPayload();
 				}
 			} catch (Application\AbortException $e) { }
-
-			if ($this->hasFlashSession()) {
-				$this->getFlashSession()->setExpiration($this->response instanceof Responses\RedirectResponse ? '+ 30 seconds' : '+ 3 seconds');
-			}
 
 			// SHUTDOWN
 			$this->onShutdown($this, $this->response);
@@ -955,8 +951,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 			$args[self::SIGNAL_KEY] = $component->getParameterId($signal);
 			$current = $current && $args[self::SIGNAL_KEY] === $this->getParameter(self::SIGNAL_KEY);
 		}
-		if (($mode === 'redirect' || $mode === 'forward') && $this->hasFlashSession()) {
-			$args[self::FLASH_KEY] = $this->getParameter(self::FLASH_KEY);
+		if ($mode === 'redirect' || $mode === 'forward') {
+			$args[Http\Session::FLASH_KEY] = $this->getSession()->getFlashId();
 		}
 
 		$this->lastCreatedRequest = new Application\Request(
@@ -1107,7 +1103,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		unset($session[$key]);
 		$request->setFlag(Application\Request::RESTORED, TRUE);
 		$params = $request->getParameters();
-		$params[self::FLASH_KEY] = $this->getParameter(self::FLASH_KEY);
+		$params[Http\Session::FLASH_KEY] = $this->getSession()->getFlashId();
 		$request->setParameters($params);
 		$this->sendResponse(new Responses\ForwardResponse($request));
 	}
@@ -1289,8 +1285,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function hasFlashSession()
 	{
-		return !empty($this->params[self::FLASH_KEY])
-			&& $this->getSession()->hasSection('Nette.Application.Flash/' . $this->params[self::FLASH_KEY]);
+		return (bool) $this->getSession()->getFlashId();
 	}
 
 
@@ -1300,10 +1295,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function getFlashSession()
 	{
-		if (empty($this->params[self::FLASH_KEY])) {
-			$this->params[self::FLASH_KEY] = Nette\Utils\Random::generate(4);
-		}
-		return $this->getSession('Nette.Application.Flash/' . $this->params[self::FLASH_KEY]);
+		return $this->getSession()->getFlashSection('Nette.Application.Flash');
 	}
 
 
