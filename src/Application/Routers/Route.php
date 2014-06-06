@@ -93,6 +93,9 @@ class Route extends Nette\Object implements Application\IRouter
 	/** @var string  regular expression pattern */
 	private $re;
 
+	/** @var string  parameter aliases in regular expression */
+	private $aliases;
+
 	/** @var array of [value & fixity, filterIn, filterOut] */
 	private $metadata = array();
 
@@ -175,11 +178,11 @@ class Route extends Nette\Object implements Application\IRouter
 			return NULL;
 		}
 
-		// deletes numeric keys, restore '-' chars
+		// assigns matched values to parameters
 		$params = array();
 		foreach ($matches as $k => $v) {
 			if (is_string($k) && $v !== '') {
-				$params[str_replace('___', '-', $k)] = $v; // trick
+				$params[$this->aliases[$k]] = $v;
 			}
 		}
 
@@ -503,6 +506,7 @@ class Route extends Nette\Object implements Application\IRouter
 		$re = '';
 		$sequence = array();
 		$autoOptional = TRUE;
+		$aliases = array();
 		do {
 			array_unshift($sequence, $parts[$i]);
 			$re = preg_quote($parts[$i], '#') . $re;
@@ -583,7 +587,8 @@ class Route extends Nette\Object implements Application\IRouter
 			$meta[self::PATTERN] = "#(?:$pattern)\\z#A" . ($this->flags & self::CASE_SENSITIVE ? '' : 'iu');
 
 			// include in expression
-			$re = '(?P<' . str_replace('-', '___', $name) . '>(?U)' . $pattern . ')' . $re; // str_replace is dirty trick to enable '-' in parameter name
+			$aliases['p' . $i] = $name;
+			$re = '(?P<p' . $i . '>(?U)' . $pattern . ')' . $re;
 			if ($brackets) { // is in brackets?
 				if (!isset($meta[self::VALUE])) {
 					$meta[self::VALUE] = $meta['defOut'] = NULL;
@@ -608,6 +613,7 @@ class Route extends Nette\Object implements Application\IRouter
 			throw new Nette\InvalidArgumentException("Missing closing ']' in mask '$mask'.");
 		}
 
+		$this->aliases = $aliases;
 		$this->re = '#' . $re . '/?\z#A' . ($this->flags & self::CASE_SENSITIVE ? '' : 'iu');
 		$this->metadata = $metadata;
 		$this->sequence = $sequence;
