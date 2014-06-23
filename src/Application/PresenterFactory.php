@@ -26,9 +26,6 @@ class PresenterFactory extends Nette\Object implements IPresenterFactory
 		'Nette' => array('NetteModule\\', '*\\', '*Presenter'),
 	);
 
-	/** @var string */
-	private $baseDir;
-
 	/** @var array */
 	private $cache = array();
 
@@ -36,12 +33,8 @@ class PresenterFactory extends Nette\Object implements IPresenterFactory
 	private $container;
 
 
-	/**
-	 * @param  string
-	 */
-	public function __construct($baseDir, Nette\DI\Container $container)
+	public function __construct(Nette\DI\Container $container)
 	{
-		$this->baseDir = $baseDir;
 		$this->container = $container;
 	}
 
@@ -86,17 +79,8 @@ class PresenterFactory extends Nette\Object implements IPresenterFactory
 		}
 
 		$class = $this->formatPresenterClass($name);
-
 		if (!class_exists($class)) {
-			// internal autoloading
-			$file = $this->formatPresenterFile($name);
-			if (is_file($file) && is_readable($file)) {
-				call_user_func(function() use ($file) { require $file; });
-			}
-
-			if (!class_exists($class)) {
-				throw new InvalidPresenterException("Cannot load presenter '$name', class '$class' was not found in '$file'.");
-			}
+			throw new InvalidPresenterException("Cannot load presenter '$name', class '$class' was not found.");
 		}
 
 		$reflection = new Nette\Reflection\ClassType($class);
@@ -104,9 +88,7 @@ class PresenterFactory extends Nette\Object implements IPresenterFactory
 
 		if (!$reflection->implementsInterface('Nette\Application\IPresenter')) {
 			throw new InvalidPresenterException("Cannot load presenter '$name', class '$class' is not Nette\\Application\\IPresenter implementor.");
-		}
-
-		if ($reflection->isAbstract()) {
+		} elseif ($reflection->isAbstract()) {
 			throw new InvalidPresenterException("Cannot load presenter '$name', class '$class' is abstract.");
 		}
 
@@ -176,18 +158,6 @@ class PresenterFactory extends Nette\Object implements IPresenterFactory
 					. preg_replace("#$mapping[1]#iA", '$1:', $matches[1]) . $matches[3];
 			}
 		}
-	}
-
-
-	/**
-	 * Formats presenter class file name.
-	 * @param  string
-	 * @return string
-	 */
-	public function formatPresenterFile($presenter)
-	{
-		$path = '/' . str_replace(':', 'Module/', $presenter);
-		return $this->baseDir . substr_replace($path, '/presenters', strrpos($path, '/'), 0) . 'Presenter.php';
 	}
 
 }

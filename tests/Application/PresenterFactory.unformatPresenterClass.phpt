@@ -11,7 +11,7 @@ use Nette\Application\PresenterFactory,
 require __DIR__ . '/../bootstrap.php';
 
 
-$factory = new PresenterFactory(NULL, new Nette\DI\Container);
+$factory = new PresenterFactory(new Nette\DI\Container);
 
 test(function() use ($factory) {
 	$factory->setMapping(array(
