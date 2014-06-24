@@ -4,7 +4,7 @@
  * Test: Nette\Application\PresenterFactory.
  */
 
-use Nette\Application\PresenterFactory,
+use Nette\Application\PresenterMapper,
 	Tester\Assert;
 
 
@@ -12,7 +12,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 test(function() {
-	$factory = new PresenterFactory(new Nette\DI\Container);
+	$factory = new PresenterMapper;
 
 	$factory->setMapping(array(
 		'Foo2' => 'App2\*\*Presenter',
@@ -35,7 +35,7 @@ test(function() {
 
 
 test(function() {
-	$factory = new PresenterFactory(new Nette\DI\Container);
+	$factory = new PresenterMapper;
 
 	$factory->setMapping(array(
 		'Foo2' => 'App2\*Presenter',
