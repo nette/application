@@ -4,14 +4,14 @@
  * Test: Nette\Application\PresenterFactory.
  */
 
-use Nette\Application\PresenterFactory,
+use Nette\Application\PresenterMapper,
 	Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
 
 
-$factory = new PresenterFactory(new Nette\DI\Container);
+$factory = new PresenterMapper;
 
 test(function() use ($factory) {
 	$factory->setMapping(array(
