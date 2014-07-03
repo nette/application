@@ -1298,7 +1298,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	public function getFlashSession()
 	{
 		if (empty($this->params[self::FLASH_KEY])) {
-			$this->params[self::FLASH_KEY] = Http\FlashSession::generateID();
+			$this->params[self::FLASH_KEY] = Http\FlashSession::generateId();
 		}
 
 		if ($this->flashSession === NULL) {
