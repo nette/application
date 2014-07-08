@@ -9,7 +9,7 @@ namespace NetteModule;
 
 use Nette,
 	Nette\Application,
-	Tracy\Debugger;
+	Tracy\ILogger;
 
 
 /**
@@ -19,6 +19,15 @@ use Nette,
  */
 class ErrorPresenter extends Nette\Object implements Application\IPresenter
 {
+	/** @var ILogger */
+	private $logger;
+
+
+	public function __construct(ILogger $logger)
+	{
+		$this->logger = $logger;
+	}
+
 
 	/**
 	 * @return Application\IResponse
@@ -30,7 +39,7 @@ class ErrorPresenter extends Nette\Object implements Application\IPresenter
 			$code = $e->getCode();
 		} else {
 			$code = 500;
-			Debugger::log($e, Debugger::ERROR);
+			$this->logger->log($e, ILogger::EXCEPTION);
 		}
 		ob_start();
 		require __DIR__ . '/templates/error.phtml';
