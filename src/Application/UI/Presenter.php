@@ -487,14 +487,14 @@ abstract class Presenter extends Control implements Application\IPresenter
 		$layout = $this->layout ? $this->layout : 'layout';
 		$rc = $this->getReflection();
 		$dir = dirname($rc->getFileName());
-		$dir = is_dir("$dir/templates") ? $dir : dirname($dir);
+		$dir = ($newWay = is_dir("$dir/templates")) ? $dir : dirname($dir);
 		$list = [
 			"$dir/templates/$presenter/@$layout.latte",
 			"$dir/templates/$presenter.@$layout.latte",
 		];
 		do {
 			$list[] = "$dir/templates/@$layout.latte";
-			$dir = dirname($dir);
+			$dir = $newWay ? false : dirname($dir);
 		} while ($dir && $module && ([$module] = Helpers::splitName($module)));
 
 		while (($rc = $rc->getParentClass()) && $rc->getName() !== __CLASS__) {
