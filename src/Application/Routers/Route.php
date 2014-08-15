@@ -93,7 +93,7 @@ class Route extends Nette\Object implements Application\IRouter
 	/** @var string  regular expression pattern */
 	private $re;
 
-	/** @var string  parameter aliases in regular expression */
+	/** @var string[]  parameter aliases in regular expression */
 	private $aliases;
 
 	/** @var array of [value & fixity, filterIn, filterOut] */

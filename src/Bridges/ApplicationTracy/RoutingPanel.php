@@ -35,7 +35,7 @@ class RoutingPanel extends Nette\Object implements Tracy\IBarPanel
 	/** @var Nette\Application\Request */
 	private $request;
 
-	/** @var ReflectionClass|ReflectionMethod */
+	/** @var \ReflectionClass|\ReflectionMethod */
 	private $source;
 
 
