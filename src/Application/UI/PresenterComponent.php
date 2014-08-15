@@ -219,7 +219,7 @@ abstract class PresenterComponent extends Nette\ComponentModel\Container impleme
 	function getParam($name = NULL, $default = NULL)
 	{
 		//trigger_error(__METHOD__ . '() is deprecated; use getParameter() instead.', E_USER_DEPRECATED);
-		return func_num_args() ? $this->getParameter($name, $default) : $this->getParameter();
+		return func_num_args() ? $this->getParameter($name, $default) : $this->getParameters();
 	}
 
 

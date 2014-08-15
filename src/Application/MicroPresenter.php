@@ -31,7 +31,7 @@ class MicroPresenter extends Nette\Object implements Application\IPresenter
 	/** @var IRouter|NULL */
 	private $router;
 
-	/** @var Request */
+	/** @var Application\Request */
 	private $request;
 
 
