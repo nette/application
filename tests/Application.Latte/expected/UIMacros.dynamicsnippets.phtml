@@ -8,7 +8,9 @@
 //
 if (!function_exists($_b->blocks['_outer'][] = '_%[a-z0-9]+%__outer')) { function _%[a-z0-9]+%__outer($_b, $_args) { foreach ($_args as $__k => $__v) $$__k = $__v; $_control->redrawControl('outer', FALSE)
 ;$iterations = 0; foreach (array(1,2,3) as $id) { ?>
-<div id="<?php echo $_l->dynSnippetId = $_control->getSnippetId("inner-$id") ?>"><?php ob_start() ?>
+		<div id="<?php echo $_l->dynSnippetId = $_control->getSnippetId("inner-$id") ?>
+"><?php ob_start() ?>
+
 				#<?php echo Latte\Runtime\Filters::escapeHtml($id, ENT_NOQUOTES) ?>
 
 <?php $_l->dynSnippets[$_l->dynSnippetId] = ob_get_flush() ?>
