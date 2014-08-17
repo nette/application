@@ -78,6 +78,13 @@ class TemplateFactory extends Nette\Object implements UI\ITemplateFactory
 		foreach (array('normalize', 'toAscii', 'webalize', 'padLeft', 'padRight', 'reverse') as $name) {
 			$latte->addFilter($name, 'Nette\Utils\Strings::' . $name);
 		}
+		$latte->addFilter('null', function() {});
+		$latte->addFilter('length', function($var) {
+			return is_string($var) ? Nette\Utils\Strings::length($var) : count($var);
+		});
+		$latte->addFilter('modifyDate', function($time, $delta, $unit = NULL) {
+			return $time == NULL ? NULL : Nette\Utils\DateTime::from($time)->modify($delta . $unit); // intentionally ==
+		});
 
 		// default parameters
 		$template->control = $template->_control = $control;
@@ -85,7 +92,7 @@ class TemplateFactory extends Nette\Object implements UI\ITemplateFactory
 		$template->user = $this->user;
 		$template->netteHttpResponse = $this->httpResponse;
 		$template->netteCacheStorage = $this->cacheStorage;
-		$template->baseUri = $template->baseUrl = rtrim($this->httpRequest->getUrl()->getBaseUrl(), '/');
+		$template->baseUri = $template->baseUrl = $this->httpRequest ? rtrim($this->httpRequest->getUrl()->getBaseUrl(), '/') : NULL;
 		$template->basePath = preg_replace('#https?://[^/]+#A', '', $template->baseUrl);
 		$template->flashes = array();
 
