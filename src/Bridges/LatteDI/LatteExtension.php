@@ -59,7 +59,8 @@ class LatteExtension extends Nette\DI\CompilerExtension
 			->setImplement('Nette\Bridges\ApplicationLatte\ILatteFactory');
 
 		$container->addDefinition('nette.templateFactory')
-			->setClass('Nette\Bridges\ApplicationLatte\TemplateFactory');
+			->setClass('Nette\Application\UI\ITemplateFactory')
+			->setFactory('Nette\Bridges\ApplicationLatte\TemplateFactory');
 
 		$container->addDefinition('nette.latte')
 			->setClass('Latte\Engine')
@@ -75,7 +76,8 @@ class LatteExtension extends Nette\DI\CompilerExtension
 
 		if (class_exists('Nette\Templating\FileTemplate')) {
 			$container->addDefinition('nette.template')
-				->setClass('Nette\Templating\FileTemplate')
+				->setClass('Nette\Templating\ITemplate')
+				->setFactory('Nette\Templating\FileTemplate')
 				->addSetup('::trigger_error', array('Service nette.template is deprecated.', E_USER_DEPRECATED))
 				->addSetup('registerFilter', array(new Nette\DI\Statement(array($latteFactory, 'create'))))
 				->addSetup('registerHelperLoader', array('Nette\Templating\Helpers::loader'))
