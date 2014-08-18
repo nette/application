@@ -61,7 +61,7 @@ class LatteExtension extends Nette\DI\CompilerExtension
 		$container->addDefinition('nette.templateFactory')
 			->setClass('Nette\Bridges\ApplicationLatte\TemplateFactory');
 
-		$latte = $container->addDefinition('nette.latte')
+		$container->addDefinition('nette.latte')
 			->setClass('Latte\Engine')
 			->addSetup('::trigger_error', array('Service nette.latte is deprecated, implement Nette\Bridges\ApplicationLatte\ILatteFactory.', E_USER_DEPRECATED))
 			->addSetup('setTempDirectory', array($container->expand('%tempDir%/cache/latte')))
@@ -70,13 +70,7 @@ class LatteExtension extends Nette\DI\CompilerExtension
 			->setAutowired(FALSE);
 
 		foreach ($config['macros'] as $macro) {
-			if (strpos($macro, '::') === FALSE && class_exists($macro)) {
-				$macro .= '::install';
-			} else {
-				Validators::assert($macro, 'callable');
-			}
-			$latte->addSetup('?->onCompile[] = function($engine) { ' . $macro . '($engine->getCompiler()); }', array('@self'));
-			$latteFactory->addSetup('?->onCompile[] = function($engine) { ' . $macro . '($engine->getCompiler()); }', array('@self'));
+			$this->addMacro($macro);
 		}
 
 		if (class_exists('Nette\Templating\FileTemplate')) {
@@ -87,6 +81,25 @@ class LatteExtension extends Nette\DI\CompilerExtension
 				->addSetup('registerHelperLoader', array('Nette\Templating\Helpers::loader'))
 				->setAutowired(FALSE);
 		}
+	}
+
+
+	/**
+	 * @param string Class name with public static method install, or callable.
+	 */
+	public function addMacro($macro)
+	{
+		if (strpos($macro, '::') === FALSE && class_exists($macro)) {
+			$macro .= '::install';
+		} else {
+			Validators::assert($macro, 'callable');
+		}
+
+		$container = $this->getContainerBuilder();
+		$container->getDefinition('nette.latte')
+			->addSetup('?->onCompile[] = function($engine) { ' . $macro . '($engine->getCompiler()); }', array('@self'));
+		$container->getDefinition('nette.latteFactory')
+			->addSetup('?->onCompile[] = function($engine) { ' . $macro . '($engine->getCompiler()); }', array('@self'));
 	}
 
 
