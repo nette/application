@@ -36,12 +36,12 @@ class LatteExtension extends Nette\DI\CompilerExtension
 
 		if (isset($config['nette']['latte'])) { // back compatibility
 			$config = Nette\DI\Config\Helpers::merge($config['nette']['latte'], $this->defaults);
-			trigger_error('nette.latte configuration section is deprecated, use latte section instead.', E_USER_DEPRECATED);
+			trigger_error("nette.latte configuration section is deprecated, use {$this->name} section instead.", E_USER_DEPRECATED);
 		} else {
 			$config = $this->getConfig($this->defaults);
 		}
 
-		$this->validate($config, $this->defaults, 'latte');
+		$this->validate($config, $this->defaults, $this->name);
 
 		if (class_exists('Latte\Engine')) { // Only setup if Latte is installed
 			$this->setupLatte($container, $config);
