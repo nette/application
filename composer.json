@@ -23,7 +23,8 @@
 		"nette/utils": "~2.2"
 	},
 	"suggest": {
-		"nette/forms": "Allows to use Nette\\Application\\UI\\Form"
+		"nette/forms": "Allows to use Nette\\Application\\UI\\Form",
+		"latte/latte": "Allows using Latte in templates"
 	},
 	"require-dev": {
 		"nette/tester": "~1.0",
