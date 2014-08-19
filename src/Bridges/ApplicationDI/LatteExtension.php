@@ -25,9 +25,6 @@ class LatteExtension extends Nette\DI\CompilerExtension
 	);
 
 	/** @var bool */
-	private $xhtml;
-
-	/** @var bool */
 	private $debugMode;
 
 	/** @var string */
@@ -61,7 +58,6 @@ class LatteExtension extends Nette\DI\CompilerExtension
 		}
 
 		$this->validate($config, $this->defaults, $this->name);
-		$this->xhtml = $config['xhtml'];
 		$container = $this->getContainerBuilder();
 
 		$latteFactory = $container->addDefinition('nette.latteFactory')
@@ -69,6 +65,7 @@ class LatteExtension extends Nette\DI\CompilerExtension
 			->addSetup('setTempDirectory', array($this->tempDir))
 			->addSetup('setAutoRefresh', array($this->debugMode))
 			->addSetup('setContentType', array($config['xhtml'] ? Latte\Compiler::CONTENT_XHTML : Latte\Compiler::CONTENT_HTML))
+			->addSetup('Nette\Utils\Html::$xhtml = ?;', array((bool) $config['xhtml']))
 			->setImplement('Nette\Bridges\ApplicationLatte\ILatteFactory');
 
 		$container->addDefinition('nette.templateFactory')
@@ -81,6 +78,7 @@ class LatteExtension extends Nette\DI\CompilerExtension
 			->addSetup('setTempDirectory', array($this->tempDir))
 			->addSetup('setAutoRefresh', array($this->debugMode))
 			->addSetup('setContentType', array($config['xhtml'] ? Latte\Compiler::CONTENT_XHTML : Latte\Compiler::CONTENT_HTML))
+			->addSetup('Nette\Utils\Html::$xhtml = ?;', array((bool) $config['xhtml']))
 			->setAutowired(FALSE);
 
 		foreach ($config['macros'] as $macro) {
@@ -97,14 +95,6 @@ class LatteExtension extends Nette\DI\CompilerExtension
 				->addSetup('registerFilter', array(new Nette\DI\Statement(array($latteFactory, 'create'))))
 				->addSetup('registerHelperLoader', array('Nette\Templating\Helpers::loader'))
 				->setAutowired(FALSE);
-		}
-	}
-
-
-	public function afterCompile(Nette\PhpGenerator\ClassType $class)
-	{
-		if ($this->xhtml) {
-			$class->methods['initialize']->addBody('Nette\Utils\Html::$xhtml = TRUE;');
 		}
 	}
 
