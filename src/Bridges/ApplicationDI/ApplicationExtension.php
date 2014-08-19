@@ -20,9 +20,15 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 	public $defaults = array(
 		'debugger' => TRUE,
 		'errorPresenter' => 'Nette:Error',
-		'catchExceptions' => '%productionMode%',
+		'catchExceptions' => NULL,
 		'mapping' => NULL
 	);
+
+
+	public function __construct($debugMode = FALSE)
+	{
+		$this->defaults['catchExceptions'] = !$debugMode;
+	}
 
 
 	public function loadConfiguration()
@@ -31,7 +37,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 
 		$config = $this->compiler->getConfig();
 		if ($old = !isset($config[$this->name]) && isset($config['nette']['application'])) {
-			$config = Nette\DI\Config\Helpers::merge($config['nette']['application'], $container->expand($this->defaults));
+			$config = Nette\DI\Config\Helpers::merge($config['nette']['application'], $this->defaults);
 			trigger_error("Configuration section 'nette.application' is deprecated, use section '$this->name' instead.", E_USER_DEPRECATED);
 		} else {
 			$config = $this->getConfig($this->defaults);

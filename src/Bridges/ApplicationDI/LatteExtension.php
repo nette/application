@@ -24,7 +24,21 @@ class LatteExtension extends Nette\DI\CompilerExtension
 		'macros' => array(),
 	);
 
+	/** @var bool */
 	private $xhtml;
+
+	/** @var bool */
+	private $debugMode;
+
+	/** @var string */
+	private $tempDir;
+
+
+	public function __construct($tempDir, $debugMode = FALSE)
+	{
+		$this->tempDir = $tempDir;
+		$this->debugMode = $debugMode;
+	}
 
 
 	public function loadConfiguration()
@@ -52,8 +66,8 @@ class LatteExtension extends Nette\DI\CompilerExtension
 
 		$latteFactory = $container->addDefinition('nette.latteFactory')
 			->setClass('Latte\Engine')
-			->addSetup('setTempDirectory', array($container->expand('%tempDir%/cache/latte')))
-			->addSetup('setAutoRefresh', array($container->parameters['debugMode']))
+			->addSetup('setTempDirectory', array($this->tempDir))
+			->addSetup('setAutoRefresh', array($this->debugMode))
 			->addSetup('setContentType', array($config['xhtml'] ? Latte\Compiler::CONTENT_XHTML : Latte\Compiler::CONTENT_HTML))
 			->setImplement('Nette\Bridges\ApplicationLatte\ILatteFactory');
 
@@ -64,8 +78,8 @@ class LatteExtension extends Nette\DI\CompilerExtension
 		$container->addDefinition('nette.latte')
 			->setClass('Latte\Engine')
 			->addSetup('::trigger_error', array('Service nette.latte is deprecated, implement Nette\Bridges\ApplicationLatte\ILatteFactory.', E_USER_DEPRECATED))
-			->addSetup('setTempDirectory', array($container->expand('%tempDir%/cache/latte')))
-			->addSetup('setAutoRefresh', array($container->parameters['debugMode']))
+			->addSetup('setTempDirectory', array($this->tempDir))
+			->addSetup('setAutoRefresh', array($this->debugMode))
 			->addSetup('setContentType', array($config['xhtml'] ? Latte\Compiler::CONTENT_XHTML : Latte\Compiler::CONTENT_HTML))
 			->setAutowired(FALSE);
 

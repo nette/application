@@ -71,12 +71,8 @@ latte:
 		- IpsumLoremMacros::install
 ', 'neon'));
 
-$config['parameters']['debugMode'] = FALSE;
-$config['parameters']['productionMode'] = TRUE;
-$config['parameters']['tempDir'] = '';
-
 $compiler = new DI\Compiler;
-$compiler->addExtension('latte', new Nette\Bridges\ApplicationDI\LatteExtension);
+$compiler->addExtension('latte', new Nette\Bridges\ApplicationDI\LatteExtension(NULL, FALSE));
 $compiler->addExtension('another', new AnotherExtension);
 $code = $compiler->compile($config, 'Container', 'Nette\DI\Container');
 

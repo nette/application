@@ -22,6 +22,15 @@ class RoutingExtension extends Nette\DI\CompilerExtension
 		'routes' => array(), // of [mask => action]
 	);
 
+	/** @var bool */
+	private $debugMode;
+
+
+	public function __construct($debugMode = FALSE)
+	{
+		$this->debugMode = $debugMode;
+	}
+
 
 	public function loadConfiguration()
 	{
@@ -45,7 +54,7 @@ class RoutingExtension extends Nette\DI\CompilerExtension
 			$router->addSetup('$service[] = new Nette\Application\Routers\Route(?, ?);', array($mask, $action));
 		}
 
-		if ($container->parameters['debugMode'] && $config['debugger']) {
+		if ($this->debugMode && $config['debugger']) {
 			$container->getDefinition('application')->addSetup('@Tracy\Bar::addPanel', array(
 				new Nette\DI\Statement('Nette\Bridges\ApplicationTracy\RoutingPanel')
 			));
