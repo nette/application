@@ -28,14 +28,14 @@ class MicroPresenter extends Nette\Object implements Application\IPresenter
 	/** @var Nette\Http\IRequest|NULL */
 	private $httpRequest;
 
-	/** @var IRouter|NULL */
+	/** @var Application\IRouter|NULL */
 	private $router;
 
 	/** @var Application\Request */
 	private $request;
 
 
-	public function __construct(Nette\DI\Container $context = NULL, Http\IRequest $httpRequest = NULL, IRouter $router = NULL)
+	public function __construct(Nette\DI\Container $context = NULL, Http\IRequest $httpRequest = NULL, Application\IRouter $router = NULL)
 	{
 		$this->context = $context;
 		$this->httpRequest = $httpRequest;
@@ -97,7 +97,7 @@ class MicroPresenter extends Nette\Object implements Application\IPresenter
 			if ($response[0] instanceof \SplFileInfo) {
 				$response->setFile($response[0]);
 			} else {
-				$response->setSource($response[0]); // TODO
+				$response->setSource($response[0]);
 			}
 		}
 		if ($response instanceof Application\UI\ITemplate) {
