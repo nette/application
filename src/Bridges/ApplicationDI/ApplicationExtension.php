@@ -38,7 +38,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 		$config = $this->compiler->getConfig();
 		if ($old = !isset($config[$this->name]) && isset($config['nette']['application'])) {
 			$config = Nette\DI\Config\Helpers::merge($config['nette']['application'], $this->defaults);
-			trigger_error("Configuration section 'nette.application' is deprecated, use section '$this->name' instead.", E_USER_DEPRECATED);
+			// trigger_error("Configuration section 'nette.application' is deprecated, use section '$this->name' instead.", E_USER_DEPRECATED);
 		} else {
 			$config = $this->getConfig($this->defaults);
 		}

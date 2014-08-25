@@ -39,7 +39,7 @@ class RoutingExtension extends Nette\DI\CompilerExtension
 		$config = $this->compiler->getConfig();
 		if ($old = !isset($config[$this->name]) && isset($config['nette']['routing'])) {
 			$config = Nette\DI\Config\Helpers::merge($config['nette']['routing'], $this->defaults);
-			trigger_error("Configuration section 'nette.routing' is deprecated, use section '$this->name' instead.", E_USER_DEPRECATED);
+			// trigger_error("Configuration section 'nette.routing' is deprecated, use section '$this->name' instead.", E_USER_DEPRECATED);
 		} else {
 			$config = $this->getConfig($this->defaults);
 		}
