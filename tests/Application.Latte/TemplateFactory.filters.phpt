@@ -11,10 +11,6 @@ use Nette\Bridges\ApplicationLatte\TemplateFactory,
 require __DIR__ . '/../bootstrap.php';
 
 
-class ControlMock extends Nette\Application\UI\Control
-{
-}
-
 class LatteFactory implements Nette\Bridges\ApplicationLatte\ILatteFactory
 {
 	private $engine;
@@ -31,7 +27,7 @@ class LatteFactory implements Nette\Bridges\ApplicationLatte\ILatteFactory
 }
 
 $factory = new TemplateFactory(new LatteFactory(new Latte\Engine));
-$latte = $factory->createTemplate(new ControlMock)->getLatte();
+$latte = $factory->createTemplate()->getLatte();
 
 
 setlocale(LC_TIME, 'C');
