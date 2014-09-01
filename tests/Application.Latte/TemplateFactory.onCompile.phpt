@@ -12,10 +12,6 @@ use Nette\Bridges\ApplicationLatte\TemplateFactory,
 require __DIR__ . '/../bootstrap.php';
 
 
-class ControlMock extends Nette\Application\UI\Control
-{
-}
-
 class LatteFactoryMock implements Nette\Bridges\ApplicationLatte\ILatteFactory
 {
 	private $engine;
@@ -38,7 +34,7 @@ test(function() {
 	$factory = new TemplateFactory(new LatteFactoryMock($engine), new Http\Request(new Http\UrlScript('http://nette.org')));
 	$engine->onCompile[] = $callback = function() { };
 
-	$factory->createTemplate(new ControlMock);
+	$factory->createTemplate();
 
 	Assert::type('array', $engine->onCompile);
 	Assert::type('Closure', $engine->onCompile[0]); // prepended by TemplateFactory
@@ -51,7 +47,7 @@ test(function() {
 	$factory = new TemplateFactory(new LatteFactoryMock($engine), new Http\Request(new Http\UrlScript('http://nette.org')));
 	$engine->onCompile = new ArrayIterator(array($callback = function() {}));
 
-	$factory->createTemplate(new ControlMock);
+	$factory->createTemplate();
 
 	Assert::type('array', $engine->onCompile);
 	Assert::type('Closure', $engine->onCompile[0]); // prepended by TemplateFactory
@@ -79,7 +75,7 @@ test(function() {
 	$factory = new TemplateFactory(new LatteFactoryMock($engine), new Http\Request(new Http\UrlScript('http://nette.org')));
 	$engine->onCompile = new Event(array($callback = function() {}));
 
-	$factory->createTemplate(new ControlMock);
+	$factory->createTemplate();
 
 	Assert::type('array', $engine->onCompile);
 	Assert::type('Closure', $engine->onCompile[0]); // prepended by TemplateFactory
