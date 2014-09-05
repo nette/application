@@ -22,6 +22,9 @@ testRouteIn($route, '/č', 'Default', array(
 	'test' => 'testvalue',
 ), '/%C4%8D?test=testvalue');
 
-testRouteIn($route, '/%C4%8D');
+testRouteIn($route, '/%C4%8D', 'Default', array(
+	'param' => 'č',
+	'test' => 'testvalue',
+), '/%C4%8D?test=testvalue');
 
 testRouteIn($route, '/');
