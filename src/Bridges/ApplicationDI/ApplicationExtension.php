@@ -43,7 +43,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 			$config = $this->getConfig($this->defaults);
 		}
 
-		$this->validate($config, $this->defaults, $old ? 'nette.application' : $this->name);
+		$this->validateConfig($this->defaults, $config, $old ? 'nette.application' : $this->name);
 
 		$application = $container->addDefinition('application') // no namespace for back compatibility
 			->setClass('Nette\Application\Application')
@@ -60,15 +60,6 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 
 		if ($config['mapping']) {
 			$presenterFactory->addSetup('setMapping', array($config['mapping']));
-		}
-	}
-
-
-	private function validate(array $config, array $expected, $name)
-	{
-		if ($extra = array_diff_key($config, $expected)) {
-			$extra = implode(", $name.", array_keys($extra));
-			throw new Nette\InvalidStateException("Unknown option $name.$extra.");
 		}
 	}
 

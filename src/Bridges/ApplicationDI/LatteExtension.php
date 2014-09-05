@@ -57,7 +57,7 @@ class LatteExtension extends Nette\DI\CompilerExtension
 			$config['xhtml'] = $config['nette']['xhtml'];
 		}
 
-		$this->validate($config, $this->defaults, $this->name);
+		$this->validateConfig($this->defaults, $config);
 		$container = $this->getContainerBuilder();
 
 		$latteFactory = $container->addDefinition('nette.latteFactory')
@@ -113,15 +113,6 @@ class LatteExtension extends Nette\DI\CompilerExtension
 
 		$container->getDefinition('nette.latteFactory')
 			->addSetup('?->onCompile[] = function($engine) { ' . $macro . '($engine->getCompiler()); }', array('@self'));
-	}
-
-
-	private function validate(array $config, array $expected, $name)
-	{
-		if ($extra = array_diff_key($config, $expected)) {
-			$extra = implode(", $name.", array_keys($extra));
-			throw new Nette\InvalidStateException("Unknown option $name.$extra.");
-		}
 	}
 
 }

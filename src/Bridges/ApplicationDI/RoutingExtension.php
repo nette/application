@@ -44,7 +44,7 @@ class RoutingExtension extends Nette\DI\CompilerExtension
 			$config = $this->getConfig($this->defaults);
 		}
 
-		$this->validate($config, $this->defaults, $old ? 'nette.routing' : $this->name);
+		$this->validateConfig($this->defaults, $config, $old ? 'nette.routing' : $this->name);
 
 		$router = $container->addDefinition('router') // no namespace for back compatibility
 			->setClass('Nette\Application\IRouter')
@@ -58,15 +58,6 @@ class RoutingExtension extends Nette\DI\CompilerExtension
 			$container->getDefinition('application')->addSetup('@Tracy\Bar::addPanel', array(
 				new Nette\DI\Statement('Nette\Bridges\ApplicationTracy\RoutingPanel')
 			));
-		}
-	}
-
-
-	private function validate(array $config, array $expected, $name)
-	{
-		if ($extra = array_diff_key($config, $expected)) {
-			$extra = implode(", $name.", array_keys($extra));
-			throw new Nette\InvalidStateException("Unknown option $name.$extra.");
 		}
 	}
 
