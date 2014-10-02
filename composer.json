@@ -27,7 +27,7 @@
 		"latte/latte": "Allows using Latte in templates"
 	},
 	"require-dev": {
-		"nette/tester": "~1.0",
+		"nette/tester": "~1.3",
 		"latte/latte": "~2.2.2"
 	},
 	"conflict": {
