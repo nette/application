@@ -26,7 +26,7 @@
 		"nette/forms": "Allows to use Nette\\Application\\UI\\Form"
 	},
 	"require-dev": {
-		"nette/tester": "~1.0",
+		"nette/tester": "~1.3",
 		"latte/latte": "~2.2.2"
 	},
 	"conflict": {
