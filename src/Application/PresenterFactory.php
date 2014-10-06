@@ -49,10 +49,14 @@ class PresenterFactory extends Nette\Object implements IPresenterFactory
 		$class = $this->getPresenterClass($name);
 		if (count($services = $this->container->findByType($class)) === 1) {
 			$presenter = $this->container->createService($services[0]);
+			$tags = $this->container->findByTag(Nette\DI\Extensions\InjectExtension::TAG_INJECT);
+			if (empty($tags[$services[0]])) {
+				$this->container->callInjects($presenter);
+			}
 		} else {
 			$presenter = $this->container->createInstance($class);
+			$this->container->callInjects($presenter);
 		}
-		$this->container->callInjects($presenter);
 
 		if ($presenter instanceof UI\Presenter && $presenter->invalidLinkMode === NULL) {
 			$presenter->invalidLinkMode = $this->container->parameters['debugMode'] ? UI\Presenter::INVALID_LINK_WARNING : UI\Presenter::INVALID_LINK_SILENT;
