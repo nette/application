@@ -199,6 +199,16 @@ class Template extends Nette\Object implements Nette\Application\UI\ITemplate
 
 
 	/**
+	 * @deprecated
+	 */
+	public function __call($name, $args)
+	{
+		trigger_error('Invoking filters on Template object outside of template file is deprecated, use your filter directly.', E_USER_DEPRECATED);
+		return $this->latte->invokeFilter($name, $args);
+	}
+
+
+	/**
 	 * Sets a template parameter. Do not call directly.
 	 * @return void
 	 */
