@@ -49,7 +49,7 @@ class Template extends Nette\Object implements Nette\Application\UI\ITemplate
 	 */
 	public function render($file = NULL, array $params = array())
 	{
-		$this->latte->render($file ?: $this->file, $params ?: $this->params);
+		$this->latte->render($file ?: $this->file, $params + $this->params);
 	}
 
 
