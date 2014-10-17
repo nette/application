@@ -11,6 +11,10 @@ use Nette\Application\Responses\FileResponse,
 
 require __DIR__ . '/../bootstrap.php';
 
+if (PHP_SAPI === 'cli') {
+	Tester\Environment::skip('Requires CGI SAPI to work with HTTP headers.');
+}
+
 
 test(function() {
 	$file = __FILE__;
