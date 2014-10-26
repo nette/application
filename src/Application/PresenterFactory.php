@@ -30,7 +30,7 @@ class PresenterFactory extends Nette\Object implements IPresenterFactory
 	private $cache = array();
 
 	/** @var Nette\DI\Container */
-	private $container;
+	protected $container;
 
 
 	public function __construct(Nette\DI\Container $container)
