@@ -68,19 +68,19 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 				$this->getElementPrototype()->id = 'frm-' . $name;
 			}
 
-			if (!$this->getAction()) {
-				$this->setAction(new Link($presenter, 'this', array()));
-				$signal = new Nette\Forms\Controls\HiddenField($name . self::NAME_SEPARATOR . 'submit');
-				$signal->setOmitted()->setHtmlId(FALSE);
-				$this[Presenter::SIGNAL_KEY] = $signal;
-			}
-
 			if (iterator_count($this->getControls()) && $this->isSubmitted()) {
 				foreach ($this->getControls() as $control) {
 					if (!$control->isDisabled()) {
 						$control->loadHttpData();
 					}
 				}
+			}
+
+			if (!$this->getAction()) {
+				$this->setAction(new Link($presenter, 'this', array()));
+				$signal = new Nette\Forms\Controls\HiddenField($name . self::NAME_SEPARATOR . 'submit');
+				$signal->setOmitted()->setHtmlId(FALSE);
+				$this[Presenter::SIGNAL_KEY] = $signal;
 			}
 		}
 		parent::attached($presenter);
