@@ -28,7 +28,7 @@ use Nette,
  * @property-read bool $ajax
  * @property-read Nette\Application\Request $lastCreatedRequest
  * @property-read Nette\Http\SessionSection $flashSession
- * @property-read \SystemContainer|Nette\DI\Container $context
+ * @property-read Nette\DI\Container $context
  * @property-read Nette\Http\Session $session
  * @property-read Nette\Security\User $user
  */
@@ -102,7 +102,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @var array */
 	private $lastCreatedRequestFlag;
 
-	/** @var \SystemContainer|Nette\DI\Container */
+	/** @var Nette\DI\Container */
 	private $context;
 
 	/** @var Nette\Http\IRequest */
@@ -1330,7 +1330,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Gets the context.
-	 * @return \SystemContainer|Nette\DI\Container
+	 * @return Nette\DI\Container
 	 * @deprecated
 	 */
 	public function getContext()
