@@ -99,6 +99,20 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 			throw new Nette\InvalidArgumentException('Argument must be IRouter descendant.');
 		}
 		parent::offsetSet($index, $route);
+		$this->cachedRoutes = NULL;
+	}
+
+
+	/**
+	 * Removes the element at the specified position in this list.
+	 * @param  int
+	 * @return void
+	 * @throws Nette\OutOfRangeException
+	 */
+	public function offsetUnset($index)
+	{
+		parent::offsetUnset($index);
+		$this->cachedRoutes = NULL;
 	}
 
 }
