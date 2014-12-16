@@ -14,18 +14,28 @@ use Nette;
  * The router broker.
  *
  * @author     David Grudl
+ * @property-read string $module
  */
 class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRouter
 {
 	/** @var array */
 	private $cachedRoutes;
 
+	/** @var string */
+	private $module;
+
 
 	/**
 	 * @param Nette\Application\IRouter[]
 	 */
-	public function __construct(array $routes = array())
+	public function __construct($routes = array())
 	{
+		if (is_string($routes)) {
+			trigger_error('Passing $module parameter to RouteList is deprecated. Use ModuleRouter instead.', E_USER_DEPRECATED);
+			$this->module = $routes ? $routes . ':' : '';
+			return;
+		}
+
 		foreach ($routes as $route) {
 			$this[] = $route;
 		}
@@ -41,6 +51,10 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 		foreach ($this as $route) {
 			$appRequest = $route->match($httpRequest);
 			if ($appRequest !== NULL) {
+				$name = $appRequest->getPresenterName();
+				if (strncmp($name, 'Nette:', 6)) {
+					$appRequest->setPresenterName($this->module . $name);
+				}
 				return $appRequest;
 			}
 		}
@@ -80,6 +94,15 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 			}
 
 			$this->cachedRoutes = $routes;
+		}
+
+		if ($this->module) {
+			if (strncasecmp($tmp = $appRequest->getPresenterName(), $this->module, strlen($this->module)) === 0) {
+				$appRequest = clone $appRequest;
+				$appRequest->setPresenterName(substr($tmp, strlen($this->module)));
+			} else {
+				return NULL;
+			}
 		}
 
 		$presenter = strtolower($appRequest->getPresenterName());
@@ -124,6 +147,15 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 	{
 		parent::offsetUnset($index);
 		$this->cachedRoutes = NULL;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getModule()
+	{
+		return $this->module;
 	}
 
 }
