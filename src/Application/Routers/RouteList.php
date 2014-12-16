@@ -22,6 +22,17 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 
 
 	/**
+	 * @param Nette\Application\IRouter[]
+	 */
+	public function __construct(array $routes = array())
+	{
+		foreach ($routes as $route) {
+			$this[] = $route;
+		}
+	}
+
+
+	/**
 	 * Maps HTTP request to a Request object.
 	 * @return Nette\Application\Request|NULL
 	 */
