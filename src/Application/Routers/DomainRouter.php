@@ -59,9 +59,14 @@ class DomainRouter extends Nette\Object implements Nette\Application\IRouter
 	public function constructUrl(Nette\Application\Request $appRequest, Nette\Http\Url $refUrl)
 	{
 		if ($this->lastRefUrl !== $refUrl) {
+			$refHost = $refUrl->getHost();
+			$refHost = ip2long($refHost) ? array($refHost) : array_reverse(explode('.', $refHost));
 			$this->lastRefUrl = $refUrl;
 			$this->lastFixedRefUrl = clone $refUrl;
-			$this->lastFixedRefUrl->setHost($this->host);
+			$this->lastFixedRefUrl->setHost(strtr($this->host, array(
+				'%tld%' => $refHost[0],
+				'%domain%' => isset($refHost[1]) ? "$refHost[1].$refHost[0]" : $refHost[0],
+			)));
 		}
 		return $this->innerRouter->constructUrl($appRequest, $this->lastFixedRefUrl);
 	}
