@@ -25,12 +25,12 @@ class ModuleRouter extends Nette\Object implements Nette\Application\IRouter
 
 	/**
 	 * @param  string
-	 * @param  Nette\Application\IRouter
+	 * @param  Nette\Application\IRouter|Nette\Application\IRouter[]
 	 */
-	public function __construct($module, Nette\Application\IRouter $innerRouter)
+	public function __construct($module, $innerRouter)
 	{
 		$this->module = $module ? $module . ':' : '';
-		$this->innerRouter = $innerRouter;
+		$this->innerRouter = is_array($innerRouter) ? new RouteList($innerRouter) : $innerRouter;
 	}
 
 

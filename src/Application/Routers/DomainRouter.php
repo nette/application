@@ -30,12 +30,12 @@ class DomainRouter extends Nette\Object implements Nette\Application\IRouter
 
 	/**
 	 * @param  string
-	 * @param  Nette\Application\IRouter
+	 * @param  Nette\Application\IRouter|Nette\Application\IRouter[]
 	 */
-	public function __construct($host, Nette\Application\IRouter $innerRouter)
+	public function __construct($host, $innerRouter)
 	{
 		$this->host = $host;
-		$this->innerRouter = $innerRouter;
+		$this->innerRouter = is_array($innerRouter) ? new RouteList($innerRouter) : $innerRouter;
 	}
 
 
