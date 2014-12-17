@@ -50,7 +50,7 @@ class UIMacros extends Latte\Macros\MacroSet
 		$prolog = '
 // snippets support
 if (empty($_l->extends) && !empty($_control->snippetMode)) {
-	return Nette\Bridges\ApplicationLatte\UIMacros::renderSnippets($_control, $_b, get_defined_vars());
+	return Nette\Bridges\ApplicationLatte\UIMacros::renderSnippets($_control, $_b, $template);
 }';
 		return array($prolog, '');
 	}
@@ -108,7 +108,7 @@ if (empty($_l->extends) && !empty($_control->snippetMode)) {
 	/********************* run-time helpers ****************d*g**/
 
 
-	public static function renderSnippets(Nette\Application\UI\Control $control, \stdClass $local, array $params)
+	public static function renderSnippets(Nette\Application\UI\Control $control, \stdClass $local, Latte\Template $template)
 	{
 		$control->snippetMode = FALSE;
 		$payload = $control->getPresenter()->getPayload();
@@ -119,7 +119,7 @@ if (empty($_l->extends) && !empty($_control->snippetMode)) {
 				}
 				ob_start();
 				$function = reset($function);
-				$snippets = $function($local, $params + array('_snippetMode' => TRUE));
+				$snippets = $function($local, $template->getParameters() + array('_snippetMode' => TRUE));
 				$payload->snippets[$id = $control->getSnippetId(substr($name, 1))] = ob_get_clean();
 				if ($snippets !== NULL) { // pass FALSE from snippetArea
 					if ($snippets) {
