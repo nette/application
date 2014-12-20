@@ -56,7 +56,6 @@ class Route extends Nette\Object implements Application\IRouter
 	public static $styles = array(
 		'#' => array( // default style for path parameters
 			self::PATTERN => '[^/]+',
-			self::FILTER_IN => 'rawurldecode',
 			self::FILTER_OUT => array(__CLASS__, 'param2path'),
 		),
 		'?#' => array( // default style for query parameters
@@ -171,7 +170,7 @@ class Route extends Nette\Object implements Application\IRouter
 		}
 
 		if ($path !== '') {
-			$path = rtrim($path, '/') . '/';
+			$path = rtrim(rawurldecode($path), '/') . '/';
 		}
 
 		if (!$matches = Strings::match($path, $re)) {
