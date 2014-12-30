@@ -23,7 +23,8 @@ function testRouteIn(Nette\Application\IRouter $route, $url, $expectedPresenter=
 
 	if ($request) { // matched
 		$params = $request->getParameters();
-		//asort($params);
+		asort($params);
+		asort($expectedParams);
 		Assert::same( $expectedPresenter, $request->getPresenterName() );
 		Assert::same( $expectedParams, $params );
 
