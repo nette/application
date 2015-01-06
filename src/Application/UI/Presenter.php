@@ -976,7 +976,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		static $refUrl;
 		if ($refUrl === NULL) {
 			$refUrl = new Http\Url($this->httpRequest->getUrl());
-			$refUrl->setPath($this->httpRequest->getUrl()->getScriptPath());
+			$refUrl = $refUrl->setPath($this->httpRequest->getUrl()->getScriptPath());
 		}
 		if (!$this->router) {
 			throw new Nette\InvalidStateException('Unable to generate URL, service Router has not been set.');
