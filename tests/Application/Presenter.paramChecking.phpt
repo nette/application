@@ -23,19 +23,12 @@ class TestPresenter extends Application\UI\Presenter
 }
 
 
-class MockHttpRequest extends Nette\Http\Request
-{
-	public function __construct()
-	{}
-}
-
-
 $presenter = new TestPresenter;
 $presenter->injectPrimary(
 	NULL,
 	NULL,
-	NULL,
-	new MockHttpRequest,
+	new Application\Routers\SimpleRouter,
+	new Http\Request(new Http\UrlScript),
 	new Http\Response
 );
 
