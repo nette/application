@@ -23,6 +23,10 @@ matrix:
         - php: hhvm-nightly
           env: PHP_BIN=php-cgi
 
+    include:
+        - php: 5.5
+          env: dependencies="--prefer-lowest --prefer-stable" PHP_BIN=php
+
 script:
     - vendor/bin/tester -p $PHP_BIN tests -s
     - php code-checker/src/code-checker.php
@@ -33,5 +37,6 @@ after_failure:
 
 before_script:
     # Install Nette Tester & Code Checker
-    - composer install --no-interaction --dev --prefer-source
+    - composer self-update
+    - composer update --no-interaction --dev --prefer-source $dependencies
     - composer create-project nette/code-checker code-checker ~2.3 --no-interaction --prefer-source
