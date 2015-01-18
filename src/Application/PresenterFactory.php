@@ -17,9 +17,6 @@ use Nette;
  */
 class PresenterFactory extends Nette\Object implements IPresenterFactory
 {
-	/** @var bool */
-	public $caseSensitive = FALSE;
-
 	/** @var array[] of module => splited mask */
 	private $mapping = array(
 		'*' => array('', '*Module\\', '*Presenter'),
@@ -74,8 +71,7 @@ class PresenterFactory extends Nette\Object implements IPresenterFactory
 	public function getPresenterClass(& $name)
 	{
 		if (isset($this->cache[$name])) {
-			list($class, $name) = $this->cache[$name];
-			return $class;
+			return $this->cache[$name];
 		}
 
 		if (!is_string($name) || !Nette\Utils\Strings::match($name, '#^[a-zA-Z\x7f-\xff][a-zA-Z0-9\x7f-\xff:]*\z#')) {
@@ -96,20 +92,7 @@ class PresenterFactory extends Nette\Object implements IPresenterFactory
 			throw new InvalidPresenterException("Cannot load presenter '$name', class '$class' is abstract.");
 		}
 
-		// canonicalize presenter name
-		$realName = $this->unformatPresenterClass($class);
-		if ($name !== $realName) {
-			if ($this->caseSensitive) {
-				throw new InvalidPresenterException("Cannot load presenter '$name', case mismatch. Real name is '$realName'.");
-			} else {
-				$this->cache[$name] = array($class, $realName);
-				$name = $realName;
-			}
-		} else {
-			$this->cache[$name] = array($class, $realName);
-		}
-
-		return $class;
+		return $this->cache[$name] = $class;
 	}
 
 
@@ -146,24 +129,6 @@ class PresenterFactory extends Nette\Object implements IPresenterFactory
 			$mapping[0] .= str_replace('*', $part, $mapping[$parts ? 1 : 2]);
 		}
 		return $mapping[0];
-	}
-
-
-	/**
-	 * Formats presenter name from class name.
-	 * @param  string
-	 * @return string
-	 * @internal
-	 */
-	public function unformatPresenterClass($class)
-	{
-		foreach ($this->mapping as $module => $mapping) {
-			$mapping = str_replace(array('\\', '*'), array('\\\\', '(\w+)'), $mapping);
-			if (preg_match("#^\\\\?$mapping[0]((?:$mapping[1])*)$mapping[2]\\z#i", $class, $matches)) {
-				return ($module === '*' ? '' : $module . ':')
-					. preg_replace("#$mapping[1]#iA", '$1:', $matches[1]) . $matches[3];
-			}
-		}
 	}
 
 }
