@@ -792,6 +792,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		// 2) ?query syntax
 		$a = strpos($destination, '?');
 		if ($a !== FALSE) {
+			trigger_error('Query syntax is deprecated.', E_USER_DEPRECATED);
 			parse_str(substr($destination, $a + 1), $args); // requires disabled magic quotes
 			$destination = substr($destination, 0, $a);
 		}
