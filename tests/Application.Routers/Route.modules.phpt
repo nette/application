@@ -14,10 +14,10 @@ require __DIR__ . '/Route.inc';
 
 
 $route = new Route('<presenter>', array(
-	'module' => 'module:submodule',
+	'module' => 'Module:Submodule',
 ));
 
-testRouteIn($route, '/abc', 'module:submodule:Abc', array(
+testRouteIn($route, '/abc', 'Module:Submodule:Abc', array(
 	'test' => 'testvalue',
 ), '/abc?test=testvalue');
 

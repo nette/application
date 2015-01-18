@@ -287,7 +287,7 @@ class Route extends Nette\Object implements Application\IRouter
 
 		if (isset($metadata[self::MODULE_KEY])) { // try split into module and [submodule:]presenter parts
 			$module = $metadata[self::MODULE_KEY];
-			if (isset($module['fixity']) && strncasecmp($presenter, $module[self::VALUE] . ':', strlen($module[self::VALUE]) + 1) === 0) {
+			if (isset($module['fixity']) && strncmp($presenter, $module[self::VALUE] . ':', strlen($module[self::VALUE]) + 1) === 0) {
 				$a = strlen($module[self::VALUE]);
 			} else {
 				$a = strrpos($presenter, ':');
@@ -309,9 +309,7 @@ class Route extends Nette\Object implements Application\IRouter
 				if ($params[$name] === FALSE) {
 					$params[$name] = '0';
 				}
-				if (is_scalar($params[$name]) ? strcasecmp($params[$name], $meta[self::VALUE]) === 0
-					: $params[$name] === $meta[self::VALUE]
-				) { // remove default values; NULL values are retain
+				if ($params[$name] === $meta[self::VALUE]) { // remove default values; NULL values are retain
 					unset($params[$name]);
 					continue;
 
@@ -731,7 +729,6 @@ class Route extends Nette\Object implements Application\IRouter
 	 */
 	private static function path2action($s)
 	{
-		$s = strtolower($s);
 		$s = preg_replace('#-(?=[a-z])#', ' ', $s);
 		$s = lcfirst(ucwords($s));
 		$s = str_replace(' ', '', $s);
@@ -761,7 +758,6 @@ class Route extends Nette\Object implements Application\IRouter
 	 */
 	private static function path2presenter($s)
 	{
-		$s = strtolower($s);
 		$s = preg_replace('#([.-])(?=[a-z])#', '$1 ', $s);
 		$s = ucwords($s);
 		$s = str_replace('. ', ':', $s);

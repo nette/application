@@ -69,7 +69,6 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 				}
 
 				if (is_string($presenter)) {
-					$presenter = strtolower($presenter);
 					if (!isset($routes[$presenter])) {
 						$routes[$presenter] = $routes['*'];
 					}
@@ -86,7 +85,7 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 		}
 
 		if ($this->module) {
-			if (strncasecmp($tmp = $appRequest->getPresenterName(), $this->module, strlen($this->module)) === 0) {
+			if (strncmp($tmp = $appRequest->getPresenterName(), $this->module, strlen($this->module)) === 0) {
 				$appRequest = clone $appRequest;
 				$appRequest->setPresenterName(substr($tmp, strlen($this->module)));
 			} else {
@@ -94,7 +93,7 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 			}
 		}
 
-		$presenter = strtolower($appRequest->getPresenterName());
+		$presenter = $appRequest->getPresenterName();
 		if (!isset($this->cachedRoutes[$presenter])) {
 			$presenter = '*';
 		}
