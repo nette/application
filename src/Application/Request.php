@@ -114,6 +114,17 @@ class Request extends Nette\Object
 
 
 	/**
+	 * Returns a parameter provided to the presenter.
+	 * @param  string
+	 * @return mixed
+	 */
+	public function getParameter($key)
+	{
+		return isset($this->params[$key]) ? $this->params[$key] : NULL;
+	}
+
+
+	/**
 	 * Sets variables provided to the presenter via POST.
 	 * @return self
 	 */
