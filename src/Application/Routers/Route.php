@@ -28,7 +28,7 @@ class Route extends Nette\Object implements Application\IRouter
 	const PRESENTER_KEY = 'presenter';
 	const MODULE_KEY = 'module';
 
-	/** flag */
+	/** @deprecated */
 	const CASE_SENSITIVE = 256;
 
 	/** @internal url type */
@@ -189,10 +189,7 @@ class Route extends Nette\Object implements Application\IRouter
 
 		// 2) CONSTANT FIXITY
 		foreach ($this->metadata as $name => $meta) {
-			if (isset($params[$name])) {
-				//$params[$name] = $this->flags & self::CASE_SENSITIVE === 0 ? strtolower($params[$name]) : */$params[$name]; // strtolower damages UTF-8
-
-			} elseif (isset($meta['fixity']) && $meta['fixity'] !== self::OPTIONAL) {
+			if (!isset($params[$name]) && isset($meta['fixity']) && $meta['fixity'] !== self::OPTIONAL) {
 				$params[$name] = NULL; // cannot be overwriten in 3) and detected by isset() in 4)
 			}
 		}
@@ -580,7 +577,7 @@ class Route extends Nette\Object implements Application\IRouter
 					$meta['defOut'] = $meta[self::VALUE];
 				}
 			}
-			$meta[self::PATTERN] = "#(?:$pattern)\\z#A" . ($this->flags & self::CASE_SENSITIVE ? '' : 'iu');
+			$meta[self::PATTERN] = "#(?:$pattern)\\z#A";
 
 			// include in expression
 			$aliases['p' . $i] = $name;
@@ -610,7 +607,7 @@ class Route extends Nette\Object implements Application\IRouter
 		}
 
 		$this->aliases = $aliases;
-		$this->re = '#' . $re . '/?\z#A' . ($this->flags & self::CASE_SENSITIVE ? '' : 'iu');
+		$this->re = '#' . $re . '/?\z#A';
 		$this->metadata = $metadata;
 		$this->sequence = $sequence;
 	}

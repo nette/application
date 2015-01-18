@@ -19,11 +19,11 @@ $route = new Route('<presenter>', array(
 			return strrev($s);
 		},
 		Route::FILTER_OUT => function($s) {
-			return strtoupper(strrev($s));
+			return strrev($s);
 		},
 	),
 ));
 
 testRouteIn($route, '/abc/', 'cba', array(
 	'test' => 'testvalue',
-), '/ABC?test=testvalue');
+), '/abc?test=testvalue');
