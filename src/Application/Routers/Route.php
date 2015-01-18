@@ -457,6 +457,13 @@ class Route extends Nette\Object implements Application\IRouter
 			}
 		}
 
+		if (strpbrk($mask, '?<[') === FALSE) {
+			$this->re = '#' . preg_quote($mask, '#') . '/?\z#A';
+			$this->sequence = array($mask);
+			$this->metadata = $metadata;
+			return;
+		}
+
 		// PARSE MASK
 		// <parameter-name[=default] [pattern] [#class]> or [ or ] or ?...
 		$parts = Strings::split($mask, '/<([^>#= ]+)(=[^># ]*)? *([^>#]*)(#?[^>\[\]]*)>|(\[!?|\]|\s*\?.*)/');
