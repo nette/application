@@ -136,12 +136,22 @@ class Request extends Nette\Object
 
 
 	/**
-	 * Returns all variables provided to the presenter via POST.
-	 * @return array
+	 * Returns a variable provided to the presenter via POST.
+	 * If no key is passed, returns the entire array.
+	 * @param  string
+	 * @return mixed
 	 */
-	public function getPost()
+	public function getPost($key = NULL)
 	{
-		return $this->post;
+		if (func_num_args() === 0) {
+			return $this->post;
+
+		} elseif (isset($this->post[$key])) {
+			return $this->post[$key];
+
+		} else {
+			return NULL;
+		}
 	}
 
 
