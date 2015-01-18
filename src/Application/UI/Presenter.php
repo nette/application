@@ -1009,8 +1009,9 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * @param  array   supplemental arguments
 	 * @return void
 	 * @throws InvalidLinkException
+	 * @internal
 	 */
-	private static function argsToParams($class, $method, & $args, $supplemental = array())
+	public static function argsToParams($class, $method, & $args, $supplemental = array())
 	{
 		$i = 0;
 		$rm = new \ReflectionMethod($class, $method);
