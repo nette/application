@@ -31,4 +31,5 @@ test(function() {
 	$container = new Container1;
 	Assert::type( 'Nette\Application\Application', $container->getService('application') );
 	Assert::type( 'Nette\Application\PresenterFactory', $container->getService('nette.presenterFactory') );
+	Assert::type( 'Nette\Application\LinkGenerator', $container->getService('application.linkGenerator') );
 });
