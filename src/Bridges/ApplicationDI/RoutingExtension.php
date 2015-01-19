@@ -34,19 +34,10 @@ class RoutingExtension extends Nette\DI\CompilerExtension
 
 	public function loadConfiguration()
 	{
+		$config = $this->validateConfig($this->defaults);
 		$container = $this->getContainerBuilder();
 
-		$config = $this->compiler->getConfig();
-		if ($old = !isset($config[$this->name]) && isset($config['nette']['routing'])) {
-			$config = Nette\DI\Config\Helpers::merge($config['nette']['routing'], $this->defaults);
-			// trigger_error("Configuration section 'nette.routing' is deprecated, use section '$this->name' instead.", E_USER_DEPRECATED);
-		} else {
-			$config = $this->getConfig($this->defaults);
-		}
-
-		$this->validateConfig($this->defaults, $config, $old ? 'nette.routing' : $this->name);
-
-		$router = $container->addDefinition('router') // no namespace for back compatibility
+		$router = $container->addDefinition($this->prefix('router'))
 			->setClass('Nette\Application\IRouter')
 			->setFactory('Nette\Application\Routers\RouteList');
 
@@ -54,10 +45,14 @@ class RoutingExtension extends Nette\DI\CompilerExtension
 			$router->addSetup('$service[] = new Nette\Application\Routers\Route(?, ?);', array($mask, $action));
 		}
 
-		if ($this->debugMode && $config['debugger']) {
+		if ($this->debugMode && $config['debugger'] && $container->hasDefinition('application')) {
 			$container->getDefinition('application')->addSetup('@Tracy\Bar::addPanel', array(
 				new Nette\DI\Statement('Nette\Bridges\ApplicationTracy\RoutingPanel')
 			));
+		}
+
+		if ($this->name === 'routing') {
+			$container->addAlias('router', $this->prefix('router'));
 		}
 	}
 
