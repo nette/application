@@ -19,7 +19,7 @@ use Nette;
  * @property   array $parameters
  * @property   array $post
  * @property   array $files
- * @property   string $method
+ * @property   string|NULL $method
  */
 class Request extends Nette\Object
 {
@@ -32,7 +32,7 @@ class Request extends Nette\Object
 	/** flag */
 	const RESTORED = 'restored';
 
-	/** @var string */
+	/** @var string|NULL */
 	private $method;
 
 	/** @var array */
@@ -59,7 +59,7 @@ class Request extends Nette\Object
 	 * @param  array   all uploaded files
 	 * @param  array   flags
 	 */
-	public function __construct($name, $method, array $params, array $post = array(), array $files = array(), array $flags = array())
+	public function __construct($name, $method = NULL, array $params = array(), array $post = array(), array $files = array(), array $flags = array())
 	{
 		$this->name = $name;
 		$this->method = $method;
@@ -157,7 +157,7 @@ class Request extends Nette\Object
 
 	/**
 	 * Sets the method.
-	 * @param  string
+	 * @param  string|NULL
 	 * @return self
 	 */
 	public function setMethod($method)
@@ -169,7 +169,7 @@ class Request extends Nette\Object
 
 	/**
 	 * Returns the method.
-	 * @return string
+	 * @return string|NULL
 	 */
 	public function getMethod()
 	{
