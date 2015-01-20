@@ -18,7 +18,6 @@
 		"nette/component-model": "~2.2",
 		"nette/di": "~2.3",
 		"nette/http": "~2.2",
-		"nette/reflection": "~2.2",
 		"nette/security": "~2.2",
 		"nette/utils": "~2.2"
 	},

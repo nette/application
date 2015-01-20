@@ -17,7 +17,7 @@ use Nette,
  * @author     David Grudl
  * @internal
  */
-class PresenterComponentReflection extends Nette\Reflection\ClassType
+class PresenterComponentReflection extends \ReflectionClass
 {
 	/** @var array getPersistentParams cache */
 	private static $ppCache = array();
@@ -103,7 +103,7 @@ class PresenterComponentReflection extends Nette\Reflection\ClassType
 		$cache = & self::$mcCache[strtolower($class . ':' . $method)];
 		if ($cache === NULL) try {
 			$cache = FALSE;
-			$rm = Nette\Reflection\Method::from($class, $method);
+			$rm = new \ReflectionMethod($class, $method);
 			$cache = $this->isInstantiable() && $rm->isPublic() && !$rm->isAbstract() && !$rm->isStatic();
 		} catch (\ReflectionException $e) {
 		}
