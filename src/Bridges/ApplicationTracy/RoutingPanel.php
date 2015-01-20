@@ -136,7 +136,7 @@ class RoutingPanel extends Nette\Object implements Tracy\IBarPanel
 		} catch (Nette\Application\InvalidPresenterException $e) {
 			return;
 		}
-		$rc = Nette\Reflection\ClassType::from($class);
+		$rc = new \ReflectionClass($class);
 
 		if ($rc->isSubclassOf('Nette\Application\UI\Presenter')) {
 			if (isset($request->parameters[Presenter::SIGNAL_KEY])) {

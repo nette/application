@@ -10,8 +10,7 @@ namespace Nette\Application\UI;
 use Nette,
 	Nette\Application,
 	Nette\Application\Responses,
-	Nette\Http,
-	Nette\Reflection;
+	Nette\Http;
 
 
 /**
@@ -872,7 +871,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 				// counterpart of signalReceived() & tryCall()
 				$method = $component->formatSignalMethod($signal);
 				if (!$reflection->hasCallableMethod($method)) {
-					throw new InvalidLinkException("Unknown signal '$signal', missing handler {$reflection->name}::$method()");
+					throw new InvalidLinkException("Unknown signal '$signal', missing handler {$reflection->getName()}::$method()");
 				}
 				if ($args) { // convert indexed parameters to named
 					self::argsToParams(get_class($component), $method, $args);
@@ -1125,7 +1124,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public static function getPersistentComponents()
 	{
-		return (array) PresenterComponentReflection::parseAnnotation(Reflection\ClassType::from(get_called_class()), 'persistent');
+		return (array) PresenterComponentReflection::parseAnnotation(new \ReflectionClass(get_called_class()), 'persistent');
 	}
 
 

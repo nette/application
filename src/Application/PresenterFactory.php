@@ -94,7 +94,7 @@ class PresenterFactory extends Nette\Object implements IPresenterFactory
 			throw new InvalidPresenterException("Cannot load presenter '$name', class '$class' was not found.");
 		}
 
-		$reflection = new Nette\Reflection\ClassType($class);
+		$reflection = new \ReflectionClass($class);
 		$class = $reflection->getName();
 
 		if (!$reflection->implementsInterface('Nette\Application\IPresenter')) {
