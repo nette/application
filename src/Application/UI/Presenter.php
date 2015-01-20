@@ -292,7 +292,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function checkRequirements($element)
 	{
-		$user = (array) $element->getAnnotation('User');
+		$user = (array) PresenterComponentReflection::parseAnnotation($element, 'User');
 		if (in_array('loggedIn', $user, TRUE) && !$this->getUser()->isLoggedIn()) {
 			throw new Application\ForbiddenRequestException;
 		}
@@ -1125,7 +1125,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public static function getPersistentComponents()
 	{
-		return (array) Reflection\ClassType::from(get_called_class())->getAnnotation('persistent');
+		return (array) PresenterComponentReflection::parseAnnotation(Reflection\ClassType::from(get_called_class()), 'persistent');
 	}
 
 

@@ -162,4 +162,22 @@ class PresenterComponentReflection extends Nette\Reflection\ClassType
 		return TRUE;
 	}
 
+
+	/**
+	 * Returns an annotation value.
+	 * @return array|FALSE
+	 */
+	public static function parseAnnotation(\Reflector $ref, $name)
+	{
+		if (!preg_match_all("#\\s@$name(?:\(\\s*([^)]*)\\s*\))?#", $ref->getDocComment(), $m)) {
+			return FALSE;
+		}
+		$res = array();
+		foreach ($m[1] as $s) {
+			$arr = $s === '' ? array(TRUE) : preg_split('#\s*,\s*#', $s, -1, PREG_SPLIT_NO_EMPTY);
+			$res = array_merge($res, $arr);
+		}
+		return $res;
+	}
+
 }
