@@ -6,6 +6,7 @@
 
 use Nette\DI,
 	Nette\Bridges\ApplicationDI\RoutingExtension,
+	Nette\Application\Routers\Route,
 	Tester\Assert;
 
 
@@ -70,3 +71,25 @@ test(function() {
 	Assert::type('MyRouter', $container->getService('router'));
 	Assert::true($container->getService('router')->woken);
 });
+
+
+Assert::exception(function() {
+
+	/** @return Nette\Application\IRouter */
+	function myRouterFactory() {
+		return new Route('path', function(){});
+	}
+
+	$loader = new DI\Config\Loader;
+	$config = $loader->load(Tester\FileMock::create('
+	routing:
+		cache: yes
+
+	services:
+		router: ::myRouterFactory
+	', 'neon'));
+
+	$compiler = new DI\Compiler;
+	$compiler->addExtension('routing', new RoutingExtension(FALSE));
+	$compiler->compile($config, 'Container3');
+}, 'Nette\DI\ServiceCreationException', 'Unable to cache router due to error: %a%');

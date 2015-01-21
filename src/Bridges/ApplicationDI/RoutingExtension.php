@@ -63,8 +63,12 @@ class RoutingExtension extends Nette\DI\CompilerExtension
 		$config = $this->getConfig();
 		if (!empty($config['cache'])) {
 			$method = $class->methods[Nette\DI\Container::getMethodName($this->prefix('router'))];
-			$router = eval($method->body);
-			$method->setBody('return unserialize(?);', [serialize($router)]);
+			try {
+				$router = serialize(eval($method->body));
+			} catch (\Exception $e) {
+				throw new Nette\DI\ServiceCreationException('Unable to cache router due to error: ' . $e->getMessage(), 0, $e);
+			}
+			$method->setBody('return unserialize(?);', array($router));
 		}
 	}
 
