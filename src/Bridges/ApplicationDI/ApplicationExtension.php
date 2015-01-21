@@ -53,6 +53,11 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 			$presenterFactory->addSetup('setMapping', array($config['mapping']));
 		}
 
+		$container->addDefinition($this->prefix('linkGenerator'))
+			->setFactory('Nette\Application\LinkGenerator', array(
+				1 => new Nette\DI\Statement('@Nette\Http\Request::getUrl'),
+			));
+
 		if ($this->name === 'application') {
 			$container->addAlias('application', $this->prefix('application'));
 			$container->addAlias('nette.presenterFactory', $this->prefix('presenterFactory'));
