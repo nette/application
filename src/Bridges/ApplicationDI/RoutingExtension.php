@@ -20,6 +20,7 @@ class RoutingExtension extends Nette\DI\CompilerExtension
 	public $defaults = array(
 		'debugger' => TRUE,
 		'routes' => array(), // of [mask => action]
+		'cache' => FALSE,
 	);
 
 	/** @var bool */
@@ -53,6 +54,17 @@ class RoutingExtension extends Nette\DI\CompilerExtension
 
 		if ($this->name === 'routing') {
 			$container->addAlias('router', $this->prefix('router'));
+		}
+	}
+
+
+	public function afterCompile(Nette\PhpGenerator\ClassType $class)
+	{
+		$config = $this->getConfig();
+		if (!empty($config['cache'])) {
+			$method = $class->methods[Nette\DI\Container::getMethodName($this->prefix('router'))];
+			$router = eval($method->body);
+			$method->setBody('return unserialize(?);', [serialize($router)]);
 		}
 	}
 
