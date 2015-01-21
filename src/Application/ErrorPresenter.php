@@ -19,11 +19,11 @@ use Nette,
  */
 class ErrorPresenter extends Nette\Object implements Application\IPresenter
 {
-	/** @var ILogger */
+	/** @var ILogger|NULL */
 	private $logger;
 
 
-	public function __construct(ILogger $logger)
+	public function __construct(ILogger $logger = NULL)
 	{
 		$this->logger = $logger;
 	}
@@ -39,7 +39,9 @@ class ErrorPresenter extends Nette\Object implements Application\IPresenter
 			$code = $e->getCode();
 		} else {
 			$code = 500;
-			$this->logger->log($e, ILogger::EXCEPTION);
+			if ($this->logger) {
+				$this->logger->log($e, ILogger::EXCEPTION);
+			}
 		}
 		ob_start();
 		require __DIR__ . '/templates/error.phtml';
