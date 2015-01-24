@@ -314,7 +314,10 @@ class Route extends Nette\Object implements Application\IRouter
 			if (isset($meta['fixity'])) {
 				if ($params[$name] === FALSE) {
 					$params[$name] = '0';
+				} elseif (is_scalar($params[$name])) {
+					$params[$name] = (string) $params[$name];
 				}
+
 				if ($params[$name] === $meta[self::VALUE]) { // remove default values; NULL values are retain
 					unset($params[$name]);
 					continue;
@@ -450,9 +453,13 @@ class Route extends Nette\Object implements Application\IRouter
 
 		foreach ($metadata as $name => $meta) {
 			if (!is_array($meta)) {
-				$metadata[$name] = array(self::VALUE => $meta, 'fixity' => self::CONSTANT);
+				$metadata[$name] = $meta = array(self::VALUE => $meta);
+			}
 
-			} elseif (array_key_exists(self::VALUE, $meta)) {
+			if (array_key_exists(self::VALUE, $meta)) {
+				if (is_scalar($meta[self::VALUE])) {
+					$metadata[$name][self::VALUE] = (string) $meta[self::VALUE];
+				}
 				$metadata[$name]['fixity'] = self::CONSTANT;
 			}
 		}
