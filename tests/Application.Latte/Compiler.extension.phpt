@@ -75,10 +75,7 @@ $compiler = new DI\Compiler;
 $compiler->addExtension('latte', new Nette\Bridges\ApplicationDI\LatteExtension(NULL, FALSE));
 $compiler->addExtension('another', new AnotherExtension);
 $code = $compiler->compile($config, 'Container', 'Nette\DI\Container');
-
-
-file_put_contents(TEMP_DIR . '/code.php', "<?php\n\n$code");
-require TEMP_DIR . '/code.php';
+eval($code);
 
 $container = new Container;
 

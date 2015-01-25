@@ -22,7 +22,6 @@ class InnerControl extends Nette\Application\UI\Control
 	public function renderA()
 	{
 		$latte = new Latte\Engine;
-		$latte->setTempDirectory(TEMP_DIR);
 		$latte->setLoader(new Latte\Loaders\StringLoader);
 		UIMacros::install($latte->getCompiler());
 		$params['_presenter'] = $this->getPresenter();
@@ -34,7 +33,6 @@ class InnerControl extends Nette\Application\UI\Control
 	public function renderB()
 	{
 		$latte = new Latte\Engine;
-		$latte->setTempDirectory(TEMP_DIR);
 		$latte->setLoader(new Latte\Loaders\StringLoader);
 		UIMacros::install($latte->getCompiler());
 		$params['_presenter'] = $this->getPresenter();
@@ -57,7 +55,6 @@ class TestPresenter extends Nette\Application\UI\Presenter
 	public function render()
 	{
 		$latte = new Latte\Engine;
-		$latte->setTempDirectory(TEMP_DIR);
 		$latte->setLoader(new Latte\Loaders\StringLoader);
 		UIMacros::install($latte->getCompiler());
 		$params['_control'] = $this;

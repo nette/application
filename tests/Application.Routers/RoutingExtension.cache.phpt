@@ -40,9 +40,7 @@ test(function() {
 	$compiler = new DI\Compiler;
 	$compiler->addExtension('routing', new RoutingExtension(FALSE));
 	$code = $compiler->compile($config, 'Container1');
-
-	file_put_contents(TEMP_DIR . '/code.php', "<?php\n\n$code");
-	require TEMP_DIR . '/code.php';
+	eval($code);
 
 	$container = new Container1;
 	Assert::type('MyRouter', $container->getService('router'));
@@ -63,9 +61,7 @@ test(function() {
 	$compiler = new DI\Compiler;
 	$compiler->addExtension('routing', new RoutingExtension(FALSE));
 	$code = $compiler->compile($config, 'Container2');
-
-	file_put_contents(TEMP_DIR . '/code.php', "<?php\n\n$code");
-	require TEMP_DIR . '/code.php';
+	eval($code);
 
 	$container = new Container2;
 	Assert::type('MyRouter', $container->getService('router'));

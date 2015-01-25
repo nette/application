@@ -24,9 +24,7 @@ test(function() {
 	$code = $compiler->compile(array(
 		'application' => array('debugger' => FALSE),
 	), 'Container1');
-
-	file_put_contents(TEMP_DIR . '/code.php', "<?php\n\n$code");
-	require TEMP_DIR . '/code.php';
+	eval($code);
 
 	$container = new Container1;
 	Assert::type( 'Nette\Application\Application', $container->getService('application') );
