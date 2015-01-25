@@ -35,6 +35,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 	{
 		$config = $this->validateConfig($this->defaults);
 		$container = $this->getContainerBuilder();
+		$container->addExcludedClasses(array('Nette\Application\UI\Control'));
 
 		$application = $container->addDefinition($this->prefix('application'))
 			->setClass('Nette\Application\Application')
