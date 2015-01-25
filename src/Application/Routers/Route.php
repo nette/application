@@ -21,7 +21,6 @@ use Nette,
  * @property-read string $mask
  * @property-read array $defaults
  * @property-read int $flags
- * @property-read string|FALSE $targetPresenter
  */
 class Route extends Nette\Object implements Application\IRouter
 {
@@ -674,12 +673,12 @@ class Route extends Nette\Object implements Application\IRouter
 	/**
 	 * Proprietary cache aim.
 	 * @internal
-	 * @return string|FALSE
+	 * @return string[]|NULL
 	 */
-	public function getTargetPresenter()
+	public function getTargetPresenters()
 	{
 		if ($this->flags & self::ONE_WAY) {
-			return FALSE;
+			return array();
 		}
 
 		$m = $this->metadata;
@@ -694,7 +693,7 @@ class Route extends Nette\Object implements Application\IRouter
 		}
 
 		if (isset($m[self::PRESENTER_KEY]['fixity']) && $m[self::PRESENTER_KEY]['fixity'] === self::CONSTANT) {
-			return $module . $m[self::PRESENTER_KEY][self::VALUE];
+			return array($module . $m[self::PRESENTER_KEY][self::VALUE]);
 		}
 		return NULL;
 	}

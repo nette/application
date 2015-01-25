@@ -62,22 +62,14 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 			$routes['*'] = array();
 
 			foreach ($this as $route) {
-				$presenter = $route instanceof Route ? $route->getTargetPresenter() : NULL;
+				$presenters = $route instanceof Route && is_array($tmp = $route->getTargetPresenters())
+					? $tmp : array_keys($routes);
 
-				if ($presenter === FALSE) {
-					continue;
-				}
-
-				if (is_string($presenter)) {
+				foreach ($presenters as $presenter) {
 					if (!isset($routes[$presenter])) {
 						$routes[$presenter] = $routes['*'];
 					}
 					$routes[$presenter][] = $route;
-
-				} else {
-					foreach ($routes as $id => $foo) {
-						$routes[$id][] = $route;
-					}
 				}
 			}
 
