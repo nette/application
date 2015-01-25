@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test: Nette\DI\Compiler: services setup.
+ * Test: LatteExtension.
  */
 
 use Nette\DI,
@@ -74,7 +74,7 @@ latte:
 $compiler = new DI\Compiler;
 $compiler->addExtension('latte', new Nette\Bridges\ApplicationDI\LatteExtension(NULL, FALSE));
 $compiler->addExtension('another', new AnotherExtension);
-$code = $compiler->compile($config, 'Container', 'Nette\DI\Container');
+$code = $compiler->compile($config, 'Container');
 eval($code);
 
 $container = new Container;
