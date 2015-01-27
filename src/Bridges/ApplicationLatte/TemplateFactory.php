@@ -70,7 +70,9 @@ class TemplateFactory extends Nette\Object implements UI\ITemplateFactory
 			$latte->getParser()->shortNoEscape = TRUE;
 			$latte->getCompiler()->addMacro('cache', new Nette\Bridges\CacheLatte\CacheMacro($latte->getCompiler()));
 			UIMacros::install($latte->getCompiler());
-			Nette\Bridges\FormsLatte\FormMacros::install($latte->getCompiler());
+			if (class_exists('Nette\Bridges\FormsLatte\FormMacros')) {
+				Nette\Bridges\FormsLatte\FormMacros::install($latte->getCompiler());
+			}
 			if ($control) {
 				$control->templatePrepareFilters($template);
 			}
