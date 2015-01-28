@@ -1,6 +1,5 @@
 <?php
 // source: %a%
-
 %A%
 // prolog Latte\Macros\BlockMacros
 //
@@ -57,3 +56,5 @@ call_user_func(reset($_b->blocks['_outer']), $_b, $template->getParameters()) ?>
 	<div class="<?php echo Latte\Runtime\Filters::escapeHtml('class', ENT_COMPAT) ?>
 "<?php echo ' id="' . $_control->getSnippetId('gallery') . '"' ?>><?php call_user_func(reset($_b->blocks['_gallery']), $_b, $template->getParameters()) ?>
 </div>
+<?php
+%A%
