@@ -1,6 +1,5 @@
 <?php
 // source: %a%
-
 %A%
 // prolog Latte\Macros\BlockMacros
 //
@@ -41,4 +40,5 @@ if (empty($_l->extends) && !empty($_control->snippetMode)) {
 //
 if ($_l->extends) { ob_end_clean(); return $template->renderChildTemplate($_l->extends, get_defined_vars()); } ?>
 <div id="<?php echo $_control->getSnippetId('outer') ?>"><?php call_user_func(reset($_b->blocks['_outer']), $_b, $template->getParameters()) ?>
-</div>
+</div><?php
+%A%
