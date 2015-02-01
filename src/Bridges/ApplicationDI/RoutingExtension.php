@@ -46,14 +46,21 @@ class RoutingExtension extends Nette\DI\CompilerExtension
 			$router->addSetup('$service[] = new Nette\Application\Routers\Route(?, ?);', array($mask, $action));
 		}
 
-		if ($this->debugMode && $config['debugger'] && $container->hasDefinition('application')) {
-			$container->getDefinition('application')->addSetup('@Tracy\Bar::addPanel', array(
-				new Nette\DI\Statement('Nette\Bridges\ApplicationTracy\RoutingPanel')
-			));
-		}
-
 		if ($this->name === 'routing') {
 			$container->addAlias('router', $this->prefix('router'));
+		}
+	}
+
+
+	public function beforeCompile()
+	{
+		$config = $this->getConfig();
+		$container = $this->getContainerBuilder();
+
+		if ($this->debugMode && $config['debugger'] && $application = $container->getByType('Nette\Application\Application')) {
+			$container->getDefinition($application)->addSetup('@Tracy\Bar::addPanel', array(
+				new Nette\DI\Statement('Nette\Bridges\ApplicationTracy\RoutingPanel')
+			));
 		}
 	}
 
