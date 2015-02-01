@@ -52,7 +52,7 @@ class LatteExtension extends Nette\DI\CompilerExtension
 			->addSetup('setTempDirectory', array($this->tempDir))
 			->addSetup('setAutoRefresh', array($this->debugMode))
 			->addSetup('setContentType', array($config['xhtml'] ? Latte\Compiler::CONTENT_XHTML : Latte\Compiler::CONTENT_HTML))
-			->addSetup('Nette\Utils\Html::$xhtml = ?;', array((bool) $config['xhtml']))
+			->addSetup('Nette\Utils\Html::$xhtml = ?', array((bool) $config['xhtml']))
 			->setImplement('Nette\Bridges\ApplicationLatte\ILatteFactory');
 
 		$container->addDefinition($this->prefix('templateFactory'))
@@ -65,7 +65,7 @@ class LatteExtension extends Nette\DI\CompilerExtension
 			->addSetup('setTempDirectory', array($this->tempDir))
 			->addSetup('setAutoRefresh', array($this->debugMode))
 			->addSetup('setContentType', array($config['xhtml'] ? Latte\Compiler::CONTENT_XHTML : Latte\Compiler::CONTENT_HTML))
-			->addSetup('Nette\Utils\Html::$xhtml = ?;', array((bool) $config['xhtml']))
+			->addSetup('Nette\Utils\Html::$xhtml = ?', array((bool) $config['xhtml']))
 			->setAutowired(FALSE);
 
 		foreach ($config['macros'] as $macro) {
