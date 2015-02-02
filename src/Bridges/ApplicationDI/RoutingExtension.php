@@ -54,10 +54,9 @@ class RoutingExtension extends Nette\DI\CompilerExtension
 
 	public function beforeCompile()
 	{
-		$config = $this->getConfig();
 		$container = $this->getContainerBuilder();
 
-		if ($this->debugMode && $config['debugger'] && $application = $container->getByType('Nette\Application\Application')) {
+		if ($this->debugMode && $this->config['debugger'] && $application = $container->getByType('Nette\Application\Application')) {
 			$container->getDefinition($application)->addSetup('@Tracy\Bar::addPanel', array(
 				new Nette\DI\Statement('Nette\Bridges\ApplicationTracy\RoutingPanel')
 			));
@@ -67,8 +66,7 @@ class RoutingExtension extends Nette\DI\CompilerExtension
 
 	public function afterCompile(Nette\PhpGenerator\ClassType $class)
 	{
-		$config = $this->getConfig();
-		if (!empty($config['cache'])) {
+		if (!empty($this->config['cache'])) {
 			$method = $class->methods[Nette\DI\Container::getMethodName($this->prefix('router'))];
 			try {
 				$router = serialize(eval($method->body));

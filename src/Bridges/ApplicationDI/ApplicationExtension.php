@@ -78,7 +78,6 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 
 	public function beforeCompile()
 	{
-		$this->validateConfig($this->defaults);
 		$container = $this->getContainerBuilder();
 		$all = array();
 
