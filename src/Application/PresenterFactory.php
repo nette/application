@@ -17,6 +17,9 @@ use Nette;
  */
 class PresenterFactory extends Nette\Object implements IPresenterFactory
 {
+	/** @deprecated */
+	public $caseSensitive = TRUE;
+
 	/** @var array[] of module => splited mask */
 	private $mapping = array(
 		'*' => array('', '*Module\\', '*Presenter'),
@@ -100,7 +103,14 @@ class PresenterFactory extends Nette\Object implements IPresenterFactory
 			throw new InvalidPresenterException("Cannot load presenter '$name', class '$class' is abstract.");
 		}
 
-		return $this->cache[$name] = $class;
+		$this->cache[$name] = $class;
+
+		if ($name !== ($realName = $this->unformatPresenterClass($class))) {
+			trigger_error("Case mismatch on presenter name '$name', correct name is '$realName'.", E_USER_WARNING);
+			$name = $realName;
+		}
+
+		return $class;
 	}
 
 
@@ -137,6 +147,24 @@ class PresenterFactory extends Nette\Object implements IPresenterFactory
 			$mapping[0] .= str_replace('*', $part, $mapping[$parts ? 1 : 2]);
 		}
 		return $mapping[0];
+	}
+
+
+	/**
+	 * Formats presenter name from class name.
+	 * @param  string
+	 * @return string
+	 * @internal
+	 */
+	public function unformatPresenterClass($class)
+	{
+		foreach ($this->mapping as $module => $mapping) {
+			$mapping = str_replace(array('\\', '*'), array('\\\\', '(\w+)'), $mapping);
+			if (preg_match("#^\\\\?$mapping[0]((?:$mapping[1])*)$mapping[2]\\z#i", $class, $matches)) {
+				return ($module === '*' ? '' : $module . ':')
+					. preg_replace("#$mapping[1]#iA", '$1:', $matches[1]) . $matches[3];
+			}
+		}
 	}
 
 }
