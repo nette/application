@@ -54,7 +54,7 @@ class RoutingExtension extends Nette\DI\CompilerExtension
 
 	public function beforeCompile()
 	{
-		$config = $this->validateConfig($this->defaults);
+		$config = $this->getConfig();
 		$container = $this->getContainerBuilder();
 
 		if ($this->debugMode && $config['debugger'] && $application = $container->getByType('Nette\Application\Application')) {
