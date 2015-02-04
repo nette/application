@@ -29,10 +29,10 @@ $httpRequest = new Http\Request($url);
 
 $req = $router->match($httpRequest);
 Assert::same( 'myPresenter',  $req->getPresenterName() );
-Assert::same( 'action',  $req->parameters['action'] );
-Assert::same( '12',  $req->parameters['id'] );
-Assert::same( 'testvalue',  $req->parameters['test'] );
-Assert::same( 'anyvalue',  $req->parameters['any'] );
+Assert::same( 'action',  $req->getParameter('action') );
+Assert::same( '12',  $req->getParameter('id') );
+Assert::same( 'testvalue',  $req->getParameter('test') );
+Assert::same( 'anyvalue',  $req->getParameter('any') );
 
-$url = $router->constructUrl($req, $httpRequest->url);
+$url = $router->constructUrl($req, $httpRequest->getUrl());
 Assert::same( 'http://nette.org/file.php?action=action&test=testvalue&presenter=myPresenter',  $url );

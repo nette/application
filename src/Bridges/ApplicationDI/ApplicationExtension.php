@@ -83,7 +83,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 
 		foreach ($container->findByType('Nette\Application\IPresenter', FALSE) as $name) {
 			$def = $container->getDefinition($name);
-			$all[strtolower($def->class)] = $def;
+			$all[strtolower($def->getClass())] = $def;
 		}
 
 		$counter = 0;
@@ -94,8 +94,8 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 		}
 
 		foreach ($all as $def) {
-			$def->setInject(TRUE)->setAutowired(FALSE)->addTag('nette.presenter', $def->class);
-			if (is_subclass_of($def->class, 'Nette\Application\UI\Presenter')) {
+			$def->setInject(TRUE)->setAutowired(FALSE)->addTag('nette.presenter', $def->getClass());
+			if (is_subclass_of($def->getClass(), 'Nette\Application\UI\Presenter')) {
 				$def->addSetup('$invalidLinkMode', array(
 					$this->debugMode ? UI\Presenter::INVALID_LINK_WARNING : UI\Presenter::INVALID_LINK_SILENT
 				));
