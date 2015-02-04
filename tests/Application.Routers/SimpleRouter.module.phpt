@@ -26,7 +26,7 @@ $httpRequest = new Http\Request($url);
 $req = $router->match($httpRequest);
 Assert::same( 'main:sub:myPresenter',  $req->getPresenterName() );
 
-$url = $router->constructUrl($req, $httpRequest->url);
+$url = $router->constructUrl($req, $httpRequest->getUrl());
 Assert::same( 'http://nette.org/file.php?presenter=myPresenter',  $url );
 
 $req = new Application\Request(
@@ -34,5 +34,5 @@ $req = new Application\Request(
 	Http\Request::GET,
 	array()
 );
-$url = $router->constructUrl($req, $httpRequest->url);
+$url = $router->constructUrl($req, $httpRequest->getUrl());
 Assert::null( $url );

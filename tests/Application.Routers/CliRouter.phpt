@@ -42,9 +42,9 @@ Assert::same( array(
 	'verbose' => TRUE,
 	'pass' => 'se cret',
 	'wait' => TRUE,
-), $req->parameters );
+), $req->getParameters() );
 
 Assert::true( $req->isMethod('cli') );
 
 
-Assert::null( $router->constructUrl($req, $httpRequest->url) );
+Assert::null( $router->constructUrl($req, $httpRequest->getUrl()) );

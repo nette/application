@@ -34,5 +34,5 @@ Assert::same( '12',  $req->parameters['id'] );
 Assert::same( 'testvalue',  $req->parameters['test'] );
 Assert::same( 'anyvalue',  $req->parameters['any'] );
 
-$url = $router->constructUrl($req, $httpRequest->url);
+$url = $router->constructUrl($req, $httpRequest->getUrl());
 Assert::same( 'http://nette.org/file.php?action=action&test=testvalue&presenter=myPresenter',  $url );
