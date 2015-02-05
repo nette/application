@@ -87,6 +87,10 @@ use Nette,
 	</table>
 <?php endif ?>
 
-	<?php if ($source): ?><p><?php echo $source ?> in <?php echo Tracy\Helpers::editorLink($source->getFileName(), $source->getStartLine()) ?></p><?php endif ?>
+	<?php if ($source): ?>
+	<p><?php echo $source instanceof \ReflectionClass ? $source->getName() : $source->getDeclaringClass()->getName() . '::' . $source->getName() . '()' ?> in
+	<?php echo Tracy\Helpers::editorLink($source->getFileName(), $source->getStartLine()) ?>
+	</p>
+	<?php endif ?>
 </div>
 </div>
