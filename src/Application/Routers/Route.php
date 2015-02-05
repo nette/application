@@ -70,7 +70,7 @@ class Route extends Nette\Object implements Application\IRouter
 			self::FILTER_OUT => array(__CLASS__, 'presenter2path'),
 		),
 		'action' => array(
-			self::PATTERN => '[a-z0-9][a-z0-9-]*',
+			self::PATTERN => '[a-z][a-z0-9-]*',
 			self::FILTER_IN => array(__CLASS__, 'path2action'),
 			self::FILTER_OUT => array(__CLASS__, 'action2path'),
 		),
