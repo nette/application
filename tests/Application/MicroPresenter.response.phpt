@@ -33,7 +33,7 @@ class MicroContainer extends Nette\DI\Container
 
     protected $meta = array(
         'types' => array(
-            'nette\\bridges\\applicationlatte\\ilattefactory' => array(1 => array('latte.latteFactory')),
+            'Nette\\Bridges\\ApplicationLatte\\ILatteFactory' => array(1 => array('latte.latteFactory')),
         ),
     );
 

@@ -81,15 +81,14 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 		$container = $this->getContainerBuilder();
 		$all = array();
 
-		foreach ($container->findByType('Nette\Application\IPresenter', FALSE) as $name) {
-			$def = $container->getDefinition($name);
-			$all[strtolower($def->getClass())] = $def;
+		foreach ($container->findByType('Nette\Application\IPresenter') as $def) {
+			$all[$def->getClass()] = $def;
 		}
 
 		$counter = 0;
 		foreach ($this->findPresenters() as $class) {
-			if (empty($all[$tmp = strtolower($class)])) {
-				$all[$tmp] = $container->addDefinition($this->prefix(++$counter))->setClass($class);
+			if (empty($all[$class])) {
+				$all[$class] = $container->addDefinition($this->prefix(++$counter))->setClass($class);
 			}
 		}
 

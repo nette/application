@@ -67,7 +67,7 @@ class RoutingExtension extends Nette\DI\CompilerExtension
 	public function afterCompile(Nette\PhpGenerator\ClassType $class)
 	{
 		if (!empty($this->config['cache'])) {
-			$method = $class->methods[Nette\DI\Container::getMethodName($this->prefix('router'))];
+			$method = $class->getMethod(Nette\DI\Container::getMethodName($this->prefix('router')));
 			try {
 				$router = serialize(eval($method->getBody()));
 			} catch (\Exception $e) {
