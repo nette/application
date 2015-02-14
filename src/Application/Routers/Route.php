@@ -667,6 +667,16 @@ class Route extends Nette\Object implements Application\IRouter
 	}
 
 
+	/**
+	 * Returns internal metadata.
+	 * @return array
+	 */
+	public function getMetadata()
+	{
+		return $this->metadata;
+	}
+
+
 	/********************* Utilities ****************d*g**/
 
 
