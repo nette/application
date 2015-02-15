@@ -21,7 +21,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 	public $defaults = array(
 		'debugger' => TRUE,
 		'errorPresenter' => 'Nette:Error',
-		'catchExceptions' => NULL,
+		'catchExceptions' => NULL, // true|false|smart
 		'mapping' => NULL,
 		'scanDirs' => array(),
 		'scanComposer' => NULL,
@@ -49,7 +49,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 
 		$application = $container->addDefinition($this->prefix('application'))
 			->setClass('Nette\Application\Application')
-			->addSetup('$catchExceptions', array($config['catchExceptions']))
+			->addSetup('$catchExceptions', array($config['catchExceptions'] === 'smart' ? NULL : $config['catchExceptions']))
 			->addSetup('$errorPresenter', array($config['errorPresenter']));
 
 		if ($config['debugger']) {
