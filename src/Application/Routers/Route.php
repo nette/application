@@ -805,6 +805,7 @@ class Route extends Nette\Object implements Application\IRouter
 	 */
 	public static function addStyle($style, $parent = '#')
 	{
+		trigger_error(__METHOD__ . '() is deprecated.', E_USER_DEPRECATED);
 		if (isset(static::$styles[$style])) {
 			throw new Nette\InvalidArgumentException("Style '$style' already exists.");
 		}
@@ -826,6 +827,7 @@ class Route extends Nette\Object implements Application\IRouter
 	 */
 	public static function setStyleProperty($style, $key, $value)
 	{
+		trigger_error(__METHOD__ . '() is deprecated.', E_USER_DEPRECATED);
 		if (!isset(static::$styles[$style])) {
 			throw new Nette\InvalidArgumentException("Style '$style' doesn't exist.");
 		}
