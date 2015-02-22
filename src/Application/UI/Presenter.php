@@ -34,9 +34,10 @@ use Nette,
 abstract class Presenter extends Control implements Application\IPresenter
 {
 	/** bad link handling {@link Presenter::$invalidLinkMode} */
-	const INVALID_LINK_SILENT = 1,
-		INVALID_LINK_WARNING = 2,
-		INVALID_LINK_EXCEPTION = 3;
+	const INVALID_LINK_SILENT = 0,
+		INVALID_LINK_WARNING = 1,
+		INVALID_LINK_EXCEPTION = 2,
+		INVALID_LINK_TEXTUAL = 4;
 
 	/** @internal special parameter key */
 	const SIGNAL_KEY = 'do',
@@ -1060,15 +1061,14 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	protected function handleInvalidLink(InvalidLinkException $e)
 	{
-		if ($this->invalidLinkMode === self::INVALID_LINK_SILENT) {
-			return '#';
-
-		} elseif ($this->invalidLinkMode === self::INVALID_LINK_WARNING) {
-			return '#error: ' . $e->getMessage();
-
-		} else { // self::INVALID_LINK_EXCEPTION
+		if ($this->invalidLinkMode & self::INVALID_LINK_EXCEPTION) {
 			throw $e;
+		} elseif ($this->invalidLinkMode & self::INVALID_LINK_WARNING) {
+			trigger_error('Invalid link: ' . $e->getMessage(), E_USER_WARNING);
 		}
+		return $this->invalidLinkMode & self::INVALID_LINK_TEXTUAL
+			? '#error: ' . $e->getMessage()
+			: '#';
 	}
 
 
