@@ -36,7 +36,10 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** bad link handling {@link Presenter::$invalidLinkMode} */
 	const INVALID_LINK_SILENT = 1,
 		INVALID_LINK_WARNING = 2,
-		INVALID_LINK_EXCEPTION = 3;
+		INVALID_LINK_VISUAL = 4;
+
+	/** @deprecated Please use INVALID_LINK_WARNING instead. */
+	const INVALID_LINK_EXCEPTION = 3;
 
 	/** @internal special parameter key */
 	const SIGNAL_KEY = 'do',
@@ -1055,19 +1058,23 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Invalid link handler. Descendant can override this method to change default behaviour.
+	 * @param InvalidLinkException $e
 	 * @return string
 	 * @throws InvalidLinkException
 	 */
 	protected function handleInvalidLink(InvalidLinkException $e)
 	{
-		if ($this->invalidLinkMode === self::INVALID_LINK_SILENT) {
-			return '#';
-
-		} elseif ($this->invalidLinkMode === self::INVALID_LINK_WARNING) {
-			return '#error: ' . $e->getMessage();
-
-		} else { // self::INVALID_LINK_EXCEPTION
-			throw $e;
+		switch ($this->invalidLinkMode) {
+			case self::INVALID_LINK_EXCEPTION:
+				throw $e;
+			case self::INVALID_LINK_WARNING:
+				trigger_error('Invalid link: ' . $e->getMessage(), E_USER_WARNING);
+			case self::INVALID_LINK_VISUAL:
+				return '#error: ' . $e->getMessage();
+			case self::INVALID_LINK_SILENT:
+			default:
+				trigger_error('Invalid link: ' . $e->getMessage(), E_USER_WARNING);
+				return '#';
 		}
 	}
 
