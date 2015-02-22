@@ -26,10 +26,14 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 		'scanDirs' => array(),
 		'scanComposer' => NULL,
 		'scanFilter' => 'Presenter',
+		'silentInvalidLinks' => FALSE,
 	);
 
 	/** @var bool */
 	private $debugMode;
+
+	/** @var int */
+	private $invalidLinkMode;
 
 
 	public function __construct($debugMode = FALSE, array $scanDirs = NULL)
@@ -44,6 +48,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 	public function loadConfiguration()
 	{
 		$config = $this->validateConfig($this->defaults);
+		$this->configureInvalidLinkMode($config['silentInvalidLinks']);
 		$container = $this->getContainerBuilder();
 		$container->addExcludedClasses(array('Nette\Application\UI\Control'));
 
@@ -58,7 +63,8 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 
 		$presenterFactory = $container->addDefinition($this->prefix('presenterFactory'))
 			->setClass('Nette\Application\IPresenterFactory')
-			->setFactory('Nette\Application\PresenterFactory', array(1 => $this->debugMode));
+			->setFactory('Nette\Application\PresenterFactory', array(1 => $this->debugMode))
+			->addSetup('setInvalidLinkMode', array($this->invalidLinkMode));
 
 		if ($config['mapping']) {
 			$presenterFactory->addSetup('setMapping', array($config['mapping']));
@@ -95,9 +101,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 		foreach ($all as $def) {
 			$def->setInject(TRUE)->setAutowired(FALSE)->addTag('nette.presenter', $def->getClass());
 			if (is_subclass_of($def->getClass(), 'Nette\Application\UI\Presenter')) {
-				$def->addSetup('$invalidLinkMode', array(
-					$this->debugMode ? UI\Presenter::INVALID_LINK_WARNING : UI\Presenter::INVALID_LINK_SILENT
-				));
+				$def->addSetup('$invalidLinkMode', array($this->invalidLinkMode));
 			}
 		}
 	}
@@ -139,6 +143,24 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 			}
 		}
 		return $presenters;
+	}
+
+
+	/**
+	 * Sets invalidLinkMode for presenters.
+	 * @param bool
+	 */
+	private function configureInvalidLinkMode($silent = TRUE)
+	{
+		if ($silent) {
+			$this->invalidLinkMode = $this->debugMode
+				? Nette\Application\UI\Presenter::INVALID_LINK_VISUAL
+				: Nette\Application\UI\Presenter::INVALID_LINK_SILENT;
+		} else {
+			$this->invalidLinkMode = $this->debugMode
+				? Nette\Application\UI\Presenter::INVALID_LINK_WARNING
+				: Nette\Application\UI\Presenter::INVALID_LINK_SILENT;
+		}
 	}
 
 }

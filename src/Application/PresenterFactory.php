@@ -35,6 +35,9 @@ class PresenterFactory extends Nette\Object implements IPresenterFactory
 	/** @var bool */
 	private $autoRebuild;
 
+	/** @var int */
+	private $invalidLinkMode;
+
 
 	public function __construct(Nette\DI\Container $container, $autoRebuild = FALSE)
 	{
@@ -64,7 +67,7 @@ class PresenterFactory extends Nette\Object implements IPresenterFactory
 			$presenter = $this->container->createInstance($class);
 			$this->container->callInjects($presenter);
 			if ($presenter instanceof UI\Presenter && $presenter->invalidLinkMode === NULL) {
-				$presenter->invalidLinkMode = $this->container->parameters['debugMode'] ? UI\Presenter::INVALID_LINK_WARNING : UI\Presenter::INVALID_LINK_SILENT;
+				$presenter->invalidLinkMode = $this->invalidLinkMode;
 			}
 			return $presenter;
 		}
@@ -126,6 +129,18 @@ class PresenterFactory extends Nette\Object implements IPresenterFactory
 			}
 			$this->mapping[$module] = array($m[1], $m[2] ?: '*Module\\', $m[3]);
 		}
+		return $this;
+	}
+
+
+	/**
+	 * Sets invalid link mode.
+	 * @param  int
+	 * @return self
+	 */
+	public function setInvalidLinkMode($invalidLinkMode)
+	{
+		$this->invalidLinkMode = $invalidLinkMode;
 		return $this;
 	}
 
