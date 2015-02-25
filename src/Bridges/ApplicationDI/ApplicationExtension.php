@@ -56,9 +56,10 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 			$application->addSetup('Nette\Bridges\ApplicationTracy\RoutingPanel::initializePanel');
 		}
 
+		$touchToRebuild = $this->debugMode && $config['scanDirs'] ? reset($config['scanDirs']) : NULL;
 		$presenterFactory = $container->addDefinition($this->prefix('presenterFactory'))
 			->setClass('Nette\Application\IPresenterFactory')
-			->setFactory('Nette\Application\PresenterFactory', array(1 => $this->debugMode));
+			->setFactory('Nette\Application\PresenterFactory', array(1 => $touchToRebuild));
 
 		if ($config['mapping']) {
 			$presenterFactory->addSetup('setMapping', array($config['mapping']));
@@ -116,6 +117,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 			$robot->acceptFiles = '*' . $config['scanFilter'] . '*.php';
 			$robot->rebuild();
 			$classes = array_keys($robot->getIndexedClasses());
+			$this->getContainerBuilder()->addDependency(reset($config['scanDirs']));
 		}
 
 		if ($config['scanComposer']) {

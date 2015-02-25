@@ -32,14 +32,14 @@ class PresenterFactory extends Nette\Object implements IPresenterFactory
 	/** @var Nette\DI\Container */
 	private $container;
 
-	/** @var bool */
-	private $autoRebuild;
+	/** @var string */
+	private $touchToRebuild;
 
 
-	public function __construct(Nette\DI\Container $container, $autoRebuild = FALSE)
+	public function __construct(Nette\DI\Container $container, $touchToRebuild = NULL)
 	{
 		$this->container = $container;
-		$this->autoRebuild = $autoRebuild;
+		$this->touchToRebuild = $touchToRebuild;
 	}
 
 
@@ -56,9 +56,8 @@ class PresenterFactory extends Nette\Object implements IPresenterFactory
 			throw new InvalidPresenterException("Multiple services of type $class found: " . implode(', ', $services) . '.');
 
 		} elseif (!$services) {
-			if ($this->autoRebuild) {
-				$rc = new \ReflectionClass($this->container);
-				@unlink($rc->getFileName()); // @ file may not exists
+			if ($this->touchToRebuild) {
+				touch($this->touchToRebuild);
 			}
 
 			$presenter = $this->container->createInstance($class);
