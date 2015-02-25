@@ -56,10 +56,13 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 			$application->addSetup('Nette\Bridges\ApplicationTracy\RoutingPanel::initializePanel');
 		}
 
-		$touchToRebuild = $this->debugMode && $config['scanDirs'] ? reset($config['scanDirs']) : NULL;
+		$touch = $this->debugMode && $config['scanDirs'] ? reset($config['scanDirs']) : NULL; // dir added as dependency
+		$invalidLinkMode = $this->debugMode ? UI\Presenter::INVALID_LINK_WARNING : UI\Presenter::INVALID_LINK_SILENT;
 		$presenterFactory = $container->addDefinition($this->prefix('presenterFactory'))
 			->setClass('Nette\Application\IPresenterFactory')
-			->setFactory('Nette\Application\PresenterFactory', array(1 => $touchToRebuild));
+			->setFactory('Nette\Application\PresenterFactory', array(new Nette\DI\Statement(
+				'Nette\Bridges\ApplicationDI\PresenterFactoryCallback', array(1 => $invalidLinkMode, $touch)
+			)));
 
 		if ($config['mapping']) {
 			$presenterFactory->addSetup('setMapping', array($config['mapping']));

@@ -29,17 +29,16 @@ class PresenterFactory extends Nette\Object implements IPresenterFactory
 	/** @var array */
 	private $cache = array();
 
-	/** @var Nette\DI\Container */
-	private $container;
-
-	/** @var string */
-	private $touchToRebuild;
+	/** @var callable */
+	private $factory;
 
 
-	public function __construct(Nette\DI\Container $container, $touchToRebuild = NULL)
+	/**
+	 * @param  callable  function(string $class): IPresenter
+	 */
+	public function __construct($factory = NULL)
 	{
-		$this->container = $container;
-		$this->touchToRebuild = $touchToRebuild;
+		$this->factory = $factory ?: function($class) { return new $class; };
 	}
 
 
@@ -50,25 +49,7 @@ class PresenterFactory extends Nette\Object implements IPresenterFactory
 	 */
 	public function createPresenter($name)
 	{
-		$class = $this->getPresenterClass($name);
-		$services = array_keys($this->container->findByTag('nette.presenter'), $class);
-		if (count($services) > 1) {
-			throw new InvalidPresenterException("Multiple services of type $class found: " . implode(', ', $services) . '.');
-
-		} elseif (!$services) {
-			if ($this->touchToRebuild) {
-				touch($this->touchToRebuild);
-			}
-
-			$presenter = $this->container->createInstance($class);
-			$this->container->callInjects($presenter);
-			if ($presenter instanceof UI\Presenter && $presenter->invalidLinkMode === NULL) {
-				$presenter->invalidLinkMode = $this->container->parameters['debugMode'] ? UI\Presenter::INVALID_LINK_WARNING : UI\Presenter::INVALID_LINK_SILENT;
-			}
-			return $presenter;
-		}
-
-		return $this->container->createService($services[0]);
+		return call_user_func($this->factory, $this->getPresenterClass($name));
 	}
 
 

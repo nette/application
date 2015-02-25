@@ -12,7 +12,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 test(function() {
-	$factory = new PresenterFactory(new Nette\DI\Container);
+	$factory = new PresenterFactory;
 
 	$factory->setMapping(array(
 		'Foo2' => 'App2\*\*Presenter',
@@ -35,7 +35,7 @@ test(function() {
 
 
 test(function() {
-	$factory = new PresenterFactory(new Nette\DI\Container);
+	$factory = new PresenterFactory;
 
 	$factory->setMapping(array(
 		'Foo2' => 'App2\*Presenter',
