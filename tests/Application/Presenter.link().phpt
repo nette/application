@@ -77,6 +77,7 @@ class TestPresenter extends Application\UI\Presenter
 	{
 		parent::startup();
 		$this['mycontrol'] = new TestControl;
+		$this->invalidLinkMode = self::INVALID_LINK_TEXTUAL;
 
 		// Presenter & action link
 		Assert::same( '/index.php?action=product&presenter=Test', $this->link('product', array('var1' => $this->var1)) );
@@ -133,6 +134,23 @@ class TestPresenter extends Application\UI\Presenter
 		$this['mycontrol']->order = 1;
 		Assert::same( "#error: Invalid value for persistent parameter 'order' in 'mycontrol', expected array.", $this['mycontrol']->link('click') );
 		$this['mycontrol']->order = NULL;
+
+		// silent invalid link mode
+		$this->invalidLinkMode = self::INVALID_LINK_SILENT;
+		Assert::same('#', $this->link('product', array('var1' => null, 'ok' => 'a')));
+
+		// warning invalid link mode
+		$this->invalidLinkMode = self::INVALID_LINK_WARNING;
+		$me = $this;
+		Assert::error(function() use ($me) {
+			Assert::same('#', $me->link('product', array('var1' => null, 'ok' => 'a')));
+		}, E_USER_WARNING, "Invalid link: Invalid value for persistent parameter 'ok' in 'Test', expected boolean.");
+
+		// exception invalid link mode
+		$this->invalidLinkMode = self::INVALID_LINK_EXCEPTION;
+		Assert::exception(function() use ($me) {
+			$me->link('product', array('var1' => null, 'ok' => 'a'));
+		}, 'Nette\Application\UI\InvalidLinkException', "Invalid value for persistent parameter 'ok' in 'Test', expected boolean.");
 	}
 
 

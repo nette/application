@@ -42,7 +42,7 @@ namespace {
 		Tester\Assert;
 
 
-	$pf = new PresenterFactory(new Nette\DI\Container);
+	$pf = new PresenterFactory;
 
 
 	test(function() use ($pf) {
