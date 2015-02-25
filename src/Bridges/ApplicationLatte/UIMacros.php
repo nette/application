@@ -100,8 +100,10 @@ if (empty($_l->extends) && !empty($_control->snippetMode)) {
 	 */
 	public function macroIfCurrent(MacroNode $node, PhpWriter $writer)
 	{
-		return $writer->write(($node->args ? 'try { $_presenter->link(%node.word, %node.array?); } catch (Nette\Application\UI\InvalidLinkException $e) {}' : '')
-			. '; if ($_presenter->getLastCreatedRequestFlag("current")) {');
+		return $writer->write($node->args
+			? 'if ($_presenter->isLinkCurrent(%node.word, %node.array?)) {'
+			: 'if ($_presenter->getLastCreatedRequestFlag("current")) {'
+		);
 	}
 
 
