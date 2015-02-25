@@ -23,4 +23,8 @@ Assert::matchFile(__DIR__ . '/expected/UIMacros.isLinkCurrent.phtml', $latte->co
 <a href="{link default}" n:class="$presenter->isLinkCurrent() ? current">href before n:class</a>
 
 <a n:class="$presenter->isLinkCurrent() ? current" href="{link default}">href after n:class</a>
+
+{ifCurrent}empty{/ifCurrent}
+
+{ifCurrent default}default{/ifCurrent}
 '));
