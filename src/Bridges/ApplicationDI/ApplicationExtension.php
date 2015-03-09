@@ -35,13 +35,17 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 	/** @var int */
 	private $invalidLinkMode;
 
+	/** @var string */
+	private $tempFile;
 
-	public function __construct($debugMode = FALSE, array $scanDirs = NULL)
+
+	public function __construct($debugMode = FALSE, array $scanDirs = NULL, $tempDir = NULL)
 	{
 		$this->defaults['scanDirs'] = (array) $scanDirs;
 		$this->defaults['scanComposer'] = class_exists('Composer\Autoload\ClassLoader');
 		$this->defaults['catchExceptions'] = !$debugMode;
 		$this->debugMode = $debugMode;
+		$this->tempFile = $tempDir ? $tempDir . '/' . urlencode(__CLASS__) : NULL;
 	}
 
 
@@ -64,7 +68,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 			$application->addSetup('Nette\Bridges\ApplicationTracy\RoutingPanel::initializePanel');
 		}
 
-		$touch = $this->debugMode && $config['scanDirs'] ? reset($config['scanDirs']) : NULL; // dir added as dependency
+		$touch = $this->debugMode && $config['scanDirs'] ? $this->tempFile : NULL;
 		$presenterFactory = $container->addDefinition($this->prefix('presenterFactory'))
 			->setClass('Nette\Application\IPresenterFactory')
 			->setFactory('Nette\Application\PresenterFactory', array(new Nette\DI\Statement(
@@ -125,7 +129,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 			$robot->acceptFiles = '*' . $config['scanFilter'] . '*.php';
 			$robot->rebuild();
 			$classes = array_keys($robot->getIndexedClasses());
-			$this->getContainerBuilder()->addDependency(reset($config['scanDirs']));
+			$this->getContainerBuilder()->addDependency($this->tempFile);
 		}
 
 		if ($config['scanComposer']) {
