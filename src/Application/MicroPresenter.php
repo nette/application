@@ -78,14 +78,15 @@ class MicroPresenter extends Nette\Object implements Application\IPresenter
 		$reflection = Nette\Utils\Callback::toReflection(Nette\Utils\Callback::check($callback));
 		$params = Application\UI\PresenterComponentReflection::combineArgs($reflection, $params);
 
-		foreach ($reflection->getParameters() as $param) {
-			if ($param->getClassName()) {
-				unset($params[$param->getPosition()]);
-			}
-		}
-
 		if ($this->context) {
+			foreach ($reflection->getParameters() as $param) {
+				if ($param->getClassName()) {
+					unset($params[$param->getPosition()]);
+				}
+			}
+
 			$params = Nette\DI\Helpers::autowireArguments($reflection, $params, $this->context);
+			$params['presenter'] = $this;
 		}
 
 		$response = call_user_func_array($callback, $params);
