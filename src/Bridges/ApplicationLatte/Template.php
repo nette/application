@@ -60,13 +60,9 @@ class Template extends Nette\Object implements Nette\Application\UI\ITemplate
 	 */
 	public function __toString()
 	{
-		ob_start();
 		try {
-			$this->render();
-			return ob_get_clean();
-
+			return $this->latte->renderToString($this->file, $this->params);
 		} catch (\Exception $e) {
-			ob_end_clean();
 			if (func_num_args()) {
 				throw $e;
 			}
