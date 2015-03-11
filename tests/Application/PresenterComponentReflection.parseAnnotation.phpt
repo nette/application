@@ -20,7 +20,7 @@ require __DIR__ . '/../bootstrap.php';
  * @persistent(FALSE)
  * @persistent(null)
  * @author
- * @renderable
+ *@renderable
  * @secured(role = "admin", level = 2)
  */
 class TestClass {}

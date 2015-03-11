@@ -169,7 +169,7 @@ class PresenterComponentReflection extends Nette\Reflection\ClassType
 	 */
 	public static function parseAnnotation(\Reflector $ref, $name)
 	{
-		if (!preg_match_all("#\\s@$name(?:\(\\s*([^)]*)\\s*\))?#", $ref->getDocComment(), $m)) {
+		if (!preg_match_all("#[\\s*]@$name(?:\(\\s*([^)]*)\\s*\))?#", $ref->getDocComment(), $m)) {
 			return FALSE;
 		}
 		$res = array();
