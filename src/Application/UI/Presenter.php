@@ -756,7 +756,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		if ($expire !== NULL) {
 			$this->httpResponse->setExpiration($expire);
 		}
-		$helper = new Nette\Http\Context($this->httpRequest, $this->httpResponse);
+		$helper = new Http\Context($this->httpRequest, $this->httpResponse);
 		if (!$helper->isModified($lastModified, $etag)) {
 			$this->terminate();
 		}
@@ -1311,7 +1311,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/********************* services ****************d*g**/
 
 
-	public function injectPrimary(Nette\DI\Container $context = NULL, Nette\Application\IPresenterFactory $presenterFactory = NULL, Nette\Application\IRouter $router = NULL,
+	public function injectPrimary(Nette\DI\Container $context = NULL, Application\IPresenterFactory $presenterFactory = NULL, Application\IRouter $router = NULL,
 		Http\IRequest $httpRequest, Http\IResponse $httpResponse, Http\Session $session = NULL, Nette\Security\User $user = NULL, ITemplateFactory $templateFactory = NULL)
 	{
 		if ($this->presenterFactory !== NULL) {
