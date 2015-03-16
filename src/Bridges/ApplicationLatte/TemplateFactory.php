@@ -22,7 +22,7 @@ use Nette,
  */
 class TemplateFactory extends Nette\Object implements UI\ITemplateFactory
 {
-	/** @var Nette\Bridges\ApplicationLatte\ILatteFactory */
+	/** @var ILatteFactory */
 	private $latteFactory;
 
 	/** @var Nette\Http\IRequest */
