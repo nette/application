@@ -28,7 +28,7 @@ test(function() {
 	$fileResponse->send(new Http\Request(new Http\UrlScript), $response = new Http\Response);
 
 	Assert::same( $origData, ob_get_clean() );
-	Assert::same( 'attachment; filename="' . $fileName . '"', $response->getHeader('Content-Disposition') );
+	Assert::same( 'attachment; filename="' . $fileName . '"; filename*=utf-8\'\'' . rawurlencode($fileName), $response->getHeader('Content-Disposition') );
 });
 
 
@@ -44,5 +44,19 @@ test(function() {
 	$fileResponse->send(new Http\Request(new Http\UrlScript), $response = new Http\Response);
 
 	Assert::same( $origData, ob_get_clean() );
-	Assert::same('inline; filename="' . $fileName . '"', $response->getHeader('Content-Disposition'));
+	Assert::same('inline; filename="' . $fileName . '"; filename*=utf-8\'\'' . rawurlencode($fileName), $response->getHeader('Content-Disposition'));
+});
+
+
+test(function() {
+	$file = __FILE__;
+	$fileName = 'žluťoučký kůň.txt';
+	$fileResponse = new FileResponse($file, $fileName);
+	$origData = file_get_contents($file);
+
+	ob_start();
+	$fileResponse->send(new Http\Request(new Http\UrlScript), $response = new Http\Response);
+
+	Assert::same( $origData, ob_get_clean() );
+	Assert::same('attachment; filename="' . $fileName . '"; filename*=utf-8\'\'' . rawurlencode($fileName), $response->getHeader('Content-Disposition'));
 });

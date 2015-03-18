@@ -93,7 +93,9 @@ class FileResponse extends Nette\Object implements Nette\Application\IResponse
 	{
 		$httpResponse->setContentType($this->contentType);
 		$httpResponse->setHeader('Content-Disposition',
-			($this->forceDownload ? 'attachment' : 'inline') . '; filename="' . $this->name . '"');
+			($this->forceDownload ? 'attachment' : 'inline')
+				. '; filename="' . $this->name . '"'
+				. '; filename*=utf-8\'\'' . rawurlencode($this->name));
 
 		$filesize = $length = filesize($this->file);
 		$handle = fopen($this->file, 'r');
