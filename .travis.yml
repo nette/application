@@ -39,6 +39,5 @@ after_failure:
 
 before_script:
     # Install Nette Tester & Code Checker
-    - composer self-update
-    - composer update --no-interaction --dev --prefer-source $dependencies
+    - composer update --no-interaction --prefer-source $dependencies
     - composer create-project nette/code-checker code-checker ~2.3 --no-interaction --prefer-source
