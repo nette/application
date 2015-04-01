@@ -81,7 +81,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 
 		$container->addDefinition($this->prefix('linkGenerator'))
 			->setFactory('Nette\Application\LinkGenerator', array(
-				1 => new Nette\DI\Statement('@Nette\Http\Request::getUrl'),
+				1 => new Nette\DI\Statement('@Nette\Http\IRequest::getUrl'),
 			));
 
 		if ($this->name === 'application') {
