@@ -89,8 +89,9 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same( '/index.php?x=1&y=2&action=product&presenter=Test', $this->link('product', array('x' => 1, 'y' => 2)) );
 		Assert::same( '/index.php?action=product&presenter=Test', $this->link('product') );
 		Assert::same( '#error: Destination must be non-empty string.', $this->link('') );
-		Assert::same( '/index.php?action=product&presenter=Test#fragment', $this->link('product#fragment') );
-		Assert::same( 'http://localhost/index.php?action=product&presenter=Test#fragment', $this->link('//product#fragment') );
+		Assert::same( '/index.php?x=1&y=2&action=product&presenter=Test', $this->link('product?x=1&y=2') );
+		Assert::same( '/index.php?x=1&y=2&action=product&presenter=Test#fragment', $this->link('product?x=1&y=2#fragment') );
+		Assert::same( 'http://localhost/index.php?x=1&y=2&action=product&presenter=Test#fragment', $this->link('//product?x=1&y=2#fragment') );
 
 		// Other presenter & action link
 		Assert::same( '/index.php?var1=10&action=product&presenter=Other', $this->link('Other:product', array('var1' => $this->var1)) );
@@ -126,7 +127,9 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same( '/index.php?mycontrol-x=1&mycontrol-y=2&action=default&do=mycontrol-click&presenter=Test', $this['mycontrol']->link('click!', array('x' => 1, 'y' => 2, 'round' => 0)) );
 		Assert::same( '/index.php?mycontrol-x=1&mycontrol-round=1&action=default&do=mycontrol-click&presenter=Test', $this['mycontrol']->link('click', array('x' => 1, 'round' => 1)) );
 		Assert::same( '/index.php?mycontrol-x=1&mycontrol-round=1&action=default&presenter=Test', $this['mycontrol']->link('this', array('x' => 1, 'round' => 1)) );
-		Assert::same( '/index.php?mycontrol-x=1&mycontrol-round=1&action=default&presenter=Test#frag', $this['mycontrol']->link('this#frag', array('x' => 1, 'round' => 1)) );
+		Assert::same( '/index.php?mycontrol-x=1&mycontrol-round=1&action=default&presenter=Test', $this['mycontrol']->link('this?x=1&round=1') );
+		Assert::same( '/index.php?mycontrol-x=1&mycontrol-round=1&action=default&presenter=Test#frag', $this['mycontrol']->link('this?x=1&round=1#frag') );
+		Assert::same( 'http://localhost/index.php?mycontrol-x=1&mycontrol-round=1&action=default&presenter=Test#frag', $this['mycontrol']->link('//this?x=1&round=1#frag') );
 
 		// Component link type checking
 		Assert::same( "#error: Invalid value for persistent parameter 'order' in 'mycontrol', expected array.", $this['mycontrol']->link('click', array('order' => 1)) );
