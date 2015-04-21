@@ -22,7 +22,7 @@ class Multiplier extends PresenterComponent
 
 
 	/**
-	 * @param callable
+	 * @param callable|Nette\ComponentModel\IContainer $factory
 	 */
 	public function __construct($factory)
 	{
