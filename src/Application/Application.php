@@ -90,7 +90,9 @@ class Application extends Nette\Object
 
 		} catch (\Exception $e) {
 			$this->onError($this, $e);
-			if ($this->catchExceptions && $this->errorPresenter) {
+
+			// if catchExceptions is NULL, catch only BadRequestException
+			if (($this->catchExceptions || ($this->catchExceptions === NULL && $e instanceof BadRequestException)) && $this->errorPresenter) {
 				try {
 					$this->processException($e);
 					$this->onShutdown($this, $e);
