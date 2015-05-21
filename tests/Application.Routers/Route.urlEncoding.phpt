@@ -13,24 +13,24 @@ require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/Route.inc';
 
 
-$route = new Route('<param .*>', array(
+$route = new Route('<param .*>', [
 	'presenter' => 'Presenter',
-));
+]);
 
-testRouteIn($route, '/a%3A%25%2Fb', 'Presenter', array(
+testRouteIn($route, '/a%3A%25%2Fb', 'Presenter', [
 	'param' => 'a:%/b',
 	'test' => 'testvalue',
-), '/a%3A%25/b?test=testvalue');
+], '/a%3A%25/b?test=testvalue');
 
 
-$route = new Route('<param .*>', array(
+$route = new Route('<param .*>', [
 	'presenter' => 'Presenter',
-	'param' => array(
+	'param' => [
 		Route::FILTER_OUT => 'rawurlencode',
-	),
-));
+	],
+]);
 
-testRouteIn($route, '/a%3A%25%2Fb', 'Presenter', array(
+testRouteIn($route, '/a%3A%25%2Fb', 'Presenter', [
 	'param' => 'a:%/b',
 	'test' => 'testvalue',
-), '/a%3A%25%2Fb?test=testvalue');
+], '/a%3A%25%2Fb?test=testvalue');

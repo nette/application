@@ -13,18 +13,18 @@ require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/Route.inc';
 
 
-$route = new Route('<param č>', array(
+$route = new Route('<param č>', [
 	'presenter' => 'Default',
-));
+]);
 
-testRouteIn($route, '/č', 'Default', array(
+testRouteIn($route, '/č', 'Default', [
 	'param' => 'č',
 	'test' => 'testvalue',
-), '/%C4%8D?test=testvalue');
+], '/%C4%8D?test=testvalue');
 
-testRouteIn($route, '/%C4%8D', 'Default', array(
+testRouteIn($route, '/%C4%8D', 'Default', [
 	'param' => 'č',
 	'test' => 'testvalue',
-), '/%C4%8D?test=testvalue');
+], '/%C4%8D?test=testvalue');
 
 testRouteIn($route, '/');

@@ -14,41 +14,41 @@ require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/Route.inc';
 
 
-$identityMap = array();
+$identityMap = [];
 $identityMap[1] = new Object(1);
 $identityMap[2] = new Object(2);
 
 
-$route = new Route('<parameter>', array(
+$route = new Route('<parameter>', [
 	'presenter' => 'presenter',
-	'parameter' => array(
+	'parameter' => [
 		Route::FILTER_IN => function($s) use ($identityMap) {
 			return isset($identityMap[$s]) ? $identityMap[$s] : NULL;
 		},
 		Route::FILTER_OUT => function($obj) {
 			return $obj instanceof Object ? $obj->getId() : NULL;
 		},
-	),
-));
+	],
+]);
 
 
 // Match
-testRouteIn($route, '/1/', 'presenter', array(
+testRouteIn($route, '/1/', 'presenter', [
 	'parameter' => $identityMap[1],
 	'test' => 'testvalue',
-), '/1?test=testvalue');
+], '/1?test=testvalue');
 
-Assert::same('http://example.com/1', testRouteOut($route, 'presenter', array(
+Assert::same('http://example.com/1', testRouteOut($route, 'presenter', [
 	'parameter' => $identityMap[1],
-)));
+]));
 
 
 // Doesn't match
 testRouteIn($route, '/3/');
 
-Assert::null( testRouteOut($route, 'presenter', array(
+Assert::null( testRouteOut($route, 'presenter', [
 	'parameter' => NULL,
-)));
+]));
 
 
 class Object

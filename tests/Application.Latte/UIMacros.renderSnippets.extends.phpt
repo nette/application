@@ -30,8 +30,8 @@ $presenter->snippetMode = TRUE;
 $presenter->redrawControl('foo');;
 $content = $presenter->render();
 Assert::same('', $content);
-Assert::same(array(
-	'snippets' => array(
+Assert::same([
+	'snippets' => [
 		'snippet--foo' => 'Hello',
-	),
-), (array) $presenter->payload);
+	],
+], (array) $presenter->payload);

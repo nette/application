@@ -13,19 +13,19 @@ require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/Route.inc';
 
 
-$route = new Route('<param>', array(
+$route = new Route('<param>', [
 	'presenter' => 'Presenter',
-));
+]);
 
 testRouteIn($route, '/a/b');
-Assert::null( testRouteOut($route, 'Presenter', array('param' => 'a/b')) );
+Assert::null( testRouteOut($route, 'Presenter', ['param' => 'a/b']) );
 
 
-$route = new Route('<param .+>', array(
+$route = new Route('<param .+>', [
 	'presenter' => 'Presenter',
-));
+]);
 
-testRouteIn($route, '/a/b', 'Presenter', array(
+testRouteIn($route, '/a/b', 'Presenter', [
 	'param' => 'a/b',
 	'test' => 'testvalue',
-), '/a/b?test=testvalue');
+], '/a/b?test=testvalue');

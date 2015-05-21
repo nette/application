@@ -19,11 +19,11 @@ test(function() {
 
 	$builder = $compiler->getContainerBuilder();
 	$builder->addDefinition('myRouter')->setClass('Nette\Application\Routers\SimpleRouter');
-	$builder->addDefinition('myHttpRequest')->setFactory('Nette\Http\Request', array(new DI\Statement('Nette\Http\UrlScript')));
+	$builder->addDefinition('myHttpRequest')->setFactory('Nette\Http\Request', [new DI\Statement('Nette\Http\UrlScript')]);
 	$builder->addDefinition('myHttpResponse')->setClass('Nette\Http\Response');
-	$code = $compiler->compile(array(
-		'application' => array('debugger' => FALSE),
-	), 'Container1');
+	$code = $compiler->compile([
+		'application' => ['debugger' => FALSE],
+	], 'Container1');
 	eval($code);
 
 	$container = new Container1;
@@ -40,14 +40,14 @@ test(function() {
 
 	$builder = $compiler->getContainerBuilder();
 	$builder->addDefinition('myRouter')->setClass('Nette\Application\Routers\SimpleRouter');
-	$builder->addDefinition('myHttpRequest')->setFactory('Nette\Http\Request', array(new DI\Statement('Nette\Http\UrlScript')));
+	$builder->addDefinition('myHttpRequest')->setFactory('Nette\Http\Request', [new DI\Statement('Nette\Http\UrlScript')]);
 	$builder->addDefinition('myHttpResponse')->setClass('Nette\Http\Response');
-	$code = $compiler->compile(array(
-		'application' => array(
-			'scanDirs' => array(__DIR__ . '/files'),
+	$code = $compiler->compile([
+		'application' => [
+			'scanDirs' => [__DIR__ . '/files'],
 			'debugger' => FALSE,
-		),
-	), 'Container2');
+		],
+	], 'Container2');
 	eval($code);
 
 	$container = new Container2;
@@ -60,11 +60,11 @@ test(function() {
 
 test(function() {
 	$compiler = new DI\Compiler;
-	$compiler->addExtension('application', new ApplicationExtension(FALSE, array(__DIR__ . '/files')));
+	$compiler->addExtension('application', new ApplicationExtension(FALSE, [__DIR__ . '/files']));
 
 	$builder = $compiler->getContainerBuilder();
 	$builder->addDefinition('myRouter')->setClass('Nette\Application\Routers\SimpleRouter');
-	$builder->addDefinition('myHttpRequest')->setFactory('Nette\Http\Request', array(new DI\Statement('Nette\Http\UrlScript')));
+	$builder->addDefinition('myHttpRequest')->setFactory('Nette\Http\Request', [new DI\Statement('Nette\Http\UrlScript')]);
 	$builder->addDefinition('myHttpResponse')->setClass('Nette\Http\Response');
 	$loader = new DI\Config\Loader;
 	$config = $loader->load(Tester\FileMock::create('

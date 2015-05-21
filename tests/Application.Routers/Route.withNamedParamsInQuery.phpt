@@ -13,19 +13,19 @@ require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/Route.inc';
 
 
-$route = new Route('?action=<presenter> & act=<action [a-z]+>', array(
+$route = new Route('?action=<presenter> & act=<action [a-z]+>', [
 	'presenter' => 'Default',
 	'action' => 'default',
-));
+]);
 
-testRouteIn($route, '/?act=action', 'Default', array(
+testRouteIn($route, '/?act=action', 'Default', [
 	'action' => 'action',
 	'test' => 'testvalue',
-), '/?act=action&test=testvalue');
+], '/?act=action&test=testvalue');
 
-testRouteIn($route, '/?act=default', 'Default', array(
+testRouteIn($route, '/?act=default', 'Default', [
 	'action' => 'default',
 	'test' => 'testvalue',
-), '/?test=testvalue');
+], '/?test=testvalue');
 
 testRouteIn($route, '/?action[]=invalid&act=default', NULL);

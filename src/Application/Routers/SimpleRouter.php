@@ -38,17 +38,17 @@ class SimpleRouter extends Nette\Object implements Application\IRouter
 	 * @param  array   default values
 	 * @param  int     flags
 	 */
-	public function __construct($defaults = array(), $flags = 0)
+	public function __construct($defaults = [], $flags = 0)
 	{
 		if (is_string($defaults)) {
 			$a = strrpos($defaults, ':');
 			if (!$a) {
 				throw new Nette\InvalidArgumentException("Argument must be array or string in format Presenter:action, '$defaults' given.");
 			}
-			$defaults = array(
+			$defaults = [
 				self::PRESENTER_KEY => substr($defaults, 0, $a),
 				'action' => $a === strlen($defaults) - 1 ? Application\UI\Presenter::DEFAULT_ACTION : substr($defaults, $a + 1),
-			);
+			];
 		}
 
 		if (isset($defaults[self::MODULE_KEY])) {
@@ -87,7 +87,7 @@ class SimpleRouter extends Nette\Object implements Application\IRouter
 			$params,
 			$httpRequest->getPost(),
 			$httpRequest->getFiles(),
-			array(Application\Request::SECURED => $httpRequest->isSecured())
+			[Application\Request::SECURED => $httpRequest->isSecured()]
 		);
 	}
 

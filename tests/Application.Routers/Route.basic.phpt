@@ -17,50 +17,50 @@ $route = new Route('<presenter>/<action=default>/<id= \d{1,3}>');
 
 Assert::same( 'http://example.com/homepage/', testRouteOut($route, 'Homepage') );
 
-Assert::same( 'http://example.com/homepage/', testRouteOut($route, 'Homepage', array('action' => 'default')) );
+Assert::same( 'http://example.com/homepage/', testRouteOut($route, 'Homepage', ['action' => 'default']) );
 
-Assert::null( testRouteOut($route, 'Homepage', array('id' => 'word')) );
+Assert::null( testRouteOut($route, 'Homepage', ['id' => 'word']) );
 
 Assert::same( 'http://example.com/front.homepage/', testRouteOut($route, 'Front:Homepage') );
 
 testRouteIn($route, '/presenter/action/12/any');
 
-testRouteIn($route, '/presenter/action/12/', 'Presenter', array(
+testRouteIn($route, '/presenter/action/12/', 'Presenter', [
 	'action' => 'action',
 	'id' => '12',
 	'test' => 'testvalue',
-), '/presenter/action/12?test=testvalue');
+], '/presenter/action/12?test=testvalue');
 
-testRouteIn($route, '/presenter/action/12', 'Presenter', array(
+testRouteIn($route, '/presenter/action/12', 'Presenter', [
 	'action' => 'action',
 	'id' => '12',
 	'test' => 'testvalue',
-), '/presenter/action/12?test=testvalue');
+], '/presenter/action/12?test=testvalue');
 
 testRouteIn($route, '/presenter/action/1234');
 
-testRouteIn($route, '/presenter/action/', 'Presenter', array(
+testRouteIn($route, '/presenter/action/', 'Presenter', [
 	'action' => 'action',
 	'id' => '',
 	'test' => 'testvalue',
-), '/presenter/action/?test=testvalue');
+], '/presenter/action/?test=testvalue');
 
-testRouteIn($route, '/presenter/action', 'Presenter', array(
+testRouteIn($route, '/presenter/action', 'Presenter', [
 	'action' => 'action',
 	'id' => '',
 	'test' => 'testvalue',
-), '/presenter/action/?test=testvalue');
+], '/presenter/action/?test=testvalue');
 
-testRouteIn($route, '/presenter/', 'Presenter', array(
+testRouteIn($route, '/presenter/', 'Presenter', [
 	'id' => '',
 	'action' => 'default',
 	'test' => 'testvalue',
-), '/presenter/?test=testvalue');
+], '/presenter/?test=testvalue');
 
-testRouteIn($route, '/presenter', 'Presenter', array(
+testRouteIn($route, '/presenter', 'Presenter', [
 	'id' => '',
 	'action' => 'default',
 	'test' => 'testvalue',
-), '/presenter/?test=testvalue');
+], '/presenter/?test=testvalue');
 
 testRouteIn($route, '/');

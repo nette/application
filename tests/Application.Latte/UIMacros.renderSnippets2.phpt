@@ -67,9 +67,9 @@ $presenter = new TestPresenter;
 $presenter->snippetMode = TRUE;
 $presenter['multi-1']->redrawControl();
 $presenter->render();
-Assert::same(array(
-	'snippets' => array(
+Assert::same([
+	'snippets' => [
 		'snippet-multi-1-testA' => 'Hello',
 		'snippet-multi-1-testB' => 'world',
-	),
-), (array) $presenter->payload);
+	],
+], (array) $presenter->payload);

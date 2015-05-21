@@ -25,7 +25,7 @@ matrix:
 
 script:
     - vendor/bin/tester -p $PHP_BIN tests -s
-    - php code-checker/src/code-checker.php
+    - php temp/code-checker/src/code-checker.php --short-arrays
 
 after_failure:
     # Print *.actual content
@@ -34,4 +34,4 @@ after_failure:
 before_script:
     # Install Nette Tester & Code Checker
     - composer update --no-interaction --prefer-source $dependencies
-    - composer create-project nette/code-checker code-checker ~2.3 --no-interaction --prefer-source
+    - composer create-project nette/code-checker temp/code-checker ~2.5 --no-interaction --prefer-source

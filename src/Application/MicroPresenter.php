@@ -92,7 +92,7 @@ class MicroPresenter extends Nette\Object implements Application\IPresenter
 		$response = call_user_func_array($callback, $params);
 
 		if (is_string($response)) {
-			$response = array($response, array());
+			$response = [$response, []];
 		}
 		if (is_array($response)) {
 			list($templateSource, $templateParams) = $response;

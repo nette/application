@@ -27,7 +27,7 @@ abstract class Control extends PresenterComponent implements IRenderable
 	private $template;
 
 	/** @var array */
-	private $invalidSnippets = array();
+	private $invalidSnippets = [];
 
 	/** @var bool */
 	public $snippetMode;
@@ -89,10 +89,10 @@ abstract class Control extends PresenterComponent implements IRenderable
 	{
 		$id = $this->getParameterId('flash');
 		$messages = $this->getPresenter()->getFlashSession()->$id;
-		$messages[] = $flash = (object) array(
+		$messages[] = $flash = (object) [
 			'message' => $message,
 			'type' => $type,
-		);
+		];
 		$this->getTemplate()->flashes = $messages;
 		$this->getPresenter()->getFlashSession()->$id = $messages;
 		return $flash;
@@ -112,7 +112,7 @@ abstract class Control extends PresenterComponent implements IRenderable
 			$this->invalidSnippets[$snippet] = TRUE;
 
 		} elseif ($snippet === NULL) {
-			$this->invalidSnippets = array();
+			$this->invalidSnippets = [];
 
 		} else {
 			unset($this->invalidSnippets[$snippet]);
@@ -145,7 +145,7 @@ abstract class Control extends PresenterComponent implements IRenderable
 				return TRUE;
 
 			} else {
-				$queue = array($this);
+				$queue = [$this];
 				do {
 					foreach (array_shift($queue)->getComponents() as $component) {
 						if ($component instanceof IRenderable) {

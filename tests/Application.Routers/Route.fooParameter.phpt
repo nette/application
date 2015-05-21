@@ -13,16 +13,16 @@ require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/Route.inc';
 
 
-$route = new Route('index<?.xml>/', array(
+$route = new Route('index<?.xml>/', [
 	'presenter' => 'DefaultPresenter',
-));
+]);
 
 
 testRouteIn($route, '/index.');
 
-testRouteIn($route, '/index.xml', 'DefaultPresenter', array(
+testRouteIn($route, '/index.xml', 'DefaultPresenter', [
 	'test' => 'testvalue',
-), '/index.xml/?test=testvalue');
+], '/index.xml/?test=testvalue');
 
 testRouteIn($route, '/index.php');
 

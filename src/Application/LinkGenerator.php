@@ -39,7 +39,7 @@ class LinkGenerator extends Nette\Object
 	 * @return string
 	 * @throws InvalidLinkException
 	 */
-	public function link($dest, array $params = array())
+	public function link($dest, array $params = [])
 	{
 		if (!preg_match('~^([\w:]+):(\w*+)(#.*)?()\z~', $dest, $m)) {
 			throw new UI\InvalidLinkException("Invalid link destination '$dest'.");

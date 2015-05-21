@@ -31,11 +31,11 @@ class LatteFactory implements Nette\Bridges\ApplicationLatte\ILatteFactory
 class MicroContainer extends Nette\DI\Container
 {
 
-    protected $meta = array(
-        'types' => array(
-            'Nette\\Bridges\\ApplicationLatte\\ILatteFactory' => array(1 => array('latte.latteFactory')),
-        ),
-    );
+    protected $meta = [
+        'types' => [
+            'Nette\\Bridges\\ApplicationLatte\\ILatteFactory' => [1 => ['latte.latteFactory']],
+        ],
+    ];
 
     public static function create()
     {
@@ -59,11 +59,11 @@ class Responder
 
 test(function () {
     $presenter = new NetteModule\MicroPresenter(MicroContainer::create());
-    $response = $presenter->run(new Request('Nette:Micro', 'GET', array(
+    $response = $presenter->run(new Request('Nette:Micro', 'GET', [
         'callback' => function () {
             return 'test';
         },
-    )));
+    ]));
 
     Assert::type('Nette\Application\Responses\TextResponse', $response);
     Assert::same('test', Responder::render($response));
@@ -72,12 +72,12 @@ test(function () {
 
 test(function () {
     $presenter = new NetteModule\MicroPresenter(MicroContainer::create());
-    $response = $presenter->run(new Request('Nette:Micro', 'GET', array(
+    $response = $presenter->run(new Request('Nette:Micro', 'GET', [
         'callback' => function ($param) {
             return $param;
         },
         'param' => 'test'
-    )));
+    ]));
 
     Assert::type('Nette\Application\Responses\TextResponse', $response);
     Assert::same('test', Responder::render($response));
@@ -86,11 +86,11 @@ test(function () {
 
 test(function () {
     $presenter = new NetteModule\MicroPresenter(MicroContainer::create());
-    $response = $presenter->run(new Request('Nette:Micro', 'GET', array(
+    $response = $presenter->run(new Request('Nette:Micro', 'GET', [
         'callback' => function () {
             return '{=date(Y)}';
         },
-    )));
+    ]));
 
     Assert::type('Nette\Application\Responses\TextResponse', $response);
     Assert::same(date('Y'), Responder::render($response));
@@ -99,12 +99,12 @@ test(function () {
 
 test(function () {
     $presenter = new NetteModule\MicroPresenter(MicroContainer::create());
-    $response = $presenter->run(new Request('Nette:Micro', 'GET', array(
+    $response = $presenter->run(new Request('Nette:Micro', 'GET', [
         'callback' => function () {
-            return array(new SplFileInfo(Tester\FileMock::create('{$param}')), array());
+            return [new SplFileInfo(Tester\FileMock::create('{$param}')), []];
         },
         'param' => 'test',
-    )));
+    ]));
 
     Assert::type('Nette\Application\Responses\TextResponse', $response);
     Assert::same('test', Responder::render($response));
@@ -115,7 +115,7 @@ test(function () {
     $latteFactory = new LatteFactory(new Latte\Engine());
     $presenter = new NetteModule\MicroPresenter;
 
-    $response = $presenter->run(new Request('Nette:Micro', 'GET', array(
+    $response = $presenter->run(new Request('Nette:Micro', 'GET', [
         'callback' => function ($presenter) use ($latteFactory) {
             $template = $presenter->createTemplate(NULL, function () use ($latteFactory) {
                 return $latteFactory->create();
@@ -125,7 +125,7 @@ test(function () {
 
             return $template;
         },
-    )));
+    ]));
 
     Assert::type('Nette\Application\Responses\TextResponse', $response);
     Assert::same('test', Responder::render($response));
@@ -136,18 +136,18 @@ test(function () {
     $latteFactory = new LatteFactory(new Latte\Engine());
     $presenter = new NetteModule\MicroPresenter;
 
-    $response = $presenter->run(new Request('Nette:Micro', 'GET', array(
+    $response = $presenter->run(new Request('Nette:Micro', 'GET', [
         'callback' => function ($presenter) use ($latteFactory) {
             $template = $presenter->createTemplate(NULL, function () use ($latteFactory) {
                 return $latteFactory->create();
             });
             $template->getLatte()->setLoader(new Latte\Loaders\FileLoader());
             $template->setFile(new SplFileInfo(Tester\FileMock::create('{$param}')));
-            $template->setParameters(array('param' => 'test'));
+            $template->setParameters(['param' => 'test']);
 
             return $template;
         },
-    )));
+    ]));
 
     Assert::type('Nette\Application\Responses\TextResponse', $response);
     Assert::same('test', Responder::render($response));
@@ -160,18 +160,18 @@ test(function () {
         $latteFactory = new LatteFactory(new Latte\Engine());
         $presenter = new NetteModule\MicroPresenter;
 
-        $response = $presenter->run(new Request('Nette:Micro', 'GET', array(
+        $response = $presenter->run(new Request('Nette:Micro', 'GET', [
             'callback' => function ($presenter) use ($latteFactory, $filename) {
                 $template = $presenter->createTemplate(NULL, function () use ($latteFactory) {
                     return $latteFactory->create();
                 });
                 $template->getLatte()->setLoader(new Latte\Loaders\FileLoader());
                 $template->setFile($filename);
-                $template->setParameters(array('param' => 'test'));
+                $template->setParameters(['param' => 'test']);
 
                 return $template;
             },
-        )));
+        ]));
 
         Responder::render($response);
     }, '\RuntimeException', "Missing template file '$filename'.");

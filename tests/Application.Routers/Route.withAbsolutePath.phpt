@@ -13,13 +13,13 @@ require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/Route.inc';
 
 
-$route = new Route('/<abspath>/', array(
+$route = new Route('/<abspath>/', [
 	'presenter' => 'Default',
 	'action' => 'default',
-));
+]);
 
-testRouteIn($route, '/abc', 'Default', array(
+testRouteIn($route, '/abc', 'Default', [
 	'abspath' => 'abc',
 	'action' => 'default',
 	'test' => 'testvalue',
-), '/abc/?test=testvalue');
+], '/abc/?test=testvalue');

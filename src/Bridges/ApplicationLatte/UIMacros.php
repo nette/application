@@ -30,14 +30,14 @@ class UIMacros extends Latte\Macros\MacroSet
 	public static function install(Latte\Compiler $compiler)
 	{
 		$me = new static($compiler);
-		$me->addMacro('control', array($me, 'macroControl'));
+		$me->addMacro('control', [$me, 'macroControl']);
 
 		$me->addMacro('href', NULL, NULL, function(MacroNode $node, PhpWriter $writer) use ($me) {
 			return ' ?> href="<?php ' . $me->macroLink($node, $writer) . ' ?>"<?php ';
 		});
-		$me->addMacro('plink', array($me, 'macroLink'));
-		$me->addMacro('link', array($me, 'macroLink'));
-		$me->addMacro('ifCurrent', array($me, 'macroIfCurrent'), '}'); // deprecated; use n:class="$presenter->linkCurrent ? ..."
+		$me->addMacro('plink', [$me, 'macroLink']);
+		$me->addMacro('link', [$me, 'macroLink']);
+		$me->addMacro('ifCurrent', [$me, 'macroIfCurrent'], '}'); // deprecated; use n:class="$presenter->linkCurrent ? ..."
 	}
 
 
@@ -52,7 +52,7 @@ class UIMacros extends Latte\Macros\MacroSet
 if (empty($_l->extends) && !empty($_control->snippetMode)) {
 	return Nette\Bridges\ApplicationLatte\UIMacros::renderSnippets($_control, $_b, get_defined_vars());
 }';
-		return array($prolog, '');
+		return [$prolog, ''];
 	}
 
 
@@ -121,7 +121,7 @@ if (empty($_l->extends) && !empty($_control->snippetMode)) {
 				}
 				ob_start();
 				$function = reset($function);
-				$snippets = $function($local, $params + array('_snippetMode' => TRUE));
+				$snippets = $function($local, $params + ['_snippetMode' => TRUE]);
 				$payload->snippets[$id = $control->getSnippetId(substr($name, 1))] = ob_get_clean();
 				if ($snippets !== NULL) { // pass FALSE from snippetArea
 					if ($snippets) {
@@ -133,7 +133,7 @@ if (empty($_l->extends) && !empty($_control->snippetMode)) {
 		}
 		$control->snippetMode = TRUE;
 		if ($control instanceof Nette\Application\UI\IRenderable) {
-			$queue = array($control);
+			$queue = [$control];
 			do {
 				foreach (array_shift($queue)->getComponents() as $child) {
 					if ($child instanceof Nette\Application\UI\IRenderable) {

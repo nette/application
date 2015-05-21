@@ -13,24 +13,24 @@ require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/Route.inc';
 
 
-$route = new Route('index<?.xml \.html?|\.php|>/', array(
+$route = new Route('index<?.xml \.html?|\.php|>/', [
 	'presenter' => 'DefaultPresenter',
-));
+]);
 
 testRouteIn($route, '/index.');
 
-testRouteIn($route, '/index.xml', 'DefaultPresenter', array(
+testRouteIn($route, '/index.xml', 'DefaultPresenter', [
 	'test' => 'testvalue',
-), '/index.xml/?test=testvalue');
+], '/index.xml/?test=testvalue');
 
-testRouteIn($route, '/index.php', 'DefaultPresenter', array(
+testRouteIn($route, '/index.php', 'DefaultPresenter', [
 	'test' => 'testvalue',
-), '/index.xml/?test=testvalue');
+], '/index.xml/?test=testvalue');
 
-testRouteIn($route, '/index.htm', 'DefaultPresenter', array(
+testRouteIn($route, '/index.htm', 'DefaultPresenter', [
 	'test' => 'testvalue',
-), '/index.xml/?test=testvalue');
+], '/index.xml/?test=testvalue');
 
-testRouteIn($route, '/index', 'DefaultPresenter', array(
+testRouteIn($route, '/index', 'DefaultPresenter', [
 	'test' => 'testvalue',
-), '/index.xml/?test=testvalue');
+], '/index.xml/?test=testvalue');

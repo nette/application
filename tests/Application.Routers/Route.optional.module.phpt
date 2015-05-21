@@ -13,23 +13,23 @@ require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/Route.inc';
 
 
-$route = new Route('[<module admin|image>/]<presenter>/<action>', array(
+$route = new Route('[<module admin|image>/]<presenter>/<action>', [
 	'module' => 'Front',
 	'presenter' => 'Homepage',
 	'action' => 'default',
-));
+]);
 
-testRouteIn($route, '/one', 'Front:One', array(
+testRouteIn($route, '/one', 'Front:One', [
 	'action' => 'default',
 	'test' => 'testvalue',
-), '/one/?test=testvalue');
+], '/one/?test=testvalue');
 
-testRouteIn($route, '/admin/one', 'Admin:One', array(
+testRouteIn($route, '/admin/one', 'Admin:One', [
 	'action' => 'default',
 	'test' => 'testvalue',
-), '/admin/one/?test=testvalue');
+], '/admin/one/?test=testvalue');
 
-testRouteIn($route, '/one/admin', 'Front:One', array(
+testRouteIn($route, '/one/admin', 'Front:One', [
 	'action' => 'admin',
 	'test' => 'testvalue',
-), '/one/admin?test=testvalue');
+], '/one/admin?test=testvalue');

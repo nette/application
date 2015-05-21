@@ -58,8 +58,8 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 	public function constructUrl(Nette\Application\Request $appRequest, Nette\Http\Url $refUrl)
 	{
 		if ($this->cachedRoutes === NULL) {
-			$routes = array();
-			$routes['*'] = array();
+			$routes = [];
+			$routes['*'] = [];
 
 			foreach ($this as $route) {
 				$presenters = $route instanceof Route && is_array($tmp = $route->getTargetPresenters())

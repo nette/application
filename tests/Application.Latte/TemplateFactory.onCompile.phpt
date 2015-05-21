@@ -45,7 +45,7 @@ test(function() {
 test(function() {
 	$engine = new Latte\Engine;
 	$factory = new TemplateFactory(new LatteFactoryMock($engine), new Http\Request(new Http\UrlScript('http://nette.org')));
-	$engine->onCompile = new ArrayIterator(array($callback = function() {}));
+	$engine->onCompile = new ArrayIterator([$callback = function() {}]);
 
 	$factory->createTemplate();
 
@@ -73,7 +73,7 @@ test(function() {
 
 	$engine = new Latte\Engine;
 	$factory = new TemplateFactory(new LatteFactoryMock($engine), new Http\Request(new Http\UrlScript('http://nette.org')));
-	$engine->onCompile = new Event(array($callback = function() {}));
+	$engine->onCompile = new Event([$callback = function() {}]);
 
 	$factory->createTemplate();
 

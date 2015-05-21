@@ -18,16 +18,16 @@ use Nette,
  */
 class ApplicationExtension extends Nette\DI\CompilerExtension
 {
-	public $defaults = array(
+	public $defaults = [
 		'debugger' => TRUE,
 		'errorPresenter' => 'Nette:Error',
 		'catchExceptions' => NULL,
 		'mapping' => NULL,
-		'scanDirs' => array(),
+		'scanDirs' => [],
 		'scanComposer' => NULL,
 		'scanFilter' => 'Presenter',
 		'silentLinks' => FALSE,
-	);
+	];
 
 	/** @var bool */
 	private $debugMode;
@@ -53,7 +53,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 	{
 		$config = $this->validateConfig($this->defaults);
 		$container = $this->getContainerBuilder();
-		$container->addExcludedClasses(array('Nette\Application\UI\Control'));
+		$container->addExcludedClasses(['Nette\Application\UI\Control']);
 
 		$this->invalidLinkMode = $this->debugMode
 			? UI\Presenter::INVALID_LINK_TEXTUAL | ($config['silentLinks'] ? 0 : UI\Presenter::INVALID_LINK_WARNING)
@@ -61,8 +61,8 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 
 		$application = $container->addDefinition($this->prefix('application'))
 			->setClass('Nette\Application\Application')
-			->addSetup('$catchExceptions', array($config['catchExceptions']))
-			->addSetup('$errorPresenter', array($config['errorPresenter']));
+			->addSetup('$catchExceptions', [$config['catchExceptions']])
+			->addSetup('$errorPresenter', [$config['errorPresenter']]);
 
 		if ($config['debugger']) {
 			$application->addSetup('Nette\Bridges\ApplicationTracy\RoutingPanel::initializePanel');
@@ -71,18 +71,18 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 		$touch = $this->debugMode && $config['scanDirs'] ? $this->tempFile : NULL;
 		$presenterFactory = $container->addDefinition($this->prefix('presenterFactory'))
 			->setClass('Nette\Application\IPresenterFactory')
-			->setFactory('Nette\Application\PresenterFactory', array(new Nette\DI\Statement(
-				'Nette\Bridges\ApplicationDI\PresenterFactoryCallback', array(1 => $this->invalidLinkMode, $touch)
-			)));
+			->setFactory('Nette\Application\PresenterFactory', [new Nette\DI\Statement(
+				'Nette\Bridges\ApplicationDI\PresenterFactoryCallback', [1 => $this->invalidLinkMode, $touch]
+			)]);
 
 		if ($config['mapping']) {
-			$presenterFactory->addSetup('setMapping', array($config['mapping']));
+			$presenterFactory->addSetup('setMapping', [$config['mapping']]);
 		}
 
 		$container->addDefinition($this->prefix('linkGenerator'))
-			->setFactory('Nette\Application\LinkGenerator', array(
+			->setFactory('Nette\Application\LinkGenerator', [
 				1 => new Nette\DI\Statement('@Nette\Http\IRequest::getUrl'),
-			));
+			]);
 
 		if ($this->name === 'application') {
 			$container->addAlias('application', $this->prefix('application'));
@@ -94,7 +94,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 	public function beforeCompile()
 	{
 		$container = $this->getContainerBuilder();
-		$all = array();
+		$all = [];
 
 		foreach ($container->findByType('Nette\Application\IPresenter') as $def) {
 			$all[$def->getClass()] = $def;
@@ -110,7 +110,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 		foreach ($all as $def) {
 			$def->setInject(TRUE)->setAutowired(FALSE)->addTag('nette.presenter', $def->getClass());
 			if (is_subclass_of($def->getClass(), 'Nette\Application\UI\Presenter')) {
-				$def->addSetup('$invalidLinkMode', array($this->invalidLinkMode));
+				$def->addSetup('$invalidLinkMode', [$this->invalidLinkMode]);
 			}
 		}
 	}
@@ -120,7 +120,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 	private function findPresenters()
 	{
 		$config = $this->getConfig();
-		$classes = array();
+		$classes = [];
 
 		if ($config['scanDirs']) {
 			$robot = new Nette\Loaders\RobotLoader;
@@ -143,7 +143,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 			}
 		}
 
-		$presenters = array();
+		$presenters = [];
 		foreach (array_unique($classes) as $class) {
 			if (strpos($class, $config['scanFilter']) !== FALSE && class_exists($class)
 				&& ($rc = new \ReflectionClass($class)) && $rc->implementsInterface('Nette\Application\IPresenter')

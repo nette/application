@@ -15,7 +15,7 @@ require __DIR__ . '/Route.inc';
 
 $route = new Route('<action>', 'Default:');
 
-testRouteIn($route, '/default', 'Default', array(
+testRouteIn($route, '/default', 'Default', [
 	'action' => 'default',
 	'test' => 'testvalue',
-), '/default?test=testvalue');
+], '/default?test=testvalue');

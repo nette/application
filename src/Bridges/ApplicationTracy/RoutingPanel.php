@@ -31,7 +31,7 @@ class RoutingPanel extends Nette\Object implements Tracy\IBarPanel
 	private $presenterFactory;
 
 	/** @var array */
-	private $routers = array();
+	private $routers = [];
 
 	/** @var Nette\Application\Request */
 	private $request;
@@ -43,11 +43,11 @@ class RoutingPanel extends Nette\Object implements Tracy\IBarPanel
 	public static function initializePanel(Nette\Application\Application $application)
 	{
 		Tracy\Debugger::getBlueScreen()->addPanel(function($e) use ($application) {
-			return $e ? NULL : array(
+			return $e ? NULL : [
 				'tab' => 'Nette Application',
-				'panel' => '<h3>Requests</h3>' . Dumper::toHtml($application->getRequests(), array(Dumper::LIVE => TRUE))
-					. '<h3>Presenter</h3>' . Dumper::toHtml($application->getPresenter(), array(Dumper::LIVE => TRUE))
-			);
+				'panel' => '<h3>Requests</h3>' . Dumper::toHtml($application->getRequests(), [Dumper::LIVE => TRUE])
+					. '<h3>Presenter</h3>' . Dumper::toHtml($application->getPresenter(), [Dumper::LIVE => TRUE])
+			];
 		});
 	}
 
@@ -116,14 +116,14 @@ class RoutingPanel extends Nette\Object implements Tracy\IBarPanel
 			}
 		}
 
-		$this->routers[] = array(
+		$this->routers[] = [
 			'matched' => $matched,
 			'class' => get_class($router),
-			'defaults' => $router instanceof Routers\Route || $router instanceof Routers\SimpleRouter ? $router->getDefaults() : array(),
+			'defaults' => $router instanceof Routers\Route || $router instanceof Routers\SimpleRouter ? $router->getDefaults() : [],
 			'mask' => $router instanceof Routers\Route ? $router->getMask() : NULL,
 			'request' => $request,
 			'module' => rtrim($module, ':')
-		);
+		];
 	}
 
 

@@ -34,10 +34,10 @@ use Nette,
 abstract class Presenter extends Control implements Application\IPresenter
 {
 	/** bad link handling {@link Presenter::$invalidLinkMode} */
-	const INVALID_LINK_SILENT = 0,
-		INVALID_LINK_WARNING = 1,
-		INVALID_LINK_EXCEPTION = 2,
-		INVALID_LINK_TEXTUAL = 4;
+	const INVALID_LINK_SILENT = 0b0000,
+		INVALID_LINK_WARNING = 0b0001,
+		INVALID_LINK_EXCEPTION = 0b0010,
+		INVALID_LINK_TEXTUAL = 0b0100;
 
 	/** @internal special parameter key */
 	const SIGNAL_KEY = 'do',
@@ -334,7 +334,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function getSignal()
 	{
-		return $this->signal === NULL ? NULL : array($this->signalReceiver, $this->signal);
+		return $this->signal === NULL ? NULL : [$this->signalReceiver, $this->signal];
 	}
 
 
@@ -504,10 +504,10 @@ abstract class Presenter extends Control implements Application\IPresenter
 		$layout = $this->layout ? $this->layout : 'layout';
 		$dir = dirname($this->getReflection()->getFileName());
 		$dir = is_dir("$dir/templates") ? $dir : dirname($dir);
-		$list = array(
+		$list = [
 			"$dir/templates/$presenter/@$layout.latte",
 			"$dir/templates/$presenter.@$layout.latte",
-		);
+		];
 		do {
 			$list[] = "$dir/templates/@$layout.latte";
 			$dir = dirname($dir);
@@ -526,10 +526,10 @@ abstract class Presenter extends Control implements Application\IPresenter
 		$presenter = substr($name, strrpos(':' . $name, ':'));
 		$dir = dirname($this->getReflection()->getFileName());
 		$dir = is_dir("$dir/templates") ? $dir : dirname($dir);
-		return array(
+		return [
 			"$dir/templates/$presenter/$this->view.latte",
 			"$dir/templates/$presenter.$this->view.latte",
-		);
+		];
 	}
 
 
@@ -645,7 +645,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * @return void
 	 * @throws Nette\Application\AbortException
 	 */
-	public function forward($destination, $args = array())
+	public function forward($destination, $args = [])
 	{
 		if ($destination instanceof Application\Request) {
 			$this->sendResponse(new Responses\ForwardResponse($destination));
@@ -792,7 +792,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		// 2) ?query syntax
 		$a = strpos($destination, '?');
 		if ($a !== FALSE) {
-			parse_str(substr($destination, $a + 1), $args); // requires disabled magic quotes
+			parse_str(substr($destination, $a + 1), $args);
 			$destination = substr($destination, 0, $a);
 		}
 
@@ -938,7 +938,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			if ($current && $args) {
 				$tmp = $globalState + $this->params;
 				foreach ($args as $key => $val) {
-					if (http_build_query(array($val)) !== (isset($tmp[$key]) ? http_build_query(array($tmp[$key])) : '')) {
+					if (http_build_query([$val]) !== (isset($tmp[$key]) ? http_build_query([$tmp[$key]]) : '')) {
 						$current = FALSE;
 						break;
 					}
@@ -963,10 +963,10 @@ abstract class Presenter extends Control implements Application\IPresenter
 			$presenter,
 			Application\Request::FORWARD,
 			$args,
-			array(),
-			array()
+			[],
+			[]
 		);
-		$this->lastCreatedRequestFlag = array('current' => $current);
+		$this->lastCreatedRequestFlag = ['current' => $current];
 
 		if ($mode === 'forward' || $mode === 'test') {
 			return;
@@ -1010,7 +1010,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * @throws InvalidLinkException
 	 * @internal
 	 */
-	public static function argsToParams($class, $method, & $args, $supplemental = array())
+	public static function argsToParams($class, $method, & $args, $supplemental = [])
 	{
 		$i = 0;
 		$rm = new \ReflectionMethod($class, $method);
@@ -1086,7 +1086,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			$key = Nette\Utils\Random::generate(5);
 		} while (isset($session[$key]));
 
-		$session[$key] = array($this->getUser()->getId(), $this->request);
+		$session[$key] = [$this->getUser()->getId(), $this->request];
 		$session->setExpiration($expiration, $key);
 		return $key;
 	}
@@ -1136,7 +1136,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		$sinces = & $this->globalStateSinces;
 
 		if ($this->globalState === NULL) {
-			$state = array();
+			$state = [];
 			foreach ($this->globalParams as $id => $params) {
 				$prefix = $id . self::NAME_SEPARATOR;
 				foreach ($params as $key => $val) {
@@ -1146,7 +1146,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			$this->saveState($state, $forClass ? new PresenterComponentReflection($forClass) : NULL);
 
 			if ($sinces === NULL) {
-				$sinces = array();
+				$sinces = [];
 				foreach ($this->getReflection()->getPersistentParams() as $name => $meta) {
 					$sinces[$name] = $meta['since'];
 				}
@@ -1161,7 +1161,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 					$since = isset($components[$name]['since']) ? $components[$name]['since'] : FALSE; // FALSE = nonpersistent
 				}
 				$prefix = $component->getUniqueId() . self::NAME_SEPARATOR;
-				$params = array();
+				$params = [];
 				$component->saveState($params);
 				foreach ($params as $key => $val) {
 					$state[$prefix . $key] = $val;
@@ -1201,7 +1201,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	protected function saveGlobalState()
 	{
-		$this->globalParams = array();
+		$this->globalParams = [];
 		$this->globalState = $this->getGlobalState();
 	}
 
@@ -1214,8 +1214,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 	private function initGlobalParameters()
 	{
 		// init $this->globalParams
-		$this->globalParams = array();
-		$selfParams = array();
+		$this->globalParams = [];
+		$selfParams = [];
 
 		$params = $this->request->getParameters();
 		if ($this->isAjax()) {
@@ -1275,7 +1275,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			return $res;
 
 		} else {
-			return array();
+			return [];
 		}
 	}
 

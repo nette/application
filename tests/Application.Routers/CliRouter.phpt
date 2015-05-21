@@ -13,7 +13,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 // php.exe app.phpc homepage:default name --verbose -user "john doe" "-pass=se cret" /wait
-$_SERVER['argv'] = array(
+$_SERVER['argv'] = [
 	'app.phpc',
 	'homepage:default',
 	'name',
@@ -22,19 +22,19 @@ $_SERVER['argv'] = array(
 	'john doe',
 	'-pass=se cret',
 	'/wait',
-);
+];
 
 $httpRequest = new Http\Request(new Http\UrlScript());
 
-$router = new CliRouter(array(
+$router = new CliRouter([
 	'id' => 12,
 	'user' => 'anyvalue',
-));
+]);
 $req = $router->match($httpRequest);
 
 Assert::same( 'homepage', $req->getPresenterName() );
 
-Assert::same( array(
+Assert::same( [
 	'id' => 12,
 	'user' => 'john doe',
 	'action' => 'default',
@@ -42,7 +42,7 @@ Assert::same( array(
 	'verbose' => TRUE,
 	'pass' => 'se cret',
 	'wait' => TRUE,
-), $req->getParameters() );
+], $req->getParameters() );
 
 Assert::true( $req->isMethod('cli') );
 

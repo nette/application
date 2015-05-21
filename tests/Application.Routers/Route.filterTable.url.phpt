@@ -13,21 +13,21 @@ require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/Route.inc';
 
 
-$route = new Route('<presenter>', array(
-	'presenter' => array(
-		Route::FILTER_TABLE => array(
+$route = new Route('<presenter>', [
+	'presenter' => [
+		Route::FILTER_TABLE => [
 			'produkt' => 'Product',
 			'kategorie' => 'Category',
 			'zakaznik' => 'Customer',
 			'kosik' => 'Basket',
-		),
-	),
-));
+		],
+	],
+]);
 
-testRouteIn($route, '/kategorie/', 'Category', array(
+testRouteIn($route, '/kategorie/', 'Category', [
 	'test' => 'testvalue',
-), '/kategorie?test=testvalue');
+], '/kategorie?test=testvalue');
 
-testRouteIn($route, '/other/', 'Other', array(
+testRouteIn($route, '/other/', 'Other', [
 	'test' => 'testvalue',
-), '/other?test=testvalue');
+], '/other?test=testvalue');

@@ -14,7 +14,7 @@ require __DIR__ . '/../bootstrap.php';
 class MockControl
 {
 
-	public function link($destination, $args = array())
+	public function link($destination, $args = [])
 	{
 		if (!is_array($args)) {
 			$args = array_slice(func_get_args(), 1);
@@ -29,7 +29,7 @@ class MockControl
 class MockPresenter extends MockControl
 {
 
-	public function link($destination, $args = array())
+	public function link($destination, $args = [])
 	{
 		if (!is_array($args)) {
 			$args = array_slice(func_get_args(), 1);
@@ -52,7 +52,7 @@ UIMacros::install($latte->getCompiler());
 $params['_control'] = new MockControl;
 $params['_presenter'] = new MockPresenter;
 $params['action'] = 'login';
-$params['arr'] = array('link' => 'login', 'param' => 123);
+$params['arr'] = ['link' => 'login', 'param' => 123];
 
 Assert::match(<<<EOD
 plink:['Homepage:']

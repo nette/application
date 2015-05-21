@@ -25,7 +25,7 @@ class Template extends Nette\Object implements Nette\Application\UI\ITemplate
 	private $file;
 
 	/** @var array */
-	private $params = array();
+	private $params = [];
 
 
 	public function __construct(Latte\Engine $latte)
@@ -47,7 +47,7 @@ class Template extends Nette\Object implements Nette\Application\UI\ITemplate
 	 * Renders template to output.
 	 * @return void
 	 */
-	public function render($file = NULL, array $params = array())
+	public function render($file = NULL, array $params = [])
 	{
 		$this->latte->render($file ?: $this->file, $params + $this->params);
 	}
@@ -120,7 +120,7 @@ class Template extends Nette\Object implements Nette\Application\UI\ITemplate
 	 */
 	public function setTranslator(Nette\Localization\ITranslator $translator = NULL)
 	{
-		$this->latte->addFilter('translate', $translator === NULL ? NULL : array($translator, 'translate'));
+		$this->latte->addFilter('translate', $translator === NULL ? NULL : [$translator, 'translate']);
 		return $this;
 	}
 

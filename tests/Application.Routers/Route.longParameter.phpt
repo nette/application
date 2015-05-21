@@ -13,11 +13,11 @@ require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/Route.inc';
 
 
-$route = new Route('<parameter-longer-than-32-characters>', array(
+$route = new Route('<parameter-longer-than-32-characters>', [
 	'presenter' => 'Presenter',
-));
+]);
 
-testRouteIn($route, '/any', 'Presenter', array(
+testRouteIn($route, '/any', 'Presenter', [
 	'parameter-longer-than-32-characters' => 'any',
 	'test' => 'testvalue',
-), '/any?test=testvalue');
+], '/any?test=testvalue');

@@ -35,4 +35,4 @@ EOD
 	{/snippet}
 </div>
 EOD
-, array('_control' => new MockControl)));
+, ['_control' => new MockControl]));

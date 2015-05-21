@@ -21,13 +21,13 @@ class PresenterFactory extends Nette\Object implements IPresenterFactory
 	public $caseSensitive = TRUE;
 
 	/** @var array[] of module => splited mask */
-	private $mapping = array(
-		'*' => array('', '*Module\\', '*Presenter'),
-		'Nette' => array('NetteModule\\', '*\\', '*Presenter'),
-	);
+	private $mapping = [
+		'*' => ['', '*Module\\', '*Presenter'],
+		'Nette' => ['NetteModule\\', '*\\', '*Presenter'],
+	];
 
 	/** @var array */
-	private $cache = array();
+	private $cache = [];
 
 	/** @var callable */
 	private $factory;
@@ -104,7 +104,7 @@ class PresenterFactory extends Nette\Object implements IPresenterFactory
 			if (!preg_match('#^\\\\?([\w\\\\]*\\\\)?(\w*\*\w*?\\\\)?([\w\\\\]*\*\w*)\z#', $mask, $m)) {
 				throw new Nette\InvalidStateException("Invalid mapping mask '$mask'.");
 			}
-			$this->mapping[$module] = array($m[1], $m[2] ?: '*Module\\', $m[3]);
+			$this->mapping[$module] = [$m[1], $m[2] ?: '*Module\\', $m[3]];
 		}
 		return $this;
 	}
@@ -139,7 +139,7 @@ class PresenterFactory extends Nette\Object implements IPresenterFactory
 	public function unformatPresenterClass($class)
 	{
 		foreach ($this->mapping as $module => $mapping) {
-			$mapping = str_replace(array('\\', '*'), array('\\\\', '(\w+)'), $mapping);
+			$mapping = str_replace(['\\', '*'], ['\\\\', '(\w+)'], $mapping);
 			if (preg_match("#^\\\\?$mapping[0]((?:$mapping[1])*)$mapping[2]\\z#i", $class, $matches)) {
 				return ($module === '*' ? '' : $module . ':')
 					. preg_replace("#$mapping[1]#iA", '$1:', $matches[1]) . $matches[3];

@@ -29,4 +29,4 @@ EOD
 , $latte->renderToString(<<<EOD
 <p>{snippet abc}hello{/snippet} world</p>
 EOD
-, array('_control' => new MockControl)));
+, ['_control' => new MockControl]));

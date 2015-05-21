@@ -13,17 +13,17 @@ require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/Route.inc';
 
 
-$route = new Route(' ? action=<presenter>', array(
-	'presenter' => array(
+$route = new Route(' ? action=<presenter>', [
+	'presenter' => [
 		Route::FILTER_IN => function($s) {
 			return strrev($s);
 		},
 		Route::FILTER_OUT => function($s) {
 			return strtoupper(strrev($s));
 		},
-	),
-));
+	],
+]);
 
-testRouteIn($route, '/?action=abc', 'cba', array(
+testRouteIn($route, '/?action=abc', 'cba', [
 	'test' => 'testvalue',
-), '/?test=testvalue&action=ABC');
+], '/?test=testvalue&action=ABC');

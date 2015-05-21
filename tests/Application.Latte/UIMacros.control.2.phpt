@@ -64,22 +64,22 @@ $latte->renderToString('
 {control form var1 => 5, 1, 2}
 ', $params);
 
-Assert::same( array(
-	"MockComponent::getComponent", array("name"),
-	"MockControl::__call", array("render", array()),
-	"MockComponent::getComponent", array("form"),
-	"MockControl::__call", array("render", array()),
-	"MockComponent::getComponent", array("form"),
-	"MockControl::__call", array("renderTest", array()),
-	"MockControl::__call", array("renderTest", array()),
-	"MockComponent::getComponent", array("form"),
-	"MockControl::__call", array("renderTest", array()),
-	"MockComponent::getComponent", array("form"),
-	"MockControl::__call", array("renderform", array()),
-	"MockComponent::getComponent", array("form"),
-	"MockControl::__call", array("render", array("var1")),
-	"MockComponent::getComponent", array("form"),
-	"MockControl::__call", array("render", array("var1", 1, 2)),
-	"MockComponent::getComponent", array("form"),
-	"MockControl::__call", array("render", array(array("var1" => 5, 0 => 1, 1 => 2))),
-), Notes::fetch() );
+Assert::same( [
+	"MockComponent::getComponent", ["name"],
+	"MockControl::__call", ["render", []],
+	"MockComponent::getComponent", ["form"],
+	"MockControl::__call", ["render", []],
+	"MockComponent::getComponent", ["form"],
+	"MockControl::__call", ["renderTest", []],
+	"MockControl::__call", ["renderTest", []],
+	"MockComponent::getComponent", ["form"],
+	"MockControl::__call", ["renderTest", []],
+	"MockComponent::getComponent", ["form"],
+	"MockControl::__call", ["renderform", []],
+	"MockComponent::getComponent", ["form"],
+	"MockControl::__call", ["render", ["var1"]],
+	"MockComponent::getComponent", ["form"],
+	"MockControl::__call", ["render", ["var1", 1, 2]],
+	"MockComponent::getComponent", ["form"],
+	"MockControl::__call", ["render", [["var1" => 5, 0 => 1, 1 => 2]]],
+], Notes::fetch() );

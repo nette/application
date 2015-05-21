@@ -29,7 +29,7 @@ class CliRouter extends Nette\Object implements Application\IRouter
 	/**
 	 * @param  array   default values
 	 */
-	public function __construct($defaults = array())
+	public function __construct($defaults = [])
 	{
 		$this->defaults = $defaults;
 	}
@@ -45,7 +45,7 @@ class CliRouter extends Nette\Object implements Application\IRouter
 			return NULL;
 		}
 
-		$names = array(self::PRESENTER_KEY);
+		$names = [self::PRESENTER_KEY];
 		$params = $this->defaults;
 		$args = $_SERVER['argv'];
 		array_shift($args);

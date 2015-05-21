@@ -14,10 +14,10 @@ require __DIR__ . '/../bootstrap.php';
 $factory = new PresenterFactory;
 
 test(function() use ($factory) {
-	$factory->setMapping(array(
+	$factory->setMapping([
 		'Foo2' => 'App2\*\*Presenter',
 		'Foo3' => 'My\App\*Mod\*Presenter',
-	));
+	]);
 
 	Assert::same( 'Foo', $factory->unformatPresenterClass('FooPresenter') );
 	Assert::same( 'Foo:Bar', $factory->unformatPresenterClass('FooModule\BarPresenter') );
@@ -36,10 +36,10 @@ test(function() use ($factory) {
 
 
 test(function() use ($factory) {
-	$factory->setMapping(array(
+	$factory->setMapping([
 		'Foo2' => 'App2\*Presenter',
 		'Foo3' => 'My\App\*Presenter',
-	));
+	]);
 
 	Assert::same( 'Foo2', $factory->unformatPresenterClass('Foo2Presenter') );
 	Assert::same( 'Foo2:Bar', $factory->unformatPresenterClass('App2\BarPresenter') );

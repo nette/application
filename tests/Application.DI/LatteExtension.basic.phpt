@@ -83,8 +83,8 @@ $container = new Container;
 Assert::type( 'Nette\Bridges\ApplicationLatte\ILatteFactory', $container->getService('nette.latteFactory') );
 $container->getService('nette.latteFactory')->create()->setLoader(new Latte\Loaders\StringLoader)->compile('');
 
-Assert::same(array(
+Assert::same([
 	'LoremIpsumMacros',
 	'IpsumLoremMacros',
 	'FooMacros',
-), Notes::fetch());
+], Notes::fetch());

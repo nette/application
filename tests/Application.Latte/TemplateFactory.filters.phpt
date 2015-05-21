@@ -33,19 +33,19 @@ $latte = $factory->createTemplate()->getLatte();
 setlocale(LC_TIME, 'C');
 date_default_timezone_set('Europe/Prague');
 
-Assert::null( $latte->invokeFilter('modifyDate', array(NULL, NULL)) );
-Assert::same( '1978-01-24 11:40:00', (string) $latte->invokeFilter('modifyDate', array(254400000, '+1 day')) );
-Assert::same( '1978-05-06 00:00:00', (string) $latte->invokeFilter('modifyDate', array('1978-05-05', '+1 day')) );
-Assert::same( '1978-05-06 00:00:00', (string) $latte->invokeFilter('modifyDate', array(new DateTime('1978-05-05'), '1day')) );
-Assert::same( '1978-01-22 11:40:00', (string) $latte->invokeFilter('modifyDate', array(254400000, -1, 'day')) );
+Assert::null( $latte->invokeFilter('modifyDate', [NULL, NULL]) );
+Assert::same( '1978-01-24 11:40:00', (string) $latte->invokeFilter('modifyDate', [254400000, '+1 day']) );
+Assert::same( '1978-05-06 00:00:00', (string) $latte->invokeFilter('modifyDate', ['1978-05-05', '+1 day']) );
+Assert::same( '1978-05-06 00:00:00', (string) $latte->invokeFilter('modifyDate', [new DateTime('1978-05-05'), '1day']) );
+Assert::same( '1978-01-22 11:40:00', (string) $latte->invokeFilter('modifyDate', [254400000, -1, 'day']) );
 
 
-Assert::same( '%25', $latte->invokeFilter('url', array('%')) );
-Assert::same( 3, $latte->invokeFilter('length', array('abc')) );
-Assert::same( 2, $latte->invokeFilter('length', array(array(1, 2))) );
-Assert::null( $latte->invokeFilter('null', array('x')) );
-Assert::same( '', $latte->invokeFilter('normalize', array('  ')) );
-Assert::same( 'a-b', $latte->invokeFilter('webalize', array('a b')) );
-Assert::same( '  a', $latte->invokeFilter('padLeft', array('a', 3)) );
-Assert::same( 'a  ', $latte->invokeFilter('padRight', array('a', 3)) );
-Assert::same( 'cba', $latte->invokeFilter('reverse', array('abc')) );
+Assert::same( '%25', $latte->invokeFilter('url', ['%']) );
+Assert::same( 3, $latte->invokeFilter('length', ['abc']) );
+Assert::same( 2, $latte->invokeFilter('length', [[1, 2]]) );
+Assert::null( $latte->invokeFilter('null', ['x']) );
+Assert::same( '', $latte->invokeFilter('normalize', ['  ']) );
+Assert::same( 'a-b', $latte->invokeFilter('webalize', ['a b']) );
+Assert::same( '  a', $latte->invokeFilter('padLeft', ['a', 3]) );
+Assert::same( 'a  ', $latte->invokeFilter('padRight', ['a', 3]) );
+Assert::same( 'cba', $latte->invokeFilter('reverse', ['abc']) );

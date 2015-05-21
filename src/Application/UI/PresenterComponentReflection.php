@@ -20,13 +20,13 @@ use Nette,
 class PresenterComponentReflection extends Nette\Reflection\ClassType
 {
 	/** @var array getPersistentParams cache */
-	private static $ppCache = array();
+	private static $ppCache = [];
 
 	/** @var array getPersistentComponents cache */
-	private static $pcCache = array();
+	private static $pcCache = [];
 
 	/** @var array isMethodCallable cache */
-	private static $mcCache = array();
+	private static $mcCache = [];
 
 
 	/**
@@ -40,7 +40,7 @@ class PresenterComponentReflection extends Nette\Reflection\ClassType
 		if ($params !== NULL) {
 			return $params;
 		}
-		$params = array();
+		$params = [];
 		if (is_subclass_of($class, 'Nette\Application\UI\PresenterComponent')) {
 			$defaults = get_class_vars($class);
 			foreach ($class::getPersistentParams() as $name => $default) {
@@ -48,10 +48,10 @@ class PresenterComponentReflection extends Nette\Reflection\ClassType
 					$name = $default;
 					$default = $defaults[$name];
 				}
-				$params[$name] = array(
+				$params[$name] = [
 					'def' => $default,
 					'since' => $class,
-				);
+				];
 			}
 			foreach ($this->getPersistentParams(get_parent_class($class)) as $name => $param) {
 				if (isset($params[$name])) {
@@ -77,13 +77,13 @@ class PresenterComponentReflection extends Nette\Reflection\ClassType
 		if ($components !== NULL) {
 			return $components;
 		}
-		$components = array();
+		$components = [];
 		if (is_subclass_of($class, 'Nette\Application\UI\Presenter')) {
 			foreach ($class::getPersistentComponents() as $name => $meta) {
 				if (is_string($meta)) {
 					$name = $meta;
 				}
-				$components[$name] = array('since' => $class);
+				$components[$name] = ['since' => $class];
 			}
 			$components = $this->getPersistentComponents(get_parent_class($class)) + $components;
 		}
@@ -116,7 +116,7 @@ class PresenterComponentReflection extends Nette\Reflection\ClassType
 	 */
 	public static function combineArgs(\ReflectionFunctionAbstract $method, $args)
 	{
-		$res = array();
+		$res = [];
 		$i = 0;
 		foreach ($method->getParameters() as $param) {
 			$name = $param->getName();
@@ -128,7 +128,7 @@ class PresenterComponentReflection extends Nette\Reflection\ClassType
 					throw new BadRequestException("Invalid value for parameter '$name' in method $mName(), expected " . ($type === 'NULL' ? 'scalar' : $type) . ".");
 				}
 			} else {
-				$res[$i++] = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : ($param->isArray() ? array() : NULL);
+				$res[$i++] = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : ($param->isArray() ? [] : NULL);
 			}
 		}
 		return $res;
@@ -172,9 +172,9 @@ class PresenterComponentReflection extends Nette\Reflection\ClassType
 		if (!preg_match_all("#[\\s*]@$name(?:\(\\s*([^)]*)\\s*\))?#", $ref->getDocComment(), $m)) {
 			return FALSE;
 		}
-		$res = array();
+		$res = [];
 		foreach ($m[1] as $s) {
-			$arr = $s === '' ? array(TRUE) : preg_split('#\s*,\s*#', $s, -1, PREG_SPLIT_NO_EMPTY);
+			$arr = $s === '' ? [TRUE] : preg_split('#\s*,\s*#', $s, -1, PREG_SPLIT_NO_EMPTY);
 			$res = array_merge($res, $arr);
 		}
 		return $res;

@@ -36,7 +36,7 @@ class Request extends Nette\Object
 	private $method;
 
 	/** @var array */
-	private $flags = array();
+	private $flags = [];
 
 	/** @var string */
 	private $name;
@@ -59,7 +59,7 @@ class Request extends Nette\Object
 	 * @param  array   all uploaded files
 	 * @param  array   flags
 	 */
-	public function __construct($name, $method = NULL, array $params = array(), array $post = array(), array $files = array(), array $flags = array())
+	public function __construct($name, $method = NULL, array $params = [], array $post = [], array $files = [], array $flags = [])
 	{
 		$this->name = $name;
 		$this->method = $method;

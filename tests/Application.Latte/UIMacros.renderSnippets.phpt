@@ -50,8 +50,8 @@ $presenter->snippetMode = TRUE;
 $presenter->redrawControl();
 $presenter['multi-1']->redrawControl();
 $presenter->render();
-Assert::same(array(
-	'snippets' => array(
+Assert::same([
+	'snippets' => [
 		'snippet--hello' => 'Hello',
 		'snippet--include' => "<p>Included file #3 (A, B)</p>\n",
 		'snippet--array-1' => 'Value 1',
@@ -62,8 +62,8 @@ Assert::same(array(
 		'snippet--array2-3' => 'Value 3',
 		'snippet--includeSay' => 'Hello include snippet',
 		'snippet-multi-1-includeSay' => 'Hello',
-	),
-), (array) $presenter->payload);
+	],
+], (array) $presenter->payload);
 
 
 
@@ -73,14 +73,14 @@ $presenter->redrawControl('hello');
 $presenter->redrawControl('array');
 $presenter->render();
 
-Assert::same(array(
-	'snippets' => array(
+Assert::same([
+	'snippets' => [
 		'snippet--hello' => 'Hello',
 		'snippet--array-1' => 'Value 1',
 		'snippet--array-2' => 'Value 2',
 		'snippet--array-3' => 'Value 3',
-	),
-), (array) $presenter->payload);
+	],
+], (array) $presenter->payload);
 
 $presenter = new TestPresenter;
 ob_start();

@@ -12,19 +12,19 @@ use Nette\Http,
 require __DIR__ . '/../bootstrap.php';
 
 
-$router = new SimpleRouter(array(
+$router = new SimpleRouter([
 	'id' => 12,
 	'any' => 'anyvalue',
-));
+]);
 
 $url = new Http\UrlScript('http://nette.org/file.php');
 $url->setScriptPath('/file.php');
-$url->setQuery(array(
+$url->setQuery([
 	'presenter' => 'myPresenter',
 	'action' => 'action',
 	'id' => '12',
 	'test' => 'testvalue',
-));
+]);
 $httpRequest = new Http\Request($url);
 
 $req = $router->match($httpRequest);

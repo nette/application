@@ -12,15 +12,15 @@ use Nette\Http,
 require __DIR__ . '/../bootstrap.php';
 
 
-$router = new Application\Routers\SimpleRouter(array(
+$router = new Application\Routers\SimpleRouter([
 	'module' => 'main:sub',
-));
+]);
 
 $url = new Http\UrlScript('http://nette.org/file.php');
 $url->setScriptPath('/file.php');
-$url->setQuery(array(
+$url->setQuery([
 	'presenter' => 'myPresenter',
-));
+]);
 $httpRequest = new Http\Request($url);
 
 $req = $router->match($httpRequest);
@@ -32,7 +32,7 @@ Assert::same( 'http://nette.org/file.php?presenter=myPresenter',  $url );
 $req = new Application\Request(
 	'othermodule:presenter',
 	Http\Request::GET,
-	array()
+	[]
 );
 $url = $router->constructUrl($req, $httpRequest->getUrl());
 Assert::null( $url );

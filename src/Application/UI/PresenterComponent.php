@@ -25,7 +25,7 @@ use Nette;
 abstract class PresenterComponent extends Nette\ComponentModel\Container implements ISignalReceiver, IStatePersistent, \ArrayAccess
 {
 	/** @var array */
-	protected $params = array();
+	protected $params = [];
 
 
 	/**
@@ -231,7 +231,7 @@ abstract class PresenterComponent extends Nette\ComponentModel\Container impleme
 	public static function getPersistentParams()
 	{
 		$rc = new \ReflectionClass(get_called_class());
-		$params = array();
+		$params = [];
 		foreach ($rc->getProperties(\ReflectionProperty::IS_PUBLIC) as $rp) {
 			if (!$rp->isStatic() && PresenterComponentReflection::parseAnnotation($rp, 'persistent')) {
 				$params[] = $rp->getName();
@@ -280,7 +280,7 @@ abstract class PresenterComponent extends Nette\ComponentModel\Container impleme
 	 * @return string
 	 * @throws InvalidLinkException
 	 */
-	public function link($destination, $args = array())
+	public function link($destination, $args = [])
 	{
 		try {
 			return $this->getPresenter()->createRequest($this, $destination, is_array($args) ? $args : array_slice(func_get_args(), 1), 'link');
@@ -297,7 +297,7 @@ abstract class PresenterComponent extends Nette\ComponentModel\Container impleme
 	 * @param  array|mixed
 	 * @return Link
 	 */
-	public function lazyLink($destination, $args = array())
+	public function lazyLink($destination, $args = [])
 	{
 		return new Link($this, $destination, is_array($args) ? $args : array_slice(func_get_args(), 1));
 	}
@@ -310,7 +310,7 @@ abstract class PresenterComponent extends Nette\ComponentModel\Container impleme
 	 * @return bool
 	 * @throws InvalidLinkException
 	 */
-	public function isLinkCurrent($destination = NULL, $args = array())
+	public function isLinkCurrent($destination = NULL, $args = [])
 	{
 		if ($destination !== NULL) {
 			$this->getPresenter()->createRequest($this, $destination, is_array($args) ? $args : array_slice(func_get_args(), 1), 'test');
@@ -327,7 +327,7 @@ abstract class PresenterComponent extends Nette\ComponentModel\Container impleme
 	 * @return void
 	 * @throws Nette\Application\AbortException
 	 */
-	public function redirect($code, $destination = NULL, $args = array())
+	public function redirect($code, $destination = NULL, $args = [])
 	{
 		if (!is_numeric($code)) { // first parameter is optional
 			$args = is_array($destination) ? $destination : array_slice(func_get_args(), 1);

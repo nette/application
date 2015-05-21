@@ -47,7 +47,7 @@ test(function() use ($presenter) {
 
 
 test(function() use ($presenter) {
-	$presenter->redirect('foo', array('arg' => 1));
+	$presenter->redirect('foo', ['arg' => 1]);
 	Assert::type('Nette\Application\Responses\RedirectResponse', $presenter->response);
 	Assert::same(302, $presenter->response->getCode());
 	Assert::same('http://localhost/?arg=1&action=foo&presenter=test', $presenter->response->getUrl());
@@ -63,7 +63,7 @@ test(function() use ($presenter) {
 
 
 test(function() use ($presenter) {
-	$presenter->redirect(301, 'foo', array('arg' => 1));
+	$presenter->redirect(301, 'foo', ['arg' => 1]);
 	Assert::type('Nette\Application\Responses\RedirectResponse', $presenter->response);
 	Assert::same(301, $presenter->response->getCode());
 	Assert::same('http://localhost/?arg=1&action=foo&presenter=test', $presenter->response->getUrl());

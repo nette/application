@@ -20,7 +20,7 @@ function createCompiler($config)
 	$compiler->loadConfig(Tester\FileMock::create($config, 'neon'));
 	$builder = $compiler->getContainerBuilder();
 	$builder->addDefinition('myRouter')->setClass('Nette\Application\Routers\SimpleRouter');
-	$builder->addDefinition('myHttpRequest')->setFactory('Nette\Http\Request', array(new DI\Statement('Nette\Http\UrlScript')));
+	$builder->addDefinition('myHttpRequest')->setFactory('Nette\Http\Request', [new DI\Statement('Nette\Http\UrlScript')]);
 	$builder->addDefinition('myHttpResponse')->setClass('Nette\Http\Response');
 	return $compiler;
 }

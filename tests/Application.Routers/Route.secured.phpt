@@ -13,11 +13,11 @@ require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/Route.inc';
 
 
-$route = new Route('<param>', array(
+$route = new Route('<param>', [
 	'presenter' => 'Presenter',
-), Route::SECURED);
+], Route::SECURED);
 
-testRouteIn($route, '/any', 'Presenter', array(
+testRouteIn($route, '/any', 'Presenter', [
 	'param' => 'any',
 	'test' => 'testvalue',
-), 'https://example.com/any?test=testvalue');
+], 'https://example.com/any?test=testvalue');

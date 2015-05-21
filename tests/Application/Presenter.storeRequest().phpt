@@ -95,7 +95,7 @@ $presenter->injectPrimary(
 
 $section = $session->testSection = new MockSessionSection($session);
 
-$applicationRequest = new Application\Request('', '', array());
+$applicationRequest = new Application\Request('', '', []);
 $presenter->run($applicationRequest);
 
 $expiration = '+1 year';
@@ -105,4 +105,4 @@ Assert::same($expiration, $section->testExpiration);
 Assert::same($key, $section->testExpirationVariables);
 Assert::same($key, $section->testedKeyExistence);
 Assert::same($key, $section->storedKey);
-Assert::same(array($user->getId(), $applicationRequest), $section->storedValue);
+Assert::same([$user->getId(), $applicationRequest], $section->storedValue);
