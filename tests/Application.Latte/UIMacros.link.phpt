@@ -25,6 +25,6 @@ Assert::same( '<?php echo $_control->link("$p:$a") ?>',  $compiler->expandMacro(
 Assert::same( '<?php echo $_control->link("p:a") ?>',  $compiler->expandMacro('link', '"p:a"', '')->openingCode );
 Assert::same( '<?php echo $_control->link(\'p:a\') ?>',  $compiler->expandMacro('link', "'p:a'", '')->openingCode );
 
-Assert::same( '<?php echo $_control->link("p", array(\'param\')) ?>',  $compiler->expandMacro('link', 'p param', '')->openingCode );
-Assert::same( '<?php echo $_control->link("p", array(\'param\' => 123)) ?>',  $compiler->expandMacro('link', 'p param => 123', '')->openingCode );
-Assert::same( '<?php echo $_control->link("p", array(\'param\' => 123)) ?>',  $compiler->expandMacro('link', 'p, param => 123', '')->openingCode );
+Assert::same( '<?php echo $_control->link("p", [\'param\']) ?>',  $compiler->expandMacro('link', 'p param', '')->openingCode );
+Assert::same( '<?php echo $_control->link("p", [\'param\' => 123]) ?>',  $compiler->expandMacro('link', 'p param => 123', '')->openingCode );
+Assert::same( '<?php echo $_control->link("p", [\'param\' => 123]) ?>',  $compiler->expandMacro('link', 'p, param => 123', '')->openingCode );
