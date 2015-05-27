@@ -126,6 +126,9 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @var ITemplateFactory */
 	private $templateFactory;
 
+	/** @var Nette\Http\Url */
+	private $refUrlCache;
+
 
 	public function __construct()
 	{
@@ -973,9 +976,9 @@ abstract class Presenter extends Control implements Application\IPresenter
 		}
 
 		// CONSTRUCT URL
-		static $refUrl;
+		$refUrl = $this->refUrlCache;
 		if ($refUrl === NULL) {
-			$refUrl = new Http\Url($this->httpRequest->getUrl());
+			$this->refUrlCache = $refUrl = new Http\Url($this->httpRequest->getUrl());
 			$refUrl->setPath($this->httpRequest->getUrl()->getScriptPath());
 		}
 		if (!$this->router) {
