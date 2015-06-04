@@ -125,15 +125,6 @@ class Template extends Nette\Object implements Nette\Application\UI\ITemplate
 	}
 
 
-	/**
-	 * @deprecated
-	 */
-	public function registerFilter($callback)
-	{
-		throw new Nette\DeprecatedException(__METHOD__ . '() is deprecated.');
-	}
-
-
 	/********************* template parameters ****************d*g**/
 
 

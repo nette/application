@@ -210,16 +210,6 @@ class Request extends Nette\Object
 
 
 	/**
-	 * @deprecated
-	 */
-	public function isPost()
-	{
-		trigger_error('Method isPost() is deprecated, use isMethod(\'POST\') instead.', E_USER_DEPRECATED);
-		return strcasecmp($this->method, 'post') === 0;
-	}
-
-
-	/**
 	 * Sets the flag.
 	 * @param  string
 	 * @param  bool

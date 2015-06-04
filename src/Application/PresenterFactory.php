@@ -17,9 +17,6 @@ use Nette;
  */
 class PresenterFactory extends Nette\Object implements IPresenterFactory
 {
-	/** @deprecated */
-	public $caseSensitive = TRUE;
-
 	/** @var array[] of module => splited mask */
 	private $mapping = [
 		'*' => ['', '*Module\\', '*Presenter'],

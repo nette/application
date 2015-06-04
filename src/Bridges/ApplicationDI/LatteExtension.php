@@ -59,29 +59,11 @@ class LatteExtension extends Nette\DI\CompilerExtension
 			->setClass('Nette\Application\UI\ITemplateFactory')
 			->setFactory('Nette\Bridges\ApplicationLatte\TemplateFactory');
 
-		$container->addDefinition('nette.latte')
-			->setClass('Latte\Engine')
-			->addSetup('::trigger_error', ['Service nette.latte is deprecated, implement Nette\Bridges\ApplicationLatte\ILatteFactory.', E_USER_DEPRECATED])
-			->addSetup('setTempDirectory', [$this->tempDir])
-			->addSetup('setAutoRefresh', [$this->debugMode])
-			->addSetup('setContentType', [$config['xhtml'] ? Latte\Compiler::CONTENT_XHTML : Latte\Compiler::CONTENT_HTML])
-			->addSetup('Nette\Utils\Html::$xhtml = ?', [(bool) $config['xhtml']])
-			->setAutowired(FALSE);
-
 		foreach ($config['macros'] as $macro) {
 			if (strpos($macro, '::') === FALSE && class_exists($macro)) {
 				$macro .= '::install';
 			}
 			$this->addMacro($macro);
-		}
-
-		if (class_exists('Nette\Templating\FileTemplate')) {
-			$container->addDefinition('nette.template')
-				->setFactory('Nette\Templating\FileTemplate')
-				->addSetup('::trigger_error', ['Service nette.template is deprecated.', E_USER_DEPRECATED])
-				->addSetup('registerFilter', [new Nette\DI\Statement([$latteFactory, 'create'])])
-				->addSetup('registerHelperLoader', ['Nette\Templating\Helpers::loader'])
-				->setAutowired(FALSE);
 		}
 
 		if ($this->name === 'latte') {
@@ -100,9 +82,6 @@ class LatteExtension extends Nette\DI\CompilerExtension
 		Nette\Utils\Validators::assert($macro, 'callable');
 
 		$container = $this->getContainerBuilder();
-		$container->getDefinition('nette.latte')
-			->addSetup('?->onCompile[] = function($engine) { ' . $macro . '($engine->getCompiler()); }', ['@self']);
-
 		$container->getDefinition($this->prefix('latteFactory'))
 			->addSetup('?->onCompile[] = function($engine) { ' . $macro . '($engine->getCompiler()); }', ['@self']);
 	}

@@ -27,9 +27,6 @@ class Route extends Nette\Object implements Application\IRouter
 	const PRESENTER_KEY = 'presenter';
 	const MODULE_KEY = 'module';
 
-	/** @deprecated */
-	const CASE_SENSITIVE = 256;
-
 	/** @internal url type */
 	const HOST = 1,
 		PATH = 2,
@@ -794,44 +791,6 @@ class Route extends Nette\Object implements Application\IRouter
 	private static function param2path($s)
 	{
 		return str_replace('%2F', '/', rawurlencode($s));
-	}
-
-
-	/********************* Route::$styles manipulator ****************d*g**/
-
-
-	/**
-	 * @deprecated
-	 */
-	public static function addStyle($style, $parent = '#')
-	{
-		trigger_error(__METHOD__ . '() is deprecated.', E_USER_DEPRECATED);
-		if (isset(static::$styles[$style])) {
-			throw new Nette\InvalidArgumentException("Style '$style' already exists.");
-		}
-
-		if ($parent !== NULL) {
-			if (!isset(static::$styles[$parent])) {
-				throw new Nette\InvalidArgumentException("Parent style '$parent' doesn't exist.");
-			}
-			static::$styles[$style] = static::$styles[$parent];
-
-		} else {
-			static::$styles[$style] = [];
-		}
-	}
-
-
-	/**
-	 * @deprecated
-	 */
-	public static function setStyleProperty($style, $key, $value)
-	{
-		trigger_error(__METHOD__ . '() is deprecated.', E_USER_DEPRECATED);
-		if (!isset(static::$styles[$style])) {
-			throw new Nette\InvalidArgumentException("Style '$style' doesn't exist.");
-		}
-		static::$styles[$style][$key] = $value;
 	}
 
 }
