@@ -468,29 +468,22 @@ class Route extends Nette\Object implements Application\IRouter
 		}
 
 		// PARSE MASK
-		// <parameter-name[=default] [pattern] [#class]> or [ or ] or ?...
-		$parts = Strings::split($mask, '/<([^>#= ]+)(=[^># ]*)? *([^>#]*)(#?[^>\[\]]*)>|(\[!?|\]|\s*\?.*)/');
+		// <parameter-name[=default] [pattern]> or [ or ] or ?...
+		$parts = Strings::split($mask, '/<([^>= ]+)(=[^> ]*)? *([^>]*)>|(\[!?|\]|\s*\?.*)/');
 
 		$this->xlat = [];
 		$i = count($parts) - 1;
 
 		// PARSE QUERY PART OF MASK
 		if (isset($parts[$i - 1]) && substr(ltrim($parts[$i - 1]), 0, 1) === '?') {
-			// name=<parameter-name [pattern][#class]>
-			$matches = Strings::matchAll($parts[$i - 1], '/(?:([a-zA-Z0-9_.-]+)=)?<([^># ]+) *([^>#]*)(#?[^>]*)>/');
+			// name=<parameter-name [pattern]>
+			$matches = Strings::matchAll($parts[$i - 1], '/(?:([a-zA-Z0-9_.-]+)=)?<([^> ]+) *([^>]*)>/');
 
 			foreach ($matches as $match) {
-				list(, $param, $name, $pattern, $class) = $match;  // $pattern is not used
+				list(, $param, $name, $pattern) = $match;  // $pattern is not used
 
-				if ($class !== '') {
-					if (!isset(static::$styles[$class])) {
-						throw new Nette\InvalidStateException("Parameter '$name' has '$class' flag, but Route::\$styles['$class'] is not set.");
-					}
-					$meta = static::$styles[$class];
-
-				} elseif (isset(static::$styles['?' . $name])) {
+				if (isset(static::$styles['?' . $name])) {
 					$meta = static::$styles['?' . $name];
-
 				} else {
 					$meta = static::$styles['?#'];
 				}
@@ -511,7 +504,7 @@ class Route extends Nette\Object implements Application\IRouter
 					$this->xlat[$name] = $param;
 				}
 			}
-			$i -= 6;
+			$i -= 5;
 		}
 
 		// PARSE PATH PART OF MASK
@@ -536,11 +529,10 @@ class Route extends Nette\Object implements Application\IRouter
 				}
 				array_unshift($sequence, $part);
 				$re = ($part[0] === '[' ? '(?:' : ')?') . $re;
-				$i -= 5;
+				$i -= 4;
 				continue;
 			}
 
-			$class = $parts[$i]; $i--; // validation class
 			$pattern = trim($parts[$i]); $i--; // validation condition (as regexp)
 			$default = $parts[$i]; $i--; // default value
 			$name = $parts[$i]; $i--; // parameter name
@@ -554,15 +546,8 @@ class Route extends Nette\Object implements Application\IRouter
 			}
 
 			// pattern, condition & metadata
-			if ($class !== '') {
-				if (!isset(static::$styles[$class])) {
-					throw new Nette\InvalidStateException("Parameter '$name' has '$class' flag, but Route::\$styles['$class'] is not set.");
-				}
-				$meta = static::$styles[$class];
-
-			} elseif (isset(static::$styles[$name])) {
+			if (isset(static::$styles[$name])) {
 				$meta = static::$styles[$name];
-
 			} else {
 				$meta = static::$styles['#'];
 			}
