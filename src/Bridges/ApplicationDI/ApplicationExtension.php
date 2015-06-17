@@ -123,6 +123,9 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 		$classes = [];
 
 		if ($config['scanDirs']) {
+			if (!class_exists('Nette\Loaders\RobotLoader')) {
+				throw new Nette\NotSupportedException("RobotLoader is required to find presenters, install package `nette/robot-loader` or disable option {$this->prefix('scanDirs')}: false");
+			}
 			$robot = new Nette\Loaders\RobotLoader;
 			$robot->setCacheStorage(new Nette\Caching\Storages\DevNullStorage);
 			$robot->addDirectory($config['scanDirs']);
