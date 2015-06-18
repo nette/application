@@ -7,8 +7,8 @@
 
 namespace Nette\Bridges\ApplicationDI;
 
-use Nette,
-	Nette\Application\UI;
+use Nette;
+use Nette\Application\UI;
 
 
 /**
@@ -140,7 +140,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 			$classFile = dirname($rc->getFileName()) . '/autoload_classmap.php';
 			if (is_file($classFile)) {
 				$this->getContainerBuilder()->addDependency($classFile);
-				$classes = array_merge($classes, array_keys(call_user_func(function($path) {
+				$classes = array_merge($classes, array_keys(call_user_func(function ($path) {
 					return require $path;
 				}, $classFile)));
 			}

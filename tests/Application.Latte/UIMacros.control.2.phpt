@@ -4,9 +4,9 @@
  * Test: {control ...}
  */
 
-use Nette\Object,
-	Nette\Bridges\ApplicationLatte\UIMacros,
-	Tester\Assert;
+use Nette\Object;
+use Nette\Bridges\ApplicationLatte\UIMacros;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -16,8 +16,8 @@ class MockComponent extends Object
 {
 	function getComponent($name)
 	{
-		Notes::add( __METHOD__ );
-		Notes::add( func_get_args() );
+		Notes::add(__METHOD__);
+		Notes::add(func_get_args());
 		return new MockControl;
 	}
 
@@ -29,8 +29,8 @@ class MockControl extends Object
 
 	function __call($name, $args)
 	{
-		Notes::add( __METHOD__ );
-		Notes::add( func_get_args() );
+		Notes::add(__METHOD__);
+		Notes::add(func_get_args());
 	}
 
 }
@@ -64,22 +64,22 @@ $latte->renderToString('
 {control form var1 => 5, 1, 2}
 ', $params);
 
-Assert::same( [
-	"MockComponent::getComponent", ["name"],
-	"MockControl::__call", ["render", []],
-	"MockComponent::getComponent", ["form"],
-	"MockControl::__call", ["render", []],
-	"MockComponent::getComponent", ["form"],
-	"MockControl::__call", ["renderTest", []],
-	"MockControl::__call", ["renderTest", []],
-	"MockComponent::getComponent", ["form"],
-	"MockControl::__call", ["renderTest", []],
-	"MockComponent::getComponent", ["form"],
-	"MockControl::__call", ["renderform", []],
-	"MockComponent::getComponent", ["form"],
-	"MockControl::__call", ["render", ["var1"]],
-	"MockComponent::getComponent", ["form"],
-	"MockControl::__call", ["render", ["var1", 1, 2]],
-	"MockComponent::getComponent", ["form"],
-	"MockControl::__call", ["render", [["var1" => 5, 0 => 1, 1 => 2]]],
-], Notes::fetch() );
+Assert::same([
+	'MockComponent::getComponent', ['name'],
+	'MockControl::__call', ['render', []],
+	'MockComponent::getComponent', ['form'],
+	'MockControl::__call', ['render', []],
+	'MockComponent::getComponent', ['form'],
+	'MockControl::__call', ['renderTest', []],
+	'MockControl::__call', ['renderTest', []],
+	'MockComponent::getComponent', ['form'],
+	'MockControl::__call', ['renderTest', []],
+	'MockComponent::getComponent', ['form'],
+	'MockControl::__call', ['renderform', []],
+	'MockComponent::getComponent', ['form'],
+	'MockControl::__call', ['render', ['var1']],
+	'MockComponent::getComponent', ['form'],
+	'MockControl::__call', ['render', ['var1', 1, 2]],
+	'MockComponent::getComponent', ['form'],
+	'MockControl::__call', ['render', [['var1' => 5, 0 => 1, 1 => 2]]],
+], Notes::fetch());

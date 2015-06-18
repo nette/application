@@ -4,9 +4,9 @@
  * Test: TemplateFactory in Bridge properly handles Latte::onCompile
  */
 
-use Nette\Bridges\ApplicationLatte\TemplateFactory,
-	Nette\Http,
-	Tester\Assert;
+use Nette\Bridges\ApplicationLatte\TemplateFactory;
+use Nette\Http;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -29,10 +29,10 @@ class LatteFactoryMock implements Nette\Bridges\ApplicationLatte\ILatteFactory
 
 
 
-test(function() {
+test(function () {
 	$engine = new Latte\Engine;
 	$factory = new TemplateFactory(new LatteFactoryMock($engine), new Http\Request(new Http\UrlScript('http://nette.org')));
-	$engine->onCompile[] = $callback = function() { };
+	$engine->onCompile[] = $callback = function () {};
 
 	$factory->createTemplate();
 
@@ -42,10 +42,10 @@ test(function() {
 });
 
 
-test(function() {
+test(function () {
 	$engine = new Latte\Engine;
 	$factory = new TemplateFactory(new LatteFactoryMock($engine), new Http\Request(new Http\UrlScript('http://nette.org')));
-	$engine->onCompile = new ArrayIterator([$callback = function() {}]);
+	$engine->onCompile = new ArrayIterator([$callback = function () {}]);
 
 	$factory->createTemplate();
 
@@ -55,7 +55,7 @@ test(function() {
 });
 
 
-test(function() {
+test(function () {
 	class Event implements IteratorAggregate
 	{
 		public $events;
@@ -73,7 +73,7 @@ test(function() {
 
 	$engine = new Latte\Engine;
 	$factory = new TemplateFactory(new LatteFactoryMock($engine), new Http\Request(new Http\UrlScript('http://nette.org')));
-	$engine->onCompile = new Event([$callback = function() {}]);
+	$engine->onCompile = new Event([$callback = function () {}]);
 
 	$factory->createTemplate();
 

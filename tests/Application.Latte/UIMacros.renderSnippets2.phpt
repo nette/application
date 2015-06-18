@@ -4,8 +4,8 @@
  * Test: UIMacros, renderSnippets and control with two templates.
  */
 
-use Nette\Bridges\ApplicationLatte\UIMacros,
-	Tester\Assert;
+use Nette\Bridges\ApplicationLatte\UIMacros;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -47,7 +47,7 @@ class TestPresenter extends Nette\Application\UI\Presenter
 {
 	function createComponentMulti()
 	{
-		return new Nette\Application\UI\Multiplier(function() {
+		return new Nette\Application\UI\Multiplier(function () {
 			return new InnerControl();
 		});
 	}

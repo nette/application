@@ -4,10 +4,10 @@
  * Test: ApplicationExtension
  */
 
-use Nette\DI,
-	Nette\Bridges\ApplicationDI\ApplicationExtension,
-	Nette\Application\UI\Presenter,
-	Tester\Assert;
+use Nette\DI;
+use Nette\Bridges\ApplicationDI\ApplicationExtension;
+use Nette\Application\UI\Presenter;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -26,7 +26,7 @@ function createCompiler($config)
 }
 
 
-test(function() {
+test(function () {
 	$compiler = createCompiler('
 	application:
 		debugger: no
@@ -47,7 +47,7 @@ test(function() {
 });
 
 
-test(function() {
+test(function () {
 	$compiler = createCompiler('
 	application:
 		debugger: no
@@ -68,7 +68,7 @@ test(function() {
 });
 
 
-test(function() {
+test(function () {
 	$compiler = createCompiler('
 	application:
 		debugger: no
@@ -89,7 +89,7 @@ test(function() {
 });
 
 
-test(function() {
+test(function () {
 	$compiler = createCompiler('
 	application:
 		debugger: no

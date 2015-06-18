@@ -45,7 +45,7 @@ namespace {
 	$pf = new PresenterFactory;
 
 
-	test(function() use ($pf) {
+	test(function () use ($pf) {
 		$generator = new LinkGenerator(new Routers\SimpleRouter, new Http\Url('http://nette.org/en/'), $pf);
 		Assert::same('http://nette.org/en/?action=default&presenter=Homepage',  $generator->link('Homepage:default'));
 		Assert::same('http://nette.org/en/?action=default&presenter=Module%3AMy',  $generator->link('Module:My:default'));
@@ -57,19 +57,19 @@ namespace {
 	});
 
 
-	Assert::exception(function() use ($pf) {
+	Assert::exception(function () use ($pf) {
 		$generator = new LinkGenerator(new Routers\SimpleRouter, new Http\Url('http://nette.org/en/'), $pf);
 		$generator->link('default');
 	}, 'Nette\Application\UI\InvalidLinkException', "Invalid link destination 'default'.");
 
 
-	Assert::exception(function() use ($pf) {
+	Assert::exception(function () use ($pf) {
 		$generator = new LinkGenerator(new Routers\Route('/', 'Product:'), new Http\Url('http://nette.org/en/'), $pf);
 		$generator->link('Homepage:default', ['id' => 10]);
 	}, 'Nette\Application\UI\InvalidLinkException', 'No route for Homepage:default(id=10)');
 
 
-	test(function() {
+	test(function () {
 		$generator = new LinkGenerator(new Routers\SimpleRouter, new Http\Url('http://nette.org/en/'));
 		Assert::same('http://nette.org/en/?action=default&presenter=Homepage',  $generator->link('Homepage:default'));
 		Assert::same('http://nette.org/en/?action=default&presenter=Module%3AMy',  $generator->link('Module:My:default'));

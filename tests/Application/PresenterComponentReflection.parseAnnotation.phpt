@@ -4,8 +4,8 @@
  * Test: PresenterComponentReflection annotation parser.
  */
 
-use Nette\Application\UI\PresenterComponentReflection as Reflection,
-	Tester\Assert;
+use Nette\Application\UI\PresenterComponentReflection as Reflection;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';

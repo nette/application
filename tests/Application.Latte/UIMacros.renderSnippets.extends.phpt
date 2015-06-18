@@ -4,8 +4,8 @@
  * Test: UIMacros, renderSnippets and template with layout
  */
 
-use Nette\Bridges\ApplicationLatte\UIMacros,
-	Tester\Assert;
+use Nette\Bridges\ApplicationLatte\UIMacros;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -27,7 +27,7 @@ class TestPresenter extends Nette\Application\UI\Presenter
 
 $presenter = new TestPresenter;
 $presenter->snippetMode = TRUE;
-$presenter->redrawControl('foo');;
+$presenter->redrawControl('foo');
 $content = $presenter->render();
 Assert::same('', $content);
 Assert::same([

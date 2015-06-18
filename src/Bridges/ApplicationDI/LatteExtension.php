@@ -7,8 +7,8 @@
 
 namespace Nette\Bridges\ApplicationDI;
 
-use Nette,
-	Latte;
+use Nette;
+use Latte;
 
 
 /**
@@ -47,7 +47,7 @@ class LatteExtension extends Nette\DI\CompilerExtension
 		$config = $this->validateConfig($this->defaults);
 		$container = $this->getContainerBuilder();
 
-		$latteFactory = $container->addDefinition($this->prefix('latteFactory'))
+		$container->addDefinition($this->prefix('latteFactory'))
 			->setClass('Latte\Engine')
 			->addSetup('setTempDirectory', [$this->tempDir])
 			->addSetup('setAutoRefresh', [$this->debugMode])
@@ -83,7 +83,7 @@ class LatteExtension extends Nette\DI\CompilerExtension
 
 		$container = $this->getContainerBuilder();
 		$container->getDefinition($this->prefix('latteFactory'))
-			->addSetup('?->onCompile[] = function($engine) { ' . $macro . '($engine->getCompiler()); }', ['@self']);
+			->addSetup('?->onCompile[] = function ($engine) { ' . $macro . '($engine->getCompiler()); }', ['@self']);
 	}
 
 }

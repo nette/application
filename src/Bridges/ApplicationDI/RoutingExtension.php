@@ -58,7 +58,7 @@ class RoutingExtension extends Nette\DI\CompilerExtension
 
 		if ($this->debugMode && $this->config['debugger'] && $application = $container->getByType('Nette\Application\Application')) {
 			$container->getDefinition($application)->addSetup('@Tracy\Bar::addPanel', [
-				new Nette\DI\Statement('Nette\Bridges\ApplicationTracy\RoutingPanel')
+				new Nette\DI\Statement('Nette\Bridges\ApplicationTracy\RoutingPanel'),
 			]);
 		}
 	}

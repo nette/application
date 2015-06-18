@@ -4,8 +4,8 @@
  * Test: LatteExtension.
  */
 
-use Nette\DI,
-	Tester\Assert;
+use Nette\DI;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -80,7 +80,7 @@ eval($code);
 $container = new Container;
 
 
-Assert::type( 'Nette\Bridges\ApplicationLatte\ILatteFactory', $container->getService('nette.latteFactory') );
+Assert::type('Nette\Bridges\ApplicationLatte\ILatteFactory', $container->getService('nette.latteFactory'));
 $container->getService('nette.latteFactory')->create()->setLoader(new Latte\Loaders\StringLoader)->compile('');
 
 Assert::same([

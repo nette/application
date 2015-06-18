@@ -11,8 +11,8 @@
 
 namespace Nette\Bridges\ApplicationLatte;
 
-use Nette,
-	Nette\Application\UI;
+use Nette;
+use Nette\Application\UI;
 
 
 /**
@@ -66,7 +66,7 @@ class TemplateFactory extends Nette\Object implements UI\ITemplateFactory
 			$latte->onCompile = iterator_to_array($latte->onCompile);
 		}
 
-		array_unshift($latte->onCompile, function($latte) use ($control, $template) {
+		array_unshift($latte->onCompile, function ($latte) use ($control, $template) {
 			$latte->getParser()->shortNoEscape = TRUE;
 			$latte->getCompiler()->addMacro('cache', new Nette\Bridges\CacheLatte\CacheMacro($latte->getCompiler()));
 			UIMacros::install($latte->getCompiler());
@@ -82,11 +82,11 @@ class TemplateFactory extends Nette\Object implements UI\ITemplateFactory
 		foreach (['normalize', 'toAscii', 'webalize', 'padLeft', 'padRight', 'reverse'] as $name) {
 			$latte->addFilter($name, 'Nette\Utils\Strings::' . $name);
 		}
-		$latte->addFilter('null', function() {});
-		$latte->addFilter('length', function($var) {
+		$latte->addFilter('null', function () {});
+		$latte->addFilter('length', function ($var) {
 			return is_string($var) ? Nette\Utils\Strings::length($var) : count($var);
 		});
-		$latte->addFilter('modifyDate', function($time, $delta, $unit = NULL) {
+		$latte->addFilter('modifyDate', function ($time, $delta, $unit = NULL) {
 			return $time == NULL ? NULL : Nette\Utils\DateTime::from($time)->modify($delta . $unit); // intentionally ==
 		});
 

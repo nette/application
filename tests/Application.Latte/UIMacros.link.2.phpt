@@ -4,8 +4,8 @@
  * Test: {link ...}, {plink ...}
  */
 
-use Nette\Bridges\ApplicationLatte\UIMacros,
-	Tester\Assert;
+use Nette\Bridges\ApplicationLatte\UIMacros;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -38,7 +38,8 @@ class MockPresenter extends MockControl
 		return 'plink:' . strtr(json_encode($args), '"', "'");
 	}
 
-	public function isAjax() {
+	public function isAjax()
+	{
 		return FALSE;
 	}
 
