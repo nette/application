@@ -7,11 +7,11 @@
 
 namespace Nette\Application\UI;
 
-use Nette,
-	Nette\Application,
-	Nette\Application\Responses,
-	Nette\Http,
-	Nette\Reflection;
+use Nette;
+use Nette\Application;
+use Nette\Application\Responses;
+use Nette\Http;
+use Nette\Reflection;
 
 
 /**
@@ -48,7 +48,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @var int */
 	public $invalidLinkMode;
 
-	/** @var callable[]  function(Presenter $sender, IResponse $response = NULL); Occurs when the presenter is shutting down */
+	/** @var callable[]  function (Presenter $sender, IResponse $response = NULL); Occurs when the presenter is shutting down */
 	public $onShutdown;
 
 	/** @var Nette\Application\Request */
@@ -223,17 +223,20 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 		} catch (Application\AbortException $e) {
 			// continue with shutting down
-			if ($this->isAjax()) try {
-				$hasPayload = (array) $this->payload; unset($hasPayload['state']);
-				if ($this->response instanceof Responses\TextResponse && $this->isControlInvalid()) {
-					$this->snippetMode = TRUE;
-					$this->response->send($this->httpRequest, $this->httpResponse);
-					$this->sendPayload();
-
-				} elseif (!$this->response && $hasPayload) { // back compatibility for use terminate() instead of sendPayload()
-					$this->sendPayload();
+			if ($this->isAjax()) {
+				try {
+					$hasPayload = (array) $this->payload;
+					unset($hasPayload['state']);
+					if ($this->response instanceof Responses\TextResponse && $this->isControlInvalid()) {
+						$this->snippetMode = TRUE;
+						$this->response->send($this->httpRequest, $this->httpResponse);
+						$this->sendPayload();
+					} elseif (!$this->response && $hasPayload) { // back compatibility for use terminate() instead of sendPayload()
+						$this->sendPayload();
+					}
+				} catch (Application\AbortException $e) {
 				}
-			} catch (Application\AbortException $e) { }
+			}
 
 			if ($this->hasFlashSession()) {
 				$this->getFlashSession()->setExpiration($this->response instanceof Responses\RedirectResponse ? '+ 30 seconds' : '+ 3 seconds');
@@ -312,7 +315,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 		try {
 			$component = $this->signalReceiver === '' ? $this : $this->getComponent($this->signalReceiver, FALSE);
-		} catch (Nette\InvalidArgumentException $e) {}
+		} catch (Nette\InvalidArgumentException $e) {
+		}
 
 		if (isset($e) || $component === NULL) {
 			throw new BadSignalException("The signal receiver component '$this->signalReceiver' is not found.", NULL, isset($e) ? $e : NULL);
@@ -609,7 +613,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Sends JSON data to the output.
-	 * @param  mixed $data
+	 * @param  mixed
 	 * @return void
 	 * @throws Nette\Application\AbortException
 	 */
@@ -746,7 +750,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 		if (!$this->isAjax() && ($this->request->isMethod('get') || $this->request->isMethod('head'))) {
 			try {
 				$url = $this->createRequest($this, $this->action, $this->getGlobalState() + $this->request->getParameters(), 'redirectX');
-			} catch (InvalidLinkException $e) {}
+			} catch (InvalidLinkException $e) {
+			}
 			if (isset($url) && !$this->httpRequest->getUrl()->isEqual($url)) {
 				$this->sendResponse(new Responses\RedirectResponse($url, Http\IResponse::S301_MOVED_PERMANENTLY));
 			}
@@ -817,7 +822,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		}
 
 		// 4) signal or empty
-		if (!$component instanceof Presenter || substr($destination, -1) === '!') {
+		if (!$component instanceof self || substr($destination, -1) === '!') {
 			$signal = rtrim($destination, '!');
 			$a = strrpos($signal, ':');
 			if ($a !== FALSE) {
@@ -825,13 +830,13 @@ abstract class Presenter extends Control implements Application\IPresenter
 				$signal = (string) substr($signal, $a + 1);
 			}
 			if ($signal == NULL) {  // intentionally ==
-				throw new InvalidLinkException("Signal must be non-empty string.");
+				throw new InvalidLinkException('Signal must be non-empty string.');
 			}
 			$destination = 'this';
 		}
 
 		if ($destination == NULL) {  // intentionally ==
-			throw new InvalidLinkException("Destination must be non-empty string.");
+			throw new InvalidLinkException('Destination must be non-empty string.');
 		}
 
 		// 5) presenter: action
@@ -1325,7 +1330,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		Http\IRequest $httpRequest, Http\IResponse $httpResponse, Http\Session $session = NULL, Nette\Security\User $user = NULL, ITemplateFactory $templateFactory = NULL)
 	{
 		if ($this->presenterFactory !== NULL) {
-			throw new Nette\InvalidStateException("Method " . __METHOD__ . " is intended for initialization and should not be called more than once.");
+			throw new Nette\InvalidStateException('Method ' . __METHOD__ . ' is intended for initialization and should not be called more than once.');
 		}
 
 		$this->context = $context;

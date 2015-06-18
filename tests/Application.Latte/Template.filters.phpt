@@ -4,8 +4,8 @@
  * Test: Template filters
  */
 
-use Nette\Bridges\ApplicationLatte\Template,
-	Tester\Assert;
+use Nette\Bridges\ApplicationLatte\Template;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -19,4 +19,4 @@ Assert::exception(function () use ($template) {
 
 $engine->addFilter('length', 'strlen');
 
-Assert::same( 3, $template->length('abc') );
+Assert::same(3, $template->length('abc'));
