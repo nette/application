@@ -31,11 +31,11 @@ class PresenterFactory extends Nette\Object implements IPresenterFactory
 
 
 	/**
-	 * @param  callable  function(string $class): IPresenter
+	 * @param  callable  function (string $class): IPresenter
 	 */
 	public function __construct($factory = NULL)
 	{
-		$this->factory = $factory ?: function($class) { return new $class; };
+		$this->factory = $factory ?: function ($class) { return new $class; };
 	}
 
 

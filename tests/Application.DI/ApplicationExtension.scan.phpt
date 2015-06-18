@@ -4,16 +4,16 @@
  * Test: ApplicationExtension
  */
 
-use Nette\DI,
-	Nette\Bridges\ApplicationDI\ApplicationExtension,
-	Tester\Assert;
+use Nette\DI;
+use Nette\Bridges\ApplicationDI\ApplicationExtension;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/files/MyPresenter.php';
 
 
-test(function() {
+test(function () {
 	$compiler = new DI\Compiler;
 	$compiler->addExtension('application', new ApplicationExtension);
 
@@ -28,13 +28,13 @@ test(function() {
 
 	$container = new Container1;
 	$tags = $container->findByTag('nette.presenter');
-	Assert::count( 1, array_keys($tags, 'NetteModule\ErrorPresenter') );
-	Assert::count( 1, array_keys($tags, 'NetteModule\MicroPresenter') );
-	Assert::count( 0, array_keys($tags, 'Nette\Application\UI\Presenter') );
+	Assert::count(1, array_keys($tags, 'NetteModule\ErrorPresenter'));
+	Assert::count(1, array_keys($tags, 'NetteModule\MicroPresenter'));
+	Assert::count(0, array_keys($tags, 'Nette\Application\UI\Presenter'));
 });
 
 
-test(function() {
+test(function () {
 	$compiler = new DI\Compiler;
 	$compiler->addExtension('application', new ApplicationExtension);
 
@@ -52,13 +52,13 @@ test(function() {
 
 	$container = new Container2;
 	$tags = $container->findByTag('nette.presenter');
-	Assert::count( 1, array_keys($tags, 'BasePresenter') );
-	Assert::count( 1, array_keys($tags, 'Presenter1') );
-	Assert::count( 1, array_keys($tags, 'Presenter2') );
+	Assert::count(1, array_keys($tags, 'BasePresenter'));
+	Assert::count(1, array_keys($tags, 'Presenter1'));
+	Assert::count(1, array_keys($tags, 'Presenter2'));
 });
 
 
-test(function() {
+test(function () {
 	$compiler = new DI\Compiler;
 	$compiler->addExtension('application', new ApplicationExtension(FALSE, [__DIR__ . '/files']));
 
@@ -82,10 +82,10 @@ test(function() {
 
 	$container = new Container3;
 	$tags = $container->findByTag('nette.presenter');
-	Assert::count( 1, array_keys($tags, 'BasePresenter') );
-	Assert::count( 1, array_keys($tags, 'Presenter1') );
-	Assert::count( 1, array_keys($tags, 'Presenter2') );
+	Assert::count(1, array_keys($tags, 'BasePresenter'));
+	Assert::count(1, array_keys($tags, 'Presenter1'));
+	Assert::count(1, array_keys($tags, 'Presenter2'));
 
 	$tmp = array_keys($tags, 'Presenter1');
-	Assert::same( 'test', $container->getService($tmp[0])->getView() );
+	Assert::same('test', $container->getService($tmp[0])->getView());
 });

@@ -4,8 +4,8 @@
  * Test: NetteModule\MicroPresenter
  */
 
-use Nette\Application\Request,
-	Tester\Assert;
+use Nette\Application\Request;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -20,11 +20,11 @@ class Invokable extends Nette\Object
 }
 
 
-test(function() {
+test(function () {
 	$presenter = $p = new NetteModule\MicroPresenter;
 
 	$presenter->run(new Request('Nette:Micro', 'GET', [
-		'callback' => function($id, $page, $presenter) use ($p) {
+		'callback' => function ($id, $page, $presenter) use ($p) {
 			Assert::same($p, $presenter);
 			Notes::add('Callback id ' . $id . ' page ' . $page);
 		},
@@ -32,12 +32,12 @@ test(function() {
 		'page' => 2,
 	]));
 	Assert::same([
-		'Callback id 1 page 2'
+		'Callback id 1 page 2',
 	], Notes::fetch());
 });
 
 
-test(function() {
+test(function () {
 	$presenter = new NetteModule\MicroPresenter;
 
 	$presenter->run(new Request('Nette:Micro', 'GET', [
@@ -46,6 +46,6 @@ test(function() {
 		'page' => 2,
 	]));
 	Assert::same([
-		'Callback id 1 page 2'
+		'Callback id 1 page 2',
 	], Notes::fetch());
 });

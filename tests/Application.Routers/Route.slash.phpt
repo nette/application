@@ -4,8 +4,8 @@
  * Test: Nette\Application\Routers\Route with slash in path.
  */
 
-use Nette\Application\Routers\Route,
-	Tester\Assert;
+use Nette\Application\Routers\Route;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -18,7 +18,7 @@ $route = new Route('<param>', [
 ]);
 
 testRouteIn($route, '/a/b');
-Assert::null( testRouteOut($route, 'Presenter', ['param' => 'a/b']) );
+Assert::null(testRouteOut($route, 'Presenter', ['param' => 'a/b']));
 
 
 $route = new Route('<param .+>', [

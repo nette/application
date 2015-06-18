@@ -7,8 +7,8 @@
 
 namespace Nette\Application\UI;
 
-use Nette,
-	Nette\Application\BadRequestException;
+use Nette;
+use Nette\Application\BadRequestException;
 
 
 /**
@@ -101,11 +101,13 @@ class PresenterComponentReflection extends Nette\Reflection\ClassType
 	{
 		$class = $this->getName();
 		$cache = & self::$mcCache[strtolower($class . ':' . $method)];
-		if ($cache === NULL) try {
-			$cache = FALSE;
-			$rm = new \ReflectionMethod($class, $method);
-			$cache = $this->isInstantiable() && $rm->isPublic() && !$rm->isAbstract() && !$rm->isStatic();
-		} catch (\ReflectionException $e) {
+		if ($cache === NULL) {
+			try {
+				$cache = FALSE;
+				$rm = new \ReflectionMethod($class, $method);
+				$cache = $this->isInstantiable() && $rm->isPublic() && !$rm->isAbstract() && !$rm->isStatic();
+			} catch (\ReflectionException $e) {
+			}
 		}
 		return $cache;
 	}
@@ -123,7 +125,7 @@ class PresenterComponentReflection extends Nette\Reflection\ClassType
 			if (isset($args[$name])) { // NULLs are ignored
 				$res[$i++] = $args[$name];
 				$type = $param->isArray() ? 'array' : ($param->isDefaultValueAvailable() ? gettype($param->getDefaultValue()) : 'NULL');
-				if (!self::convertType($res[$i-1], $type)) {
+				if (!self::convertType($res[$i - 1], $type)) {
 					$mName = $method instanceof \ReflectionMethod ? $method->getDeclaringClass()->getName() . '::' . $method->getName() : $method->getName();
 					throw new BadRequestException("Invalid value for parameter '$name' in method $mName(), expected " . ($type === 'NULL' ? 'scalar' : $type) . ".");
 				}
