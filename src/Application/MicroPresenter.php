@@ -7,11 +7,11 @@
 
 namespace NetteModule;
 
-use Nette,
-	Nette\Application,
-	Nette\Application\Responses,
-	Nette\Http,
-	Latte;
+use Nette;
+use Nette\Application;
+use Nette\Application\Responses;
+use Nette\Http;
+use Latte;
 
 
 /**

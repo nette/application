@@ -7,9 +7,9 @@
 
 namespace NetteModule;
 
-use Nette,
-	Nette\Application,
-	Tracy\ILogger;
+use Nette;
+use Nette\Application;
+use Tracy\ILogger;
 
 
 /**

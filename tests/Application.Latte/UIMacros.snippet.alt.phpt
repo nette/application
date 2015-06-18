@@ -4,9 +4,9 @@
  * Test: general snippets test.
  */
 
-use Nette\Utils\Html,
-	Nette\Bridges\ApplicationLatte\UIMacros,
-	Tester\Assert;
+use Nette\Utils\Html;
+use Nette\Bridges\ApplicationLatte\UIMacros;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';

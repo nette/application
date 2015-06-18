@@ -7,8 +7,8 @@
 
 namespace Nette\Bridges\ApplicationDI;
 
-use Nette,
-	Latte;
+use Nette;
+use Latte;
 
 
 /**
@@ -101,10 +101,10 @@ class LatteExtension extends Nette\DI\CompilerExtension
 
 		$container = $this->getContainerBuilder();
 		$container->getDefinition('nette.latte')
-			->addSetup('?->onCompile[] = function($engine) { ' . $macro . '($engine->getCompiler()); }', array('@self'));
+			->addSetup('?->onCompile[] = function ($engine) { ' . $macro . '($engine->getCompiler()); }', array('@self'));
 
 		$container->getDefinition($this->prefix('latteFactory'))
-			->addSetup('?->onCompile[] = function($engine) { ' . $macro . '($engine->getCompiler()); }', array('@self'));
+			->addSetup('?->onCompile[] = function ($engine) { ' . $macro . '($engine->getCompiler()); }', array('@self'));
 	}
 
 }

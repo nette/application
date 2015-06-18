@@ -4,10 +4,10 @@
  * Test: RoutingExtension caching.
  */
 
-use Nette\DI,
-	Nette\Bridges\ApplicationDI\RoutingExtension,
-	Nette\Application\Routers\Route,
-	Tester\Assert;
+use Nette\DI;
+use Nette\Bridges\ApplicationDI\RoutingExtension;
+use Nette\Application\Routers\Route;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -30,7 +30,7 @@ class MyRouter implements Nette\Application\IRouter
 }
 
 
-test(function() {
+test(function () {
 	$loader = new DI\Config\Loader;
 	$config = $loader->load(Tester\FileMock::create('
 	services:
@@ -48,7 +48,7 @@ test(function() {
 });
 
 
-test(function() {
+test(function () {
 	$loader = new DI\Config\Loader;
 	$config = $loader->load(Tester\FileMock::create('
 	routing:
@@ -69,11 +69,12 @@ test(function() {
 });
 
 
-Assert::exception(function() {
+Assert::exception(function () {
 
 	/** @return Nette\Application\IRouter */
-	function myRouterFactory() {
-		return new Route('path', function(){});
+	function myRouterFactory()
+	{
+		return new Route('path', function () {});
 	}
 
 	$loader = new DI\Config\Loader;
