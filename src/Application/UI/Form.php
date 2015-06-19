@@ -19,6 +19,9 @@ use Nette;
  */
 class Form extends Nette\Forms\Form implements ISignalReceiver
 {
+	/** @var callable[] */
+	public $onValuesLoaded;
+	
 
 	/**
 	 * Application form constructor.
@@ -82,6 +85,8 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 				$signal->setOmitted()->setHtmlId(FALSE);
 				$this[Presenter::SIGNAL_KEY] = $signal;
 			}
+			
+			$this->onValuesLoaded($this);
 		}
 		parent::attached($presenter);
 	}
