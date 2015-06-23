@@ -644,7 +644,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Forward to another presenter or action.
-	 * @param  string|Request
+	 * @param  string|Nette\Application\Request
 	 * @param  array|mixed
 	 * @return void
 	 * @throws Nette\Application\AbortException
