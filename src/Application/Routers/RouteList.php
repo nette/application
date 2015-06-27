@@ -57,25 +57,6 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 	 */
 	public function constructUrl(Nette\Application\Request $appRequest, Nette\Http\Url $refUrl)
 	{
-		if ($this->cachedRoutes === NULL) {
-			$routes = [];
-			$routes['*'] = [];
-
-			foreach ($this as $route) {
-				$presenters = $route instanceof Route && is_array($tmp = $route->getTargetPresenters())
-					? $tmp : array_keys($routes);
-
-				foreach ($presenters as $presenter) {
-					if (!isset($routes[$presenter])) {
-						$routes[$presenter] = $routes['*'];
-					}
-					$routes[$presenter][] = $route;
-				}
-			}
-
-			$this->cachedRoutes = $routes;
-		}
-
 		if ($this->module) {
 			if (strncmp($tmp = $appRequest->getPresenterName(), $this->module, strlen($this->module)) === 0) {
 				$appRequest = clone $appRequest;
@@ -86,6 +67,10 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 		}
 
 		$presenter = $appRequest->getPresenterName();
+		if ($this->cachedRoutes === NULL) {
+			$this->cachedRoutes = $this->buildCache();
+		}
+
 		if (!isset($this->cachedRoutes[$presenter])) {
 			$presenter = '*';
 		}
@@ -112,6 +97,7 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 		if (!$route instanceof Nette\Application\IRouter) {
 			throw new Nette\InvalidArgumentException('Argument must be IRouter descendant.');
 		}
+		$this->cachedRoutes = NULL;
 		parent::offsetSet($index, $route);
 	}
 
@@ -122,6 +108,45 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 	public function getModule()
 	{
 		return $this->module;
+	}
+
+
+	/**
+	 * Returns list of possible target presenters or NULL if the list is dynamic.
+	 * @return string[]|NULL
+	 */
+	public function getTargetPresenters()
+	{
+		if ($this->cachedRoutes === NULL) {
+			$this->cachedRoutes = $this->buildCache();
+		}
+
+		if (empty($this->cachedRoutes['*'])) {
+			$presenters = array_keys($this->cachedRoutes);
+			return array_slice($presenters, 1); // remove '*'
+		}
+
+		return NULL;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	private function buildCache()
+	{
+		$routes = ['*' => []];
+		foreach ($this as $route) {
+			$presenters = method_exists($route, 'getTargetPresenters') ? $route->getTargetPresenters() : NULL;
+			$keys = is_array($presenters) ? $presenters : array_keys($routes);
+			foreach ($keys as $key) {
+				if (!isset($routes[$key])) {
+					$routes[$key] = $routes['*'];
+				}
+				$routes[$key][] = $route;
+			}
+		}
+		return $routes;
 	}
 
 }

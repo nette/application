@@ -653,8 +653,7 @@ class Route extends Nette\Object implements Application\IRouter
 
 
 	/**
-	 * Proprietary cache aim.
-	 * @internal
+	 * Returns list of possible target presenters or NULL if the list is dynamic.
 	 * @return string[]|NULL
 	 */
 	public function getTargetPresenters()
