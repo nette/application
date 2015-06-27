@@ -96,8 +96,9 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 	{
 		if (!$route instanceof Nette\Application\IRouter) {
 			throw new Nette\InvalidArgumentException('Argument must be IRouter descendant.');
+		} elseif ($this->cachedRoutes !== NULL) {
+			throw new \LogicException('No!'); // TODO: we need some LogicException from Nette namespace
 		}
-		$this->cachedRoutes = NULL;
 		parent::offsetSet($index, $route);
 	}
 
