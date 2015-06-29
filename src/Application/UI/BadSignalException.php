@@ -12,8 +12,6 @@ use Nette;
 
 /**
  * Signal exception.
- *
- * @author     David Grudl
  */
 class BadSignalException extends Nette\Application\BadRequestException
 {

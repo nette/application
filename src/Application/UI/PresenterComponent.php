@@ -17,8 +17,6 @@ use Nette;
  * other child components, and interact with user. Components have properties
  * for storing their status, and responds to user command.
  *
- * @author     David Grudl
- *
  * @property-read Presenter $presenter
  * @property-read string $uniqueId
  */

@@ -12,8 +12,6 @@ use Nette;
 
 /**
  * Routing extension for Nette DI.
- *
- * @author     David Grudl
  */
 class RoutingExtension extends Nette\DI\CompilerExtension
 {

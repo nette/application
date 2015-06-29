@@ -12,8 +12,6 @@ use Nette;
 
 /**
  * Presenter converts Request to IResponse.
- *
- * @author     David Grudl
  */
 interface IPresenter
 {

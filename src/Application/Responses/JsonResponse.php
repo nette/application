@@ -13,8 +13,6 @@ use Nette;
 /**
  * JSON response used mainly for AJAX requests.
  *
- * @author     David Grudl
- *
  * @property-read array|\stdClass $payload
  * @property-read string $contentType
  */

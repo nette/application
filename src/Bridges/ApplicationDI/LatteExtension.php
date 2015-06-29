@@ -13,9 +13,6 @@ use Latte;
 
 /**
  * Latte extension for Nette DI.
- *
- * @author     David Grudl
- * @author     Petr Morávek
  */
 class LatteExtension extends Nette\DI\CompilerExtension
 {

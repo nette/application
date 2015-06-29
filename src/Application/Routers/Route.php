@@ -16,8 +16,6 @@ use Nette\Utils\Strings;
  * The bidirectional route is responsible for mapping
  * HTTP request to a Request object for dispatch and vice-versa.
  *
- * @author     David Grudl
- *
  * @property-read string $mask
  * @property-read array $defaults
  * @property-read int $flags

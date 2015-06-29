@@ -12,8 +12,6 @@ use Nette;
 
 /**
  * Component with ability to repaint.
- *
- * @author     David Grudl
  */
 interface IRenderable
 {

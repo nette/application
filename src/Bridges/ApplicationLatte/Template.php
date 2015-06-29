@@ -13,8 +13,6 @@ use Latte;
 
 /**
  * Latte powered template.
- *
- * @author     David Grudl
  */
 class Template extends Nette\Object implements Nette\Application\UI\ITemplate
 {

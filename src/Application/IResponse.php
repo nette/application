@@ -12,8 +12,6 @@ use Nette;
 
 /**
  * Any response returned by presenter.
- *
- * @author     David Grudl
  */
 interface IResponse
 {

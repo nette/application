@@ -13,8 +13,6 @@ use Nette;
 /**
  * Front Controller.
  *
- * @author     David Grudl
- *
  * @property-read array $requests
  * @property-read IPresenter $presenter
  * @property-read IRouter $router

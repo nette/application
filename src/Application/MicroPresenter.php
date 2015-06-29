@@ -17,8 +17,6 @@ use Latte;
 /**
  * Micro presenter.
  *
- * @author     David Grudl
- *
  * @property-read Nette\Application\IRequest $request
  */
 class MicroPresenter extends Nette\Object implements Application\IPresenter
