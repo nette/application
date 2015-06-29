@@ -7,8 +7,6 @@
 
 namespace Nette\Application;
 
-use Nette;
-
 
 /**
  * The exception that is thrown when user attempts to terminate the current presenter or application.

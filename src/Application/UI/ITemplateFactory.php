@@ -7,8 +7,6 @@
 
 namespace Nette\Application\UI;
 
-use Nette;
-
 
 /**
  * Defines ITemplate factory.
