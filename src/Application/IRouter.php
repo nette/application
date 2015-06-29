@@ -12,8 +12,6 @@ use Nette;
 
 /**
  * The bi-directional router.
- *
- * @author     David Grudl
  */
 interface IRouter
 {

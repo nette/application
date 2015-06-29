@@ -13,8 +13,6 @@ use Nette\Application\UI;
 
 /**
  * Application extension for Nette DI.
- *
- * @author     David Grudl
  */
 class ApplicationExtension extends Nette\DI\CompilerExtension
 {

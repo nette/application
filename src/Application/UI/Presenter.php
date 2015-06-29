@@ -16,8 +16,6 @@ use Nette\Http;
 /**
  * Presenter component represents a webpage instance. It converts Request to IResponse.
  *
- * @author     David Grudl
- *
  * @property-read Nette\Application\Request $request
  * @property-read array|NULL $signal
  * @property-read string $action

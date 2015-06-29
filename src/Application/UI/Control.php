@@ -13,8 +13,6 @@ use Nette;
 /**
  * Control is renderable Presenter component.
  *
- * @author     David Grudl
- *
  * @property-read ITemplate $template
  * @property-read string $snippetId
  */

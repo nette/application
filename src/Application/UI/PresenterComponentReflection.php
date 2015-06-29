@@ -13,8 +13,6 @@ use Nette\Application\BadRequestException;
 
 /**
  * Helpers for Presenter & PresenterComponent.
- *
- * @author     David Grudl
  * @internal
  */
 class PresenterComponentReflection extends Nette\Reflection\ClassType

@@ -12,8 +12,6 @@ use Nette;
 
 /**
  * Default presenter loader.
- *
- * @author     David Grudl
  */
 class PresenterFactory extends Nette\Object implements IPresenterFactory
 {

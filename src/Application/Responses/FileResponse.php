@@ -13,8 +13,6 @@ use Nette;
 /**
  * File download response.
  *
- * @author     David Grudl
- *
  * @property-read string $file
  * @property-read string $name
  * @property-read string $contentType

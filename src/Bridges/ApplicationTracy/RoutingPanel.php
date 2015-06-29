@@ -16,8 +16,6 @@ use Tracy\Dumper;
 
 /**
  * Routing debugger for Debug Bar.
- *
- * @author     David Grudl
  */
 class RoutingPanel extends Nette\Object implements Tracy\IBarPanel
 {

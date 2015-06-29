@@ -13,8 +13,6 @@ use Latte;
 
 /**
  * Template loader.
- *
- * @author     David Grudl
  */
 class Loader extends Latte\Loaders\FileLoader
 {

@@ -14,8 +14,6 @@ use Tracy\ILogger;
 
 /**
  * Default Error Presenter.
- *
- * @author     David Grudl
  */
 class ErrorPresenter extends Nette\Object implements Application\IPresenter
 {

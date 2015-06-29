@@ -13,8 +13,6 @@ use Nette;
 /**
  * Presenter request. Immutable object.
  *
- * @author     David Grudl
- *
  * @property   string $presenterName
  * @property   array $parameters
  * @property   array $post

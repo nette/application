@@ -12,8 +12,6 @@ use Nette;
 
 /**
  * Component multiplier.
- *
- * @author     David Grudl
  */
 class Multiplier extends PresenterComponent
 {
