@@ -7,8 +7,6 @@
 
 namespace Nette\Application\UI;
 
-use Nette;
-
 
 /**
  * Component with ability to save and load its state.

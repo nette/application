@@ -7,8 +7,6 @@
 
 namespace Nette\Application;
 
-use Nette;
-
 
 /**
  * Presenter converts Request to IResponse.
