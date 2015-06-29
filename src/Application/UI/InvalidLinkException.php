@@ -7,8 +7,6 @@
 
 namespace Nette\Application\UI;
 
-use Nette;
-
 
 /**
  * Link generation exception.
