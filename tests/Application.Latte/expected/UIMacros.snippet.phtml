@@ -40,7 +40,7 @@ if (!function_exists($_b->blocks['_title2'][] = '_%[a-z0-9]+%__title2')) { funct
 //
 // end of blocks
 %A%
-	return Nette\Bridges\ApplicationLatte\UIMacros::renderSnippets($_control, $_b, get_defined_vars());
+	return Nette\Bridges\ApplicationLatte\UIRuntime::renderSnippets($_control, $_b, get_defined_vars());
 %A%
 <div id="<?php echo $_control->getSnippetId('') ?>"><?php call_user_func(reset($_b->blocks['_']), $_b, $template->getParameters()) ?>
 </div>
