@@ -24,13 +24,13 @@ class UIRuntime extends Nette\Object
 		$payload = $control->getPresenter()->getPayload();
 		if (isset($local->blocks)) {
 			foreach ($local->blocks as $name => $function) {
-				if ($name[0] !== '_' || !$control->isControlInvalid(substr($name, 1))) {
+				if ($name[0] !== '_' || !$control->isControlInvalid((string) substr($name, 1))) {
 					continue;
 				}
 				ob_start();
 				$function = reset($function);
 				$snippets = $function($local, $params + ['_snippetMode' => TRUE]);
-				$payload->snippets[$id = $control->getSnippetId(substr($name, 1))] = ob_get_clean();
+				$payload->snippets[$id = $control->getSnippetId((string) substr($name, 1))] = ob_get_clean();
 				if ($snippets !== NULL) { // pass FALSE from snippetArea
 					if ($snippets) {
 						$payload->snippets += $snippets;
