@@ -15,10 +15,11 @@ function testIt($type, $val, $res = NULL)
 {
 	if (func_num_args() === 3) {
 		Assert::true(PresenterComponentReflection::convertType($val, $type));
-		Assert::same($res, $val);
 	} else {
+		$res = $val;
 		Assert::false(PresenterComponentReflection::convertType($val, $type));
 	}
+	Assert::same($res, $val);
 }
 
 $obj = new stdClass;

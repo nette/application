@@ -153,11 +153,12 @@ class PresenterComponentReflection extends Nette\Reflection\ClassType
 			return FALSE;
 
 		} elseif ($type !== 'NULL') {
-			$old = $val = ($val === FALSE ? '0' : (string) $val);
-			settype($val, $type);
-			if ($old !== ($val === FALSE ? '0' : (string) $val)) {
+			$old = $tmp = ($val === FALSE ? '0' : (string) $val);
+			settype($tmp, $type);
+			if ($old !== ($tmp === FALSE ? '0' : (string) $tmp)) {
 				return FALSE; // data-loss occurs
 			}
+			$val = $tmp;
 		}
 		return TRUE;
 	}
