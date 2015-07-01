@@ -48,7 +48,7 @@ class UIMacros extends Latte\Macros\MacroSet
 		$prolog = '
 // snippets support
 if (empty($_l->extends) && !empty($_control->snippetMode)) {
-	return Nette\Bridges\ApplicationLatte\UIMacros::renderSnippets($_control, $_b, get_defined_vars());
+	return Nette\Bridges\ApplicationLatte\UIRuntime::renderSnippets($_control, $_b, get_defined_vars());
 }';
 		return [$prolog, ''];
 	}
@@ -105,47 +105,10 @@ if (empty($_l->extends) && !empty($_control->snippetMode)) {
 	}
 
 
-	/********************* run-time helpers ****************d*g**/
-
-
+	/** @deprecated */
 	public static function renderSnippets(Nette\Application\UI\Control $control, \stdClass $local, array $params)
 	{
-		$control->snippetMode = FALSE;
-		$payload = $control->getPresenter()->getPayload();
-		if (isset($local->blocks)) {
-			foreach ($local->blocks as $name => $function) {
-				if ($name[0] !== '_' || !$control->isControlInvalid(substr($name, 1))) {
-					continue;
-				}
-				ob_start();
-				$function = reset($function);
-				$snippets = $function($local, $params + ['_snippetMode' => TRUE]);
-				$payload->snippets[$id = $control->getSnippetId(substr($name, 1))] = ob_get_clean();
-				if ($snippets !== NULL) { // pass FALSE from snippetArea
-					if ($snippets) {
-						$payload->snippets += $snippets;
-					}
-					unset($payload->snippets[$id]);
-				}
-			}
-		}
-		$control->snippetMode = TRUE;
-		if ($control instanceof Nette\Application\UI\IRenderable) {
-			$queue = [$control];
-			do {
-				foreach (array_shift($queue)->getComponents() as $child) {
-					if ($child instanceof Nette\Application\UI\IRenderable) {
-						if ($child->isControlInvalid()) {
-							$child->snippetMode = TRUE;
-							$child->render();
-							$child->snippetMode = FALSE;
-						}
-					} elseif ($child instanceof Nette\ComponentModel\IContainer) {
-						$queue[] = $child;
-					}
-				}
-			} while ($queue);
-		}
+		UIRuntime::renderSnippets($control, $local, $params);
 	}
 
 }
