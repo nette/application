@@ -74,10 +74,8 @@ class LatteExtension extends Nette\DI\CompilerExtension
 	 * @param  callable
 	 * @return void
 	 */
-	public function addMacro($macro)
+	public function addMacro(callable $macro)
 	{
-		Nette\Utils\Validators::assert($macro, 'callable');
-
 		$container = $this->getContainerBuilder();
 		$container->getDefinition($this->prefix('latteFactory'))
 			->addSetup('?->onCompile[] = function ($engine) { ' . $macro . '($engine->getCompiler()); }', ['@self']);

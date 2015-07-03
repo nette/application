@@ -19,13 +19,10 @@ class Multiplier extends PresenterComponent
 	private $factory;
 
 
-	/**
-	 * @param callable
-	 */
-	public function __construct($factory)
+	public function __construct(callable $factory)
 	{
 		parent::__construct();
-		$this->factory = Nette\Utils\Callback::check($factory);
+		$this->factory = $factory;
 	}
 
 
