@@ -1223,7 +1223,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 		$params = $this->request->getParameters();
 		if ($this->isAjax()) {
 			$params += $this->request->getPost();
-		} elseif (($tmp = $this->request->getPost(self::SIGNAL_KEY)) !== NULL) {
+		}
+		if (($tmp = $this->request->getPost(self::SIGNAL_KEY)) !== NULL) {
 			$params[self::SIGNAL_KEY] = $tmp;
 		}
 

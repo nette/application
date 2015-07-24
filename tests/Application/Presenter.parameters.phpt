@@ -87,3 +87,13 @@ test(function () {
 	]));
 	Assert::same(['', 'foo'], $presenter->getSignal());
 });
+
+test(function () {
+	//AJAX: signal in POST overwriting empty GET
+	$presenter = createPresenter();
+	$presenter->ajax = TRUE;
+	$presenter->run(new Application\Request('Foo', 'POST', ['do' => NULL], [
+		'do' => 'foo'
+	]));
+	Assert::same(['', 'foo'], $presenter->getSignal());
+});
