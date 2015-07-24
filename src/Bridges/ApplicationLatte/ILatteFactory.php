@@ -7,6 +7,8 @@
 
 namespace Nette\Bridges\ApplicationLatte;
 
+use Latte;
+
 
 interface ILatteFactory
 {
