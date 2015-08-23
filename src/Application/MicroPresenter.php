@@ -17,7 +17,7 @@ use Latte;
 /**
  * Micro presenter.
  *
- * @property-read Nette\Application\IRequest $request
+ * @property-read Nette\Application\Request $request
  */
 class MicroPresenter extends Nette\Object implements Application\IPresenter
 {
@@ -156,7 +156,7 @@ class MicroPresenter extends Nette\Object implements Application\IPresenter
 
 
 	/**
-	 * @return Nette\Application\IRequest
+	 * @return Nette\Application\Request
 	 */
 	public function getRequest()
 	{
