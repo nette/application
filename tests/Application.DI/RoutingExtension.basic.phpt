@@ -28,7 +28,7 @@ test(function () {
 
 	$container = new Container1;
 	$router = $container->getService('router');
-	Assert::type('Nette\Application\Routers\RouteList', $router);
+	Assert::type(Nette\Application\Routers\RouteList::class, $router);
 	Assert::count(2, $router);
 	Assert::same('index.php', $router[0]->getMask());
 	Assert::same('item/<id>', $router[1]->getMask());

@@ -89,4 +89,4 @@ Assert::exception(function () {
 	$compiler = new DI\Compiler;
 	$compiler->addExtension('routing', new RoutingExtension(FALSE));
 	$compiler->compile($config, 'Container3');
-}, 'Nette\DI\ServiceCreationException', 'Unable to cache router due to error: %a%');
+}, Nette\DI\ServiceCreationException::class, 'Unable to cache router due to error: %a%');

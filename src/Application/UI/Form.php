@@ -36,7 +36,7 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 	protected function validateParent(Nette\ComponentModel\IContainer $parent)
 	{
 		parent::validateParent($parent);
-		$this->monitor('Nette\Application\UI\Presenter');
+		$this->monitor(Presenter::class);
 	}
 
 
@@ -47,7 +47,7 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 	 */
 	public function getPresenter($need = TRUE)
 	{
-		return $this->lookup('Nette\Application\UI\Presenter', $need);
+		return $this->lookup(Presenter::class, $need);
 	}
 
 
@@ -60,7 +60,7 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 	protected function attached($presenter)
 	{
 		if ($presenter instanceof Presenter) {
-			$name = $this->lookupPath('Nette\Application\UI\Presenter');
+			$name = $this->lookupPath(Presenter::class);
 
 			if (!isset($this->getElementPrototype()->id)) {
 				$this->getElementPrototype()->id = 'frm-' . $name;

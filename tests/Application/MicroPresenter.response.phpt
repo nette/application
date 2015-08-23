@@ -33,7 +33,7 @@ class MicroContainer extends Nette\DI\Container
 
 	protected $meta = [
 		'types' => [
-			'Nette\\Bridges\\ApplicationLatte\\ILatteFactory' => [1 => ['latte.latteFactory']],
+			Nette\Bridges\ApplicationLatte\ILatteFactory::class => [1 => ['latte.latteFactory']],
 		],
 	];
 
@@ -65,7 +65,7 @@ test(function () {
 		},
 	]));
 
-	Assert::type('Nette\Application\Responses\TextResponse', $response);
+	Assert::type(\Nette\Application\Responses\TextResponse::class, $response);
 	Assert::same('test', Responder::render($response));
 });
 
@@ -79,7 +79,7 @@ test(function () {
 		'param' => 'test',
 	]));
 
-	Assert::type('Nette\Application\Responses\TextResponse', $response);
+	Assert::type(Nette\Application\Responses\TextResponse::class, $response);
 	Assert::same('test', Responder::render($response));
 });
 
@@ -92,7 +92,7 @@ test(function () {
 		},
 	]));
 
-	Assert::type('Nette\Application\Responses\TextResponse', $response);
+	Assert::type(Nette\Application\Responses\TextResponse::class, $response);
 	Assert::same(date('Y'), Responder::render($response));
 });
 
@@ -106,7 +106,7 @@ test(function () {
 		'param' => 'test',
 	]));
 
-	Assert::type('Nette\Application\Responses\TextResponse', $response);
+	Assert::type(Nette\Application\Responses\TextResponse::class, $response);
 	Assert::same('test', Responder::render($response));
 });
 
@@ -127,7 +127,7 @@ test(function () {
 		},
 	]));
 
-	Assert::type('Nette\Application\Responses\TextResponse', $response);
+	Assert::type(Nette\Application\Responses\TextResponse::class, $response);
 	Assert::same('test', Responder::render($response));
 });
 
@@ -149,7 +149,7 @@ test(function () {
 		},
 	]));
 
-	Assert::type('Nette\Application\Responses\TextResponse', $response);
+	Assert::type(Nette\Application\Responses\TextResponse::class, $response);
 	Assert::same('test', Responder::render($response));
 });
 

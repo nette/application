@@ -55,7 +55,7 @@ class AnotherExtension extends Nette\DI\CompilerExtension
 
 	public function beforeCompile()
 	{
-		foreach ($this->compiler->getExtensions('Nette\Bridges\ApplicationDI\LatteExtension') as $extension) {
+		foreach ($this->compiler->getExtensions(Nette\Bridges\ApplicationDI\LatteExtension::class) as $extension) {
 			$extension->addMacro('FooMacros::install');
 		}
 	}
@@ -80,7 +80,7 @@ eval($code);
 $container = new Container;
 
 
-Assert::type('Nette\Bridges\ApplicationLatte\ILatteFactory', $container->getService('nette.latteFactory'));
+Assert::type(Nette\Bridges\ApplicationLatte\ILatteFactory::class, $container->getService('nette.latteFactory'));
 $container->getService('nette.latteFactory')->create()->setLoader(new Latte\Loaders\StringLoader)->compile('');
 
 Assert::same([

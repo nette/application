@@ -25,7 +25,7 @@ class MockSession extends Http\Session
 
 	public function __construct() {}
 
-	public function getSection($section, $class = 'Nette\Http\SessionSection')
+	public function getSection($section, $class = Nette\Http\SessionSection::class)
 	{
 		return $this->testSection;
 	}
