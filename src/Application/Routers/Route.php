@@ -477,9 +477,7 @@ class Route extends Nette\Object implements Application\IRouter
 			// name=<parameter-name [pattern]>
 			$matches = Strings::matchAll($parts[$i - 1], '/(?:([a-zA-Z0-9_.-]+)=)?<([^> ]+) *([^>]*)>/');
 
-			foreach ($matches as $match) {
-				list(, $param, $name, $pattern) = $match;  // $pattern is not used
-
+			foreach ($matches as list(, $param, $name, $pattern)) { // $pattern is not used
 				if (isset(static::$styles['?' . $name])) {
 					$meta = static::$styles['?' . $name];
 				} else {
