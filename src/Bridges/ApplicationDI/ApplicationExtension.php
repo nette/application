@@ -51,14 +51,14 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 	{
 		$config = $this->validateConfig($this->defaults);
 		$container = $this->getContainerBuilder();
-		$container->addExcludedClasses(['Nette\Application\UI\Control']);
+		$container->addExcludedClasses([UI\Control::class]);
 
 		$this->invalidLinkMode = $this->debugMode
 			? UI\Presenter::INVALID_LINK_TEXTUAL | ($config['silentLinks'] ? 0 : UI\Presenter::INVALID_LINK_WARNING)
 			: UI\Presenter::INVALID_LINK_WARNING;
 
 		$application = $container->addDefinition($this->prefix('application'))
-			->setClass('Nette\Application\Application')
+			->setClass(Nette\Application\Application::class)
 			->addSetup('$catchExceptions', [$config['catchExceptions']])
 			->addSetup('$errorPresenter', [$config['errorPresenter']]);
 
@@ -68,9 +68,9 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 
 		$touch = $this->debugMode && $config['scanDirs'] ? $this->tempFile : NULL;
 		$presenterFactory = $container->addDefinition($this->prefix('presenterFactory'))
-			->setClass('Nette\Application\IPresenterFactory')
-			->setFactory('Nette\Application\PresenterFactory', [new Nette\DI\Statement(
-				'Nette\Bridges\ApplicationDI\PresenterFactoryCallback', [1 => $this->invalidLinkMode, $touch]
+			->setClass(Nette\Application\IPresenterFactory::class)
+			->setFactory(Nette\Application\PresenterFactory::class, [new Nette\DI\Statement(
+				Nette\Bridges\ApplicationDI\PresenterFactoryCallback::class, [1 => $this->invalidLinkMode, $touch]
 			)]);
 
 		if ($config['mapping']) {
@@ -78,7 +78,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 		}
 
 		$container->addDefinition($this->prefix('linkGenerator'))
-			->setFactory('Nette\Application\LinkGenerator', [
+			->setFactory(Nette\Application\LinkGenerator::class, [
 				1 => new Nette\DI\Statement('@Nette\Http\IRequest::getUrl'),
 			]);
 
@@ -94,7 +94,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 		$container = $this->getContainerBuilder();
 		$all = [];
 
-		foreach ($container->findByType('Nette\Application\IPresenter') as $def) {
+		foreach ($container->findByType(Nette\Application\IPresenter::class) as $def) {
 			$all[$def->getClass()] = $def;
 		}
 
@@ -107,7 +107,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 
 		foreach ($all as $def) {
 			$def->setInject(TRUE)->setAutowired(FALSE)->addTag('nette.presenter', $def->getClass());
-			if (is_subclass_of($def->getClass(), 'Nette\Application\UI\Presenter')) {
+			if (is_subclass_of($def->getClass(), UI\Presenter::class)) {
 				$def->addSetup('$invalidLinkMode', [$this->invalidLinkMode]);
 			}
 		}
@@ -121,7 +121,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 		$classes = [];
 
 		if ($config['scanDirs']) {
-			if (!class_exists('Nette\Loaders\RobotLoader')) {
+			if (!class_exists(Nette\Loaders\RobotLoader::class)) {
 				throw new Nette\NotSupportedException("RobotLoader is required to find presenters, install package `nette/robot-loader` or disable option {$this->prefix('scanDirs')}: false");
 			}
 			$robot = new Nette\Loaders\RobotLoader;
@@ -147,7 +147,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 		$presenters = [];
 		foreach (array_unique($classes) as $class) {
 			if (strpos($class, $config['scanFilter']) !== FALSE && class_exists($class)
-				&& ($rc = new \ReflectionClass($class)) && $rc->implementsInterface('Nette\Application\IPresenter')
+				&& ($rc = new \ReflectionClass($class)) && $rc->implementsInterface(Nette\Application\IPresenter::class)
 				&& !$rc->isAbstract()
 			) {
 				$presenters[] = $rc->getName();

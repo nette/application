@@ -18,9 +18,9 @@ test(function () {
 	$compiler->addExtension('application', new ApplicationExtension);
 
 	$builder = $compiler->getContainerBuilder();
-	$builder->addDefinition('myRouter')->setClass('Nette\Application\Routers\SimpleRouter');
-	$builder->addDefinition('myHttpRequest')->setFactory('Nette\Http\Request', [new DI\Statement('Nette\Http\UrlScript')]);
-	$builder->addDefinition('myHttpResponse')->setClass('Nette\Http\Response');
+	$builder->addDefinition('myRouter')->setClass(Nette\Application\Routers\SimpleRouter::class);
+	$builder->addDefinition('myHttpRequest')->setFactory(Nette\Http\Request::class, [new DI\Statement(Nette\Http\UrlScript::class)]);
+	$builder->addDefinition('myHttpResponse')->setClass(Nette\Http\Response::class);
 	$code = $compiler->compile([
 		'application' => ['debugger' => FALSE],
 	], 'Container1');
@@ -30,7 +30,7 @@ test(function () {
 	$tags = $container->findByTag('nette.presenter');
 	Assert::count(1, array_keys($tags, 'NetteModule\ErrorPresenter'));
 	Assert::count(1, array_keys($tags, 'NetteModule\MicroPresenter'));
-	Assert::count(0, array_keys($tags, 'Nette\Application\UI\Presenter'));
+	Assert::count(0, array_keys($tags, Nette\Application\UI\Presenter::class));
 });
 
 
@@ -39,9 +39,9 @@ test(function () {
 	$compiler->addExtension('application', new ApplicationExtension);
 
 	$builder = $compiler->getContainerBuilder();
-	$builder->addDefinition('myRouter')->setClass('Nette\Application\Routers\SimpleRouter');
-	$builder->addDefinition('myHttpRequest')->setFactory('Nette\Http\Request', [new DI\Statement('Nette\Http\UrlScript')]);
-	$builder->addDefinition('myHttpResponse')->setClass('Nette\Http\Response');
+	$builder->addDefinition('myRouter')->setClass(Nette\Application\Routers\SimpleRouter::class);
+	$builder->addDefinition('myHttpRequest')->setFactory(Nette\Http\Request::class, [new DI\Statement(Nette\Http\UrlScript::class)]);
+	$builder->addDefinition('myHttpResponse')->setClass(Nette\Http\Response::class);
 	$code = $compiler->compile([
 		'application' => [
 			'scanDirs' => [__DIR__ . '/files'],
@@ -63,9 +63,9 @@ test(function () {
 	$compiler->addExtension('application', new ApplicationExtension(FALSE, [__DIR__ . '/files']));
 
 	$builder = $compiler->getContainerBuilder();
-	$builder->addDefinition('myRouter')->setClass('Nette\Application\Routers\SimpleRouter');
-	$builder->addDefinition('myHttpRequest')->setFactory('Nette\Http\Request', [new DI\Statement('Nette\Http\UrlScript')]);
-	$builder->addDefinition('myHttpResponse')->setClass('Nette\Http\Response');
+	$builder->addDefinition('myRouter')->setClass(Nette\Application\Routers\SimpleRouter::class);
+	$builder->addDefinition('myHttpRequest')->setFactory(Nette\Http\Request::class, [new DI\Statement(Nette\Http\UrlScript::class)]);
+	$builder->addDefinition('myHttpResponse')->setClass(Nette\Http\Response::class);
 	$loader = new DI\Config\Loader;
 	$config = $loader->load(Tester\FileMock::create('
 	application:

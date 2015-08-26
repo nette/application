@@ -153,7 +153,7 @@ class TestPresenter extends Application\UI\Presenter
 		$this->invalidLinkMode = self::INVALID_LINK_EXCEPTION;
 		Assert::exception(function () use ($me) {
 			$me->link('product', ['var1' => NULL, 'ok' => 'a']);
-		}, 'Nette\Application\UI\InvalidLinkException', "Invalid value for persistent parameter 'ok' in 'Test', expected boolean.");
+		}, Nette\Application\UI\InvalidLinkException::class, "Invalid value for persistent parameter 'ok' in 'Test', expected boolean.");
 	}
 
 

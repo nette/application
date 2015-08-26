@@ -39,7 +39,7 @@ class PresenterComponentReflection extends Nette\Reflection\ClassType
 			return $params;
 		}
 		$params = [];
-		if (is_subclass_of($class, 'Nette\Application\UI\PresenterComponent')) {
+		if (is_subclass_of($class, PresenterComponent::class)) {
 			$defaults = get_class_vars($class);
 			foreach ($class::getPersistentParams() as $name => $default) {
 				if (is_int($name)) {
@@ -76,7 +76,7 @@ class PresenterComponentReflection extends Nette\Reflection\ClassType
 			return $components;
 		}
 		$components = [];
-		if (is_subclass_of($class, 'Nette\Application\UI\Presenter')) {
+		if (is_subclass_of($class, Presenter::class)) {
 			foreach ($class::getPersistentComponents() as $name => $meta) {
 				if (is_string($meta)) {
 					$name = $meta;

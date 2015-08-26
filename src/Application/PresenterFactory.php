@@ -72,7 +72,7 @@ class PresenterFactory extends Nette\Object implements IPresenterFactory
 		$reflection = new \ReflectionClass($class);
 		$class = $reflection->getName();
 
-		if (!$reflection->implementsInterface('Nette\Application\IPresenter')) {
+		if (!$reflection->implementsInterface(IPresenter::class)) {
 			throw new InvalidPresenterException("Cannot load presenter '$name', class '$class' is not Nette\\Application\\IPresenter implementor.");
 		} elseif ($reflection->isAbstract()) {
 			throw new InvalidPresenterException("Cannot load presenter '$name', class '$class' is abstract.");

@@ -17,7 +17,7 @@ use Latte;
 /**
  * Micro presenter.
  *
- * @property-read Nette\Application\IRequest $request
+ * @property-read Nette\Application\Request $request
  */
 class MicroPresenter extends Nette\Object implements Application\IPresenter
 {
@@ -115,7 +115,7 @@ class MicroPresenter extends Nette\Object implements Application\IPresenter
 	 */
 	public function createTemplate($class = NULL, callable $latteFactory = NULL)
 	{
-		$latte = $latteFactory ? $latteFactory() : $this->getContext()->getByType('Nette\Bridges\ApplicationLatte\ILatteFactory')->create();
+		$latte = $latteFactory ? $latteFactory() : $this->getContext()->getByType(Nette\Bridges\ApplicationLatte\ILatteFactory::class)->create();
 		$template = $class ? new $class : new Nette\Bridges\ApplicationLatte\Template($latte);
 
 		$template->setParameters($this->request->getParameters());
@@ -156,7 +156,7 @@ class MicroPresenter extends Nette\Object implements Application\IPresenter
 
 
 	/**
-	 * @return Nette\Application\IRequest
+	 * @return Nette\Application\Request
 	 */
 	public function getRequest()
 	{

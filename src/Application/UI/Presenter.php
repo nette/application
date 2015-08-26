@@ -748,7 +748,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Attempts to cache the sent entity by its last modification date.
-	 * @param  string|int|DateTime  last modified time
+	 * @param  string|int|\DateTimeInterface  last modified time
 	 * @param  string strong entity tag validator
 	 * @param  mixed  optional expiration time
 	 * @return void
@@ -1156,7 +1156,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			}
 
 			$components = $this->getReflection()->getPersistentComponents();
-			$iterator = $this->getComponents(TRUE, 'Nette\Application\UI\IStatePersistent');
+			$iterator = $this->getComponents(TRUE, IStatePersistent::class);
 
 			foreach ($iterator as $name => $component) {
 				if ($iterator->getDepth() === 0) {

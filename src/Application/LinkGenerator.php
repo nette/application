@@ -37,7 +37,7 @@ class LinkGenerator extends Nette\Object
 	 * Generates URL to presenter.
 	 * @param  string   destination in format "[[[module:]presenter:]action] [#fragment]"
 	 * @return string
-	 * @throws InvalidLinkException
+	 * @throws UI\InvalidLinkException
 	 */
 	public function link($dest, array $params = [])
 	{
@@ -52,7 +52,7 @@ class LinkGenerator extends Nette\Object
 			throw new UI\InvalidLinkException($e->getMessage(), NULL, $e);
 		}
 
-		if (is_subclass_of($class, 'Nette\Application\UI\Presenter')) {
+		if (is_subclass_of($class, UI\Presenter::class)) {
 			if ($action === '') {
 				$action = UI\Presenter::DEFAULT_ACTION;
 			}

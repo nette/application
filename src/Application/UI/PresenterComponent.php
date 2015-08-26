@@ -33,7 +33,7 @@ abstract class PresenterComponent extends Nette\ComponentModel\Container impleme
 	 */
 	public function getPresenter($need = TRUE)
 	{
-		return $this->lookup('Nette\Application\UI\Presenter', $need);
+		return $this->lookup(Presenter::class, $need);
 	}
 
 
@@ -44,7 +44,7 @@ abstract class PresenterComponent extends Nette\ComponentModel\Container impleme
 	 */
 	public function getUniqueId()
 	{
-		return $this->lookupPath('Nette\Application\UI\Presenter', TRUE);
+		return $this->lookupPath(Presenter::class, TRUE);
 	}
 
 
@@ -68,7 +68,7 @@ abstract class PresenterComponent extends Nette\ComponentModel\Container impleme
 	protected function validateParent(Nette\ComponentModel\IContainer $parent)
 	{
 		parent::validateParent($parent);
-		$this->monitor('Nette\Application\UI\Presenter');
+		$this->monitor(Presenter::class);
 	}
 
 

@@ -19,9 +19,9 @@ function createCompiler($config)
 	$compiler = new DI\Compiler;
 	$compiler->loadConfig(Tester\FileMock::create($config, 'neon'));
 	$builder = $compiler->getContainerBuilder();
-	$builder->addDefinition('myRouter')->setClass('Nette\Application\Routers\SimpleRouter');
-	$builder->addDefinition('myHttpRequest')->setFactory('Nette\Http\Request', [new DI\Statement('Nette\Http\UrlScript')]);
-	$builder->addDefinition('myHttpResponse')->setClass('Nette\Http\Response');
+	$builder->addDefinition('myRouter')->setClass(Nette\Application\Routers\SimpleRouter::class);
+	$builder->addDefinition('myHttpRequest')->setFactory(Nette\Http\Request::class, [new DI\Statement(Nette\Http\UrlScript::class)]);
+	$builder->addDefinition('myHttpResponse')->setClass(Nette\Http\Response::class);
 	return $compiler;
 }
 

@@ -1,7 +1,5 @@
 language: php
 php:
-    - 5.4
-    - 5.5
     - 5.6
     - 7.0
     - hhvm
@@ -20,7 +18,7 @@ matrix:
           env: PHP_BIN=php-cgi
 
     include:
-        - php: 5.5
+        - php: 5.6
           env: dependencies="--prefer-lowest --prefer-stable" PHP_BIN=php
 
 script:

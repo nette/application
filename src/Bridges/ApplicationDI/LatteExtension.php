@@ -37,7 +37,7 @@ class LatteExtension extends Nette\DI\CompilerExtension
 
 	public function loadConfiguration()
 	{
-		if (!class_exists('Latte\Engine')) {
+		if (!class_exists(Latte\Engine::class)) {
 			return;
 		}
 
@@ -45,16 +45,16 @@ class LatteExtension extends Nette\DI\CompilerExtension
 		$container = $this->getContainerBuilder();
 
 		$container->addDefinition($this->prefix('latteFactory'))
-			->setClass('Latte\Engine')
+			->setClass(Latte\Engine::class)
 			->addSetup('setTempDirectory', [$this->tempDir])
 			->addSetup('setAutoRefresh', [$this->debugMode])
 			->addSetup('setContentType', [$config['xhtml'] ? Latte\Compiler::CONTENT_XHTML : Latte\Compiler::CONTENT_HTML])
 			->addSetup('Nette\Utils\Html::$xhtml = ?', [(bool) $config['xhtml']])
-			->setImplement('Nette\Bridges\ApplicationLatte\ILatteFactory');
+			->setImplement(Nette\Bridges\ApplicationLatte\ILatteFactory::class);
 
 		$container->addDefinition($this->prefix('templateFactory'))
-			->setClass('Nette\Application\UI\ITemplateFactory')
-			->setFactory('Nette\Bridges\ApplicationLatte\TemplateFactory');
+			->setClass(Nette\Application\UI\ITemplateFactory::class)
+			->setFactory(Nette\Bridges\ApplicationLatte\TemplateFactory::class);
 
 		foreach ($config['macros'] as $macro) {
 			if (strpos($macro, '::') === FALSE && class_exists($macro)) {

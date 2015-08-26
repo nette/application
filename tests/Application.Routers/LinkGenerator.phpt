@@ -60,13 +60,13 @@ namespace {
 	Assert::exception(function () use ($pf) {
 		$generator = new LinkGenerator(new Routers\SimpleRouter, new Http\Url('http://nette.org/en/'), $pf);
 		$generator->link('default');
-	}, 'Nette\Application\UI\InvalidLinkException', "Invalid link destination 'default'.");
+	}, Nette\Application\UI\InvalidLinkException::class, "Invalid link destination 'default'.");
 
 
 	Assert::exception(function () use ($pf) {
 		$generator = new LinkGenerator(new Routers\Route('/', 'Product:'), new Http\Url('http://nette.org/en/'), $pf);
 		$generator->link('Homepage:default', ['id' => 10]);
-	}, 'Nette\Application\UI\InvalidLinkException', 'No route for Homepage:default(id=10)');
+	}, Nette\Application\UI\InvalidLinkException::class, 'No route for Homepage:default(id=10)');
 
 
 	test(function () {
