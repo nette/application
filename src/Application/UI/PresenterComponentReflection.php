@@ -9,14 +9,20 @@ namespace Nette\Application\UI;
 
 use Nette;
 use Nette\Application\BadRequestException;
+use Nette\Reflection\ClassType;
+use Nette\Reflection\Method;
 
 
 /**
  * Helpers for Presenter & PresenterComponent.
+ * @property-read string $name
+ * @property-read string $fileName
  * @internal
  */
-class PresenterComponentReflection extends Nette\Reflection\ClassType
+class PresenterComponentReflection extends \ReflectionClass
 {
+	use Nette\SmartObject;
+
 	/** @var array getPersistentParams cache */
 	private static $ppCache = [];
 
@@ -227,6 +233,78 @@ class PresenterComponentReflection extends Nette\Reflection\ClassType
 				throw $e;
 			}
 		}
+	}
+
+
+	/********************* compatiblity with Nette\Reflection ****************d*g**/
+
+
+	public function getMethod($name)
+	{
+		return new MethodCompatibility($this->getName(), $name);
+	}
+
+
+	public function getMethods($filter = -1)
+	{
+		foreach ($res = parent::getMethods($filter) as $key => $val) {
+			$res[$key] = new MethodCompatibility($this->getName(), $val->getName());
+		}
+		return $res;
+	}
+
+
+	public function __toString()
+	{
+		trigger_error(__METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
+		return $this->getName();
+	}
+
+
+	public function __get($name)
+	{
+		trigger_error("getReflection()->$name is deprecated.", E_USER_DEPRECATED);
+		return (new ClassType($this->getName()))->$name;
+	}
+
+
+	public function __call($name, $args)
+	{
+		if (method_exists(ClassType::class, $name)) {
+			trigger_error("getReflection()->$name() is deprecated, use Nette\\Reflection\\ClassType::from(\$presenter)->$name()", E_USER_DEPRECATED);
+			return call_user_func_array([new ClassType($this->getName()), $name], $args);
+		}
+		Nette\Utils\ObjectMixin::strictCall(get_class($this), $name);
+	}
+
+}
+
+
+/**
+ * @internal
+ */
+class MethodCompatibility extends \ReflectionMethod
+{
+	use Nette\SmartObject;
+
+	public function __toString()
+	{
+		trigger_error(__METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
+		return parent::getDeclaringClass()->getName() . '::' . $this->getName() . '()';
+	}
+
+
+	public function __get($name)
+	{
+		trigger_error("getMethod('{$this->getName()}')->$name is deprecated.", E_USER_DEPRECATED);
+		return (new Method(parent::getDeclaringClass()->getName(), $this->getName()))->$name;
+	}
+
+
+	public function __call($name, $args)
+	{
+		trigger_error("getMethod('{$this->getName()}')->$name() is deprecated, use Nette\\Reflection\\Method::from(\$presenter, '{$this->getName()}')->$name()", E_USER_DEPRECATED);
+		return call_user_func_array([new Method(parent::getDeclaringClass()->getName(), $this->getName()), $name], $args);
 	}
 
 }
