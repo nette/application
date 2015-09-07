@@ -37,7 +37,7 @@ test(function () {
 	$factory->createTemplate();
 
 	Assert::type('array', $engine->onCompile);
-	Assert::type('Closure', $engine->onCompile[0]); // prepended by TemplateFactory
+	Assert::type(Closure::class, $engine->onCompile[0]); // prepended by TemplateFactory
 	Assert::same($callback, $engine->onCompile[1]); // our callback
 });
 
@@ -50,7 +50,7 @@ test(function () {
 	$factory->createTemplate();
 
 	Assert::type('array', $engine->onCompile);
-	Assert::type('Closure', $engine->onCompile[0]); // prepended by TemplateFactory
+	Assert::type(Closure::class, $engine->onCompile[0]); // prepended by TemplateFactory
 	Assert::same($callback, $engine->onCompile[1]); // our callback
 });
 
@@ -78,6 +78,6 @@ test(function () {
 	$factory->createTemplate();
 
 	Assert::type('array', $engine->onCompile);
-	Assert::type('Closure', $engine->onCompile[0]); // prepended by TemplateFactory
+	Assert::type(Closure::class, $engine->onCompile[0]); // prepended by TemplateFactory
 	Assert::same($callback, $engine->onCompile[1]); // our callback
 });

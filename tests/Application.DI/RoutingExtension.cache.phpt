@@ -43,7 +43,7 @@ test(function () {
 	eval($code);
 
 	$container = new Container1;
-	Assert::type('MyRouter', $container->getService('router'));
+	Assert::type(MyRouter::class, $container->getService('router'));
 	Assert::null($container->getService('router')->woken);
 });
 
@@ -64,7 +64,7 @@ test(function () {
 	eval($code);
 
 	$container = new Container2;
-	Assert::type('MyRouter', $container->getService('router'));
+	Assert::type(MyRouter::class, $container->getService('router'));
 	Assert::true($container->getService('router')->woken);
 });
 
