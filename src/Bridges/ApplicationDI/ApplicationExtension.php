@@ -54,7 +54,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 	{
 		$config = $this->validateConfig($this->defaults);
 		$builder = $this->getContainerBuilder();
-		$builder->addExcludedClasses([UI\Control::class]);
+		$builder->addExcludedClasses([UI\Presenter::class]);
 
 		$this->invalidLinkMode = $this->debugMode
 			? UI\Presenter::INVALID_LINK_TEXTUAL | ($config['silentLinks'] ? 0 : UI\Presenter::INVALID_LINK_WARNING)
@@ -109,7 +109,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 		}
 
 		foreach ($all as $def) {
-			$def->setInject(TRUE)->setAutowired(FALSE)->addTag('nette.presenter', $def->getClass());
+			$def->setInject(TRUE)->addTag('nette.presenter', $def->getClass());
 			if (is_subclass_of($def->getClass(), UI\Presenter::class)) {
 				$def->addSetup('$invalidLinkMode', [$this->invalidLinkMode]);
 			}
