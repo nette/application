@@ -82,6 +82,7 @@ class RoutingPanel extends Nette\Object implements Tracy\IBarPanel
 		$request = $this->request;
 		$routers = $this->routers;
 		$source = $this->source;
+		$hasModule = (bool) array_filter($routers, function($rq) { return $rq['module']; });
 		$url = $this->httpRequest->getUrl();
 		require __DIR__ . '/templates/RoutingPanel.panel.phtml';
 		return ob_get_clean();
