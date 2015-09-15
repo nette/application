@@ -46,6 +46,10 @@ class LinkGenerator extends Nette\Object
 		}
 		list(, $presenter, $action, $frag) = $m;
 
+		if ($presenter[0] === ':') {
+			$presenter = substr($presenter, 1);
+		}
+
 		try {
 			$class = $this->presenterFactory ? $this->presenterFactory->getPresenterClass($presenter) : NULL;
 		} catch (InvalidPresenterException $e) {
