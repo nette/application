@@ -14,6 +14,12 @@ Tester\Environment::setup();
 date_default_timezone_set('Europe/Prague');
 
 
+// output buffer level check
+register_shutdown_function(function ($level) {
+	Tester\Assert::same($level, ob_get_level());
+}, ob_get_level());
+
+
 function test(\Closure $function)
 {
 	$function();
