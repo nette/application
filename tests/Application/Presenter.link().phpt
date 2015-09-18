@@ -144,15 +144,14 @@ class TestPresenter extends Application\UI\Presenter
 
 		// warning invalid link mode
 		$this->invalidLinkMode = self::INVALID_LINK_WARNING;
-		$me = $this;
-		Assert::error(function () use ($me) {
-			Assert::same('#', $me->link('product', ['var1' => NULL, 'ok' => 'a']));
+		Assert::error(function () {
+			Assert::same('#', $this->link('product', ['var1' => NULL, 'ok' => 'a']));
 		}, E_USER_WARNING, "Invalid link: Invalid value for persistent parameter 'ok' in 'Test', expected boolean.");
 
 		// exception invalid link mode
 		$this->invalidLinkMode = self::INVALID_LINK_EXCEPTION;
-		Assert::exception(function () use ($me) {
-			$me->link('product', ['var1' => NULL, 'ok' => 'a']);
+		Assert::exception(function () {
+			$this->link('product', ['var1' => NULL, 'ok' => 'a']);
 		}, Nette\Application\UI\InvalidLinkException::class, "Invalid value for persistent parameter 'ok' in 'Test', expected boolean.");
 	}
 
