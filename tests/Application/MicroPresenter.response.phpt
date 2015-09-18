@@ -51,8 +51,13 @@ class Responder
 	public static function render(Nette\Application\Responses\TextResponse $response)
 	{
 		ob_start();
-		$response->send(new Http\Request(new Http\UrlScript()), new Http\Response(NULL));
-		return ob_get_clean();
+		try {
+			$response->send(new Http\Request(new Http\UrlScript()), new Http\Response(NULL));
+			return ob_get_clean();
+		} catch (\Exception $e) {
+			ob_end_clean();
+			throw $e;
+		}
 	}
 }
 
