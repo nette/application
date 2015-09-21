@@ -104,7 +104,8 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same('/index.php?y=2&action=default&do=buy&presenter=Test', $this->link('buy!', 1, 2));
 		Assert::same('/index.php?y=2&bool=1&str=1&action=default&do=buy&presenter=Test', $this->link('buy!', '1', '2', TRUE, TRUE));
 		Assert::same('/index.php?y=2&str=0&action=default&do=buy&presenter=Test', $this->link('buy!', '1', '2', FALSE, FALSE));
-		Assert::same('/index.php?action=default&do=buy&presenter=Test', $this->link('buy!', [1], (object) [1]));
+		Assert::same('/index.php?action=default&do=buy&presenter=Test', $this->link('buy!', [1]));
+		Assert::same("#error: Invalid value for parameter 'x' in method TestPresenter::handlebuy(), expected integer.", $this->link('buy!', [1], (object) [1]));
 		Assert::same('/index.php?y=2&action=default&do=buy&presenter=Test', $this->link('buy!', [1, 'y' => 2]));
 		Assert::same('/index.php?y=2&action=default&do=buy&presenter=Test', $this->link('buy!', ['x' => 1, 'y' => 2, 'var1' => $this->var1]));
 		Assert::same('#error: Signal must be non-empty string.', $this->link('!'));
@@ -120,7 +121,8 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same('#error: Signal must be non-empty string.', $this['mycontrol']->link('', 0, 1));
 		Assert::same('/index.php?mycontrol-x=0&mycontrol-y=1&action=default&do=mycontrol-click&presenter=Test', $this['mycontrol']->link('click', 0, 1));
 		Assert::same('/index.php?mycontrol-x=0a&mycontrol-y=1a&action=default&do=mycontrol-click&presenter=Test', $this['mycontrol']->link('click', '0a', '1a'));
-		Assert::same('/index.php?mycontrol-x=1&action=default&do=mycontrol-click&presenter=Test', $this['mycontrol']->link('click', [1], (object) [1]));
+		Assert::same('/index.php?mycontrol-x=1&action=default&do=mycontrol-click&presenter=Test', $this['mycontrol']->link('click', [1]));
+		Assert::same("#error: Invalid value for parameter 'x' in method TestControl::handleclick(), expected scalar.", $this['mycontrol']->link('click', [1], (object) [1]));
 		Assert::same('/index.php?mycontrol-x=1&action=default&do=mycontrol-click&presenter=Test', $this['mycontrol']->link('click', TRUE, FALSE));
 		Assert::same('/index.php?action=default&do=mycontrol-click&presenter=Test', $this['mycontrol']->link('click', NULL, ''));
 		Assert::same('#error: Passed more parameters than method TestControl::handleClick() expects.', $this['mycontrol']->link('click', 1, 2, 3));

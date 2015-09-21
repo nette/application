@@ -281,7 +281,8 @@ abstract class PresenterComponent extends Nette\ComponentModel\Container impleme
 	public function link($destination, $args = [])
 	{
 		try {
-			return $this->getPresenter()->createRequest($this, $destination, is_array($args) ? $args : array_slice(func_get_args(), 1), 'link');
+			$args = func_num_args() < 3 && is_array($args) ? $args : array_slice(func_get_args(), 1);
+			return $this->getPresenter()->createRequest($this, $destination, $args, 'link');
 
 		} catch (InvalidLinkException $e) {
 			return $this->getPresenter()->handleInvalidLink($e);
@@ -297,7 +298,8 @@ abstract class PresenterComponent extends Nette\ComponentModel\Container impleme
 	 */
 	public function lazyLink($destination, $args = [])
 	{
-		return new Link($this, $destination, is_array($args) ? $args : array_slice(func_get_args(), 1));
+		$args = func_num_args() < 3 && is_array($args) ? $args : array_slice(func_get_args(), 1);
+		return new Link($this, $destination, $args);
 	}
 
 
@@ -311,7 +313,8 @@ abstract class PresenterComponent extends Nette\ComponentModel\Container impleme
 	public function isLinkCurrent($destination = NULL, $args = [])
 	{
 		if ($destination !== NULL) {
-			$this->getPresenter()->createRequest($this, $destination, is_array($args) ? $args : array_slice(func_get_args(), 1), 'test');
+			$args = func_num_args() < 3 && is_array($args) ? $args : array_slice(func_get_args(), 1);
+			$this->getPresenter()->createRequest($this, $destination, $args, 'test');
 		}
 		return $this->getPresenter()->getLastCreatedRequestFlag('current');
 	}
@@ -328,11 +331,11 @@ abstract class PresenterComponent extends Nette\ComponentModel\Container impleme
 	public function redirect($code, $destination = NULL, $args = [])
 	{
 		if (!is_numeric($code)) { // first parameter is optional
-			$args = is_array($destination) ? $destination : array_slice(func_get_args(), 1);
+			$args = func_num_args() < 3 && is_array($destination) ? $destination : array_slice(func_get_args(), 1);
 			$destination = $code;
 			$code = NULL;
 
-		} elseif (!is_array($args)) {
+		} elseif (func_num_args() < 4 && !is_array($args)) {
 			$args = array_slice(func_get_args(), 2);
 		}
 

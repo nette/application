@@ -653,7 +653,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 			$this->sendResponse(new Responses\ForwardResponse($destination));
 		}
 
-		$this->createRequest($this, $destination, is_array($args) ? $args : array_slice(func_get_args(), 1), 'forward');
+		$args = func_num_args() < 3 && is_array($args) ? $args : array_slice(func_get_args(), 1);
+		$this->createRequest($this, $destination, $args, 'forward');
 		$this->sendResponse(new Responses\ForwardResponse($this->lastCreatedRequest));
 	}
 
