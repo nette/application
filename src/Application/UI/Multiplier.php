@@ -19,6 +19,9 @@ class Multiplier extends PresenterComponent
 	private $factory;
 
 
+	/**
+	 * @param callable $factory
+	 */
 	public function __construct(callable $factory)
 	{
 		parent::__construct();

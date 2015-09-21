@@ -21,6 +21,7 @@ use Nette\Http;
  * @property-read string $action
  * @property      string $view
  * @property      string $layout
+ * @property-read ITemplate|\stdClass $template
  * @property-read \stdClass $payload
  * @property-read bool $ajax
  * @property-read Nette\Application\Request $lastCreatedRequest
