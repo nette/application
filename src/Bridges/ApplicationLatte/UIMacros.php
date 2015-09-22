@@ -69,9 +69,9 @@ if (empty($_l->extends) && !empty($_control->snippetMode)) {
 		$name = $writer->formatWord($words[0]);
 		$method = isset($words[1]) ? ucfirst($words[1]) : '';
 		$method = Strings::match($method, '#^\w*\z#') ? "render$method" : "{\"render$method\"}";
-		$param = $writer->formatArray();
-		if (!Strings::contains($node->args, '=>')) {
-			$param = substr($param, $param[0] === '[' ? 1 : 6, -1); // removes array() or []
+		$param = $writer->formatArgs();
+		if (Strings::contains($node->args, '=>')) {
+			$param = "[$param]";
 		}
 		return ($name[0] === '$' ? "if (is_object($name)) \$_l->tmp = $name; else " : '')
 			. '$_l->tmp = $_control->getComponent(' . $name . '); '
