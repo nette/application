@@ -13,7 +13,7 @@ use Nette;
 /**
  * The router broker.
  */
-class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRouter
+class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRouter, Nette\Application\IRouteList
 {
 	/** @var array */
 	private $cachedRoutes;
