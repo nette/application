@@ -12,8 +12,6 @@ use Nette;
 
 /**
  * Web form adapted for Presenter.
- *
- * @property-read Presenter $presenter
  */
 class Form extends Nette\Forms\Form implements ISignalReceiver
 {

@@ -12,8 +12,6 @@ use Nette;
 
 /**
  * Forwards to new request.
- *
- * @property-read Nette\Application\Request $request
  */
 class ForwardResponse extends Nette\Object implements Nette\Application\IResponse
 {

@@ -13,9 +13,6 @@ use Nette\Application;
 
 /**
  * The bidirectional route for trivial routing via query parameters.
- *
- * @property-read array $defaults
- * @property-read int $flags
  */
 class SimpleRouter extends Nette\Object implements Application\IRouter
 {

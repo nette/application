@@ -12,11 +12,6 @@ use Nette;
 
 /**
  * Front Controller.
- *
- * @property-read array $requests
- * @property-read IPresenter $presenter
- * @property-read IRouter $router
- * @property-read IPresenterFactory $presenterFactory
  */
 class Application extends Nette\Object
 {

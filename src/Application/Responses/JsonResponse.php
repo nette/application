@@ -12,9 +12,6 @@ use Nette;
 
 /**
  * JSON response used mainly for AJAX requests.
- *
- * @property-read array|\stdClass $payload
- * @property-read string $contentType
  */
 class JsonResponse extends Nette\Object implements Nette\Application\IResponse
 {
