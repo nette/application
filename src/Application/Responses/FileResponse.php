@@ -12,10 +12,6 @@ use Nette;
 
 /**
  * File download response.
- *
- * @property-read string $file
- * @property-read string $name
- * @property-read string $contentType
  */
 class FileResponse extends Nette\Object implements Nette\Application\IResponse
 {

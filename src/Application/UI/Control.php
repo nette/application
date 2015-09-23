@@ -14,7 +14,6 @@ use Nette;
  * Control is renderable Presenter component.
  *
  * @property-read ITemplate $template
- * @property-read string $snippetId
  */
 abstract class Control extends PresenterComponent implements IRenderable
 {

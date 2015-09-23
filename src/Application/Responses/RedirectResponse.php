@@ -13,9 +13,6 @@ use Nette\Http;
 
 /**
  * Redirects to new URI.
- *
- * @property-read string $url
- * @property-read int $code
  */
 class RedirectResponse extends Nette\Object implements Nette\Application\IResponse
 {

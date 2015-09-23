@@ -12,7 +12,6 @@ use Nette;
 
 /**
  * The router broker.
- * @property-read string $module
  */
 class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRouter
 {
