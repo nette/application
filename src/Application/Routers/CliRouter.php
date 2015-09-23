@@ -15,8 +15,6 @@ use Nette\Application;
  * The unidirectional router for CLI. (experimental)
  *
  * @author     David Grudl
- *
- * @property-read array $defaults
  */
 class CliRouter extends Nette\Object implements Application\IRouter
 {

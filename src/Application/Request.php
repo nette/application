@@ -11,11 +11,10 @@ use Nette;
 
 
 /**
- * Presenter request. Immutable object.
+ * Presenter request.
  *
  * @author     David Grudl
  *
- * @property   string $presenterName
  * @property   array $parameters
  * @property   array $post
  * @property   array $files

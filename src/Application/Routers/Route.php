@@ -17,11 +17,6 @@ use Nette\Utils\Strings;
  * HTTP request to a Request object for dispatch and vice-versa.
  *
  * @author     David Grudl
- *
- * @property-read string $mask
- * @property-read array $defaults
- * @property-read int $flags
- * @property-read string|FALSE $targetPresenter
  */
 class Route extends Nette\Object implements Application\IRouter
 {

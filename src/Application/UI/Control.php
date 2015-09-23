@@ -16,7 +16,6 @@ use Nette;
  * @author     David Grudl
  *
  * @property-read ITemplate $template
- * @property-read string $snippetId
  */
 abstract class Control extends PresenterComponent implements IRenderable
 {

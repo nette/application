@@ -20,7 +20,6 @@ use Nette;
  * @author     David Grudl
  *
  * @property-read Presenter $presenter
- * @property-read string $uniqueId
  */
 abstract class PresenterComponent extends Nette\ComponentModel\Container implements ISignalReceiver, IStatePersistent, \ArrayAccess
 {
