@@ -36,7 +36,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @internal special parameter key */
 	const SIGNAL_KEY = 'do',
 		ACTION_KEY = 'action',
-		FLASH_KEY = '_fid',
+		FLASH_KEY = Http\Session::FLASH_KEY,
 		DEFAULT_ACTION = 'default';
 
 	/** @var int */
@@ -119,6 +119,9 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/** @var ITemplateFactory */
 	private $templateFactory;
+
+	/** @var Application\IRequestStorage */
+	private $requestStorage;
 
 
 	public function __construct()
@@ -232,10 +235,6 @@ abstract class Presenter extends Control implements Application\IPresenter
 					}
 				} catch (Application\AbortException $e) {
 				}
-			}
-
-			if ($this->hasFlashSession()) {
-				$this->getFlashSession()->setExpiration($this->response instanceof Responses\RedirectResponse ? '+ 30 seconds' : '+ 3 seconds');
 			}
 
 			// SHUTDOWN
@@ -955,8 +954,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 			$args[self::SIGNAL_KEY] = $component->getParameterId($signal);
 			$current = $current && $args[self::SIGNAL_KEY] === $this->getParameter(self::SIGNAL_KEY);
 		}
-		if (($mode === 'redirect' || $mode === 'forward') && $this->hasFlashSession()) {
-			$args[self::FLASH_KEY] = $this->getParameter(self::FLASH_KEY);
+		if ($mode === 'redirect' || $mode === 'forward') {
+			$args[Http\Session::FLASH_KEY] = $this->getSession()->getFlashId();
 		}
 
 		$this->lastCreatedRequest = new Application\Request(
@@ -1081,14 +1080,10 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function storeRequest($expiration = '+ 10 minutes')
 	{
-		$session = $this->getSession('Nette.Application/requests');
-		do {
-			$key = Nette\Utils\Random::generate(5);
-		} while (isset($session[$key]));
-
-		$session[$key] = [$this->getUser()->getId(), $this->request];
-		$session->setExpiration($expiration, $key);
-		return $key;
+		if (!$this->requestStorage) {
+			throw new Nette\InvalidStateException('Service IRequestStorage has not been set.');
+	}
+		return $this->requestStorage->store($this->request, $this->httpRequest->getUrl(), $expiration);
 	}
 
 
@@ -1099,17 +1094,11 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function restoreRequest($key)
 	{
-		$session = $this->getSession('Nette.Application/requests');
-		if (!isset($session[$key]) || ($session[$key][0] !== NULL && $session[$key][0] !== $this->getUser()->getId())) {
-			return;
+		if (!$this->requestStorage) {
+			throw new Nette\InvalidStateException('Service IRequestStorage has not been set.');
+		} elseif ($url = $this->requestStorage->getUrl($key)) {
+			$this->redirectUrl($url);
 		}
-		$request = clone $session[$key][1];
-		unset($session[$key]);
-		$request->setFlag(Application\Request::RESTORED, TRUE);
-		$params = $request->getParameters();
-		$params[self::FLASH_KEY] = $this->getParameter(self::FLASH_KEY);
-		$request->setParameters($params);
-		$this->sendResponse(new Responses\ForwardResponse($request));
 	}
 
 
@@ -1290,8 +1279,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function hasFlashSession()
 	{
-		return !empty($this->params[self::FLASH_KEY])
-			&& $this->getSession()->hasSection('Nette.Application.Flash/' . $this->params[self::FLASH_KEY]);
+		return (bool) $this->getSession()->getFlashId();
 	}
 
 
@@ -1301,10 +1289,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function getFlashSession()
 	{
-		if (empty($this->params[self::FLASH_KEY])) {
-			$this->params[self::FLASH_KEY] = Nette\Utils\Random::generate(4);
-		}
-		return $this->getSession('Nette.Application.Flash/' . $this->params[self::FLASH_KEY]);
+		return $this->getSession()->getFlashSection('Nette.Application.Flash');
 	}
 
 
@@ -1312,7 +1297,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 
 	public function injectPrimary(Nette\DI\Container $context = NULL, Application\IPresenterFactory $presenterFactory = NULL, Application\IRouter $router = NULL,
-		Http\IRequest $httpRequest, Http\IResponse $httpResponse, Http\Session $session = NULL, Nette\Security\User $user = NULL, ITemplateFactory $templateFactory = NULL)
+		Http\IRequest $httpRequest, Http\IResponse $httpResponse, Http\Session $session = NULL, Nette\Security\User $user = NULL, ITemplateFactory $templateFactory = NULL,
+		Application\IRequestStorage $requestStorage = NULL)
 	{
 		if ($this->presenterFactory !== NULL) {
 			throw new Nette\InvalidStateException('Method ' . __METHOD__ . ' is intended for initialization and should not be called more than once.');
@@ -1326,6 +1312,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		$this->session = $session;
 		$this->user = $user;
 		$this->templateFactory = $templateFactory;
+		$this->requestStorage = $requestStorage;
 	}
 
 
