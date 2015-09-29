@@ -2,7 +2,6 @@
 
 /**
  * Test: ComponentReflection::combineArgs()
- * @phpVersion 7
  */
 
 use Nette\Application\UI\ComponentReflection as Reflection;

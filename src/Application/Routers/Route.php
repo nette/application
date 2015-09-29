@@ -175,7 +175,7 @@ class Route implements Application\IRouter
 			if (strncmp($url->getPath(), $basePath, strlen($basePath)) !== 0) {
 				return NULL;
 			}
-			$path = (string) substr($url->getPath(), strlen($basePath));
+			$path = substr($url->getPath(), strlen($basePath));
 
 		} else {
 			$path = $url->getPath();
@@ -571,7 +571,7 @@ class Route implements Application\IRouter
 			}
 
 			if ($default !== '') {
-				$meta[self::VALUE] = (string) substr($default, 1);
+				$meta[self::VALUE] = substr($default, 1);
 				$meta['fixity'] = self::PATH_OPTIONAL;
 			}
 

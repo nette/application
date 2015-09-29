@@ -214,28 +214,9 @@ class ComponentReflection extends \ReflectionClass
 	 */
 	public static function getParameterType(\ReflectionParameter $param)
 	{
-		$def = gettype($param->isDefaultValueAvailable() ? $param->getDefaultValue() : NULL);
-		if (PHP_VERSION_ID >= 70000) {
-			return $param->hasType()
-				? [PHP_VERSION_ID >= 70100 ? $param->getType()->getName() : (string) $param->getType(), !$param->getType()->isBuiltin()]
-				: [$def, FALSE];
-		} elseif ($param->isArray() || $param->isCallable()) {
-			return [$param->isArray() ? 'array' : 'callable', FALSE];
-		} else {
-			try {
-				return ($ref = $param->getClass()) ? [$ref->getName(), TRUE] : [$def, FALSE];
-			} catch (\ReflectionException $e) {
-				if (preg_match('#Class (.+) does not exist#', $e->getMessage(), $m)) {
-					throw new \LogicException(sprintf(
-						"Class %s not found. Check type hint of parameter $%s in %s() or 'use' statements.",
-						$m[1],
-						$param->getName(),
-						$param->getDeclaringFunction()->getDeclaringClass()->getName() . '::' . $param->getDeclaringFunction()->getName()
-					));
-				}
-				throw $e;
-			}
-		}
+		return $param->hasType()
+			? [(string) $param->getType(), !$param->getType()->isBuiltin()]
+			: [gettype($param->isDefaultValueAvailable() ? $param->getDefaultValue() : NULL), FALSE];
 	}
 
 

@@ -29,7 +29,7 @@ class Application
 	/** @var callable[]  function (Application $sender); Occurs before the application loads presenter */
 	public $onStartup;
 
-	/** @var callable[]  function (Application $sender, \Exception|\Throwable $e = NULL); Occurs before the application shuts down */
+	/** @var callable[]  function (Application $sender, \Throwable $e = NULL); Occurs before the application shuts down */
 	public $onShutdown;
 
 	/** @var callable[]  function (Application $sender, Request $request); Occurs when a new request is received */
@@ -41,7 +41,7 @@ class Application
 	/** @var callable[]  function (Application $sender, IResponse $response); Occurs when a new response is ready for dispatch */
 	public $onResponse;
 
-	/** @var callable[]  function (Application $sender, \Exception|\Throwable $e); Occurs when an unhandled exception occurs in the application */
+	/** @var callable[]  function (Application $sender, \Throwable $e); Occurs when an unhandled exception occurs in the application */
 	public $onError;
 
 	/** @var Request[] */
@@ -84,9 +84,6 @@ class Application
 			$this->onShutdown($this);
 
 		} catch (\Throwable $e) {
-		} catch (\Exception $e) {
-		}
-		if (isset($e)) {
 			$this->onError($this, $e);
 			if ($this->catchExceptions && $this->errorPresenter) {
 				try {
@@ -95,8 +92,6 @@ class Application
 					return;
 
 				} catch (\Throwable $e) {
-					$this->onError($this, $e);
-				} catch (\Exception $e) {
 					$this->onError($this, $e);
 				}
 			}
@@ -156,7 +151,6 @@ class Application
 
 
 	/**
-	 * @param  \Exception|\Throwable
 	 * @return void
 	 */
 	public function processException($e)
