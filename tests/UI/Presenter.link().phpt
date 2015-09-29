@@ -98,6 +98,7 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same('/index.php?pint=0&pbool=0&p=0&action=params&presenter=Test', $this->link('params', ['pint' => FALSE, 'pbool' => FALSE, 'p' => FALSE, 'parr' => NULL]));
 		Assert::same("#error: Value passed to persistent parameter 'pbool' in presenter Test must be boolean, string given.", $this->link('this', ['p' => NULL, 'pbool' => 'a']));
 		Assert::same("#error: Value passed to persistent parameter 'p' in presenter Test must be scalar, array given.", $this->link('this', ['p' => [1], 'pbool' => FALSE]));
+		Assert::same('/index.php?action=persistent&presenter=Test', $this->link('persistent'));
 
 		// Other presenter & action link
 		Assert::same('/index.php?action=product&presenter=Other', $this->link('Other:product', ['p' => $this->p]));
@@ -143,6 +144,37 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same('/index.php?int=0&bool=0&action=params&presenter=Test', $this->link('params', ['int' => 0, 'bool' => FALSE, 'str' => '', 'arr' => '']));
 		Assert::same('/index.php?action=params&presenter=Test', $this->link('params', ['int' => new stdClass]));
 
+		Assert::same('#error: Missing parameter $int required by TestPresenter::actionHints()', $this->link('hints', []));
+		Assert::same('#error: Missing parameter $int required by TestPresenter::actionHints()', $this->link('hints', ['int' => NULL, 'bool' => NULL, 'str' => NULL, 'arr' => NULL]));
+		Assert::same('/index.php?int=1&bool=1&str=abc&arr%5B0%5D=1&action=hints&presenter=Test', $this->link('hints', ['int' => '1', 'bool' => '1', 'str' => 'abc', 'arr' => [1]]));
+		Assert::same('/index.php?int=0&bool=0&action=hints&presenter=Test', $this->link('hints', ['int' => 0, 'bool' => FALSE, 'str' => '', 'arr' => []]));
+		Assert::same('#error: Argument $int passed to TestPresenter::actionHints() must be int, string given.', $this->link('hints', ['int' => '']));
+		Assert::same('#error: Argument $int passed to TestPresenter::actionHints() must be int, stdClass given.', $this->link('hints', ['int' => new stdClass]));
+		Assert::same('#error: Argument $int passed to TestPresenter::actionHints() must be int, array given.', $this->link('hints', ['int' => []]));
+		Assert::same('#error: Argument $bool passed to TestPresenter::actionHints() must be bool, string given.', $this->link('hints', ['int' => '1', 'bool' => '']));
+		Assert::same('#error: Argument $arr passed to TestPresenter::actionHints() must be array, string given.', $this->link('hints', ['int' => '1', 'bool' => '1', 'str' => '', 'arr' => '']));
+
+		Assert::same('/index.php?action=hintsNulls&presenter=Test', $this->link('hintsNulls', []));
+		Assert::same('/index.php?action=hintsNulls&presenter=Test', $this->link('hintsNulls', ['int' => NULL, 'bool' => NULL, 'str' => NULL, 'arr' => NULL]));
+		Assert::same('/index.php?int=1&bool=1&str=abc&arr%5B0%5D=1&action=hintsNulls&presenter=Test', $this->link('hintsNulls', ['int' => '1', 'bool' => '1', 'str' => 'abc', 'arr' => [1]]));
+		Assert::same('/index.php?int=0&bool=0&action=hintsNulls&presenter=Test', $this->link('hintsNulls', ['int' => 0, 'bool' => FALSE, 'str' => '', 'arr' => []]));
+		Assert::same('#error: Argument $int passed to TestPresenter::actionHintsNulls() must be int, string given.', $this->link('hintsNulls', ['int' => '']));
+		Assert::same('#error: Argument $int passed to TestPresenter::actionHintsNulls() must be int, stdClass given.', $this->link('hintsNulls', ['int' => new stdClass]));
+		Assert::same('#error: Argument $int passed to TestPresenter::actionHintsNulls() must be int, array given.', $this->link('hintsNulls', ['int' => []]));
+		Assert::same('#error: Argument $bool passed to TestPresenter::actionHintsNulls() must be bool, string given.', $this->link('hintsNulls', ['int' => '1', 'bool' => '']));
+		Assert::same('#error: Argument $arr passed to TestPresenter::actionHintsNulls() must be array, string given.', $this->link('hintsNulls', ['int' => '1', 'bool' => '1', 'str' => '', 'arr' => '']));
+
+		Assert::same('/index.php?action=hintsDefaults&presenter=Test', $this->link('hintsDefaults', []));
+		Assert::same('/index.php?action=hintsDefaults&presenter=Test', $this->link('hintsDefaults', ['int' => NULL, 'bool' => NULL, 'str' => NULL, 'arr' => NULL]));
+		Assert::same('/index.php?int=1&bool=1&str=abc&arr%5B0%5D=1&action=hintsDefaults&presenter=Test', $this->link('hintsDefaults', ['int' => '1', 'bool' => '1', 'str' => 'abc', 'arr' => [1]]));
+		Assert::same(['int' => 1, 'bool' => TRUE, 'str' => 'abc', 'arr' => [1], 'pint' => NULL, 'parr' => NULL, 'pbool' => NULL, 'action' => 'hintsDefaults'], $this->getLastCreatedRequest()->getParameters());
+		Assert::same('/index.php?action=hintsDefaults&presenter=Test', $this->link('hintsDefaults', ['int' => 0, 'bool' => FALSE, 'str' => '', 'arr' => []]));
+		Assert::same('#error: Argument $int passed to TestPresenter::actionHintsDefaults() must be int, string given.', $this->link('hintsDefaults', ['int' => '']));
+		Assert::same('#error: Argument $int passed to TestPresenter::actionHintsDefaults() must be int, stdClass given.', $this->link('hintsDefaults', ['int' => new stdClass]));
+		Assert::same('#error: Argument $int passed to TestPresenter::actionHintsDefaults() must be int, array given.', $this->link('hintsDefaults', ['int' => []]));
+		Assert::same('#error: Argument $bool passed to TestPresenter::actionHintsDefaults() must be bool, string given.', $this->link('hintsDefaults', ['int' => '1', 'bool' => '']));
+		Assert::same('#error: Argument $arr passed to TestPresenter::actionHintsDefaults() must be array, string given.', $this->link('hintsDefaults', ['int' => '1', 'bool' => '1', 'str' => '', 'arr' => '']));
+
 		Assert::same('/index.php?action=defaults&presenter=Test', $this->link('defaults', []));
 		Assert::same('/index.php?action=defaults&presenter=Test', $this->link('defaults', ['int' => NULL, 'bool' => NULL, 'str' => NULL, 'arr' => NULL]));
 		Assert::same('/index.php?action=defaults&presenter=Test', $this->link('defaults', ['int' => '1', 'bool' => '1', 'str' => 'a', 'arr' => [1]]));
@@ -185,6 +217,18 @@ class TestPresenter extends Application\UI\Presenter
 	{
 	}
 
+	public function actionHints(int $int, bool $bool, string $str, array $arr)
+	{
+	}
+
+	public function actionHintsNulls(int $int = NULL, bool $bool = NULL, string $str = NULL, array $arr = NULL)
+	{
+	}
+
+	public function actionHintsDefaults(int $int = 0, bool $bool = FALSE, string $str = '', array $arr = [])
+	{
+	}
+
 	public function actionDefaults($int = 1, $bool = TRUE, $str = 'a', $arr = [1])
 	{
 	}
@@ -192,6 +236,12 @@ class TestPresenter extends Application\UI\Presenter
 	public function actionObjects(stdClass $req, stdClass $opt = NULL)
 	{
 	}
+
+
+	public function actionPersistent(int $pint)
+	{
+	}
+
 
 	public function handleSignal($x = 1, $y = 1)
 	{
