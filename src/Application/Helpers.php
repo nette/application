@@ -26,7 +26,7 @@ class Helpers
 		$pos = strrpos($name, ':');
 		return $pos === FALSE
 			? ['', $name, '']
-			: [substr($name, 0, $pos), (string) substr($name, $pos + 1), ':'];
+			: [substr($name, 0, $pos), substr($name, $pos + 1), ':'];
 	}
 
 }
