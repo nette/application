@@ -129,6 +129,7 @@ class Application extends Nette\Object
 	 */
 	public function processRequest(Request $request)
 	{
+		process:
 		if (count($this->requests) > self::$maxLoop) {
 			throw new ApplicationException('Too many loops detected in application life cycle.');
 		}
@@ -141,7 +142,8 @@ class Application extends Nette\Object
 		$response = $this->presenter->run(clone $request);
 
 		if ($response instanceof Responses\ForwardResponse) {
-			$this->processRequest($response->getRequest());
+			$request = $response->getRequest();
+			goto process;
 
 		} elseif ($response) {
 			$this->onResponse($this, $response);
