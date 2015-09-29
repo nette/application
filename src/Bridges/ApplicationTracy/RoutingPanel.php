@@ -138,11 +138,11 @@ class RoutingPanel extends Nette\Object implements Tracy\IBarPanel
 		$rc = new \ReflectionClass($class);
 
 		if ($rc->isSubclassOf(Nette\Application\UI\Presenter::class)) {
-			if (isset($request->parameters[Presenter::SIGNAL_KEY])) {
-				$method = $class::formatSignalMethod($request->parameters[Presenter::SIGNAL_KEY]);
+			if ($request->getParameter(Presenter::SIGNAL_KEY)) {
+				$method = $class::formatSignalMethod($request->getParameter(Presenter::SIGNAL_KEY));
 
-			} elseif (isset($request->parameters[Presenter::ACTION_KEY])) {
-				$action = $request->parameters[Presenter::ACTION_KEY];
+			} elseif ($request->getParameter(Presenter::ACTION_KEY)) {
+				$action = $request->getParameter(Presenter::ACTION_KEY);
 				$method = $class::formatActionMethod($action);
 				if (!$rc->hasMethod($method)) {
 					$method = $class::formatRenderMethod($action);
