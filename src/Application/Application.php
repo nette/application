@@ -138,7 +138,7 @@ class Application extends Nette\Object
 
 		$this->presenter = $this->presenterFactory->createPresenter($request->getPresenterName());
 		$this->onPresenter($this, $this->presenter);
-		$response = $this->presenter->run($request);
+		$response = $this->presenter->run(clone $request);
 
 		if ($response instanceof Responses\ForwardResponse) {
 			$this->processRequest($response->getRequest());
