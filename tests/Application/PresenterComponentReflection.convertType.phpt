@@ -11,23 +11,24 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-//               [$type]  null   scalar     array  object*    callable*
+//               [$type]  null   scalar     array  object     callable
 //   [$val] ----------------------------------------------------------
-//   null (not used)      pass   cast       cast   error      error
-//   scalar               pass   cast/deny  deny   error      error
+//   null                 pass   cast       cast   error      deny
+//   scalar               pass   cast/deny  deny   error      deny
 //   array                deny   deny       pass   deny       deny
-//   object               pass   pass       error  pass/error pass/error
+//   object               pass   pass/error deny   pass/error deny
 //
-//   error = E_RECOVERABLE_ERROR   * = only as native typehint
+//   error = E_RECOVERABLE_ERROR
 
 
 function testIt($type, $val, $res = NULL)
 {
+	$isClass = strtolower($type) !== $type;
 	if (func_num_args() === 3) {
-		Assert::true(PresenterComponentReflection::convertType($val, $type));
+		Assert::true(PresenterComponentReflection::convertType($val, $type, $isClass));
 	} else {
 		$res = $val;
-		Assert::false(PresenterComponentReflection::convertType($val, $type));
+		Assert::false(PresenterComponentReflection::convertType($val, $type, $isClass));
 	}
 	Assert::same($res, $val);
 }
@@ -116,3 +117,39 @@ testIt('array', 0);
 testIt('array', 1);
 testIt('array', 1.0);
 testIt('array', 1.2);
+
+testIt('callable', NULL);
+testIt('callable', array());
+testIt('callable', $obj);
+testIt('callable', function () {});
+testIt('callable', '');
+testIt('callable', 'trim');
+testIt('callable', '1');
+testIt('callable', '1.0');
+testIt('callable', '1.1');
+testIt('callable', '1a');
+testIt('callable', TRUE);
+testIt('callable', FALSE);
+testIt('callable', 0);
+testIt('callable', 1);
+testIt('callable', 1.0);
+testIt('callable', 1.2);
+
+testIt('stdClass', NULL, NULL);
+testIt('stdClass', array());
+testIt('stdClass', $obj, $obj);
+testIt('stdClass', $var = function () {}, $var);
+testIt('stdClass', '', '');
+testIt('stdClass', 'a', 'a');
+testIt('stdClass', '1', '1');
+testIt('stdClass', '1.0', '1.0');
+testIt('stdClass', '1.1', '1.1');
+testIt('stdClass', '1a', '1a');
+testIt('stdClass', TRUE, TRUE);
+testIt('stdClass', FALSE, FALSE);
+testIt('stdClass', 0, 0);
+testIt('stdClass', 1, 1);
+testIt('stdClass', 1.0, 1.0);
+testIt('stdClass', 1.2, 1.2);
+
+testIt('Closure', $var = function () {}, $var);
