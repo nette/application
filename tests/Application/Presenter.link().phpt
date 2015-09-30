@@ -114,8 +114,20 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same('/index.php?sort%5By%5D%5Basc%5D=1&action=default&presenter=Test', $this->link('this', ['sort' => ['y' => ['asc' => TRUE]]]));
 
 		// Presenter & signal link type checking
+		Assert::same("#error: Invalid value for parameter 'x' in method TestPresenter::handlebuy(), expected integer.", $this->link('buy!', 'x'));
+		Assert::same("#error: Invalid value for parameter 'bool' in method TestPresenter::handlebuy(), expected boolean.", $this->link('buy!', 1, 2, 3));
 		Assert::same("#error: Invalid value for parameter 'x' in method TestPresenter::handlebuy(), expected integer.", $this->link('buy!', [[]]));
+		Assert::same('/index.php?action=default&do=buy&presenter=Test', $this->link('buy!'));
 		Assert::same('/index.php?action=default&do=buy&presenter=Test', $this->link('buy!', [new stdClass]));
+
+		Assert::same('/index.php?a=x&action=default&do=obj&presenter=Test', $this->link('obj!', ['x']));
+		Assert::same('/index.php?action=default&do=obj&presenter=Test', $this->link('obj!', [new stdClass]));
+		Assert::same('/index.php?action=default&do=obj&presenter=Test', $this->link('obj!', [new Exception]));
+		Assert::same('/index.php?action=default&do=obj&presenter=Test', $this->link('obj!', [NULL]));
+		Assert::same('/index.php?b=x&action=default&do=obj&presenter=Test', $this->link('obj!', ['b' => 'x']));
+		Assert::same('/index.php?action=default&do=obj&presenter=Test', $this->link('obj!', ['b' => new stdClass]));
+		Assert::same('/index.php?action=default&do=obj&presenter=Test', $this->link('obj!', ['b' => new Exception]));
+		Assert::same('/index.php?action=default&do=obj&presenter=Test', $this->link('obj!', ['b' => NULL]));
 
 		// Component link
 		Assert::same('#error: Signal must be non-empty string.', $this['mycontrol']->link('', 0, 1));
@@ -155,13 +167,18 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::exception(function () {
 			$this->link('product', ['var1' => NULL, 'ok' => 'a']);
 		}, Nette\Application\UI\InvalidLinkException::class, "Invalid value for persistent parameter 'ok' in 'Test', expected boolean.");
+
+		$this->var1 = NULL; // NULL in persistent parameter means default
+		Assert::same('/index.php?action=product&presenter=Test', $this->link('product'));
 	}
 
 
-	/**
-	 * @view: default
-	 */
 	public function handleBuy($x = 1, $y = 1, $bool = FALSE, $str = '')
+	{
+	}
+
+
+	public function handleObj(stdClass $a, stdClass $b = NULL)
 	{
 	}
 
