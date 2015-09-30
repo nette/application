@@ -154,7 +154,7 @@ abstract class PresenterComponent extends Nette\ComponentModel\Container impleme
 			} elseif (array_key_exists($name, $params)) { // NULLs are skipped
 				continue;
 
-			} elseif (!isset($meta['since']) || $this instanceof $meta['since']) {
+			} elseif ((!isset($meta['since']) || $this instanceof $meta['since']) && isset($this->$name)) {
 				$params[$name] = $this->$name; // object property value
 
 			} else {

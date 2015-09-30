@@ -143,13 +143,16 @@ class PresenterComponentReflection extends Nette\Reflection\ClassType
 	 */
 	public static function convertType(& $val, $type)
 	{
-		if ($val === NULL || is_object($val)) {
+		if ($val === NULL) {
+			settype($val, $type);
+
+		} elseif (is_object($val)) {
 			// ignore
+
 		} elseif ($type === 'array') {
-			if (!is_array($val)) {
-				return FALSE;
-			}
-		} elseif (!is_scalar($val)) {
+			return is_array($val);
+
+		} elseif (!is_scalar($val)) { // array, resource, etc.
 			return FALSE;
 
 		} elseif ($type !== 'NULL') {
