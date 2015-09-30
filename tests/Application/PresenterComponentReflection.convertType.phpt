@@ -13,7 +13,7 @@ require __DIR__ . '/../bootstrap.php';
 
 //               [$type]  null   scalar     array  object*    callable*
 //   [$val] ----------------------------------------------------------
-//   null (not used)
+//   null (not used)      pass   cast       cast   error      error
 //   scalar               pass   cast/deny  deny   error      error
 //   array                deny   deny       pass   deny       deny
 //   object               pass   pass       error  pass/error pass/error
@@ -34,7 +34,7 @@ function testIt($type, $val, $res = NULL)
 
 $obj = new stdClass;
 
-testIt('string', NULL, NULL);
+testIt('string', NULL, '');
 testIt('string', []);
 testIt('string', $obj, $obj);
 testIt('string', '', '');
@@ -51,7 +51,7 @@ testIt('string', 1, '1');
 testIt('string', 1.0, '1');
 testIt('string', 1.2, '1.2');
 
-testIt('int', NULL, NULL);
+testIt('int', NULL, 0);
 testIt('int', []);
 testIt('int', $obj, $obj);
 testIt('int', '');
@@ -68,7 +68,7 @@ testIt('int', 1, 1);
 testIt('int', 1.0, 1);
 testIt('int', 1.2);
 
-testIt('double', NULL, NULL);
+testIt('double', NULL, 0.0);
 testIt('double', []);
 testIt('double', $obj, $obj);
 testIt('double', '');
@@ -85,7 +85,7 @@ testIt('double', 1, 1.0);
 testIt('double', 1.0, 1.0);
 testIt('double', 1.2, 1.2);
 
-testIt('bool', NULL, NULL);
+testIt('bool', NULL, FALSE);
 testIt('bool', []);
 testIt('bool', $obj, $obj);
 testIt('bool', '');
@@ -101,7 +101,7 @@ testIt('bool', 1, TRUE);
 testIt('bool', 1.0, TRUE);
 testIt('bool', 1.2);
 
-testIt('array', NULL, NULL);
+testIt('array', NULL, []);
 testIt('array', [], []);
 testIt('array', $obj, $obj);
 testIt('array', '');
