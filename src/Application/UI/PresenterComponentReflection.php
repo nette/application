@@ -147,7 +147,7 @@ class PresenterComponentReflection extends Nette\Reflection\ClassType
 			settype($val, $type);
 
 		} elseif (is_object($val)) {
-			// ignore
+			return $type === 'NULL';
 
 		} elseif ($type === 'array') {
 			return is_array($val);

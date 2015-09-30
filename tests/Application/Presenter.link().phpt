@@ -118,7 +118,7 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same("#error: Invalid value for parameter 'bool' in method TestPresenter::handlebuy(), expected boolean.", $this->link('buy!', 1, 2, 3));
 		Assert::same("#error: Invalid value for parameter 'x' in method TestPresenter::handlebuy(), expected integer.", $this->link('buy!', [[]]));
 		Assert::same('/index.php?action=default&do=buy&presenter=Test', $this->link('buy!'));
-		Assert::same('/index.php?action=default&do=buy&presenter=Test', $this->link('buy!', [new stdClass]));
+		Assert::same("#error: Invalid value for parameter 'x' in method TestPresenter::handlebuy(), expected integer.", $this->link('buy!', [new stdClass]));
 
 		Assert::same('/index.php?a=x&action=default&do=obj&presenter=Test', $this->link('obj!', ['x']));
 		Assert::same('/index.php?action=default&do=obj&presenter=Test', $this->link('obj!', [new stdClass]));
