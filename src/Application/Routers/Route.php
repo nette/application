@@ -23,8 +23,9 @@ class Route implements Application\IRouter
 	const PRESENTER_KEY = 'presenter';
 	const MODULE_KEY = 'module';
 
-	/** @internal url type */
-	const HOST = 1,
+	/** url type */
+	private const
+		HOST = 1,
 		PATH = 2,
 		RELATIVE = 3;
 
@@ -36,8 +37,9 @@ class Route implements Application\IRouter
 	const FILTER_TABLE = 'filterTable';
 	const FILTER_STRICT = 'filterStrict';
 
-	/** @internal fixity types - how to handle default value? {@link Route::$metadata} */
-	const OPTIONAL = 0,
+	/** fixity types - how to handle default value? {@link Route::$metadata} */
+	private const
+		OPTIONAL = 0,
 		PATH_OPTIONAL = 1,
 		CONSTANT = 2;
 
@@ -114,7 +116,7 @@ class Route implements Application\IRouter
 	public function __construct($mask, $metadata = [], $flags = 0)
 	{
 		if (is_string($metadata)) {
-			list($presenter, $action) = Nette\Application\Helpers::splitName($metadata);
+			[$presenter, $action] = Nette\Application\Helpers::splitName($metadata);
 			if (!$presenter) {
 				throw new Nette\InvalidArgumentException("Second argument must be array or string in format Presenter:action, '$metadata' given.");
 			}
@@ -154,7 +156,7 @@ class Route implements Application\IRouter
 				'/%basePath%/' => preg_quote($url->getBasePath(), '#'),
 				'%tld%' => preg_quote($parts[0], '#'),
 				'%domain%' => preg_quote(isset($parts[1]) ? "$parts[1].$parts[0]" : $parts[0], '#'),
-				'%sld%' => preg_quote(isset($parts[1]) ? $parts[1] : '', '#'),
+				'%sld%' => preg_quote($parts[1] ?? '', '#'),
 				'%host%' => preg_quote($host, '#'),
 			]);
 
@@ -215,7 +217,7 @@ class Route implements Application\IRouter
 					return NULL; // rejected by filterTable
 
 				} elseif (isset($meta[self::FILTER_IN])) { // applies filterIn only to scalar parameters
-					$params[$name] = call_user_func($meta[self::FILTER_IN], (string) $params[$name]);
+					$params[$name] = $meta[self::FILTER_IN]((string) $params[$name]);
 					if ($params[$name] === NULL && !isset($meta['fixity'])) {
 						return NULL; // rejected by filter
 					}
@@ -227,7 +229,7 @@ class Route implements Application\IRouter
 		}
 
 		if (isset($this->metadata[NULL][self::FILTER_IN])) {
-			$params = call_user_func($this->metadata[NULL][self::FILTER_IN], $params);
+			$params = $this->metadata[NULL][self::FILTER_IN]($params);
 			if ($params === NULL) {
 				return NULL;
 			}
@@ -290,7 +292,7 @@ class Route implements Application\IRouter
 		}
 
 		if (isset($metadata[NULL][self::FILTER_OUT])) {
-			$params = call_user_func($metadata[NULL][self::FILTER_OUT], $params);
+			$params = $metadata[NULL][self::FILTER_OUT]($params);
 			if ($params === NULL) {
 				return NULL;
 			}
@@ -324,7 +326,7 @@ class Route implements Application\IRouter
 				return NULL;
 
 			} elseif (isset($meta[self::FILTER_OUT])) {
-				$params[$name] = call_user_func($meta[self::FILTER_OUT], $params[$name]);
+				$params[$name] = $meta[self::FILTER_OUT]($params[$name]);
 			}
 
 			if (isset($meta[self::PATTERN]) && !preg_match($meta[self::PATTERN], rawurldecode($params[$name]))) {
@@ -389,7 +391,7 @@ class Route implements Application\IRouter
 				'/%basePath%/' => $refUrl->getBasePath(),
 				'%tld%' => $parts[0],
 				'%domain%' => isset($parts[1]) ? "$parts[1].$parts[0]" : $parts[0],
-				'%sld%' => isset($parts[1]) ? $parts[1] : '',
+				'%sld%' => $parts[1] ?? '',
 				'%host%' => $host,
 			]);
 			$url = $scheme . ':' . $url;
@@ -434,7 +436,7 @@ class Route implements Application\IRouter
 		// detect '//host/path' vs. '/abs. path' vs. 'relative path'
 		if (preg_match('#(?:(https?):)?(//.*)#A', $mask, $m)) {
 			$this->type = self::HOST;
-			list(, $this->scheme, $mask) = $m;
+			[, $this->scheme, $mask] = $m;
 
 		} elseif (substr($mask, 0, 1) === '/') {
 			$this->type = self::PATH;
@@ -475,16 +477,8 @@ class Route implements Application\IRouter
 			// name=<parameter-name [pattern]>
 			$matches = Strings::matchAll($parts[$i - 1], '/(?:([a-zA-Z0-9_.-]+)=)?<([^> ]+) *([^>]*)>/');
 
-			foreach ($matches as list(, $param, $name, $pattern)) { // $pattern is not used
-				if (isset(static::$styles['?' . $name])) {
-					$meta = static::$styles['?' . $name];
-				} else {
-					$meta = static::$styles['?#'];
-				}
-
-				if (isset($metadata[$name])) {
-					$meta = $metadata[$name] + $meta;
-				}
+			foreach ($matches as [, $param, $name, $pattern]) { // $pattern is not used
+				$meta = ($metadata[$name] ?? []) + (static::$styles['?' . $name] ?? static::$styles['?#']);
 
 				if (array_key_exists(self::VALUE, $meta)) {
 					$meta['fixity'] = self::OPTIONAL;
@@ -544,15 +538,7 @@ class Route implements Application\IRouter
 			}
 
 			// pattern, condition & metadata
-			if (isset(static::$styles[$name])) {
-				$meta = static::$styles[$name];
-			} else {
-				$meta = static::$styles['#'];
-			}
-
-			if (isset($metadata[$name])) {
-				$meta = $metadata[$name] + $meta;
-			}
+			$meta = ($metadata[$name] ?? []) + (static::$styles[$name] ?? static::$styles['#']);
 
 			if ($pattern == '' && isset($meta[self::PATTERN])) {
 				$pattern = $meta[self::PATTERN];
@@ -569,7 +555,7 @@ class Route implements Application\IRouter
 					$meta['defOut'] = $meta['filterTable2'][$meta[self::VALUE]];
 
 				} elseif (isset($meta[self::FILTER_OUT])) {
-					$meta['defOut'] = call_user_func($meta[self::FILTER_OUT], $meta[self::VALUE]);
+					$meta['defOut'] = $meta[self::FILTER_OUT]($meta[self::VALUE]);
 
 				} else {
 					$meta['defOut'] = $meta[self::VALUE];
@@ -665,14 +651,14 @@ class Route implements Application\IRouter
 		$module = '';
 
 		if (isset($m[self::MODULE_KEY])) {
-			if (isset($m[self::MODULE_KEY]['fixity']) && $m[self::MODULE_KEY]['fixity'] === self::CONSTANT) {
+			if (($m[self::MODULE_KEY]['fixity'] ?? NULL) === self::CONSTANT) {
 				$module = $m[self::MODULE_KEY][self::VALUE] . ':';
 			} else {
 				return NULL;
 			}
 		}
 
-		if (isset($m[self::PRESENTER_KEY]['fixity']) && $m[self::PRESENTER_KEY]['fixity'] === self::CONSTANT) {
+		if (($m[self::PRESENTER_KEY]['fixity'] ?? NULL) === self::CONSTANT) {
 			return [$module . $m[self::PRESENTER_KEY][self::VALUE]];
 		}
 		return NULL;

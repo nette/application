@@ -99,7 +99,7 @@ class FileResponse implements Nette\Application\IResponse
 		if ($this->resuming) {
 			$httpResponse->setHeader('Accept-Ranges', 'bytes');
 			if (preg_match('#^bytes=(\d*)-(\d*)\z#', $httpRequest->getHeader('Range'), $matches)) {
-				list(, $start, $end) = $matches;
+				[, $start, $end] = $matches;
 				if ($start === '') {
 					$start = max(0, $filesize - $end);
 					$end = $filesize - 1;

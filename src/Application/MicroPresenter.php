@@ -84,13 +84,13 @@ class MicroPresenter implements Application\IPresenter
 		$params['presenter'] = $this;
 		$params = Application\UI\ComponentReflection::combineArgs($reflection, $params);
 
-		$response = call_user_func_array($callback, $params);
+		$response = $callback(...array_values($params));
 
 		if (is_string($response)) {
 			$response = [$response, []];
 		}
 		if (is_array($response)) {
-			list($templateSource, $templateParams) = $response;
+			[$templateSource, $templateParams] = $response;
 			$response = $this->createTemplate()->setParameters($templateParams);
 			if (!$templateSource instanceof \SplFileInfo) {
 				$response->getLatte()->setLoader(new Latte\Loaders\StringLoader);

@@ -123,7 +123,7 @@ class ComponentReflection extends \ReflectionClass
 		$res = [];
 		foreach ($method->getParameters() as $i => $param) {
 			$name = $param->getName();
-			list($type, $isClass) = self::getParameterType($param);
+			[$type, $isClass] = self::getParameterType($param);
 			$exception = $isClass ? Nette\InvalidArgumentException::class : BadRequestException::class;
 			if (isset($args[$name])) {
 				$res[$i] = $args[$name];

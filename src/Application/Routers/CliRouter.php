@@ -79,7 +79,7 @@ class CliRouter implements Application\IRouter
 		if (!isset($params[self::PRESENTER_KEY])) {
 			throw new Nette\InvalidStateException('Missing presenter & action in route definition.');
 		}
-		list($module, $presenter) = Nette\Application\Helpers::splitName($params[self::PRESENTER_KEY]);
+		[$module, $presenter] = Nette\Application\Helpers::splitName($params[self::PRESENTER_KEY]);
 		if ($module !== '') {
 			$params[self::PRESENTER_KEY] = $presenter;
 			$presenter = $module;
