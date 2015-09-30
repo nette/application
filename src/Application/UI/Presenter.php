@@ -1036,8 +1036,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 			}
 
 			$def = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : NULL;
-			$type = $param->isArray() ? 'array' : gettype($def);
-			if (!PresenterComponentReflection::convertType($args[$name], $type)) {
+			list($type, $isClass) = PresenterComponentReflection::getParameterType($param);
+			if (!PresenterComponentReflection::convertType($args[$name], $type, $isClass)) {
 				throw new InvalidLinkException("Invalid value for parameter '$name' in method $class::$method(), expected " . ($type === 'NULL' ? 'scalar' : $type) . ".");
 			}
 

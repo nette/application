@@ -11,14 +11,12 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-//               [$type]  null   scalar     array  object*    callable*
+//               [$type]  null   scalar     array  object     callable
 //   [$val] ----------------------------------------------------------
-//   null (not used)      pass   cast       cast   error      error
-//   scalar               pass   cast/deny  deny   error      error
+//   null                 pass   cast       cast   deny       deny
+//   scalar               pass   cast/deny  deny   deny       deny
 //   array                deny   deny       pass   deny       deny
-//   object               pass   deny       error  pass/error pass/error
-//
-//   error = E_RECOVERABLE_ERROR   * = only as native typehint
+//   object               pass   deny       deny   pass/deny  deny
 
 
 function testIt($type, $val, $res = NULL)
@@ -116,3 +114,37 @@ testIt('array', 0);
 testIt('array', 1);
 testIt('array', 1.0);
 testIt('array', 1.2);
+
+testIt('callable', NULL);
+testIt('callable', []);
+testIt('callable', $obj);
+testIt('callable', function () {});
+testIt('callable', '');
+testIt('callable', 'trim');
+testIt('callable', '1');
+testIt('callable', '1.0');
+testIt('callable', '1.1');
+testIt('callable', '1a');
+testIt('callable', TRUE);
+testIt('callable', FALSE);
+testIt('callable', 0);
+testIt('callable', 1);
+testIt('callable', 1.0);
+testIt('callable', 1.2);
+
+$var = NULL;
+Assert::false(PresenterComponentReflection::convertType($var, 'stdClass', TRUE));
+$var = [];
+Assert::false(PresenterComponentReflection::convertType($var, 'stdClass', TRUE));
+Assert::true(PresenterComponentReflection::convertType($obj, 'stdClass', TRUE));
+$var = function () {};
+Assert::false(PresenterComponentReflection::convertType($var, 'stdClass', TRUE));
+Assert::true(PresenterComponentReflection::convertType($var, 'Closure', TRUE));
+$var = '';
+Assert::false(PresenterComponentReflection::convertType($var, 'stdClass', TRUE));
+$var = '1a';
+Assert::false(PresenterComponentReflection::convertType($var, 'stdClass', TRUE));
+$var = TRUE;
+Assert::false(PresenterComponentReflection::convertType($var, 'stdClass', TRUE));
+$var = 0;
+Assert::false(PresenterComponentReflection::convertType($var, 'stdClass', TRUE));
