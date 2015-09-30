@@ -46,7 +46,7 @@ class PresenterFactory implements IPresenterFactory
 	 */
 	public function createPresenter($name)
 	{
-		return call_user_func($this->factory, $this->getPresenterClass($name));
+		return ($this->factory)($this->getPresenterClass($name));
 	}
 
 
