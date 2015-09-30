@@ -78,11 +78,11 @@ class LatteExtension extends Nette\DI\CompilerExtension
 		$builder = $this->getContainerBuilder();
 		$definition = $builder->getDefinition($this->prefix('latteFactory'));
 
-		if (isset($macro[0]) && $macro[0] === '@') {
+		if (($macro[0] ?? NULL) === '@') {
 			if (strpos($macro, '::') === FALSE) {
 				$method = 'install';
 			} else {
-				list($macro, $method) = explode('::', $macro);
+				[$macro, $method] = explode('::', $macro);
 			}
 			$definition->addSetup('?->onCompile[] = function ($engine) { ?->' . $method . '($engine->getCompiler()); }', ['@self', $macro]);
 

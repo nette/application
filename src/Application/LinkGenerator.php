@@ -46,7 +46,7 @@ class LinkGenerator
 		if (!preg_match('~^([\w:]+):(\w*+)(#.*)?()\z~', $dest, $m)) {
 			throw new UI\InvalidLinkException("Invalid link destination '$dest'.");
 		}
-		list(, $presenter, $action, $frag) = $m;
+		[, $presenter, $action, $frag] = $m;
 
 		try {
 			$class = $this->presenterFactory ? $this->presenterFactory->getPresenterClass($presenter) : NULL;

@@ -457,7 +457,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			}
 
 			if (!$template->getFile()) {
-				$file = preg_replace('#^.*([/\\\\].{1,70})\z#U', "\xE2\x80\xA6\$1", reset($files));
+				$file = preg_replace('#^.*([/\\\\].{1,70})\z#U', "\u{2026}\$1", reset($files));
 				$file = strtr($file, '/', DIRECTORY_SEPARATOR);
 				$this->error("Page not found. Missing template '$file'.");
 			}
@@ -485,7 +485,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		}
 
 		if ($this->layout) {
-			$file = preg_replace('#^.*([/\\\\].{1,70})\z#U', "\xE2\x80\xA6\$1", reset($files));
+			$file = preg_replace('#^.*([/\\\\].{1,70})\z#U', "\u{2026}\$1", reset($files));
 			$file = strtr($file, '/', DIRECTORY_SEPARATOR);
 			throw new Nette\FileNotFoundException("Layout not found. Missing template '$file'.");
 		}
@@ -501,7 +501,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		if (preg_match('#/|\\\\#', $this->layout)) {
 			return [$this->layout];
 		}
-		list($module, $presenter) = Helpers::splitName($this->getName());
+		[$module, $presenter] = Helpers::splitName($this->getName());
 		$layout = $this->layout ? $this->layout : 'layout';
 		$dir = dirname($this->getReflection()->getFileName());
 		$dir = is_dir("$dir/templates") ? $dir : dirname($dir);
@@ -512,7 +512,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		do {
 			$list[] = "$dir/templates/@$layout.latte";
 			$dir = dirname($dir);
-		} while ($dir && $module && (list($module) = Helpers::splitName($module)));
+		} while ($dir && $module && ([$module] = Helpers::splitName($module)));
 		return $list;
 	}
 
@@ -523,7 +523,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function formatTemplateFiles()
 	{
-		list(, $presenter) = Helpers::splitName($this->getName());
+		[, $presenter] = Helpers::splitName($this->getName());
 		$dir = dirname($this->getReflection()->getFileName());
 		$dir = is_dir("$dir/templates") ? $dir : dirname($dir);
 		return [
@@ -798,7 +798,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 		// 4) signal or empty
 		if (!$component instanceof self || substr($destination, -1) === '!') {
-			list($cname, $signal) = Helpers::splitName(rtrim($destination, '!'));
+			[$cname, $signal] = Helpers::splitName(rtrim($destination, '!'));
 			if ($cname !== '') {
 				$component = $component->getComponent(strtr($cname, ':', '-'));
 			}
@@ -814,7 +814,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 		// 5) presenter: action
 		$current = FALSE;
-		list($presenter, $action) = Helpers::splitName($destination);
+		[$presenter, $action] = Helpers::splitName($destination);
 		if ($presenter === '') {
 			$action = $destination === 'this' ? $this->action : $action;
 			$presenter = $this->getName();
@@ -827,7 +827,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 					throw new InvalidLinkException("Missing presenter name in '$destination'.");
 				}
 			} else { // relative
-				list($module, , $sep) = Helpers::splitName($this->getName());
+				[$module, , $sep] = Helpers::splitName($this->getName());
 				$presenter = $module . $sep . $presenter;
 			}
 			if (!$this->presenterFactory) {
@@ -999,7 +999,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		$i = 0;
 		$rm = new \ReflectionMethod($class, $method);
 		foreach ($rm->getParameters() as $param) {
-			list($type, $isClass) = ComponentReflection::getParameterType($param);
+			[$type, $isClass] = ComponentReflection::getParameterType($param);
 			$name = $param->getName();
 
 			if (array_key_exists($i, $args)) {
@@ -1149,7 +1149,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			foreach ($iterator as $name => $component) {
 				if ($iterator->getDepth() === 0) {
 					// counts with Nette\Application\RecursiveIteratorIterator::SELF_FIRST
-					$since = isset($components[$name]['since']) ? $components[$name]['since'] : FALSE; // FALSE = nonpersistent
+					$since = $components[$name]['since'] ?? FALSE; // FALSE = nonpersistent
 				}
 				$prefix = $component->getUniqueId() . self::NAME_SEPARATOR;
 				$params = [];
@@ -1170,7 +1170,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 				if (!isset($sinces[$key])) {
 					$x = strpos($key, self::NAME_SEPARATOR);
 					$x = $x === FALSE ? $key : substr($key, 0, $x);
-					$sinces[$key] = isset($sinces[$x]) ? $sinces[$x] : FALSE;
+					$sinces[$key] = $sinces[$x] ?? FALSE;
 				}
 				if ($since !== $sinces[$key]) {
 					$since = $sinces[$key];
@@ -1263,14 +1263,9 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function popGlobalParameters($id)
 	{
-		if (isset($this->globalParams[$id])) {
-			$res = $this->globalParams[$id];
-			unset($this->globalParams[$id]);
-			return $res;
-
-		} else {
-			return [];
-		}
+		$res = $this->globalParams[$id] ?? [];
+		unset($this->globalParams[$id]);
+		return $res;
 	}
 
 

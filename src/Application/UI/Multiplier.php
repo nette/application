@@ -28,7 +28,7 @@ class Multiplier extends Component
 
 	protected function createComponent($name)
 	{
-		return call_user_func($this->factory, $name, $this);
+		return ($this->factory)($name, $this);
 	}
 
 }

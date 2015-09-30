@@ -38,7 +38,7 @@ class SimpleRouter implements Application\IRouter
 	public function __construct($defaults = [], $flags = 0)
 	{
 		if (is_string($defaults)) {
-			list($presenter, $action) = Nette\Application\Helpers::splitName($defaults);
+			[$presenter, $action] = Nette\Application\Helpers::splitName($defaults);
 			if (!$presenter) {
 				throw new Nette\InvalidArgumentException("Argument must be array or string in format Presenter:action, '$defaults' given.");
 			}

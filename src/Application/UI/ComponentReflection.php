@@ -123,7 +123,7 @@ class ComponentReflection extends \ReflectionClass
 		$res = [];
 		foreach ($method->getParameters() as $i => $param) {
 			$name = $param->getName();
-			list($type, $isClass) = self::getParameterType($param);
+			[$type, $isClass] = self::getParameterType($param);
 			if (isset($args[$name])) {
 				$res[$i] = $args[$name];
 				if (!self::convertType($res[$i], $type, $isClass)) {
