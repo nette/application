@@ -16,7 +16,7 @@ require __DIR__ . '/../bootstrap.php';
 //   null (not used)      pass   cast       cast   error      error
 //   scalar               pass   cast/deny  deny   error      error
 //   array                deny   deny       pass   deny       deny
-//   object               pass   pass       error  pass/error pass/error
+//   object               pass   deny       error  pass/error pass/error
 //
 //   error = E_RECOVERABLE_ERROR   * = only as native typehint
 
@@ -36,7 +36,7 @@ $obj = new stdClass;
 
 testIt('string', NULL, '');
 testIt('string', []);
-testIt('string', $obj, $obj);
+testIt('string', $obj);
 testIt('string', '', '');
 testIt('string', 'a', 'a');
 testIt('string', '0', '0');
@@ -53,7 +53,7 @@ testIt('string', 1.2, '1.2');
 
 testIt('int', NULL, 0);
 testIt('int', []);
-testIt('int', $obj, $obj);
+testIt('int', $obj);
 testIt('int', '');
 testIt('int', 'a');
 testIt('int', '0', 0);
@@ -70,7 +70,7 @@ testIt('int', 1.2);
 
 testIt('double', NULL, 0.0);
 testIt('double', []);
-testIt('double', $obj, $obj);
+testIt('double', $obj);
 testIt('double', '');
 testIt('double', 'a');
 testIt('double', '0', 0.0);
@@ -87,7 +87,7 @@ testIt('double', 1.2, 1.2);
 
 testIt('bool', NULL, FALSE);
 testIt('bool', []);
-testIt('bool', $obj, $obj);
+testIt('bool', $obj);
 testIt('bool', '');
 testIt('bool', 'a');
 testIt('bool', '1', TRUE);
@@ -103,7 +103,7 @@ testIt('bool', 1.2);
 
 testIt('array', NULL, []);
 testIt('array', [], []);
-testIt('array', $obj, $obj);
+testIt('array', $obj);
 testIt('array', '');
 testIt('array', 'a');
 testIt('array', '1');
