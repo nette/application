@@ -96,7 +96,7 @@ class RoutingPanel extends Nette\Object implements Tracy\IBarPanel
 	 */
 	private function analyse($router, $module = '')
 	{
-		if ($router instanceof Routers\RouteList) {
+		if ($router instanceof Nette\Application\IRouteList) {
 			foreach ($router as $subRouter) {
 				$this->analyse($subRouter, $module . $router->getModule());
 			}
