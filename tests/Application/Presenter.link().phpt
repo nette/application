@@ -120,13 +120,13 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same('/index.php?action=default&do=buy&presenter=Test', $this->link('buy!'));
 		Assert::same("#error: Invalid value for parameter 'x' in method TestPresenter::handlebuy(), expected integer.", $this->link('buy!', [new stdClass]));
 
-		Assert::same('/index.php?a=x&action=default&do=obj&presenter=Test', $this->link('obj!', ['x']));
+		Assert::same("#error: Invalid value for parameter 'a' in method TestPresenter::handleobj(), expected stdClass.", $this->link('obj!', ['x']));
 		Assert::same('/index.php?action=default&do=obj&presenter=Test', $this->link('obj!', [new stdClass]));
-		Assert::same('/index.php?action=default&do=obj&presenter=Test', $this->link('obj!', [new Exception]));
+		Assert::same("#error: Invalid value for parameter 'a' in method TestPresenter::handleobj(), expected stdClass.", $this->link('obj!', [new Exception]));
 		Assert::same('/index.php?action=default&do=obj&presenter=Test', $this->link('obj!', [NULL]));
-		Assert::same('/index.php?b=x&action=default&do=obj&presenter=Test', $this->link('obj!', ['b' => 'x']));
+		Assert::same("#error: Invalid value for parameter 'b' in method TestPresenter::handleobj(), expected stdClass.", $this->link('obj!', ['b' => 'x']));
 		Assert::same('/index.php?action=default&do=obj&presenter=Test', $this->link('obj!', ['b' => new stdClass]));
-		Assert::same('/index.php?action=default&do=obj&presenter=Test', $this->link('obj!', ['b' => new Exception]));
+		Assert::same("#error: Invalid value for parameter 'b' in method TestPresenter::handleobj(), expected stdClass.", $this->link('obj!', ['b' => new Exception]));
 		Assert::same('/index.php?action=default&do=obj&presenter=Test', $this->link('obj!', ['b' => NULL]));
 
 		// Component link

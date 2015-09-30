@@ -120,15 +120,15 @@ class PresenterComponentReflection extends Nette\Reflection\ClassType
 		$i = 0;
 		foreach ($method->getParameters() as $param) {
 			$name = $param->getName();
-			if (isset($args[$name])) { // NULLs are ignored
-				$res[$i++] = $args[$name];
-				$type = $param->isArray() ? 'array' : ($param->isDefaultValueAvailable() ? gettype($param->getDefaultValue()) : 'NULL');
-				if (!self::convertType($res[$i - 1], $type)) {
+			if (!isset($args[$name]) && $param->isDefaultValueAvailable()) {
+				$res[$i++] = $param->getDefaultValue();
+			} else {
+				$res[$i++] = isset($args[$name]) ? $args[$name] : NULL;
+				list($type, $isClass) = self::getParameterType($param);
+				if (!self::convertType($res[$i - 1], $type, $isClass)) {
 					$mName = $method instanceof \ReflectionMethod ? $method->getDeclaringClass()->getName() . '::' . $method->getName() : $method->getName();
 					throw new BadRequestException("Invalid value for parameter '$name' in method $mName(), expected " . ($type === 'NULL' ? 'scalar' : $type) . ".");
 				}
-			} else {
-				$res[$i++] = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : ($param->isArray() ? [] : NULL);
 			}
 		}
 		return $res;
@@ -141,13 +141,19 @@ class PresenterComponentReflection extends Nette\Reflection\ClassType
 	 * @param  string
 	 * @return bool
 	 */
-	public static function convertType(& $val, $type)
+	public static function convertType(& $val, $type, $isClass = FALSE)
 	{
-		if ($val === NULL) {
-			settype($val, $type);
+		if ($isClass) {
+			return $val instanceof $type;
 
-		} elseif (is_object($val)) {
-			return $type === 'NULL';
+		} elseif ($type === 'callable') {
+			return FALSE;
+
+		} elseif ($type === 'NULL') { // means 'not array'
+			return !is_array($val);
+
+		} elseif ($val === NULL) {
+			settype($val, $type); // to scalar or array
 
 		} elseif ($type === 'array') {
 			return is_array($val);
@@ -155,7 +161,7 @@ class PresenterComponentReflection extends Nette\Reflection\ClassType
 		} elseif (!is_scalar($val)) { // array, resource, etc.
 			return FALSE;
 
-		} elseif ($type !== 'NULL') {
+		} else {
 			$old = $tmp = ($val === FALSE ? '0' : (string) $val);
 			settype($tmp, $type);
 			if ($old !== ($tmp === FALSE ? '0' : (string) $tmp)) {
@@ -182,6 +188,29 @@ class PresenterComponentReflection extends Nette\Reflection\ClassType
 			$res = array_merge($res, $arr);
 		}
 		return $res;
+	}
+
+
+	/**
+	 * @return [string, bool]
+	 */
+	public static function getParameterType(\ReflectionParameter $param)
+	{
+		$def = gettype($param->isDefaultValueAvailable() ? $param->getDefaultValue() : NULL);
+		if (PHP_VERSION_ID >= 70000) {
+			return [(string) $param->getType() ?: $def, $param->hasType() && !$param->getType()->isBuiltin()];
+		} elseif ($param->isArray() || $param->isCallable()) {
+			return [$param->isArray() ? 'array' : 'callable', FALSE];
+		} else {
+			try {
+				return ($ref = $param->getClass()) ? [$ref->getName(), TRUE] : [$def, FALSE];
+			} catch (\ReflectionException $e) {
+				if (preg_match('#Class (.+) does not exist#', $e->getMessage(), $m)) {
+					return [$m[1], TRUE];
+				}
+				throw $e;
+			}
+		}
 	}
 
 }
