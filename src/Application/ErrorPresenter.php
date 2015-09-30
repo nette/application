@@ -41,9 +41,9 @@ class ErrorPresenter extends Nette\Object implements Application\IPresenter
 				$this->logger->log($e, ILogger::EXCEPTION);
 			}
 		}
-		ob_start();
-		require __DIR__ . '/templates/error.phtml';
-		return new Application\Responses\TextResponse(ob_get_clean());
+		return new Application\Responses\CallbackResponse(function () use ($code) {
+			require __DIR__ . '/templates/error.phtml';
+		});
 	}
 
 }
