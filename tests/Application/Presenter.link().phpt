@@ -114,6 +114,8 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same('/index.php?sort%5By%5D%5Basc%5D=1&action=default&presenter=Test', $this->link('this', ['sort' => ['y' => ['asc' => TRUE]]]));
 
 		// Presenter & signal link type checking
+		Assert::same("#error: Invalid value for parameter 'x' in method TestPresenter::handlebuy(), expected integer.", $this->link('buy!', 'x'));
+		Assert::same("#error: Invalid value for parameter 'bool' in method TestPresenter::handlebuy(), expected boolean.", $this->link('buy!', 1, 2, 3));
 		Assert::same("#error: Invalid value for parameter 'x' in method TestPresenter::handlebuy(), expected integer.", $this->link('buy!', [[]]));
 		Assert::same('/index.php?action=default&do=buy&presenter=Test', $this->link('buy!', [new stdClass]));
 
@@ -155,6 +157,9 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::exception(function () {
 			$this->link('product', ['var1' => NULL, 'ok' => 'a']);
 		}, Nette\Application\UI\InvalidLinkException::class, "Invalid value for persistent parameter 'ok' in 'Test', expected boolean.");
+
+		$this->var1 = NULL; // NULL in persistent parameter means default
+		Assert::same('/index.php?action=product&presenter=Test', $this->link('product'));
 	}
 
 
