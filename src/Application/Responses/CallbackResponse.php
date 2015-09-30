@@ -36,7 +36,7 @@ class CallbackResponse implements Nette\Application\IResponse
 	 */
 	public function send(Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse)
 	{
-		call_user_func($this->callback, $httpRequest, $httpResponse);
+		($this->callback)($httpRequest, $httpResponse);
 	}
 
 }

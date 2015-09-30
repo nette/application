@@ -227,7 +227,7 @@ class Route implements Application\IRouter
 					return NULL; // rejected by filterTable
 
 				} elseif (isset($meta[self::FILTER_IN])) { // applies filterIn only to scalar parameters
-					$params[$name] = call_user_func($meta[self::FILTER_IN], (string) $params[$name]);
+					$params[$name] = $meta[self::FILTER_IN]((string) $params[$name]);
 					if ($params[$name] === NULL && !isset($meta['fixity'])) {
 						return NULL; // rejected by filter
 					}
@@ -239,7 +239,7 @@ class Route implements Application\IRouter
 		}
 
 		if (isset($this->metadata[NULL][self::FILTER_IN])) {
-			$params = call_user_func($this->metadata[NULL][self::FILTER_IN], $params);
+			$params = $this->metadata[NULL][self::FILTER_IN]($params);
 			if ($params === NULL) {
 				return NULL;
 			}
@@ -302,7 +302,7 @@ class Route implements Application\IRouter
 		}
 
 		if (isset($metadata[NULL][self::FILTER_OUT])) {
-			$params = call_user_func($metadata[NULL][self::FILTER_OUT], $params);
+			$params = $metadata[NULL][self::FILTER_OUT]($params);
 			if ($params === NULL) {
 				return NULL;
 			}
@@ -336,7 +336,7 @@ class Route implements Application\IRouter
 				return NULL;
 
 			} elseif (isset($meta[self::FILTER_OUT])) {
-				$params[$name] = call_user_func($meta[self::FILTER_OUT], $params[$name]);
+				$params[$name] = $meta[self::FILTER_OUT]($params[$name]);
 			}
 
 			if (isset($meta[self::PATTERN]) && !preg_match($meta[self::PATTERN], rawurldecode($params[$name]))) {
@@ -581,7 +581,7 @@ class Route implements Application\IRouter
 					$meta['defOut'] = $meta['filterTable2'][$meta[self::VALUE]];
 
 				} elseif (isset($meta[self::FILTER_OUT])) {
-					$meta['defOut'] = call_user_func($meta[self::FILTER_OUT], $meta[self::VALUE]);
+					$meta['defOut'] = $meta[self::FILTER_OUT]($meta[self::VALUE]);
 
 				} else {
 					$meta['defOut'] = $meta[self::VALUE];

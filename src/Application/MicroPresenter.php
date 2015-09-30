@@ -84,7 +84,7 @@ class MicroPresenter implements Application\IPresenter
 		$params['presenter'] = $this;
 		$params = Application\UI\ComponentReflection::combineArgs($reflection, $params);
 
-		$response = call_user_func_array($callback, $params);
+		$response = $callback(...array_values($params));
 
 		if (is_string($response)) {
 			$response = [$response, []];
