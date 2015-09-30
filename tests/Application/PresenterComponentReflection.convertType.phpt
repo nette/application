@@ -11,6 +11,16 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
+//               [$type]  null   scalar     array  object*    callable*
+//   [$val] ----------------------------------------------------------
+//   null (not used)
+//   scalar               pass   cast/deny  deny   error      error
+//   array                deny   deny       pass   deny       deny
+//   object               pass   pass       error  pass/error pass/error
+//
+//   error = E_RECOVERABLE_ERROR   * = only as native typehint
+
+
 function testIt($type, $val, $res = NULL)
 {
 	if (func_num_args() === 3) {
