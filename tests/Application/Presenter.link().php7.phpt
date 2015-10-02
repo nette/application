@@ -35,7 +35,7 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same('/index.php?y=2&bool=1&str=1&action=default&do=hint&presenter=Test', $this->link('hint!', '1', '2', TRUE, TRUE));
 		Assert::same('/index.php?y=2&str=0&action=default&do=hint&presenter=Test', $this->link('hint!', '1', '2', FALSE, FALSE));
 		Assert::same('/index.php?action=default&do=hint&presenter=Test', $this->link('hint!', [1]));
-		Assert::same("#error: Invalid value for parameter 'x' in method TestPresenter::handlehint(), expected int.", $this->link('hint!', [1], (object) [1]));
+		Assert::same('#error: Argument $x passed to TestPresenter::handleHint() must be int, array given.', $this->link('hint!', [1], (object) [1]));
 		Assert::same('/index.php?y=2&action=default&do=hint&presenter=Test', $this->link('hint!', [1, 'y' => 2]));
 		Assert::same('/index.php?y=2&action=default&do=hint&presenter=Test', $this->link('hint!', ['x' => 1, 'y' => 2, 'var1' => $this->var1]));
 		Assert::same('#error: Signal must be non-empty string.', $this->link('!'));
@@ -44,11 +44,11 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same('/index.php?sort%5By%5D%5Basc%5D=1&action=default&presenter=Test', $this->link('this', ['sort' => ['y' => ['asc' => TRUE]]]));
 
 		// Presenter & signal link type checking
-		Assert::same("#error: Invalid value for parameter 'x' in method TestPresenter::handlehint(), expected int.", $this->link('hint!', 'x'));
-		Assert::same("#error: Invalid value for parameter 'bool' in method TestPresenter::handlehint(), expected bool.", $this->link('hint!', 1, 2, 3));
-		Assert::same("#error: Invalid value for parameter 'x' in method TestPresenter::handlehint(), expected int.", $this->link('hint!', [[]]));
+		Assert::same('#error: Argument $x passed to TestPresenter::handleHint() must be int, string given.', $this->link('hint!', 'x'));
+		Assert::same('#error: Argument $bool passed to TestPresenter::handleHint() must be bool, integer given.', $this->link('hint!', 1, 2, 3));
+		Assert::same('#error: Argument $x passed to TestPresenter::handleHint() must be int, array given.', $this->link('hint!', [[]]));
 		Assert::same('/index.php?action=default&do=hint&presenter=Test', $this->link('hint!'));
-		Assert::same("#error: Invalid value for parameter 'x' in method TestPresenter::handlehint(), expected int.", $this->link('hint!', [new stdClass]));
+		Assert::same('#error: Argument $x passed to TestPresenter::handleHint() must be int, stdClass given.', $this->link('hint!', [new stdClass]));
 	}
 
 

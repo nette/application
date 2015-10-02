@@ -123,11 +123,16 @@ class PresenterComponentReflection extends Nette\Reflection\ClassType
 			if (!isset($args[$name]) && $param->isDefaultValueAvailable()) {
 				$res[$i++] = $param->getDefaultValue();
 			} else {
-				$res[$i++] = isset($args[$name]) ? $args[$name] : NULL;
+				$res[$i++] = $arg = isset($args[$name]) ? $args[$name] : NULL;
 				list($type, $isClass) = self::getParameterType($param);
-				if (!self::convertType($res[$i - 1], $type, $isClass)) {
-					$mName = $method instanceof \ReflectionMethod ? $method->getDeclaringClass()->getName() . '::' . $method->getName() : $method->getName();
-					throw new BadRequestException("Invalid value for parameter '$name' in method $mName(), expected " . ($type === 'NULL' ? 'scalar' : $type) . ".");
+				if (!self::convertType($arg, $type, $isClass)) {
+					throw new BadRequestException(sprintf(
+						'Argument $%s passed to %s() must be %s, %s given.',
+						$name,
+						($method instanceof \ReflectionMethod ? $method->getDeclaringClass()->getName() . '::' : '') . $method->getName(),
+						$type === 'NULL' ? 'scalar' : $type,
+						is_object($arg) ? get_class($arg) : gettype($arg)
+					));
 				}
 			}
 		}
@@ -206,7 +211,12 @@ class PresenterComponentReflection extends Nette\Reflection\ClassType
 				return ($ref = $param->getClass()) ? [$ref->getName(), TRUE] : [$def, FALSE];
 			} catch (\ReflectionException $e) {
 				if (preg_match('#Class (.+) does not exist#', $e->getMessage(), $m)) {
-					return [$m[1], TRUE];
+					throw new \LogicException(sprintf(
+						"Class %s not found. Check type hint of parameter $%s in %s() or 'use' statements.",
+						$m[1],
+						$param->getName(),
+						$param->getDeclaringFunction()->getDeclaringClass()->getName() . '::' . $param->getDeclaringFunction()->getName()
+					));
 				}
 				throw $e;
 			}
