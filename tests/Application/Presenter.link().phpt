@@ -83,8 +83,8 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same('/index.php?action=product&presenter=Test', $this->link('product', array('var1' => $this->var1)));
 		Assert::same('/index.php?var1=20&action=product&presenter=Test', $this->link('product', array('var1' => $this->var1 * 2, 'ok' => TRUE)));
 		Assert::same('/index.php?var1=1&ok=0&action=product&presenter=Test', $this->link('product', array('var1' => TRUE, 'ok' => '0')));
-		Assert::same("#error: Invalid value for persistent parameter 'ok' in 'Test', expected boolean.", $this->link('product', array('var1' => NULL, 'ok' => 'a')));
-		Assert::same("#error: Invalid value for persistent parameter 'var1' in 'Test', expected integer.", $this->link('product', array('var1' => array(1), 'ok' => FALSE)));
+		Assert::same("#error: Value passed to persistent parameter 'ok' in presenter Test must be boolean, string given.", $this->link('product', array('var1' => NULL, 'ok' => 'a')));
+		Assert::same("#error: Value passed to persistent parameter 'var1' in presenter Test must be integer, array given.", $this->link('product', array('var1' => array(1), 'ok' => FALSE)));
 		Assert::same("#error: Unable to pass parameters to action 'Test:product', missing corresponding method.", $this->link('product', 1, 2));
 		Assert::same('/index.php?x=1&y=2&action=product&presenter=Test', $this->link('product', array('x' => 1, 'y' => 2)));
 		Assert::same('/index.php?action=product&presenter=Test', $this->link('product'));
@@ -114,9 +114,9 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same('/index.php?sort%5By%5D%5Basc%5D=1&action=default&presenter=Test', $this->link('this', array('sort' => array('y' => array('asc' => TRUE)))));
 
 		// Presenter & signal link type checking
-		Assert::same("#error: Invalid value for parameter 'x' in method TestPresenter::handlebuy(), expected integer.", $this->link('buy!', 'x'));
-		Assert::same("#error: Invalid value for parameter 'bool' in method TestPresenter::handlebuy(), expected boolean.", $this->link('buy!', 1, 2, 3));
-		Assert::same("#error: Invalid value for parameter 'x' in method TestPresenter::handlebuy(), expected integer.", $this->link('buy!', array(array())));
+		Assert::same('#error: Argument $x passed to TestPresenter::handleBuy() must be integer, string given.', $this->link('buy!', 'x'));
+		Assert::same('#error: Argument $bool passed to TestPresenter::handleBuy() must be boolean, integer given.', $this->link('buy!', 1, 2, 3));
+		Assert::same('#error: Argument $x passed to TestPresenter::handleBuy() must be integer, array given.', $this->link('buy!', array(array())));
 		Assert::same('/index.php?action=default&do=buy&presenter=Test', $this->link('buy!'));
 		Assert::same('/index.php?action=default&do=buy&presenter=Test', $this->link('buy!', array(new stdClass)));
 
@@ -146,10 +146,10 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same('http://localhost/index.php?mycontrol-x=1&mycontrol-round=1&action=default&presenter=Test#frag', $this['mycontrol']->link('//this?x=1&round=1#frag'));
 
 		// Component link type checking
-		Assert::same("#error: Invalid value for persistent parameter 'order' in 'mycontrol', expected array.", $this['mycontrol']->link('click', array('order' => 1)));
-		Assert::same("#error: Invalid value for persistent parameter 'round' in 'mycontrol', expected integer.", $this['mycontrol']->link('click', array('round' => array())));
+		Assert::same("#error: Value passed to persistent parameter 'order' in component 'mycontrol' must be array, integer given.", $this['mycontrol']->link('click', array('order' => 1)));
+		Assert::same("#error: Value passed to persistent parameter 'round' in component 'mycontrol' must be integer, array given.", $this['mycontrol']->link('click', array('round' => array())));
 		$this['mycontrol']->order = 1;
-		Assert::same("#error: Invalid value for persistent parameter 'order' in 'mycontrol', expected array.", $this['mycontrol']->link('click'));
+		Assert::same("#error: Value passed to persistent parameter 'order' in component 'mycontrol' must be array, integer given.", $this['mycontrol']->link('click'));
 		$this['mycontrol']->order = NULL;
 
 		// silent invalid link mode
@@ -161,13 +161,13 @@ class TestPresenter extends Application\UI\Presenter
 		$me = $this;
 		Assert::error(function () use ($me) {
 			Assert::same('#', $me->link('product', array('var1' => NULL, 'ok' => 'a')));
-		}, E_USER_WARNING, "Invalid link: Invalid value for persistent parameter 'ok' in 'Test', expected boolean.");
+		}, E_USER_WARNING, "Invalid link: Value passed to persistent parameter 'ok' in presenter Test must be boolean, string given.");
 
 		// exception invalid link mode
 		$this->invalidLinkMode = self::INVALID_LINK_EXCEPTION;
 		Assert::exception(function () use ($me) {
 			$me->link('product', array('var1' => NULL, 'ok' => 'a'));
-		}, 'Nette\Application\UI\InvalidLinkException', "Invalid value for persistent parameter 'ok' in 'Test', expected boolean.");
+		}, 'Nette\Application\UI\InvalidLinkException', "Value passed to persistent parameter 'ok' in presenter Test must be boolean, string given.");
 
 		$this->var1 = NULL; // NULL in persistent parameter means default
 		Assert::same('/index.php?action=product&presenter=Test', $this->link('product'));

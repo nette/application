@@ -126,7 +126,13 @@ abstract class PresenterComponent extends Nette\ComponentModel\Container impleme
 			if (isset($params[$name])) { // NULLs are ignored
 				$type = gettype($meta['def']);
 				if (!$reflection->convertType($params[$name], $type)) {
-					throw new Nette\Application\BadRequestException("Invalid value for persistent parameter '$name' in '{$this->getName()}', expected " . ($type === 'NULL' ? 'scalar' : $type) . ".");
+					throw new Nette\Application\BadRequestException(sprintf(
+						"Value passed to persistent parameter '%s' in %s must be %s, %s given.",
+						$name,
+						$this instanceof Presenter ? 'presenter ' . $this->getName() : "component '{$this->getUniqueId()}'",
+						$type === 'NULL' ? 'scalar' : $type,
+						is_object($params[$name]) ? get_class($params[$name]) : gettype($params[$name])
+					));
 				}
 				$this->$name = $params[$name];
 			} else {
@@ -163,7 +169,13 @@ abstract class PresenterComponent extends Nette\ComponentModel\Container impleme
 
 			$type = gettype($meta['def']);
 			if (!PresenterComponentReflection::convertType($params[$name], $type)) {
-				throw new InvalidLinkException(sprintf("Invalid value for persistent parameter '%s' in '%s', expected %s.", $name, $this->getName(), $type === 'NULL' ? 'scalar' : $type));
+				throw new InvalidLinkException(sprintf(
+					"Value passed to persistent parameter '%s' in %s must be %s, %s given.",
+					$name,
+					$this instanceof Presenter ? 'presenter ' . $this->getName() : "component '{$this->getUniqueId()}'",
+					$type === 'NULL' ? 'scalar' : $type,
+					is_object($params[$name]) ? get_class($params[$name]) : gettype($params[$name])
+				));
 			}
 
 			if ($params[$name] === $meta['def'] || ($meta['def'] === NULL && is_scalar($params[$name]) && (string) $params[$name] === '')) {

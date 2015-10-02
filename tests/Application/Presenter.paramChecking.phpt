@@ -48,51 +48,51 @@ Assert::exception(function () use ($presenter) {
 Assert::exception(function () use ($presenter) {
 	$request = new Application\Request('Test', Http\Request::GET, array('a' => array()));
 	$presenter->run($request);
-}, 'Nette\Application\BadRequestException', "Invalid value for parameter 'a' in method TestPresenter::actionDefault(), expected scalar.");
+}, 'Nette\Application\BadRequestException', 'Argument $a passed to TestPresenter::actionDefault() must be scalar, array given.');
 
 
 Assert::exception(function () use ($presenter) {
 	$request = new Application\Request('Test', Http\Request::GET, array('b' => array()));
 	$presenter->run($request);
-}, 'Nette\Application\BadRequestException', "Invalid value for parameter 'b' in method TestPresenter::actionDefault(), expected scalar.");
+}, 'Nette\Application\BadRequestException', 'Argument $b passed to TestPresenter::actionDefault() must be scalar, array given.');
 
 
 Assert::exception(function () use ($presenter) {
 	$request = new Application\Request('Test', Http\Request::GET, array('c' => 1));
 	$presenter->run($request);
-}, 'Nette\Application\BadRequestException', "Invalid value for parameter 'c' in method TestPresenter::actionDefault(), expected array.");
+}, 'Nette\Application\BadRequestException', 'Argument $c passed to TestPresenter::actionDefault() must be array, integer given.');
 
 
 Assert::exception(function () use ($presenter) {
 	$request = new Application\Request('Test', Http\Request::GET, array('d' => 1));
 	$presenter->run($request);
-}, 'Nette\Application\BadRequestException', "Invalid value for parameter 'd' in method TestPresenter::actionDefault(), expected array.");
+}, 'Nette\Application\BadRequestException', 'Argument $d passed to TestPresenter::actionDefault() must be array, integer given.');
 
 
 Assert::exception(function () use ($presenter) {
 	$request = new Application\Request('Test', Http\Request::GET, array('e' => 1.1));
 	$presenter->run($request);
-}, 'Nette\Application\BadRequestException', "Invalid value for parameter 'e' in method TestPresenter::actionDefault(), expected integer.");
+}, 'Nette\Application\BadRequestException', 'Argument $e passed to TestPresenter::actionDefault() must be integer, double given.');
 
 
 Assert::exception(function () use ($presenter) {
 	$request = new Application\Request('Test', Http\Request::GET, array('e' => '1 '));
 	$presenter->run($request);
-}, 'Nette\Application\BadRequestException', "Invalid value for parameter 'e' in method TestPresenter::actionDefault(), expected integer.");
+}, 'Nette\Application\BadRequestException', 'Argument $e passed to TestPresenter::actionDefault() must be integer, string given.');
 
 
 Assert::exception(function () use ($presenter) {
 	$request = new Application\Request('Test', Http\Request::GET, array('f' => '1 '));
 	$presenter->run($request);
-}, 'Nette\Application\BadRequestException', "Invalid value for parameter 'f' in method TestPresenter::actionDefault(), expected double.");
+}, 'Nette\Application\BadRequestException', 'Argument $f passed to TestPresenter::actionDefault() must be double, string given.');
 
 
 Assert::exception(function () use ($presenter) {
 	$request = new Application\Request('Test', Http\Request::GET, array('g' => ''));
 	$presenter->run($request);
-}, 'Nette\Application\BadRequestException', "Invalid value for parameter 'g' in method TestPresenter::actionDefault(), expected boolean.");
+}, 'Nette\Application\BadRequestException', 'Argument $g passed to TestPresenter::actionDefault() must be boolean, string given.');
 
 Assert::exception(function () use ($presenter) {
 	$request = new Application\Request('Test', Http\Request::GET, array('bool' => array()));
 	$presenter->run($request);
-}, 'Nette\Application\BadRequestException', "Invalid value for persistent parameter 'bool' in 'Test', expected boolean.");
+}, 'Nette\Application\BadRequestException', "Value passed to persistent parameter 'bool' in presenter Test must be boolean, array given.");
