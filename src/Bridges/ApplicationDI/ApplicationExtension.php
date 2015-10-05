@@ -9,6 +9,7 @@ namespace Nette\Bridges\ApplicationDI;
 
 use Nette;
 use Nette\Application\UI;
+use Composer\Autoload\ClassLoader;
 
 
 /**
@@ -40,7 +41,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 	public function __construct($debugMode = FALSE, array $scanDirs = NULL, $tempDir = NULL)
 	{
 		$this->defaults['scanDirs'] = (array) $scanDirs;
-		$this->defaults['scanComposer'] = class_exists('Composer\Autoload\ClassLoader');
+		$this->defaults['scanComposer'] = class_exists(ClassLoader::class);
 		$this->defaults['catchExceptions'] = !$debugMode;
 		$this->debugMode = $debugMode;
 		$this->tempFile = $tempDir ? $tempDir . '/' . urlencode(__CLASS__) : NULL;
@@ -134,7 +135,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 		}
 
 		if ($config['scanComposer']) {
-			$rc = new \ReflectionClass('Composer\Autoload\ClassLoader');
+			$rc = new \ReflectionClass(ClassLoader::class);
 			$classFile = dirname($rc->getFileName()) . '/autoload_classmap.php';
 			if (is_file($classFile)) {
 				$this->getContainerBuilder()->addDependency($classFile);

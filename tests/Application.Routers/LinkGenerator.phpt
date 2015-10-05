@@ -35,11 +35,11 @@ namespace ModuleModule {
 
 namespace {
 
-	use Nette\Http,
-		Nette\Application\LinkGenerator,
-		Nette\Application\PresenterFactory,
-		Nette\Application\Routers,
-		Tester\Assert;
+	use Nette\Http;
+	use Nette\Application\LinkGenerator;
+	use Nette\Application\PresenterFactory;
+	use Nette\Application\Routers;
+	use Tester\Assert;
 
 
 	$pf = new PresenterFactory;

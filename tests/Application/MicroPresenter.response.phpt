@@ -179,5 +179,5 @@ test(function () {
 		]));
 
 		Responder::render($response);
-	}, '\RuntimeException', "Missing template file '$filename'.");
+	}, RuntimeException::class, "Missing template file '$filename'.");
 });

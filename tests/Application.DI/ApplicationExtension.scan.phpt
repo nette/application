@@ -28,8 +28,8 @@ test(function () {
 
 	$container = new Container1;
 	$tags = $container->findByTag('nette.presenter');
-	Assert::count(1, array_keys($tags, 'NetteModule\ErrorPresenter'));
-	Assert::count(1, array_keys($tags, 'NetteModule\MicroPresenter'));
+	Assert::count(1, array_keys($tags, NetteModule\ErrorPresenter::class));
+	Assert::count(1, array_keys($tags, NetteModule\MicroPresenter::class));
 	Assert::count(0, array_keys($tags, Nette\Application\UI\Presenter::class));
 });
 
