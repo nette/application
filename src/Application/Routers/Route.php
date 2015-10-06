@@ -106,7 +106,7 @@ class Route extends Nette\Object implements Application\IRouter
 
 	/**
 	 * @param  string  URL mask, e.g. '<presenter>/<action>/<id \d{1,3}>'
-	 * @param  array|string   default values or metadata
+	 * @param  array|string|\Closure  default values or metadata or callback for NetteModule\MicroPresenter
 	 * @param  int     flags
 	 */
 	public function __construct($mask, $metadata = [], $flags = 0)
