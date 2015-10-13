@@ -117,15 +117,14 @@ class PresenterComponentReflection extends Nette\Reflection\ClassType
 	public static function combineArgs(\ReflectionFunctionAbstract $method, $args)
 	{
 		$res = [];
-		$i = 0;
-		foreach ($method->getParameters() as $param) {
+		foreach ($method->getParameters() as $i => $param) {
 			$name = $param->getName();
 			if (!isset($args[$name]) && $param->isDefaultValueAvailable()) {
-				$res[$i++] = $param->getDefaultValue();
+				$res[$i] = $param->getDefaultValue();
 			} else {
-				$res[$i++] = $arg = isset($args[$name]) ? $args[$name] : NULL;
+				$res[$i] = $arg = isset($args[$name]) ? $args[$name] : NULL;
 				list($type, $isClass) = self::getParameterType($param);
-				if (!self::convertType($arg, $type, $isClass)) {
+				if (!self::convertType($res[$i], $type, $isClass)) {
 					throw new BadRequestException(sprintf(
 						'Argument $%s passed to %s() must be %s, %s given.',
 						$name,
