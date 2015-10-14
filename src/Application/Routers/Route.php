@@ -252,6 +252,7 @@ class Route extends Nette\Object implements Application\IRouter
 			$httpRequest->getMethod(),
 			$params,
 			$httpRequest->getPost(),
+			$httpRequest->getBody(),
 			$httpRequest->getFiles(),
 			[Application\Request::SECURED => $httpRequest->isSecured()]
 		);
