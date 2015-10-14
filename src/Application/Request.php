@@ -53,15 +53,17 @@ class Request extends Nette\Object
 	 * @param  string  method
 	 * @param  array   variables provided to the presenter usually via URL
 	 * @param  array   variables provided to the presenter via POST
+	 * @param  array   body of request
 	 * @param  array   all uploaded files
 	 * @param  array   flags
 	 */
-	public function __construct($name, $method = NULL, array $params = [], array $post = [], array $files = [], array $flags = [])
+	public function __construct($name, $method = NULL, array $params = [], array $post = [], array $body = [], array $files = [], array $flags = [])
 	{
 		$this->name = $name;
 		$this->method = $method;
 		$this->params = $params;
 		$this->post = $post;
+		$this->body = $body;
 		$this->files = $files;
 		$this->flags = $flags;
 	}
@@ -145,6 +147,38 @@ class Request extends Nette\Object
 
 		} elseif (isset($this->post[$key])) {
 			return $this->post[$key];
+
+		} else {
+			return NULL;
+		}
+	}
+
+
+	/**
+	 * Sets variables provided to the presenter via request body.
+	 * @param array $params
+	 * @return self
+	 */
+	public function setBody(array $params)
+	{
+		$this->body = $params;
+		return $this;
+	}
+
+
+	/**
+	 * Returns a variable provided to the presenter via request body.
+	 * If no key is passed, returns the entire array.
+	 * @param  string
+	 * @return mixed
+	 */
+	public function getBody($key = NULL)
+	{
+		if (func_num_args() === 0) {
+			return $this->body;
+
+		} elseif (isset($this->body[$key])) {
+			return $this->body[$key];
 
 		} else {
 			return NULL;
