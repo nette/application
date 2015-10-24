@@ -120,7 +120,7 @@ class Route extends Nette\Object implements Application\IRouter
 				self::PRESENTER_KEY => substr($metadata, 0, $a),
 				'action' => $a === strlen($metadata) - 1 ? NULL : substr($metadata, $a + 1),
 			];
-		} elseif ($metadata instanceof \Closure || $metadata instanceof Nette\Callback) {
+		} elseif ($metadata instanceof \Closure || $metadata instanceof Nette\Utils\Callback) {
 			$metadata = [
 				self::PRESENTER_KEY => 'Nette:Micro',
 				'callback' => $metadata,
