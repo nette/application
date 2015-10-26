@@ -121,6 +121,9 @@ class Route extends Nette\Object implements Application\IRouter
 				'action' => $a === strlen($metadata) - 1 ? NULL : substr($metadata, $a + 1),
 			];
 		} elseif ($metadata instanceof \Closure || $metadata instanceof Nette\Callback) {
+			if ($metadata instanceof Nette\Callback) {
+				trigger_error('Nette\Callback is deprecated, use Nette\Utils\Callback::toClosure().', E_USER_DEPRECATED);
+			}
 			$metadata = [
 				self::PRESENTER_KEY => 'Nette:Micro',
 				'callback' => $metadata,
