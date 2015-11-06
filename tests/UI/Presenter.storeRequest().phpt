@@ -83,11 +83,13 @@ class MockUser extends Security\User
 
 
 $presenter = new TestPresenter();
+$url = 'http://www.example.org/foo/bar';
+$urlScript = new Http\UrlScript($url);
 $presenter->injectPrimary(
 	NULL,
 	NULL,
 	new Application\Routers\SimpleRouter,
-	new Http\Request(new Http\UrlScript),
+	new Http\Request($urlScript),
 	new Http\Response,
 	$session = new MockSession,
 	$user = new MockUser
@@ -105,4 +107,4 @@ Assert::same($expiration, $section->testExpiration);
 Assert::same($key, $section->testExpirationVariables);
 Assert::same($key, $section->testedKeyExistence);
 Assert::same($key, $section->storedKey);
-Assert::same([$user->getId(), $applicationRequest], $section->storedValue);
+Assert::same([$user->getId(), $applicationRequest, $url], $section->storedValue);
