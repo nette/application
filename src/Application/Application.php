@@ -167,11 +167,7 @@ class Application extends Nette\Object
 		$args = ['exception' => $e, 'request' => end($this->requests) ?: NULL];
 		if ($this->presenter instanceof UI\Presenter) {
 			try {
-				try {
-					$this->presenter->forward("$this->errorPresenter:", $args);
-				} catch (Nette\Application\UI\InvalidLinkException $foo) {
-					$this->presenter->forward(":$this->errorPresenter:", $args);
-				}
+				$this->presenter->forward(":$this->errorPresenter:", $args);
 			} catch (AbortException $foo) {
 				$this->processRequest($this->presenter->getLastCreatedRequest());
 			}
