@@ -6,7 +6,7 @@
 // block _outer
 //
 if (!function_exists($_b->blocks['_outer'][] = '_%[a-z0-9]+%__outer')) { function _%[a-z0-9]+%__outer($_b, $_args) { foreach ($_args as $__k => $__v) $$__k = $__v; $_control->redrawControl('outer', FALSE)
-;$iterations = 0; foreach (array(1,2,3) as $id) { ?>
+;%a% foreach (array(1,2,3) as $id) { ?>
 		<div id="<?php echo $_l->dynSnippetId = $_control->getSnippetId("inner-$id") ?>
 "><?php ob_start() ?>
 
