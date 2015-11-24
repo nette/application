@@ -62,7 +62,10 @@ class Template extends Nette\Object implements Nette\Application\UI\ITemplate
 	{
 		try {
 			return $this->latte->renderToString($this->file, $this->params);
+		} catch (\Throwable $e) {
 		} catch (\Exception $e) {
+		}
+		if (isset($e)) {
 			if (func_num_args()) {
 				throw $e;
 			}
