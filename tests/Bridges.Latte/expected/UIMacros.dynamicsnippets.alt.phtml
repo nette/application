@@ -6,7 +6,7 @@
 // block _outer1
 //
 if (!function_exists($_b->blocks['_outer1'][] = '_%[a-z0-9]+%__outer1')) { function _%[a-z0-9]+%__outer1($_b, $_args) { foreach ($_args as $__k => $__v) $$__k = $__v; $_control->redrawControl('outer1', FALSE)
-;$iterations = 0; foreach (array(1,2,3) as $id) { ?>
+;%a% foreach (array(1,2,3) as $id) { ?>
 		<div<?php echo ' id="' . ($_l->dynSnippetId = $_control->getSnippetId("inner-$id")) . '"' ?>>
 <?php ob_start() ?>				#<?php echo Latte\Runtime\Filters::escapeHtml($id, ENT_NOQUOTES) ?>
 
@@ -19,7 +19,7 @@ if (!function_exists($_b->blocks['_outer1'][] = '_%[a-z0-9]+%__outer1')) { funct
 // block _outer2
 //
 if (!function_exists($_b->blocks['_outer2'][] = '_%[a-z0-9]+%__outer2')) { function _%[a-z0-9]+%__outer2($_b, $_args) { foreach ($_args as $__k => $__v) $$__k = $__v; $_control->redrawControl('outer2', FALSE)
-;$iterations = 0; foreach (array(1,2,3) as $id) { ?>
+;%a% foreach (array(1,2,3) as $id) { ?>
 		<div<?php echo ' id="' . ($_l->dynSnippetId = $_control->getSnippetId("inner-$id")) . '"' ?>>
 <?php ob_start() ?>				#<?php echo Latte\Runtime\Filters::escapeHtml($id, ENT_NOQUOTES) ?>
 
