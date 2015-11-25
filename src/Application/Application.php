@@ -27,7 +27,7 @@ class Application extends Nette\Object
 	/** @var callable[]  function (Application $sender); Occurs before the application loads presenter */
 	public $onStartup;
 
-	/** @var callable[]  function (Application $sender, \Exception $e = NULL); Occurs before the application shuts down */
+	/** @var callable[]  function (Application $sender, \Exception|\Throwable $e = NULL); Occurs before the application shuts down */
 	public $onShutdown;
 
 	/** @var callable[]  function (Application $sender, Request $request); Occurs when a new request is received */
@@ -39,7 +39,7 @@ class Application extends Nette\Object
 	/** @var callable[]  function (Application $sender, IResponse $response); Occurs when a new response is ready for dispatch */
 	public $onResponse;
 
-	/** @var callable[]  function (Application $sender, \Exception $e); Occurs when an unhandled exception occurs in the application */
+	/** @var callable[]  function (Application $sender, \Exception|\Throwable $e); Occurs when an unhandled exception occurs in the application */
 	public $onError;
 
 	/** @var Request[] */
@@ -81,7 +81,10 @@ class Application extends Nette\Object
 			$this->processRequest($this->createInitialRequest());
 			$this->onShutdown($this);
 
+		} catch (\Throwable $e) {
 		} catch (\Exception $e) {
+		}
+		if (isset($e)) {
 			$this->onError($this, $e);
 			if ($this->catchExceptions && $this->errorPresenter) {
 				try {
@@ -89,6 +92,8 @@ class Application extends Nette\Object
 					$this->onShutdown($this, $e);
 					return;
 
+				} catch (\Throwable $e) {
+					$this->onError($this, $e);
 				} catch (\Exception $e) {
 					$this->onError($this, $e);
 				}
@@ -153,9 +158,10 @@ class Application extends Nette\Object
 
 
 	/**
+	 * @param  \Exception|\Throwable
 	 * @return void
 	 */
-	public function processException(\Exception $e)
+	public function processException($e)
 	{
 		if (!$e instanceof BadRequestException && $this->httpResponse instanceof Nette\Http\Response) {
 			$this->httpResponse->warnOnBuffer = FALSE;
