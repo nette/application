@@ -99,7 +99,7 @@ if (empty($_l->extends) && !empty($_control->snippetMode)) {
 	public function macroIfCurrent(MacroNode $node, PhpWriter $writer)
 	{
 		if ($node->modifiers) {
-			throw new CompileException('Modifiers are not allowed here.');
+			throw new CompileException("Modifiers are not allowed in {{$node->name}}");
 		}
 		return $writer->write($node->args
 			? 'if ($_presenter->isLinkCurrent(%node.word, %node.array?)) {'
