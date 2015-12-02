@@ -19,3 +19,13 @@ testRouteIn($route, '/default', 'Default', [
 	'action' => 'default',
 	'test' => 'testvalue',
 ], '/default?test=testvalue');
+
+testRouteIn($route, '/', NULL);
+
+
+$route = new Route('<action>', 'Front:Default:');
+
+testRouteIn($route, '/default', 'Front:Default', [
+	'action' => 'default',
+	'test' => 'testvalue',
+], '/default?test=testvalue');
