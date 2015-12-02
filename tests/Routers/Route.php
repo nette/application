@@ -10,10 +10,10 @@ use Tester\Assert;
 function testRouteIn(Nette\Application\IRouter $route, $url, $expectedPresenter = NULL, $expectedParams = NULL, $expectedUrl = NULL)
 {
 	$url = new Nette\Http\UrlScript("http://example.com$url");
-	$url->appendQuery(array(
+	$url->appendQuery([
 		'test' => 'testvalue',
 		'presenter' => 'querypresenter',
-	));
+	]);
 
 	$httpRequest = new Nette\Http\Request($url);
 
@@ -38,7 +38,7 @@ function testRouteIn(Nette\Application\IRouter $route, $url, $expectedPresenter 
 }
 
 
-function testRouteOut(Nette\Application\IRouter $route, $presenter, $params = array())
+function testRouteOut(Nette\Application\IRouter $route, $presenter, $params = [])
 {
 	$url = new Nette\Http\Url('http://example.com');
 	$request = new Nette\Application\Request($presenter, 'GET', $params);

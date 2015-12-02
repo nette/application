@@ -9,8 +9,8 @@ use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
-require __DIR__ . '/one/Presenter1.inc';
-require __DIR__ . '/two/Presenter2.inc';
+require __DIR__ . '/one/Presenter1.php';
+require __DIR__ . '/two/Presenter2.php';
 
 
 test(function () { // with subdir templates

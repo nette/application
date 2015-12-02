@@ -10,7 +10,7 @@ use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
 
-require __DIR__ . '/Route.inc';
+require __DIR__ . '/Route.php';
 
 
 $route = new Route('<param č>', [
