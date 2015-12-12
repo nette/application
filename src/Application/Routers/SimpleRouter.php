@@ -19,6 +19,9 @@ class SimpleRouter extends Nette\Object implements Application\IRouter
 	const PRESENTER_KEY = 'presenter';
 	const MODULE_KEY = 'module';
 
+	/** @var int */
+	public static $defaultFlags = 0;
+
 	/** @var string */
 	private $module = '';
 
@@ -52,7 +55,7 @@ class SimpleRouter extends Nette\Object implements Application\IRouter
 		}
 
 		$this->defaults = $defaults;
-		$this->flags = $flags;
+		$this->flags = $flags | static::$defaultFlags;
 	}
 
 
