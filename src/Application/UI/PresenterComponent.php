@@ -178,7 +178,7 @@ abstract class PresenterComponent extends Nette\ComponentModel\Container impleme
 				));
 			}
 
-			if ($params[$name] === $meta['def'] || ($meta['def'] === NULL && is_scalar($params[$name]) && (string) $params[$name] === '')) {
+			if ($params[$name] === $meta['def'] || ($meta['def'] === NULL && $params[$name] === '')) {
 				$params[$name] = NULL; // value transmit is unnecessary
 			}
 		}
