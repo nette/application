@@ -61,11 +61,11 @@ class TestPresenter extends Application\UI\Presenter
 	/** @persistent */
 	public $var1 = 10;
 
-	/** @persistent @var bool */
+	/** @persistent */
 	public $ok = TRUE;
 
-	/** @persistent @var bool */
-	public $var2 = FALSE;
+	/** @persistent */
+	public $var2;
 
 
 	protected function createTemplate($class = NULL)
@@ -83,6 +83,7 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same('/index.php?action=product&presenter=Test', $this->link('product', ['var1' => $this->var1]));
 		Assert::same('/index.php?var1=20&action=product&presenter=Test', $this->link('product', ['var1' => $this->var1 * 2, 'ok' => TRUE]));
 		Assert::same('/index.php?var1=1&ok=0&action=product&presenter=Test', $this->link('product', ['var1' => TRUE, 'ok' => '0']));
+		Assert::same('/index.php?var1=0&ok=0&action=product&presenter=Test', $this->link('product', ['var1' => FALSE, 'ok' => FALSE, 'var2' => FALSE]));
 		Assert::same("#error: Value passed to persistent parameter 'ok' in presenter Test must be boolean, string given.", $this->link('product', ['var1' => NULL, 'ok' => 'a']));
 		Assert::same("#error: Value passed to persistent parameter 'var1' in presenter Test must be integer, array given.", $this->link('product', ['var1' => [1], 'ok' => FALSE]));
 		Assert::same("#error: Unable to pass parameters to action 'Test:product', missing corresponding method.", $this->link('product', 1, 2));
@@ -103,7 +104,8 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same('/index.php?var1=20&action=default&do=buy&presenter=Test', $this->link('buy!', ['var1' => $this->var1 * 2]));
 		Assert::same('/index.php?y=2&action=default&do=buy&presenter=Test', $this->link('buy!', 1, 2));
 		Assert::same('/index.php?y=2&bool=1&str=1&action=default&do=buy&presenter=Test', $this->link('buy!', '1', '2', TRUE, TRUE));
-		Assert::same('/index.php?y=2&str=0&action=default&do=buy&presenter=Test', $this->link('buy!', '1', '2', FALSE, FALSE));
+		Assert::same('/index.php?y=0&str=0&action=default&do=buy&presenter=Test', $this->link('buy!', '1', 0, FALSE, FALSE));
+		Assert::same('/index.php?action=default&do=buy&presenter=Test', $this->link('buy!', ['str' => '', 'var2' => '']));
 		Assert::same('/index.php?action=default&do=buy&presenter=Test', $this->link('buy!', [1]));
 		Assert::same('#error: Argument $x passed to TestPresenter::handleBuy() must be integer, array given.', $this->link('buy!', [1], (object) [1]));
 		Assert::same('/index.php?y=2&action=default&do=buy&presenter=Test', $this->link('buy!', [1, 'y' => 2]));
