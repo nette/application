@@ -36,7 +36,7 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same('/index.php?var1=20&action=default&do=hint&presenter=Test', $this->link('hint!', ['var1' => $this->var1 * 2]));
 		Assert::same('/index.php?y=2&action=default&do=hint&presenter=Test', $this->link('hint!', 1, 2));
 		Assert::same('/index.php?y=2&bool=1&str=1&action=default&do=hint&presenter=Test', $this->link('hint!', '1', '2', TRUE, TRUE));
-		Assert::same('/index.php?y=0&bool=0&str=0&action=default&do=hint&presenter=Test', $this->link('hint!', '1', 0, FALSE, FALSE));
+		Assert::same('/index.php?str=0&action=default&do=hint&presenter=Test', $this->link('hint!', '1', 0, FALSE, FALSE));
 		Assert::same('/index.php?action=default&do=hint&presenter=Test', $this->link('hint!', ['str' => '', 'var2' => '']));
 		Assert::same('/index.php?action=default&do=hint&presenter=Test', $this->link('hint!', [1]));
 		Assert::same('#error: Argument $x passed to TestPresenter::handleHint() must be int, array given.', $this->link('hint!', [1], (object) [1]));

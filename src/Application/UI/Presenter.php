@@ -1035,7 +1035,6 @@ abstract class Presenter extends Control implements Application\IPresenter
 				continue;
 			}
 
-			$def = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : NULL;
 			list($type, $isClass) = PresenterComponentReflection::getParameterType($param);
 			if (!PresenterComponentReflection::convertType($args[$name], $type, $isClass)) {
 				throw new InvalidLinkException(sprintf(
@@ -1047,6 +1046,14 @@ abstract class Presenter extends Control implements Application\IPresenter
 				));
 			}
 
+			if ($param->isDefaultValueAvailable()) {
+				$def = $param->getDefaultValue();
+			} else {
+				$def = NULL;
+				if (!$isClass) {
+					settype($def, $type);
+				}
+			}
 			if ($args[$name] === $def || ($def === NULL && $args[$name] === '')) {
 				$args[$name] = NULL; // value transmit is unnecessary
 			}
