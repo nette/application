@@ -84,6 +84,12 @@ class TemplateFactory extends Nette\Object implements UI\ITemplateFactory
 			return $time == NULL ? NULL : Nette\Utils\DateTime::from($time)->modify($delta . $unit); // intentionally ==
 		});
 
+		if (!isset($latte->getFilters()['translate'])) {
+			$latte->addFilter('translate', function () {
+				throw new Nette\InvalidStateException('Translator has not been set. Set translator using $template->setTranslator().');
+			});
+		}
+
 		// default parameters
 		$template->control = $template->_control = $control;
 		$template->presenter = $template->_presenter = $presenter;
