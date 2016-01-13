@@ -1047,7 +1047,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 				));
 			}
 
-			if ($args[$name] === $def || ($def === NULL && is_scalar($args[$name]) && (string) $args[$name] === '')) {
+			if ($args[$name] === $def || ($def === NULL && $args[$name] === '')) {
 				$args[$name] = NULL; // value transmit is unnecessary
 			}
 		}
