@@ -76,3 +76,19 @@ test(function () use ($presenter) {
 	Assert::same(301, $presenter->response->getCode());
 	Assert::same('http://localhost/?val=2&action=foo&presenter=test', $presenter->response->getUrl());
 });
+
+
+test(function () use ($presenter) {
+	$presenter->redirectPermanent('foo', 2);
+	Assert::type(Nette\Application\Responses\RedirectResponse::class, $presenter->response);
+	Assert::same(301, $presenter->response->getCode());
+	Assert::same('http://localhost/?val=2&action=foo&presenter=test', $presenter->response->getUrl());
+});
+
+
+test(function () use ($presenter) {
+	$presenter->redirectPermanent('foo', ['arg' => 1]);
+	Assert::type(Nette\Application\Responses\RedirectResponse::class, $presenter->response);
+	Assert::same(301, $presenter->response->getCode());
+	Assert::same('http://localhost/?arg=1&action=foo&presenter=test', $presenter->response->getUrl());
+});

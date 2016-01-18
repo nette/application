@@ -355,6 +355,21 @@ abstract class PresenterComponent extends Nette\ComponentModel\Container impleme
 	}
 
 
+	/**
+	 * Permanently redirects to presenter, action or signal.
+	 * @param  string   destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
+	 * @param  array|mixed
+	 * @return void
+	 * @throws Nette\Application\AbortException
+	 */
+	public function redirectPermanent($destination = NULL, $args = [])
+	{
+		$args = func_num_args() < 3 && is_array($args) ? $args : array_slice(func_get_args(), 1);
+		$presenter = $this->getPresenter();
+		$presenter->redirectUrl($presenter->createRequest($this, $destination, $args, 'redirect'), 301);
+	}
+
+
 	/********************* interface \ArrayAccess ****************d*g**/
 
 
