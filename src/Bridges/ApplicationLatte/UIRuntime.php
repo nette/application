@@ -18,7 +18,7 @@ use Nette\Application\UI;
 class UIRuntime extends Nette\Object
 {
 
-	public static function renderSnippets(UI\Control $control, \stdClass $local, array $params)
+	public static function renderSnippets(UI\Control $control, \stdClass $local = NULL, array $params = [])
 	{
 		$control->snippetMode = FALSE;
 		$payload = $control->getPresenter()->getPayload();
