@@ -21,7 +21,7 @@ require __DIR__ . '/../bootstrap.php';
 
 function testIt($type, $val, $res = NULL)
 {
-	$isClass = strtolower($type) !== $type;
+	$isClass = class_exists($type);
 	if (func_num_args() === 3) {
 		Assert::true(PresenterComponentReflection::convertType($val, $type, $isClass));
 	} else {
@@ -32,6 +32,23 @@ function testIt($type, $val, $res = NULL)
 }
 
 $obj = new stdClass;
+
+testIt('NULL', NULL, NULL);
+testIt('NULL', []);
+testIt('NULL', $obj, $obj);
+testIt('NULL', '', '');
+testIt('NULL', 'a', 'a');
+testIt('NULL', '0', '0');
+testIt('NULL', '1', '1');
+testIt('NULL', '1.0', '1.0');
+testIt('NULL', '1.1', '1.1');
+testIt('NULL', '1a', '1a');
+testIt('NULL', TRUE, TRUE);
+testIt('NULL', FALSE, FALSE);
+testIt('NULL', 0, 0);
+testIt('NULL', 1, 1);
+testIt('NULL', 1.0, 1.0);
+testIt('NULL', 1.2, 1.2);
 
 testIt('string', NULL, '');
 testIt('string', []);
