@@ -21,6 +21,9 @@ class TestPresenter extends Application\UI\Presenter
 	/** @persistent */
 	public $var2;
 
+	/** @persistent */
+	public $var3 = [];
+
 
 	protected function createTemplate($class = NULL)
 	{
@@ -35,8 +38,8 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same('/index.php?action=default&do=hint&presenter=Test', $this->link('hint!', ['var1' => $this->var1]));
 		Assert::same('/index.php?var1=20&action=default&do=hint&presenter=Test', $this->link('hint!', ['var1' => $this->var1 * 2]));
 		Assert::same('/index.php?y=2&action=default&do=hint&presenter=Test', $this->link('hint!', 1, 2));
-		Assert::same('/index.php?y=2&bool=1&str=1&action=default&do=hint&presenter=Test', $this->link('hint!', '1', '2', TRUE, TRUE));
-		Assert::same('/index.php?str=0&action=default&do=hint&presenter=Test', $this->link('hint!', '1', 0, FALSE, FALSE));
+		Assert::same('/index.php?y=2&bool=1&str=1&arr%5B0%5D=1&action=default&do=hint&presenter=Test', $this->link('hint!', '1', '2', TRUE, TRUE, [1]));
+		Assert::same('/index.php?str=0&action=default&do=hint&presenter=Test', $this->link('hint!', '1', 0, FALSE, FALSE, []));
 		Assert::same('/index.php?action=default&do=hint&presenter=Test', $this->link('hint!', ['str' => '', 'var2' => '']));
 		Assert::same('/index.php?action=default&do=hint&presenter=Test', $this->link('hint!', [1]));
 		Assert::same('#error: Argument $x passed to TestPresenter::handleHint() must be int, array given.', $this->link('hint!', [1], (object) [1]));
@@ -56,8 +59,8 @@ class TestPresenter extends Application\UI\Presenter
 
 		// optional arguments
 		Assert::same('/index.php?y=2&action=default&do=null&presenter=Test', $this->link('null!', 1, 2));
-		Assert::same('/index.php?y=2&bool=1&str=1&action=default&do=null&presenter=Test', $this->link('null!', '1', '2', TRUE, TRUE));
-		Assert::same('/index.php?y=0&bool=0&str=0&action=default&do=null&presenter=Test', $this->link('null!', '1', 0, FALSE, FALSE));
+		Assert::same('/index.php?y=2&bool=1&str=1&arr%5B0%5D=1&action=default&do=null&presenter=Test', $this->link('null!', '1', '2', TRUE, TRUE, [1]));
+		Assert::same('/index.php?y=0&bool=0&str=0&action=default&do=null&presenter=Test', $this->link('null!', '1', 0, FALSE, FALSE, []));
 		Assert::same('/index.php?action=default&do=null&presenter=Test', $this->link('null!', ['str' => '', 'var2' => '']));
 		Assert::same('/index.php?action=default&do=null&presenter=Test', $this->link('null!', [1]));
 		Assert::same('#error: Argument $x passed to TestPresenter::handleNull() must be int, array given.', $this->link('null!', [1], (object) [1]));
@@ -70,12 +73,12 @@ class TestPresenter extends Application\UI\Presenter
 	}
 
 
-	public function handleHint(int $x = 1, int $y, bool $bool, string $str)
+	public function handleHint(int $x = 1, int $y, bool $bool, string $str, array $arr)
 	{
 	}
 
 
-	public function handleNull(int $x = 1, int $y = NULL, bool $bool = NULL, string $str = NULL)
+	public function handleNull(int $x = 1, int $y = NULL, bool $bool = NULL, string $str = NULL, array $arr = NULL)
 	{
 	}
 
