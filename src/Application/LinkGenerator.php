@@ -56,8 +56,8 @@ class LinkGenerator extends Nette\Object
 			if ($action === '') {
 				$action = UI\Presenter::DEFAULT_ACTION;
 			}
-			if ($params && (method_exists($class, $method = $class::formatActionMethod($action))
-				|| method_exists($class, $method = $class::formatRenderMethod($action)))
+			if (method_exists($class, $method = $class::formatActionMethod($action))
+				|| method_exists($class, $method = $class::formatRenderMethod($action))
 			) {
 				UI\Presenter::argsToParams($class, $method, $params);
 			}
