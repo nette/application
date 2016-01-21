@@ -119,20 +119,30 @@ class PresenterComponentReflection extends Nette\Reflection\ClassType
 		$res = [];
 		foreach ($method->getParameters() as $i => $param) {
 			$name = $param->getName();
-			if (!isset($args[$name]) && $param->isDefaultValueAvailable()) {
-				$res[$i] = $param->getDefaultValue();
-			} else {
-				$res[$i] = $arg = isset($args[$name]) ? $args[$name] : NULL;
-				list($type, $isClass) = self::getParameterType($param);
+			list($type, $isClass) = self::getParameterType($param);
+			if (isset($args[$name])) {
+				$res[$i] = $args[$name];
 				if (!self::convertType($res[$i], $type, $isClass)) {
 					throw new BadRequestException(sprintf(
 						'Argument $%s passed to %s() must be %s, %s given.',
 						$name,
 						($method instanceof \ReflectionMethod ? $method->getDeclaringClass()->getName() . '::' : '') . $method->getName(),
 						$type === 'NULL' ? 'scalar' : $type,
-						is_object($arg) ? get_class($arg) : gettype($arg)
+						is_object($args[$name]) ? get_class($args[$name]) : gettype($args[$name])
 					));
 				}
+			} elseif ($param->isDefaultValueAvailable()) {
+				$res[$i] = $param->getDefaultValue();
+			} elseif ($type === 'array') {
+				$res[$i] = [];
+			} elseif ($type === 'NULL') {
+				$res[$i] = NULL;
+			} else {
+				throw new BadRequestException(sprintf(
+					'Missing parameter $%s required by %s()',
+					$name,
+					($method instanceof \ReflectionMethod ? $method->getDeclaringClass()->getName() . '::' : '') . $method->getName()
+				));
 			}
 		}
 		return $res;

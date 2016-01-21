@@ -60,14 +60,20 @@ test(function () {
 test(function () {
 	$method = new ReflectionMethod('MyPresenter', 'hints');
 
-	Assert::same([0, FALSE, '', []], Reflection::combineArgs($method, []));
-	Assert::same([0, FALSE, '', []], Reflection::combineArgs($method, ['int' => NULL, 'bool' => NULL, 'str' => NULL, 'arr' => NULL]));
 	Assert::same([1, TRUE, 'abc', [1]], Reflection::combineArgs($method, ['int' => '1', 'bool' => '1', 'str' => 'abc', 'arr' => [1]]));
-	Assert::same([0, FALSE, '', []], Reflection::combineArgs($method, ['int' => 0, 'bool' => FALSE, 'str' => '', 'arr' => []]));
+	Assert::same([0, FALSE, '', []], Reflection::combineArgs($method, ['int' => 0, 'bool' => FALSE, 'str' => ''])); // missing 'arr'
+
+	Assert::exception(function () use ($method) {
+		Reflection::combineArgs($method, []);
+	}, BadRequestException::class, 'Missing parameter $int required by MyPresenter::hints()');
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['int' => '']);
 	}, BadRequestException::class, 'Argument $int passed to MyPresenter::hints() must be int, string given.');
+
+	Assert::exception(function () use ($method) {
+		Reflection::combineArgs($method, ['int' => NULL]);
+	}, BadRequestException::class, 'Missing parameter $int required by MyPresenter::hints()');
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['int' => new stdClass]);
@@ -184,11 +190,11 @@ test(function () {
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, []);
-	}, BadRequestException::class, 'Argument $req passed to MyPresenter::objects() must be stdClass, NULL given.');
+	}, BadRequestException::class, 'Missing parameter $req required by MyPresenter::objects()');
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['req' => NULL, 'opt' => NULL]);
-	}, BadRequestException::class, 'Argument $req passed to MyPresenter::objects() must be stdClass, NULL given.');
+	}, BadRequestException::class, 'Missing parameter $req required by MyPresenter::objects()');
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['req' => $method, 'opt' => NULL]);
