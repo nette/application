@@ -49,6 +49,7 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same('/index.php?action=default&presenter=Test', $this->link('this', ['var1' => $this->var1]));
 		Assert::same('/index.php?action=default&presenter=Test', $this->link('this!', ['var1' => $this->var1]));
 		Assert::same('/index.php?sort%5By%5D%5Basc%5D=1&action=default&presenter=Test', $this->link('this', ['sort' => ['y' => ['asc' => TRUE]]]));
+		Assert::same('/index.php?id=0&action=edit&presenter=Test', $this->link('edit', ['id' => 0]));
 
 		// type checking
 		Assert::same('#error: Argument $x passed to TestPresenter::handleHint() must be int, string given.', $this->link('hint!', 'x'));
@@ -79,6 +80,10 @@ class TestPresenter extends Application\UI\Presenter
 
 
 	public function handleNull(int $x = 1, int $y = NULL, bool $bool = NULL, string $str = NULL, array $arr = NULL)
+	{
+	}
+
+	public function actionEdit(int $id)
 	{
 	}
 
