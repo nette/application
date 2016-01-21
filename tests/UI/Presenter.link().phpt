@@ -155,8 +155,8 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same('#error: Argument $arr passed to TestPresenter::actionDefaults() must be array, string given.', $this->link('defaults', ['int' => '1', 'bool' => '1', 'str' => '', 'arr' => '']));
 
 		Assert::same('/index.php?action=objects&presenter=Test', $this->link('objects', ['req' => new stdClass, 'opt' => new stdClass]));
-		Assert::same('/index.php?action=objects&presenter=Test', $this->link('objects', []));
-		Assert::same('/index.php?action=objects&presenter=Test', $this->link('objects', ['req' => NULL, 'opt' => NULL]));
+		Assert::same('#error: Missing parameter $req required by TestPresenter::actionObjects()', $this->link('objects', []));
+		Assert::same('#error: Missing parameter $req required by TestPresenter::actionObjects()', $this->link('objects', ['req' => NULL, 'opt' => NULL]));
 		Assert::same('#error: Argument $req passed to TestPresenter::actionObjects() must be stdClass, Exception given.', $this->link('objects', ['req' => new Exception, 'opt' => NULL]));
 		Assert::same('#error: Argument $req passed to TestPresenter::actionObjects() must be stdClass, array given.', $this->link('objects', ['req' => []]));
 

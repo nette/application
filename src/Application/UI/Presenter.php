@@ -1029,7 +1029,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			}
 
 			if (!isset($args[$name])) {
-				if ($param->isDefaultValueAvailable() || $type === 'NULL' || $type === 'array' || $isClass) {
+				if ($param->isDefaultValueAvailable() || $type === 'NULL' || $type === 'array') {
 					continue;
 				}
 				throw new InvalidLinkException("Missing parameter \$$name required by $class::{$rm->getName()}()");
