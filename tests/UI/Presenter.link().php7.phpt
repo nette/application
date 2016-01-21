@@ -144,10 +144,10 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same('/index.php?int=0&bool=0&action=params&presenter=Test', $this->link('params', ['int' => 0, 'bool' => FALSE, 'str' => '', 'arr' => '']));
 		Assert::same('/index.php?action=params&presenter=Test', $this->link('params', ['int' => new stdClass]));
 
-		Assert::same('/index.php?action=hints&presenter=Test', $this->link('hints', []));
-		Assert::same('/index.php?action=hints&presenter=Test', $this->link('hints', ['int' => NULL, 'bool' => NULL, 'str' => NULL, 'arr' => NULL]));
+		Assert::same('#error: Missing parameter $int required by TestPresenter::actionHints()', $this->link('hints', []));
+		Assert::same('#error: Missing parameter $int required by TestPresenter::actionHints()', $this->link('hints', ['int' => NULL, 'bool' => NULL, 'str' => NULL, 'arr' => NULL]));
 		Assert::same('/index.php?int=1&bool=1&str=abc&arr%5B0%5D=1&action=hints&presenter=Test', $this->link('hints', ['int' => '1', 'bool' => '1', 'str' => 'abc', 'arr' => [1]]));
-		Assert::same('/index.php?action=hints&presenter=Test', $this->link('hints', ['int' => 0, 'bool' => FALSE, 'str' => '', 'arr' => []]));
+		Assert::same('/index.php?int=0&bool=0&action=hints&presenter=Test', $this->link('hints', ['int' => 0, 'bool' => FALSE, 'str' => '', 'arr' => []]));
 		Assert::same('#error: Argument $int passed to TestPresenter::actionHints() must be int, string given.', $this->link('hints', ['int' => '']));
 		Assert::same('#error: Argument $int passed to TestPresenter::actionHints() must be int, stdClass given.', $this->link('hints', ['int' => new stdClass]));
 		Assert::same('#error: Argument $int passed to TestPresenter::actionHints() must be int, array given.', $this->link('hints', ['int' => []]));

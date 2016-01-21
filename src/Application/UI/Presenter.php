@@ -873,9 +873,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 				if (!$reflection->hasCallableMethod($method)) {
 					throw new InvalidLinkException("Unknown signal '$signal', missing handler {$reflection->getName()}::$method()");
 				}
-				if ($args) { // convert indexed parameters to named
-					self::argsToParams(get_class($component), $method, $args);
-				}
+				// convert indexed parameters to named
+				self::argsToParams(get_class($component), $method, $args);
 			}
 
 			// counterpart of IStatePersistent
@@ -901,28 +900,27 @@ abstract class Presenter extends Control implements Application\IPresenter
 			$current = ($action === '*' || strcasecmp($action, $this->action) === 0) && $presenterClass === get_class($this);
 
 			$reflection = new PresenterComponentReflection($presenterClass);
-			if ($args || $destination === 'this') {
-				// counterpart of run() & tryCall()
-				$method = $presenterClass::formatActionMethod($action);
+
+			// counterpart of run() & tryCall()
+			$method = $presenterClass::formatActionMethod($action);
+			if (!$reflection->hasCallableMethod($method)) {
+				$method = $presenterClass::formatRenderMethod($action);
 				if (!$reflection->hasCallableMethod($method)) {
-					$method = $presenterClass::formatRenderMethod($action);
-					if (!$reflection->hasCallableMethod($method)) {
-						$method = NULL;
-					}
+					$method = NULL;
+				}
+			}
+
+			// convert indexed parameters to named
+			if ($method === NULL) {
+				if (array_key_exists(0, $args)) {
+					throw new InvalidLinkException("Unable to pass parameters to action '$presenter:$action', missing corresponding method.");
 				}
 
-				// convert indexed parameters to named
-				if ($method === NULL) {
-					if (array_key_exists(0, $args)) {
-						throw new InvalidLinkException("Unable to pass parameters to action '$presenter:$action', missing corresponding method.");
-					}
+			} elseif ($destination === 'this') {
+				self::argsToParams($presenterClass, $method, $args, $this->params);
 
-				} elseif ($destination === 'this') {
-					self::argsToParams($presenterClass, $method, $args, $this->params);
-
-				} else {
-					self::argsToParams($presenterClass, $method, $args);
-				}
+			} else {
+				self::argsToParams($presenterClass, $method, $args);
 			}
 
 			// counterpart of IStatePersistent
@@ -1015,7 +1013,9 @@ abstract class Presenter extends Control implements Application\IPresenter
 		$i = 0;
 		$rm = new \ReflectionMethod($class, $method);
 		foreach ($rm->getParameters() as $param) {
+			list($type, $isClass) = PresenterComponentReflection::getParameterType($param);
 			$name = $param->getName();
+
 			if (array_key_exists($i, $args)) {
 				$args[$name] = $args[$i];
 				unset($args[$i]);
@@ -1026,16 +1026,15 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 			} elseif (array_key_exists($name, $supplemental)) {
 				$args[$name] = $supplemental[$name];
-
-			} else {
-				continue;
 			}
 
-			if ($args[$name] === NULL) {
-				continue;
+			if (!isset($args[$name])) {
+				if ($param->isDefaultValueAvailable() || $type === 'NULL' || $type === 'array' || $isClass) {
+					continue;
+				}
+				throw new InvalidLinkException("Missing parameter \$$name required by $class::{$rm->getName()}()");
 			}
 
-			list($type, $isClass) = PresenterComponentReflection::getParameterType($param);
 			if (!PresenterComponentReflection::convertType($args[$name], $type, $isClass)) {
 				throw new InvalidLinkException(sprintf(
 					'Argument $%s passed to %s() must be %s, %s given.',
@@ -1046,22 +1045,14 @@ abstract class Presenter extends Control implements Application\IPresenter
 				));
 			}
 
-			if ($param->isDefaultValueAvailable()) {
-				$def = $param->getDefaultValue();
-			} else {
-				$def = NULL;
-				if (!$isClass) {
-					settype($def, $type);
-				}
-			}
+			$def = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : NULL;
 			if ($args[$name] === $def || ($def === NULL && $args[$name] === '')) {
 				$args[$name] = NULL; // value transmit is unnecessary
 			}
 		}
 
 		if (array_key_exists($i, $args)) {
-			$method = $rm->getName();
-			throw new InvalidLinkException("Passed more parameters than method $class::$method() expects.");
+			throw new InvalidLinkException("Passed more parameters than method $class::{$rm->getName()}() expects.");
 		}
 	}
 
