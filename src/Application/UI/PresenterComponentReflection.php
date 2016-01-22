@@ -163,9 +163,6 @@ class PresenterComponentReflection extends Nette\Reflection\ClassType
 		} elseif ($type === 'NULL' || $isClass) { // means 'not array', ignore class type hint
 			return !is_array($val);
 
-		} elseif ($val === NULL) {
-			settype($val, $type); // to scalar or array
-
 		} elseif (is_object($val)) {
 			// ignore
 
