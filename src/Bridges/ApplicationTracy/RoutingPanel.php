@@ -8,6 +8,7 @@
 namespace Nette\Bridges\ApplicationTracy;
 
 use Nette;
+use Nette\Application;
 use Nette\Application\Routers;
 use Nette\Application\UI\Presenter;
 use Tracy;
@@ -119,8 +120,8 @@ class RoutingPanel extends Nette\Object implements Tracy\IBarPanel
 		$this->routers[] = [
 			'matched' => $matched,
 			'class' => get_class($router),
-			'defaults' => $router instanceof Routers\Route || $router instanceof Routers\SimpleRouter ? $router->getDefaults() : [],
-			'mask' => $router instanceof Routers\Route ? $router->getMask() : NULL,
+			'defaults' => $router instanceof Application\IRouteMeta ? $router->getDefaults() : [],
+			'mask' => $router instanceof Application\IRouteMeta ? $router->getMask() : NULL,
 			'request' => $request,
 			'module' => rtrim($module, ':'),
 		];

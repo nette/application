@@ -16,7 +16,7 @@ use Nette\Utils\Strings;
  * The bidirectional route is responsible for mapping
  * HTTP request to a Request object for dispatch and vice-versa.
  */
-class Route extends Nette\Object implements Application\IRouter
+class Route extends Nette\Object implements Application\IRouter, Application\IRouteMeta
 {
 	const PRESENTER_KEY = 'presenter';
 	const MODULE_KEY = 'module';
