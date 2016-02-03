@@ -29,7 +29,6 @@ function createCompiler($config)
 test(function () {
 	$compiler = createCompiler('
 	application:
-		debugger: no
 		silentLinks: yes
 
 	services:
@@ -50,7 +49,6 @@ test(function () {
 test(function () {
 	$compiler = createCompiler('
 	application:
-		debugger: no
 		silentLinks: no
 
 	services:
@@ -71,7 +69,6 @@ test(function () {
 test(function () {
 	$compiler = createCompiler('
 	application:
-		debugger: no
 		silentLinks: yes
 
 	services:
@@ -92,7 +89,6 @@ test(function () {
 test(function () {
 	$compiler = createCompiler('
 	application:
-		debugger: no
 		silentLinks: no
 
 	services:

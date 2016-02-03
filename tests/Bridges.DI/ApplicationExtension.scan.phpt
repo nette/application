@@ -21,9 +21,7 @@ test(function () {
 	$builder->addDefinition('myRouter')->setClass(Nette\Application\Routers\SimpleRouter::class);
 	$builder->addDefinition('myHttpRequest')->setFactory(Nette\Http\Request::class, [new DI\Statement(Nette\Http\UrlScript::class)]);
 	$builder->addDefinition('myHttpResponse')->setClass(Nette\Http\Response::class);
-	$code = $compiler->compile([
-		'application' => ['debugger' => FALSE],
-	], 'Container1');
+	$code = $compiler->compile([], 'Container1');
 	eval($code);
 
 	$container = new Container1;
@@ -45,7 +43,6 @@ test(function () {
 	$code = $compiler->compile([
 		'application' => [
 			'scanDirs' => [__DIR__ . '/files'],
-			'debugger' => FALSE,
 		],
 	], 'Container2');
 	eval($code);
@@ -68,9 +65,6 @@ test(function () {
 	$builder->addDefinition('myHttpResponse')->setClass(Nette\Http\Response::class);
 	$loader = new DI\Config\Loader;
 	$config = $loader->load(Tester\FileMock::create('
-	application:
-		debugger: no
-
 	services:
 		-
 			factory: Presenter1
