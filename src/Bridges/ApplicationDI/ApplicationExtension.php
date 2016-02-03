@@ -9,6 +9,8 @@ namespace Nette\Bridges\ApplicationDI;
 
 use Nette;
 use Nette\Application\UI;
+use Tracy;
+use Composer\Autoload\ClassLoader;
 
 
 /**
@@ -17,7 +19,7 @@ use Nette\Application\UI;
 class ApplicationExtension extends Nette\DI\CompilerExtension
 {
 	public $defaults = array(
-		'debugger' => TRUE,
+		'debugger' => NULL,
 		'errorPresenter' => 'Nette:Error',
 		'catchExceptions' => NULL,
 		'mapping' => NULL,
@@ -39,6 +41,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 
 	public function __construct($debugMode = FALSE, array $scanDirs = NULL, $tempDir = NULL)
 	{
+		$this->defaults['debugger'] = class_exists('Tracy\IBarPanel');
 		$this->defaults['scanDirs'] = (array) $scanDirs;
 		$this->defaults['scanComposer'] = class_exists('Composer\Autoload\ClassLoader');
 		$this->defaults['catchExceptions'] = !$debugMode;

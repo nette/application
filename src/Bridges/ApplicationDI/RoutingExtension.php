@@ -8,6 +8,7 @@
 namespace Nette\Bridges\ApplicationDI;
 
 use Nette;
+use Tracy;
 
 
 /**
@@ -16,7 +17,7 @@ use Nette;
 class RoutingExtension extends Nette\DI\CompilerExtension
 {
 	public $defaults = array(
-		'debugger' => TRUE,
+		'debugger' => NULL,
 		'routes' => array(), // of [mask => action]
 		'cache' => FALSE,
 	);
@@ -27,6 +28,7 @@ class RoutingExtension extends Nette\DI\CompilerExtension
 
 	public function __construct($debugMode = FALSE)
 	{
+		$this->defaults['debugger'] = class_exists('Tracy\IBarPanel');
 		$this->debugMode = $debugMode;
 	}
 
