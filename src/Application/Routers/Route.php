@@ -238,16 +238,12 @@ class Route extends Nette\Object implements Application\IRouter
 		} elseif (!is_string($params[self::PRESENTER_KEY])) {
 			return NULL;
 		}
-		if (isset($this->metadata[self::MODULE_KEY])) {
-			if (!isset($params[self::MODULE_KEY])) {
-				throw new Nette\InvalidStateException('Missing module in route definition.');
-			}
-			$presenter = $params[self::MODULE_KEY] . ':' . $params[self::PRESENTER_KEY];
-			unset($params[self::MODULE_KEY], $params[self::PRESENTER_KEY]);
+		$presenter = $params[self::PRESENTER_KEY];
+		unset($params[self::PRESENTER_KEY]);
 
-		} else {
-			$presenter = $params[self::PRESENTER_KEY];
-			unset($params[self::PRESENTER_KEY]);
+		if (isset($this->metadata[self::MODULE_KEY])) {
+			$presenter = (isset($params[self::MODULE_KEY]) ? $params[self::MODULE_KEY] . ':' : '') . $presenter;
+			unset($params[self::MODULE_KEY]);
 		}
 
 		return new Application\Request(
@@ -292,7 +288,7 @@ class Route extends Nette\Object implements Application\IRouter
 				$a = strrpos($presenter, ':');
 			}
 			if ($a === FALSE) {
-				$params[self::MODULE_KEY] = '';
+				$params[self::MODULE_KEY] = isset($module[self::VALUE]) ? '' : NULL;
 			} else {
 				$params[self::MODULE_KEY] = substr($presenter, 0, $a);
 				$params[self::PRESENTER_KEY] = substr($presenter, $a + 1);
