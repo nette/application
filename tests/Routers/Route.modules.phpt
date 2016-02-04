@@ -66,3 +66,39 @@ testRouteIn($route, '/module.submodule', 'Module:Submodule:Default', array(
 Assert::null(testRouteOut($route, 'Homepage'));
 Assert::same('http://example.com/module/homepage', testRouteOut($route, 'Module:Homepage'));
 Assert::same('http://example.com/module.submodule/homepage', testRouteOut($route, 'Module:Submodule:Homepage'));
+
+
+$route = new Route('[<module>/]<presenter>');
+testRouteIn($route, '/home', 'Home', array(
+	'test' => 'testvalue',
+), '/home?test=testvalue');
+
+
+$route = new Route('[<module=Def>/]<presenter>');
+testRouteIn($route, '/home', 'Def:Home', array(
+	'test' => 'testvalue',
+), '/home?test=testvalue');
+
+
+$route = new Route('[<module>/]<presenter>');
+testRouteIn($route, '/module/home', 'Module:Home', array(
+	'test' => 'testvalue',
+), '/module/home?test=testvalue');
+
+
+$route = new Route('[<module=def>/]<presenter>');
+testRouteIn($route, '/module/home', 'Module:Home', array(
+	'test' => 'testvalue',
+), '/module/home?test=testvalue');
+
+
+$route = new Route('[<module>/]<presenter>');
+testRouteIn($route, '/module.submodule/home', 'Module:Submodule:Home', array(
+	'test' => 'testvalue',
+), '/module.submodule/home?test=testvalue');
+
+
+$route = new Route('[<module>/]<presenter>');
+testRouteIn($route, '/module/submodule.home', 'Module:Submodule:Home', array(
+	'test' => 'testvalue',
+), '/module.submodule/home?test=testvalue');
