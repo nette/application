@@ -65,7 +65,7 @@ class RoutingPanel extends Nette\Object implements Tracy\IBarPanel
 	public function getTab()
 	{
 		$this->analyse($this->router);
-		ob_start(NULL, 0, PHP_OUTPUT_HANDLER_REMOVABLE);
+		ob_start();
 		$request = $this->request;
 		require __DIR__ . '/templates/RoutingPanel.tab.phtml';
 		return ob_get_clean();
@@ -78,7 +78,7 @@ class RoutingPanel extends Nette\Object implements Tracy\IBarPanel
 	 */
 	public function getPanel()
 	{
-		ob_start(NULL, 0, PHP_OUTPUT_HANDLER_REMOVABLE);
+		ob_start();
 		$request = $this->request;
 		$routers = $this->routers;
 		$source = $this->source;
