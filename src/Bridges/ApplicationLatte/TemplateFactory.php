@@ -52,10 +52,6 @@ class TemplateFactory extends Nette\Object implements UI\ITemplateFactory
 		$template = new Template($latte);
 		$presenter = $control ? $control->getPresenter(FALSE) : NULL;
 
-		if ($control instanceof UI\Presenter) {
-			$latte->setLoader(new Loader($control));
-		}
-
 		if ($latte->onCompile instanceof \Traversable) {
 			$latte->onCompile = iterator_to_array($latte->onCompile);
 		}
