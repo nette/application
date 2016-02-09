@@ -41,7 +41,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 
 	public function __construct($debugMode = FALSE, array $scanDirs = NULL, $tempDir = NULL)
 	{
-		$this->defaults['debugger'] = class_exists(Tracy\IBarPanel::class);
+		$this->defaults['debugger'] = interface_exists(Tracy\IBarPanel::class);
 		$this->defaults['scanDirs'] = (array) $scanDirs;
 		$this->defaults['scanComposer'] = class_exists(ClassLoader::class);
 		$this->defaults['catchExceptions'] = !$debugMode;

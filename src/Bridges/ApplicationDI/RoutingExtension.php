@@ -28,7 +28,7 @@ class RoutingExtension extends Nette\DI\CompilerExtension
 
 	public function __construct($debugMode = FALSE)
 	{
-		$this->defaults['debugger'] = class_exists(Tracy\IBarPanel::class);
+		$this->defaults['debugger'] = interface_exists(Tracy\IBarPanel::class);
 		$this->debugMode = $debugMode;
 	}
 
