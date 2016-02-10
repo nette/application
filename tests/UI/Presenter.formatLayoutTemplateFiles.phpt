@@ -64,3 +64,13 @@ test(function () { // with module & without subdir templates
 		dirname(dirname(__DIR__)) . '/templates/@layout.latte',
 	], $presenter->formatLayoutTemplateFiles());
 });
+
+
+test(function () { // direct file
+	$presenter = new Presenter2;
+	$presenter->setLayout(__DIR__ . '/file.latte');
+
+	Assert::same([
+		__DIR__ . '/file.latte'
+	], $presenter->formatLayoutTemplateFiles());
+});

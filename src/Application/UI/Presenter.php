@@ -498,6 +498,9 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function formatLayoutTemplateFiles()
 	{
+		if (preg_match('#/|\\\\#', $this->layout)) {
+			return [$this->layout];
+		}
 		list($module, $presenter) = Helpers::splitName($this->getName());
 		$layout = $this->layout ? $this->layout : 'layout';
 		$dir = dirname($this->getReflection()->getFileName());
