@@ -475,7 +475,10 @@ abstract class Presenter extends Control implements Application\IPresenter
 	{
 		if ($this->layout === FALSE) {
 			return;
+		} elseif (file_exists($this->layout)) {
+			return $this->layout;
 		}
+
 		$files = $this->formatLayoutTemplateFiles();
 		foreach ($files as $file) {
 			if (is_file($file)) {
