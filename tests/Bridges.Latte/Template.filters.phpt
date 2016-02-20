@@ -14,13 +14,13 @@ $engine = new Latte\Engine;
 $template = new Template($engine);
 
 Assert::exception(function () use ($template) {
-	@$template->length('abc');
-}, LogicException::class, "Filter 'length' is not defined.");
+	@$template->undefinedFilter('abc');
+}, LogicException::class, "Filter 'undefinedFilter' is not defined.");
 
-$engine->addFilter('length', 'strlen');
+$engine->addFilter('undefinedFilter', 'strlen');
 
-Assert::same(3, @$template->length('abc'));
+Assert::same(3, @$template->undefinedFilter('abc'));
 
 Assert::error(function () use ($template) {
-	$template->length('abc');
+	$template->undefinedFilter('abc');
 }, E_USER_DEPRECATED, 'Invoking filters on Template object is deprecated, use getLatte()->invokeFilter().');
