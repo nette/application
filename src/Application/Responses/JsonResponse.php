@@ -61,7 +61,7 @@ class JsonResponse extends Nette\Object implements Nette\Application\IResponse
 	 */
 	public function send(Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse)
 	{
-		$httpResponse->setContentType($this->contentType);
+		$httpResponse->setContentType($this->contentType, 'utf-8');
 		echo Nette\Utils\Json::encode($this->payload);
 	}
 
