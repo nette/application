@@ -41,8 +41,6 @@ Assert::same('1978-01-22 11:40:00', (string) $latte->invokeFilter('modifyDate', 
 
 
 Assert::same('%25', $latte->invokeFilter('url', ['%']));
-Assert::same(3, $latte->invokeFilter('length', ['abc']));
-Assert::same(2, $latte->invokeFilter('length', [[1, 2]]));
 Assert::null($latte->invokeFilter('null', ['x']));
 Assert::same('', $latte->invokeFilter('normalize', ['  ']));
 Assert::same('a-b', $latte->invokeFilter('webalize', ['a b']));

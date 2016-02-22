@@ -77,9 +77,6 @@ class TemplateFactory extends Nette\Object implements UI\ITemplateFactory
 			$latte->addFilter($name, 'Nette\Utils\Strings::' . $name);
 		}
 		$latte->addFilter('null', function () {});
-		$latte->addFilter('length', function ($var) {
-			return is_string($var) ? Nette\Utils\Strings::length($var) : count($var);
-		});
 		$latte->addFilter('modifyDate', function ($time, $delta, $unit = NULL) {
 			return $time == NULL ? NULL : Nette\Utils\DateTime::from($time)->modify($delta . $unit); // intentionally ==
 		});
