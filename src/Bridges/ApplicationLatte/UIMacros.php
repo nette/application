@@ -76,7 +76,7 @@ if (empty($_l->extends) && !empty($_control->snippetMode)) {
 		return ($name[0] === '$' ? "if (is_object($name)) \$_l->tmp = $name; else " : '')
 			. '$_l->tmp = $_control->getComponent(' . $name . '); '
 			. 'if ($_l->tmp instanceof Nette\Application\UI\IRenderable) $_l->tmp->redrawControl(NULL, FALSE); '
-			. ($node->modifiers === '' ? "\$_l->tmp->$method($param)" : $writer->write("ob_start(); \$_l->tmp->$method($param); echo %modify(ob_get_clean())"));
+			. ($node->modifiers === '' ? "\$_l->tmp->$method($param)" : $writer->write("ob_start(function () {}); \$_l->tmp->$method($param); echo %modify(ob_get_clean())"));
 	}
 
 
