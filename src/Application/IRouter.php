@@ -33,4 +33,10 @@ interface IRouter
 	 */
 	function constructUrl(Request $appRequest, Nette\Http\Url $refUrl);
 
+	/**
+	 * Returns list of possible target presenters or NULL if the list is dynamic.
+	 * @return string[]|NULL
+	 */
+	// function getTargetPresenters();
+
 }
