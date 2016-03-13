@@ -22,9 +22,6 @@ class TemplateFactory extends Nette\Object implements UI\ITemplateFactory
 	/** @var Nette\Http\IRequest */
 	private $httpRequest;
 
-	/** @var Nette\Http\IResponse */
-	private $httpResponse;
-
 	/** @var Nette\Security\User */
 	private $user;
 
@@ -33,11 +30,10 @@ class TemplateFactory extends Nette\Object implements UI\ITemplateFactory
 
 
 	public function __construct(ILatteFactory $latteFactory, Nette\Http\IRequest $httpRequest = NULL,
-		Nette\Http\IResponse $httpResponse = NULL, Nette\Security\User $user = NULL, Nette\Caching\IStorage $cacheStorage = NULL)
+		Nette\Security\User $user = NULL, Nette\Caching\IStorage $cacheStorage = NULL)
 	{
 		$this->latteFactory = $latteFactory;
 		$this->httpRequest = $httpRequest;
-		$this->httpResponse = $httpResponse;
 		$this->user = $user;
 		$this->cacheStorage = $cacheStorage;
 	}
