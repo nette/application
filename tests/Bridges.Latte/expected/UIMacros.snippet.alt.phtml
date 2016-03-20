@@ -38,7 +38,7 @@ if ($_l->extends) { ob_start(function () {});}
 // prolog Nette\Bridges\ApplicationLatte\UIMacros
 
 // snippets support
-if (empty($_l->extends) && !empty($_control->snippetMode)) {
+if (empty($_l->extends) && !empty($_control->snippetMode) && empty($_g->includingBlock)) {
 	return Nette\Bridges\ApplicationLatte\UIRuntime::renderSnippets($_control, $_b, get_defined_vars());
 }
 
