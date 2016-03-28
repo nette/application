@@ -26,4 +26,17 @@ class TestPresenter extends Application\UI\Presenter
 
 }
 
+class TestControl extends Application\UI\Control
+{
+
+	public function handleClick($x, $y)
+	{
+	}
+
+	public function handleOtherSignal()
+	{
+	}
+
+}
+
 require __DIR__ . '/PresenterComponent.isLinkCurrent().asserts.php';
