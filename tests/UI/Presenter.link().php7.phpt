@@ -12,38 +12,7 @@ use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/MockPresenterFactory.php';
-
-
-class TestControl extends Application\UI\Control
-{
-	/** @persistent array */
-	public $order = [];
-
-	/** @persistent int */
-	public $round = 0;
-
-
-	public function handleClick($x, $y)
-	{
-	}
-
-	public function loadState(array $params)
-	{
-		if (isset($params['order'])) {
-			$params['order'] = explode('.', $params['order']);
-		}
-		parent::loadState($params);
-	}
-
-	public function saveState(array & $params)
-	{
-		parent::saveState($params);
-		if (isset($params['order'])) {
-			$params['order'] = implode('.', $params['order']);
-		}
-	}
-
-}
+require __DIR__ . '/TestControl.php';
 
 
 class TestPresenter extends Application\UI\Presenter
