@@ -28,19 +28,13 @@ function callIsLinkCurrent(Application\Request $request, $destination, array $ar
 }
 
 Assert::true(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, array()),
-	'Test:default',
-	array()
-));
-
-Assert::true(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, array('int' => 1)),
+	new Application\Request('Test', Http\Request::GET, array('int' => 1, 'bool' => TRUE)),
 	'Test:default',
 	array()
 ));
 
 Assert::false(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, array('int' => 1)),
+	new Application\Request('Test', Http\Request::GET, array('int' => 1, 'bool' => TRUE)),
 	'Test:default',
 	array('int' => 2)
 ));
@@ -54,12 +48,6 @@ Assert::false(callIsLinkCurrent(
 Assert::true(callIsLinkCurrent(
 	new Application\Request('Test', Http\Request::GET, array(Application\UI\Presenter::ACTION_KEY => 'otherAction')),
 	'Test:otherAction',
-	array()
-));
-
-Assert::true(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, array('int' => 1, 'bool' => TRUE)),
-	'Test:default',
 	array()
 ));
 
@@ -115,21 +103,27 @@ Assert::true(callIsLinkCurrent(
 ));
 
 Assert::true(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, array()),
-	'Test:*',
-	array()
-));
-
-Assert::true(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, array('int' => 1)),
+	new Application\Request('Test', Http\Request::GET, array('int' => 1, 'bool' => TRUE)),
 	'Test:*',
 	array()
 ));
 
 Assert::false(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET),
+	new Application\Request('Test', Http\Request::GET, array('int' => 1, 'bool' => TRUE)),
 	'Test:*',
-	array('int' => 1)
+	array('float' => 1.0)
+));
+
+Assert::true(callIsLinkCurrent(
+	new Application\Request('Test', Http\Request::GET, array('int' => 1, 'bool' => TRUE, 'float' => 1.0)),
+	'Test:*',
+	array('float' => 1.0)
+));
+
+Assert::false(callIsLinkCurrent(
+	new Application\Request('Test', Http\Request::GET, array('int' => 1, 'bool' => TRUE, 'float' => 1.0)),
+	'Test:*',
+	array('float' => 2.0)
 ));
 
 Assert::true(callIsLinkCurrent(
@@ -149,19 +143,31 @@ Assert::false(callIsLinkCurrent(
 ));
 
 Assert::true(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, array(Application\UI\Presenter::SIGNAL_KEY => 'signal')),
+	new Application\Request('Test', Http\Request::GET, array(
+		Application\UI\Presenter::SIGNAL_KEY => 'signal',
+		'int' => 1,
+		'bool' => TRUE,
+	)),
 	'Test:default',
 	array()
 ));
 
 Assert::true(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, array(Application\UI\Presenter::SIGNAL_KEY => 'signal')),
+	new Application\Request('Test', Http\Request::GET, array(
+		Application\UI\Presenter::SIGNAL_KEY => 'signal',
+		'int' => 1,
+		'bool' => TRUE,
+	)),
 	'signal!',
 	array()
 ));
 
 Assert::false(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, array(Application\UI\Presenter::SIGNAL_KEY => 'signal')),
+	new Application\Request('Test', Http\Request::GET, array(
+		Application\UI\Presenter::SIGNAL_KEY => 'signal',
+		'int' => 1,
+		'bool' => TRUE,
+	)),
 	'otherSignal!',
 	array()
 ));
