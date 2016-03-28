@@ -11,6 +11,7 @@ use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
+require __DIR__ . '/MockPresenterFactory.php';
 
 
 class TestControl extends Application\UI\Control
@@ -247,18 +248,6 @@ class OtherPresenter extends TestPresenter
 {
 	/** @persistent */
 	public $p = 20;
-}
-
-
-class MockPresenterFactory extends Nette\Object implements Nette\Application\IPresenterFactory
-{
-	function getPresenterClass(& $name)
-	{
-		return str_replace(':', 'Module\\', $name) . 'Presenter';
-	}
-
-	function createPresenter($name)
-	{}
 }
 
 
