@@ -779,87 +779,23 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 		$this->lastCreatedRequest = $this->lastCreatedRequestFlag = NULL;
 
-		// PARSE DESTINATION
-		// 1) fragment
-		$a = strpos($destination, '#');
-		if ($a === FALSE) {
-			$fragment = '';
-		} else {
-			$fragment = substr($destination, $a);
-			$destination = substr($destination, 0, $a);
-		}
+		$parsedLinkDestination = $this->parseLinkDestination($component, $destination);
+		$destination = $parsedLinkDestination['destination'];
+		$scheme = $parsedLinkDestination['scheme'];
+		$presenter = $parsedLinkDestination['presenter'];
+		$presenterClass = $parsedLinkDestination['presenterClass'];
+		$action = $parsedLinkDestination['action'];
+		$current = $parsedLinkDestination['current'];
+		$component = $parsedLinkDestination['callee'];
+		$signal = $parsedLinkDestination['signal'];
+		$fragment = $parsedLinkDestination['fragment'];
 
-		// 2) ?query syntax
-		$a = strpos($destination, '?');
-		if ($a !== FALSE) {
-			parse_str(substr($destination, $a + 1), $args);
-			$destination = substr($destination, 0, $a);
-		}
-
-		// 3) URL scheme
-		$a = strpos($destination, '//');
-		if ($a === FALSE) {
-			$scheme = FALSE;
-		} else {
-			$scheme = substr($destination, 0, $a);
-			$destination = substr($destination, $a + 2);
-		}
-
-		// 4) signal or empty
-		if (!$component instanceof self || substr($destination, -1) === '!') {
-			$signal = rtrim($destination, '!');
-			$a = strrpos($signal, ':');
-			if ($a !== FALSE) {
-				$component = $component->getComponent(strtr(substr($signal, 0, $a), ':', '-'));
-				$signal = (string) substr($signal, $a + 1);
-			}
-			if ($signal == NULL) {  // intentionally ==
-				throw new InvalidLinkException('Signal must be non-empty string.');
-			}
-			$destination = 'this';
-		}
-
-		if ($destination == NULL) {  // intentionally ==
-			throw new InvalidLinkException('Destination must be non-empty string.');
-		}
-
-		// 5) presenter: action
-		$current = FALSE;
-		$a = strrpos($destination, ':');
-		if ($a === FALSE) {
-			$action = $destination === 'this' ? $this->action : $destination;
-			$presenter = $this->getName();
-			$presenterClass = get_class($this);
-
-		} else {
-			$action = (string) substr($destination, $a + 1);
-			if ($destination[0] === ':') { // absolute
-				if ($a < 2) {
-					throw new InvalidLinkException("Missing presenter name in '$destination'.");
-				}
-				$presenter = substr($destination, 1, $a - 1);
-
-			} else { // relative
-				$presenter = $this->getName();
-				$b = strrpos($presenter, ':');
-				if ($b === FALSE) { // no module
-					$presenter = substr($destination, 0, $a);
-				} else { // with module
-					$presenter = substr($presenter, 0, $b + 1) . substr($destination, 0, $a);
-				}
-			}
-			if (!$this->presenterFactory) {
-				throw new Nette\InvalidStateException('Unable to create link to other presenter, service PresenterFactory has not been set.');
-			}
-			try {
-				$presenterClass = $this->presenterFactory->getPresenterClass($presenter);
-			} catch (Application\InvalidPresenterException $e) {
-				throw new InvalidLinkException($e->getMessage(), NULL, $e);
-			}
+		if ($parsedLinkDestination['args'] !== null) {
+			$args = $parsedLinkDestination['args'];
 		}
 
 		// PROCESS SIGNAL ARGUMENTS
-		if (isset($signal)) { // $component must be IStatePersistent
+		if ($signal !== null) { // $component must be IStatePersistent
 			$reflection = new PresenterComponentReflection(get_class($component));
 			if ($signal === 'this') { // means "no signal"
 				$signal = '';
@@ -995,6 +931,106 @@ abstract class Presenter extends Control implements Application\IPresenter
 		}
 
 		return $url . $fragment;
+	}
+
+	/**
+	 * @internal
+	 * @param \Nette\Application\UI\PresenterComponent $callee
+	 * @param string $destination
+	 * @return array
+	 */
+	public function parseLinkDestination(PresenterComponent $callee, $destination)
+	{
+		// 1) fragment
+		$a = strpos($destination, '#');
+		if ($a === FALSE) {
+			$fragment = '';
+		} else {
+			$fragment = substr($destination, $a);
+			$destination = substr($destination, 0, $a);
+		}
+
+		// 2) ?query syntax
+		$a = strpos($destination, '?');
+		if ($a !== FALSE) {
+			parse_str(substr($destination, $a + 1), $args);
+			$destination = substr($destination, 0, $a);
+		}
+
+		// 3) URL scheme
+		$a = strpos($destination, '//');
+		if ($a === FALSE) {
+			$scheme = FALSE;
+		} else {
+			$scheme = substr($destination, 0, $a);
+			$destination = substr($destination, $a + 2);
+		}
+
+		// 4) signal or empty
+		if (!$callee instanceof self || substr($destination, -1) === '!') {
+			$signal = rtrim($destination, '!');
+			$a = strrpos($signal, ':');
+			if ($a !== FALSE) {
+				$callee = $callee->getComponent(strtr(substr($signal, 0, $a), ':', '-'));
+				$signal = (string) substr($signal, $a + 1);
+			}
+			if ($signal == NULL) {  // intentionally ==
+				throw new InvalidLinkException('Signal must be non-empty string.');
+			}
+			$destination = 'this';
+		}
+
+		if ($destination == NULL) {  // intentionally ==
+			throw new InvalidLinkException('Destination must be non-empty string.');
+		}
+
+		// 5) presenter: action
+		$current = FALSE;
+		$a = strrpos($destination, ':');
+		if ($a === FALSE) {
+			$action = $destination === 'this' ? $this->action : $destination;
+			$presenter = $this->getName();
+			$presenterClass = get_class($this);
+
+		} else {
+			$action = (string) substr($destination, $a + 1);
+			if ($destination[0] === ':') { // absolute
+				if ($a < 2) {
+					throw new InvalidLinkException("Missing presenter name in '$destination'.");
+				}
+				$presenter = substr($destination, 1, $a - 1);
+
+			} else { // relative
+				$presenter = $this->getName();
+				$b = strrpos($presenter, ':');
+				if ($b === FALSE) { // no module
+					$presenter = substr($destination, 0, $a);
+				} else { // with module
+					$presenter = substr($presenter, 0, $b + 1) . substr($destination, 0, $a);
+				}
+			}
+			if (!$this->presenterFactory) {
+				throw new Nette\InvalidStateException('Unable to create link to other presenter, service PresenterFactory has not been set.');
+			}
+			try {
+				$presenterClass = $this->presenterFactory->getPresenterClass($presenter);
+			} catch (Application\InvalidPresenterException $e) {
+				throw new InvalidLinkException($e->getMessage(), NULL, $e);
+			}
+		}
+
+		return [
+			'destination' => $destination,
+			'scheme' => $scheme,
+			'presenter' => $presenter,
+			'presenterClass' => $presenterClass,
+			'action' => $action,
+			'signal' => isset($signal) ? $signal : null,
+			'args' => isset($args) ? $args : null,
+			'fragment' => $fragment,
+			'current' => $current,
+			'callee' => $callee,
+		];
 	}
 
 
