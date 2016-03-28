@@ -15,6 +15,10 @@ class TestControl extends Application\UI\Control
 	{
 	}
 
+	public function handleOtherSignal()
+	{
+	}
+
 	public function loadState(array $params)
 	{
 		if (isset($params['order'])) {
