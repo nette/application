@@ -171,3 +171,55 @@ Assert::false(callIsLinkCurrent(
 	'otherSignal!',
 	array()
 ));
+
+
+// conflicting action in destination string and args
+Assert::false(callIsLinkCurrent(
+	new Application\Request('Test', Http\Request::GET, array(
+		Application\UI\Presenter::ACTION_KEY => 'default',
+		'int' => 1,
+		'bool' => TRUE,
+	)),
+	'Test:default',
+	array(
+		Application\UI\Presenter::ACTION_KEY => 'otherAction',
+	)
+));
+
+Assert::false(callIsLinkCurrent(
+	new Application\Request('Test', Http\Request::GET, array(
+		Application\UI\Presenter::ACTION_KEY => 'default',
+		'int' => 1,
+		'bool' => TRUE,
+	)),
+	'Test:otherAction',
+	array(
+		Application\UI\Presenter::ACTION_KEY => 'default',
+	)
+));
+
+
+// conflicting signal in destination string and args
+Assert::false(callIsLinkCurrent(
+	new Application\Request('Test', Http\Request::GET, array(
+		Application\UI\Presenter::SIGNAL_KEY => 'signal',
+		'int' => 1,
+		'bool' => TRUE,
+	)),
+	'signal!',
+	array(
+		Application\UI\Presenter::SIGNAL_KEY => 'otherSignal',
+	)
+));
+
+Assert::false(callIsLinkCurrent(
+	new Application\Request('Test', Http\Request::GET, array(
+		Application\UI\Presenter::SIGNAL_KEY => 'signal',
+		'int' => 1,
+		'bool' => TRUE,
+	)),
+	'otherSignal!',
+	array(
+		Application\UI\Presenter::SIGNAL_KEY => 'signal',
+	)
+));
