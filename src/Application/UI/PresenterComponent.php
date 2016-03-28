@@ -325,7 +325,43 @@ abstract class PresenterComponent extends Nette\ComponentModel\Container impleme
 	{
 		if ($destination !== NULL) {
 			$args = func_num_args() < 3 && is_array($args) ? $args : array_slice(func_get_args(), 1);
-			$this->getPresenter()->createRequest($this, $destination, $args, 'test');
+			$presenter = $this->getPresenter();
+			$parsedLinkDestination = $presenter->parseLinkDestination($this, $destination);
+			if ($parsedLinkDestination['presenterClass'] !== get_class($presenter)) {
+				return FALSE;
+			}
+
+			if ($parsedLinkDestination['action'] !== '*' && $parsedLinkDestination['action'] !== $presenter->getAction()) {
+				return FALSE;
+			}
+
+			if ($parsedLinkDestination['callee'] !== $presenter) {
+				$prefix = $parsedLinkDestination['callee']->getUniqueId() . self::NAME_SEPARATOR;
+				foreach ($args as $key => $val) {
+					unset($args[$key]);
+					$args[$prefix . $key] = $val;
+				}
+			}
+
+			$currentParameters = $presenter->getGlobalState($parsedLinkDestination['destination'] === 'this' ? NULL : $parsedLinkDestination['presenterClass']) + $presenter->getParameters();
+			foreach ($args as $name => $value) {
+				if (array_key_exists($name, $currentParameters)) {
+					if ($currentParameters[$name] != $value) {
+						return FALSE;
+					}
+				} else {
+					return FALSE;
+				}
+			}
+
+			if ($parsedLinkDestination['signal'] !== NULL) {
+				list($signalReceiver, $signal) = $presenter->getSignal();
+
+				return $parsedLinkDestination['callee']->getUniqueId() === $signalReceiver
+					&& $parsedLinkDestination['signal'] === $signal;
+			}
+
+			return TRUE;
 		}
 		return $this->getPresenter()->getLastCreatedRequestFlag('current');
 	}
