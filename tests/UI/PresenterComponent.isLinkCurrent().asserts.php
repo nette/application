@@ -11,7 +11,16 @@ use Tester\Assert;
 function callIsLinkCurrent(Application\Request $request, $destination, array $args)
 {
 	$presenter = new TestPresenter;
+	return callIsComponentLinkCurrent($presenter, $presenter, $request, $destination, $args);
+}
 
+function callIsComponentLinkCurrent(
+	Application\UI\Presenter $presenter,
+	Application\UI\PresenterComponent $component,
+	Application\Request $request,
+	$destination,
+	array $args
+) {
 	$url = new Http\UrlScript('http://localhost/index.php');
 	$url->setScriptPath('/index.php');
 
@@ -24,7 +33,7 @@ function callIsLinkCurrent(Application\Request $request, $destination, array $ar
 	);
 	$presenter->run($request);
 
-	return $presenter->isLinkCurrent($destination, $args);
+	return $component->isLinkCurrent($destination, $args);
 }
 
 Assert::true(callIsLinkCurrent(
@@ -221,5 +230,111 @@ Assert::false(callIsLinkCurrent(
 	'otherSignal!',
 	[
 		Application\UI\Presenter::SIGNAL_KEY => 'signal',
+	]
+));
+
+
+// signal for nested component
+$testPresenter = new TestPresenter;
+$testControl = new TestControl;
+$testPresenter['test'] = $testControl;
+Assert::true(callIsComponentLinkCurrent(
+	$testPresenter,
+	$testControl,
+	new Application\Request('Test', Http\Request::GET, [
+		Application\UI\Presenter::SIGNAL_KEY => 'test-click',
+		'int' => 1,
+		'bool' => TRUE,
+	]),
+	'click!',
+	[]
+));
+
+$testPresenter = new TestPresenter;
+$testControl = new TestControl;
+$testPresenter['test'] = $testControl;
+Assert::false(callIsComponentLinkCurrent(
+	$testPresenter,
+	$testControl,
+	new Application\Request('Test', Http\Request::GET, [
+		Application\UI\Presenter::SIGNAL_KEY => 'test-click',
+		'int' => 1,
+		'bool' => TRUE,
+	]),
+	'otherSignal!',
+	[]
+));
+
+$testPresenter = new TestPresenter;
+$testControl = new TestControl;
+$testPresenter['test'] = $testControl;
+Assert::true(callIsComponentLinkCurrent(
+	$testPresenter,
+	$testControl,
+	new Application\Request('Test', Http\Request::GET, [
+		Application\UI\Presenter::SIGNAL_KEY => 'test-click',
+		'int' => 1,
+		'bool' => TRUE,
+		'test-x' => 1,
+	]),
+	'click!',
+	[
+		'x' => 1,
+	]
+));
+
+$testPresenter = new TestPresenter;
+$testControl = new TestControl;
+$testPresenter['test'] = $testControl;
+Assert::false(callIsComponentLinkCurrent(
+	$testPresenter,
+	$testControl,
+	new Application\Request('Test', Http\Request::GET, [
+		Application\UI\Presenter::SIGNAL_KEY => 'test-click',
+		'int' => 1,
+		'bool' => TRUE,
+		'test-x' => 1,
+	]),
+	'click!',
+	[
+		'x' => 2,
+	]
+));
+
+$testPresenter = new TestPresenter;
+$testControlWithAnotherTestControl = new TestControl;
+$testPresenter['test'] = $testControlWithAnotherTestControl;
+$testControlWithAnotherTestControl['test'] = new TestControl;
+Assert::true(callIsComponentLinkCurrent(
+	$testPresenter,
+	$testControlWithAnotherTestControl,
+	new Application\Request('Test', Http\Request::GET, [
+		Application\UI\Presenter::SIGNAL_KEY => 'test-test-click',
+		'int' => 1,
+		'bool' => TRUE,
+		'test-test-x' => 1,
+	]),
+	'test:click!',
+	[
+		'x' => 1,
+	]
+));
+
+$testPresenter = new TestPresenter;
+$testControlWithAnotherTestControl = new TestControl;
+$testPresenter['test'] = $testControlWithAnotherTestControl;
+$testControlWithAnotherTestControl['test'] = new TestControl;
+Assert::false(callIsComponentLinkCurrent(
+	$testPresenter,
+	$testControlWithAnotherTestControl,
+	new Application\Request('Test', Http\Request::GET, [
+		Application\UI\Presenter::SIGNAL_KEY => 'test-test-click',
+		'int' => 1,
+		'bool' => TRUE,
+		'test-test-x' => 1,
+	]),
+	'test:click!',
+	[
+		'x' => 2,
 	]
 ));
