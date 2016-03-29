@@ -91,15 +91,59 @@ class PresenterFactory extends Nette\Object implements IPresenterFactory
 
 	/**
 	 * Sets mapping as pairs [module => mask]
+	 * @param array
 	 * @return self
 	 */
 	public function setMapping(array $mapping)
 	{
+		$prefixPattern = '\\\\?([\w\\\\]*\\\\)?';
+		$modulePattern = '[\w\\\\]*?\*\w*?\\\\';
+		$presenterPattern = '([\w\\\\]*\*\w*)';
+
 		foreach ($mapping as $module => $mask) {
-			if (!preg_match('#^\\\\?([\w\\\\]*\\\\)?(\w*\*\w*?\\\\)?([\w\\\\]*\*\w*)\z#', $mask, $m)) {
-				throw new Nette\InvalidStateException("Invalid mapping mask '$mask'.");
+			if (is_array($mask)) {
+
+				$prefixPart = '';
+				$modulePart = '';
+
+				if (count($mask) === 3) {
+					$prefixPart = $mask[0];
+					$modulePart = $mask[1];
+					$presenterPart = $mask[2];
+				} elseif (count($mask) === 2) {
+					if (preg_match("#^{$prefixPattern}\\z#", $mask[0])) {
+						$prefixPart = $mask[0];
+						$modulePart = '';
+					} elseif (preg_match("#^{$modulePattern}\\z#", $mask[0])) {
+						$prefixPart = '';
+						$modulePart = $mask[0];
+					}
+					$presenterPart = $mask[1];
+				} elseif (count($mask) === 1) {
+					$presenterPart = $mask[0];
+				} else {
+					throw new Nette\InvalidStateException("Invalid length of mask array.");
+				}
+
+				if (!preg_match("#^{$prefixPattern}\\z#", $prefixPart)) {
+					throw new Nette\InvalidStateException("Invalid prefix part of mask.");
+				}
+
+				if (!preg_match("#^({$modulePattern})?\\z#", $modulePart)) {
+					throw new Nette\InvalidStateException("Invalid module part of mask.");
+				}
+
+				if (!preg_match("#^{$presenterPattern}\\z#", $presenterPart)) {
+					throw new Nette\InvalidStateException("Invalid presenter part of mask.");
+				}
+
+				$this->mapping[$module] = [$prefixPart, $modulePart, $presenterPart];
+			} else {
+				if (!preg_match("#^{$prefixPattern}({$modulePattern})?{$presenterPattern}\\z#", $mask, $m)) {
+					throw new Nette\InvalidStateException("Invalid mapping mask '$mask'.");
+				}
+				$this->mapping[$module] = [$m[1], $m[2] ?: '*Module\\', $m[3]];
 			}
-			$this->mapping[$module] = [$m[1], $m[2] ?: '*Module\\', $m[3]];
 		}
 		return $this;
 	}
