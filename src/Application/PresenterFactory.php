@@ -96,10 +96,16 @@ class PresenterFactory extends Nette\Object implements IPresenterFactory
 	public function setMapping(array $mapping)
 	{
 		foreach ($mapping as $module => $mask) {
-			if (!preg_match('#^\\\\?([\w\\\\]*\\\\)?(\w*\*\w*?\\\\)?([\w\\\\]*\*\w*)\z#', $mask, $m)) {
-				throw new Nette\InvalidStateException("Invalid mapping mask '$mask'.");
+			if (is_string($mask)) {
+				if (!preg_match('#^\\\\?([\w\\\\]*\\\\)?(\w*\*\w*?\\\\)?([\w\\\\]*\*\w*)\z#', $mask, $m)) {
+					throw new Nette\InvalidStateException("Invalid mapping mask '$mask'.");
+				}
+				$this->mapping[$module] = [$m[1], $m[2] ?: '*Module\\', $m[3]];
+			} elseif (is_array($mask) && count($mask) === 3) {
+				$this->mapping[$module] = [$mask[0] ? $mask[0] . '\\' : '', $mask[1] . '\\', $mask[2]];
+			} else {
+				throw new Nette\InvalidStateException("Invalid mapping mask for module $module.");
 			}
-			$this->mapping[$module] = [$m[1], $m[2] ?: '*Module\\', $m[3]];
 		}
 		return $this;
 	}
