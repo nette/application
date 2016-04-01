@@ -49,3 +49,34 @@ test(function () {
 	Assert::same('My\App\BarPresenter', $factory->formatPresenterClass('Foo3:Bar'));
 	Assert::same('My\App\BarModule\BazPresenter', $factory->formatPresenterClass('Foo3:Bar:Baz'));
 });
+
+
+test(function () {
+	$factory = new PresenterFactory;
+	$factory->setMapping(array(
+		'*' => array('App', 'Module\*', 'Presenter\*'),
+	));
+	Assert::same('App\Module\Foo\Presenter\Bar', $factory->formatPresenterClass('Foo:Bar'));
+	Assert::same('App\Module\Universe\Module\Foo\Presenter\Bar', $factory->formatPresenterClass('Universe:Foo:Bar'));
+});
+
+
+test(function () {
+	$factory = new PresenterFactory;
+	$factory->setMapping(array(
+		'*' => array('', '*', '*'),
+	));
+	Assert::same('Module\Foo\Bar', $factory->formatPresenterClass('Module:Foo:Bar'));
+});
+
+
+Assert::exception(
+	function () {
+		$factory = new PresenterFactory;
+		$factory->setMapping(array(
+			'*' => array('*', '*'),
+		));
+	},
+	'Nette\InvalidStateException',
+	'Invalid mapping mask for module *.'
+);
