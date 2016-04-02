@@ -874,7 +874,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 					throw new InvalidLinkException("Unknown signal '$signal', missing handler {$reflection->getName()}::$method()");
 				}
 				// convert indexed parameters to named
-				self::argsToParams(get_class($component), $method, $args);
+				self::argsToParams(get_class($component), $method, $args, [], $mode === 'test');
 			}
 
 			// counterpart of IStatePersistent
@@ -915,12 +915,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 				if (array_key_exists(0, $args)) {
 					throw new InvalidLinkException("Unable to pass parameters to action '$presenter:$action', missing corresponding method.");
 				}
-
-			} elseif ($destination === 'this') {
-				self::argsToParams($presenterClass, $method, $args, $this->params);
-
 			} else {
-				self::argsToParams($presenterClass, $method, $args);
+				self::argsToParams($presenterClass, $method, $args, $destination === 'this' ? $this->params : [], $mode === 'test');
 			}
 
 			// counterpart of IStatePersistent
@@ -1004,11 +1000,12 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * @param  string  method name
 	 * @param  array   arguments
 	 * @param  array   supplemental arguments
+	 * @param  bool    prevents 'Missing parameter' exception
 	 * @return void
 	 * @throws InvalidLinkException
 	 * @internal
 	 */
-	public static function argsToParams($class, $method, & $args, $supplemental = [])
+	public static function argsToParams($class, $method, & $args, $supplemental = [], $ignoreMissing = FALSE)
 	{
 		$i = 0;
 		$rm = new \ReflectionMethod($class, $method);
@@ -1029,7 +1026,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			}
 
 			if (!isset($args[$name])) {
-				if ($param->isDefaultValueAvailable() || $type === 'NULL' || $type === 'array') {
+				if ($param->isDefaultValueAvailable() || $type === 'NULL' || $type === 'array' || $ignoreMissing) {
 					continue;
 				}
 				throw new InvalidLinkException("Missing parameter \$$name required by $class::{$rm->getName()}()");
