@@ -14,8 +14,10 @@ use Nette\Application;
 /**
  * The unidirectional router for CLI. (experimental)
  */
-class CliRouter extends Nette\Object implements Application\IRouter
+class CliRouter implements Application\IRouter
 {
+	use Nette\SmartObject;
+
 	const PRESENTER_KEY = 'action';
 
 	/** @var array */

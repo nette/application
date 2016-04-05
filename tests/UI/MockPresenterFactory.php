@@ -1,6 +1,6 @@
 <?php
 
-class MockPresenterFactory extends Nette\Object implements Nette\Application\IPresenterFactory
+class MockPresenterFactory implements Nette\Application\IPresenterFactory
 {
 	function getPresenterClass(& $name)
 	{

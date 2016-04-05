@@ -31,7 +31,7 @@ class MockSession extends Http\Session
 	}
 }
 
-class MockSessionSection extends Nette\Object implements \ArrayAccess
+class MockSessionSection implements \ArrayAccess
 {
 	public $testedKeyExistence;
 	public $storedKey;

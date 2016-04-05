@@ -11,7 +11,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-class Invokable extends Nette\Object
+class Invokable
 {
 	public function __invoke($page, $id, NetteModule\MicroPresenter $presenter)
 	{

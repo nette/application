@@ -17,8 +17,10 @@ use Tracy\Dumper;
 /**
  * Routing debugger for Debug Bar.
  */
-class RoutingPanel extends Nette\Object implements Tracy\IBarPanel
+class RoutingPanel implements Tracy\IBarPanel
 {
+	use Nette\SmartObject;
+
 	/** @var Nette\Application\IRouter */
 	private $router;
 

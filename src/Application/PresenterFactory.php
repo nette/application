@@ -13,8 +13,10 @@ use Nette;
 /**
  * Default presenter loader.
  */
-class PresenterFactory extends Nette\Object implements IPresenterFactory
+class PresenterFactory implements IPresenterFactory
 {
+	use Nette\SmartObject;
+
 	/** @var array[] of module => splited mask */
 	private $mapping = [
 		'*' => ['', '*Module\\', '*Presenter'],

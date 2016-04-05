@@ -13,8 +13,10 @@ use Nette;
 /**
  * Front Controller.
  */
-class Application extends Nette\Object
+class Application
 {
+	use Nette\SmartObject;
+
 	/** @var int */
 	public static $maxLoop = 20;
 

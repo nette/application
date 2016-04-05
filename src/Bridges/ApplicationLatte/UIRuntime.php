@@ -15,8 +15,9 @@ use Nette\Application\UI;
  * Runtime helpers for UI macros.
  * @internal
  */
-class UIRuntime extends Nette\Object
+class UIRuntime
 {
+	use Nette\StaticClass;
 
 	public static function renderSnippets(UI\Control $control, \stdClass $local = NULL, array $params = [])
 	{

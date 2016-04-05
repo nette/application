@@ -13,8 +13,10 @@ use Nette;
 /**
  * Link generator.
  */
-class LinkGenerator extends Nette\Object
+class LinkGenerator
 {
+	use Nette\SmartObject;
+
 	/** @var IRouter */
 	private $router;
 

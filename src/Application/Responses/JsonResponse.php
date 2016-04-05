@@ -13,8 +13,10 @@ use Nette;
 /**
  * JSON response used mainly for AJAX requests.
  */
-class JsonResponse extends Nette\Object implements Nette\Application\IResponse
+class JsonResponse implements Nette\Application\IResponse
 {
+	use Nette\SmartObject;
+
 	/** @var array|\stdClass */
 	private $payload;
 

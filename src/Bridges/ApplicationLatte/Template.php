@@ -14,8 +14,10 @@ use Latte;
 /**
  * Latte powered template.
  */
-class Template extends Nette\Object implements Nette\Application\UI\ITemplate
+class Template implements Nette\Application\UI\ITemplate
 {
+	use Nette\SmartObject;
+
 	/** @var Latte\Engine */
 	private $latte;
 

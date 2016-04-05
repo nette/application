@@ -15,8 +15,10 @@ use Tracy\ILogger;
 /**
  * Default Error Presenter.
  */
-class ErrorPresenter extends Nette\Object implements Application\IPresenter
+class ErrorPresenter implements Application\IPresenter
 {
+	use Nette\SmartObject;
+
 	/** @var ILogger|NULL */
 	private $logger;
 

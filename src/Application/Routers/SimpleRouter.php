@@ -14,8 +14,10 @@ use Nette\Application;
 /**
  * The bidirectional route for trivial routing via query parameters.
  */
-class SimpleRouter extends Nette\Object implements Application\IRouter
+class SimpleRouter implements Application\IRouter
 {
+	use Nette\SmartObject;
+
 	const PRESENTER_KEY = 'presenter';
 	const MODULE_KEY = 'module';
 

@@ -4,7 +4,6 @@
  * Test: {control ...}
  */
 
-use Nette\Object;
 use Nette\Bridges\ApplicationLatte\UIMacros;
 use Tester\Assert;
 
@@ -12,7 +11,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-class MockComponent extends Object
+class MockComponent
 {
 	function getComponent($name)
 	{
@@ -24,7 +23,7 @@ class MockComponent extends Object
 }
 
 
-class MockControl extends Object
+class MockControl
 {
 
 	function __call($name, $args)

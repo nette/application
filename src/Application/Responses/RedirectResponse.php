@@ -14,8 +14,10 @@ use Nette\Http;
 /**
  * Redirects to new URI.
  */
-class RedirectResponse extends Nette\Object implements Nette\Application\IResponse
+class RedirectResponse implements Nette\Application\IResponse
 {
+	use Nette\SmartObject;
+
 	/** @var string */
 	private $url;
 

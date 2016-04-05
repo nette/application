@@ -14,8 +14,10 @@ use Nette;
  * Lazy encapsulation of PresenterComponent::link().
  * Do not instantiate directly, use PresenterComponent::lazyLink()
  */
-class Link extends Nette\Object
+class Link
 {
+	use Nette\SmartObject;
+
 	/** @var PresenterComponent */
 	private $component;
 

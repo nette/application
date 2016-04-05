@@ -13,8 +13,10 @@ use Nette;
 /**
  * Callback response.
  */
-class CallbackResponse extends Nette\Object implements Nette\Application\IResponse
+class CallbackResponse implements Nette\Application\IResponse
 {
+	use Nette\SmartObject;
+
 	/** @var callable */
 	private $callback;
 

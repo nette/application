@@ -13,8 +13,10 @@ use Nette;
 /**
  * File download response.
  */
-class FileResponse extends Nette\Object implements Nette\Application\IResponse
+class FileResponse implements Nette\Application\IResponse
 {
+	use Nette\SmartObject;
+
 	/** @var string */
 	private $file;
 

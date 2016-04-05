@@ -17,8 +17,10 @@ use Latte;
 /**
  * Micro presenter.
  */
-class MicroPresenter extends Nette\Object implements Application\IPresenter
+class MicroPresenter implements Application\IPresenter
 {
+	use Nette\SmartObject;
+
 	/** @var Nette\DI\Container|NULL */
 	private $context;
 
