@@ -41,6 +41,20 @@ testRouteIn(new Route('//%domain%/<path>', 'Default:default'), '/abc', 'Default'
 ], '/abc?test=testvalue');
 
 
+testRouteIn(new Route('//%sld%.com/<path>', 'Default:default'), '/abc', 'Default', [
+	'path' => 'abc',
+	'action' => 'default',
+	'test' => 'testvalue',
+], '/abc?test=testvalue');
+
+
+testRouteIn(new Route('//%sld%.%tld%/<path>', 'Default:default'), '/abc', 'Default', [
+	'path' => 'abc',
+	'action' => 'default',
+	'test' => 'testvalue',
+], '/abc?test=testvalue');
+
+
 // alternative
 testRouteIn(new Route('//example.%tld%/<path>', 'Default:default'), '/abc', 'Default', [
 	'path' => 'abc',
