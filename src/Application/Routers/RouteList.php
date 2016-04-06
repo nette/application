@@ -55,7 +55,7 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 	public function constructUrl(Nette\Application\Request $appRequest, Nette\Http\Url $refUrl)
 	{
 		if ($this->cachedRoutes === NULL) {
-			$this->buildCache();
+			$this->warmupCache();
 		}
 
 		if ($this->module) {
@@ -83,8 +83,7 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 	}
 
 
-	/** @internal */
-	public function buildCache()
+	public function warmupCache()
 	{
 		$routes = [];
 		$routes['*'] = [];

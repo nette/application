@@ -71,7 +71,7 @@ class RoutingExtension extends Nette\DI\CompilerExtension
 			try {
 				$router = eval($method->getBody());
 				if ($router instanceof Nette\Application\Routers\RouteList) {
-					$router->buildCache();
+					$router->warmupCache();
 				}
 				$s = serialize($router);
 			} catch (\Throwable $e) {
