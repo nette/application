@@ -155,6 +155,7 @@ class Route extends Nette\Object implements Application\IRouter
 				'/%basePath%/' => preg_quote($url->getBasePath(), '#'),
 				'%tld%' => preg_quote($host[0], '#'),
 				'%domain%' => preg_quote(isset($host[1]) ? "$host[1].$host[0]" : $host[0], '#'),
+				'%sld%' => preg_quote(isset($host[1]) ? $host[1] : '', '#'),
 			]);
 
 		} elseif ($this->type === self::RELATIVE) {
@@ -396,6 +397,7 @@ class Route extends Nette\Object implements Application\IRouter
 				'/%basePath%/' => $refUrl->getBasePath(),
 				'%tld%' => $host[0],
 				'%domain%' => isset($host[1]) ? "$host[1].$host[0]" : $host[0],
+				'%sld%' => isset($host[1]) ? $host[1] : '',
 			]);
 			$url = ($this->flags & self::SECURED ? 'https:' : 'http:') . $url;
 		}
