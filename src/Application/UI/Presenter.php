@@ -1087,7 +1087,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			$key = Nette\Utils\Random::generate(5);
 		} while (isset($session[$key]));
 
-		$session[$key] = [$this->getUser()->getId(), $this->request];
+		$session[$key] = [$this->getUser()->getId(), $this->request, (string) $this->httpRequest->getUrl()];
 		$session->setExpiration($expiration, $key);
 		return $key;
 	}
@@ -1105,7 +1105,11 @@ abstract class Presenter extends Control implements Application\IPresenter
 			return;
 		}
 		$request = clone $session[$key][1];
+		$url = $session[$key][2];
 		unset($session[$key]);
+		if($this->isAjax()) {
+			$this->redirectUrl($url);
+		}
 		$request->setFlag(Application\Request::RESTORED, TRUE);
 		$params = $request->getParameters();
 		$params[self::FLASH_KEY] = $this->getParameter(self::FLASH_KEY);
