@@ -125,7 +125,7 @@ class Route extends Nette\Object implements Application\IRouter
 				trigger_error('Nette\Callback is deprecated, use Nette\Utils\Callback::toClosure().', E_USER_DEPRECATED);
 			}
 			$metadata = [
-				self::PRESENTER_KEY => 'Nette:Micro',
+				self::PRESENTER_KEY => 'NetteModule:Micro',
 				'callback' => $metadata,
 			];
 		}
