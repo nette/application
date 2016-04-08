@@ -14,7 +14,7 @@ use Nette\Application;
 /**
  * The bidirectional route for trivial routing via query parameters.
  */
-class SimpleRouter extends Nette\Object implements Application\IRouter
+class SimpleRouter extends Nette\Object implements Application\IRouter, Application\IRouteMeta
 {
 	const PRESENTER_KEY = 'presenter';
 	const MODULE_KEY = 'module';
@@ -140,6 +140,15 @@ class SimpleRouter extends Nette\Object implements Application\IRouter
 	public function getFlags()
 	{
 		return $this->flags;
+	}
+
+	/**
+	 * Info how url looks like.
+	 * @return string
+	 */
+	public function getMask()
+	{
+		return '?presenter=<presenter>[&action=<action>]';
 	}
 
 }
