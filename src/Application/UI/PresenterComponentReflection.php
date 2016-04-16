@@ -239,6 +239,29 @@ class PresenterComponentReflection extends \ReflectionClass
 	/********************* compatiblity with Nette\Reflection ****************d*g**/
 
 
+	/**
+	 * Has class specified annotation?
+	 * @param  string
+	 * @return bool
+	 */
+	public function hasAnnotation($name)
+	{
+		return (bool) self::parseAnnotation($this, $name);
+	}
+
+
+	/**
+	 * Returns an annotation value.
+	 * @param  string
+	 * @return string|NULL
+	 */
+	public function getAnnotation($name)
+	{
+		$res = self::parseAnnotation($this, $name);
+		return $res ? end($res) : NULL;
+	}
+
+
 	public function getMethod($name)
 	{
 		return new MethodCompatibility($this->getName(), $name);
@@ -286,6 +309,29 @@ class PresenterComponentReflection extends \ReflectionClass
 class MethodCompatibility extends \ReflectionMethod
 {
 	use Nette\SmartObject;
+
+	/**
+	 * Has method specified annotation?
+	 * @param  string
+	 * @return bool
+	 */
+	public function hasAnnotation($name)
+	{
+		return (bool) PresenterComponentReflection::parseAnnotation($this, $name);
+	}
+
+
+	/**
+	 * Returns an annotation value.
+	 * @param  string
+	 * @return string|NULL
+	 */
+	public function getAnnotation($name)
+	{
+		$res = PresenterComponentReflection::parseAnnotation($this, $name);
+		return $res ? end($res) : NULL;
+	}
+
 
 	public function __toString()
 	{
