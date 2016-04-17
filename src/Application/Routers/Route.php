@@ -457,7 +457,7 @@ class Route implements Application\IRouter
 			}
 		}
 
-		if (strpbrk($mask, '?<[]') === FALSE) {
+		if (strpbrk($mask, '?<>[]') === FALSE) {
 			$this->re = '#' . preg_quote($mask, '#') . '/?\z#A';
 			$this->sequence = [$mask];
 			$this->metadata = $metadata;
@@ -466,7 +466,7 @@ class Route implements Application\IRouter
 
 		// PARSE MASK
 		// <parameter-name[=default] [pattern]> or [ or ] or ?...
-		$parts = Strings::split($mask, '/<([^>= ]+)(=[^> ]*)? *([^>]*)>|(\[!?|\]|\s*\?.*)/');
+		$parts = Strings::split($mask, '/<([^<>= ]+)(=[^<> ]*)? *([^<>]*)>|(\[!?|\]|\s*\?.*)/');
 
 		$this->xlat = [];
 		$i = count($parts) - 1;
@@ -509,8 +509,12 @@ class Route implements Application\IRouter
 		$autoOptional = TRUE;
 		$aliases = [];
 		do {
-			array_unshift($sequence, $parts[$i]);
-			$re = preg_quote($parts[$i], '#') . $re;
+			$part = $parts[$i]; // part of path
+			if (strpbrk($part, '<>') !== FALSE) {
+				throw new Nette\InvalidArgumentException("Unexpected '$part' in mask '$mask'.");
+			}
+			array_unshift($sequence, $part);
+			$re = preg_quote($part, '#') . $re;
 			if ($i === 0) {
 				break;
 			}
