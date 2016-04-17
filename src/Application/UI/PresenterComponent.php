@@ -346,7 +346,7 @@ abstract class PresenterComponent extends Nette\ComponentModel\Container impleme
 			$destination = $code;
 			$code = NULL;
 
-		} elseif (func_num_args() < 4 && !is_array($args)) {
+		} elseif (func_num_args() > 3 || !is_array($args)) {
 			$args = array_slice(func_get_args(), 2);
 		}
 
