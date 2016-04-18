@@ -57,10 +57,6 @@ class PresenterFactory implements IPresenterFactory
 			return $this->cache[$name];
 		}
 
-		if (!Nette\Utils\Strings::match($name, '#^[a-zA-Z\x7f-\xff][a-zA-Z0-9\x7f-\xff:]*$#D')) {
-			throw new InvalidPresenterException("Presenter name must be alphanumeric string, '$name' is invalid.");
-		}
-
 		$class = $this->formatPresenterClass($name);
 		if (!class_exists($class)) {
 			throw new InvalidPresenterException("Cannot load presenter '$name', class '$class' was not found.");
@@ -68,7 +64,6 @@ class PresenterFactory implements IPresenterFactory
 
 		$reflection = new \ReflectionClass($class);
 		$class = $reflection->getName();
-
 		if (!$reflection->implementsInterface(IPresenter::class)) {
 			throw new InvalidPresenterException("Cannot load presenter '$name', class '$class' is not Nette\\Application\\IPresenter implementor.");
 		} elseif ($reflection->isAbstract()) {
@@ -108,6 +103,9 @@ class PresenterFactory implements IPresenterFactory
 	 */
 	public function formatPresenterClass(string $presenter): string
 	{
+		if (!Nette\Utils\Strings::match($presenter, '#^[a-zA-Z\x7f-\xff][a-zA-Z0-9\x7f-\xff:]*$#D')) {
+			throw new InvalidPresenterException("Presenter name must be alphanumeric string, '$presenter' is invalid.");
+		}
 		$parts = explode(':', $presenter);
 		$mapping = isset($parts[1], $this->mapping[$parts[0]])
 			? $this->mapping[array_shift($parts)]
