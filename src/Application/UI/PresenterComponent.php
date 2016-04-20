@@ -18,6 +18,7 @@ use Nette;
  * for storing their status, and responds to user command.
  *
  * @property-read Presenter $presenter
+ * @property-read bool $linkCurrent
  */
 abstract class PresenterComponent extends Nette\ComponentModel\Container implements ISignalReceiver, IStatePersistent, \ArrayAccess
 {
