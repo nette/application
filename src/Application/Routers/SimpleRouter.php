@@ -38,13 +38,13 @@ class SimpleRouter implements Application\IRouter
 	public function __construct($defaults = [], $flags = 0)
 	{
 		if (is_string($defaults)) {
-			$a = strrpos($defaults, ':');
-			if (!$a) {
+			list($presenter, $action) = Nette\Application\Helpers::splitName($defaults);
+			if (!$presenter) {
 				throw new Nette\InvalidArgumentException("Argument must be array or string in format Presenter:action, '$defaults' given.");
 			}
 			$defaults = [
-				self::PRESENTER_KEY => substr($defaults, 0, $a),
-				'action' => $a === strlen($defaults) - 1 ? Application\UI\Presenter::DEFAULT_ACTION : substr($defaults, $a + 1),
+				self::PRESENTER_KEY => $presenter,
+				'action' => $action === '' ? Application\UI\Presenter::DEFAULT_ACTION : $action,
 			];
 		}
 

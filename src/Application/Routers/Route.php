@@ -114,13 +114,13 @@ class Route implements Application\IRouter
 	public function __construct($mask, $metadata = [], $flags = 0)
 	{
 		if (is_string($metadata)) {
-			$a = strrpos($tmp = $metadata, ':');
-			if (!$a) {
+			list($presenter, $action) = Nette\Application\Helpers::splitName($metadata);
+			if (!$presenter) {
 				throw new Nette\InvalidArgumentException("Second argument must be array or string in format Presenter:action, '$metadata' given.");
 			}
-			$metadata = [self::PRESENTER_KEY => substr($tmp, 0, $a)];
-			if ($a < strlen($tmp) - 1) {
-				$metadata['action'] = substr($tmp, $a + 1);
+			$metadata = [self::PRESENTER_KEY => $presenter];
+			if ($action !== '') {
+				$metadata['action'] = $action;
 			}
 		} elseif ($metadata instanceof \Closure || $metadata instanceof Nette\Callback) {
 			if ($metadata instanceof Nette\Callback) {

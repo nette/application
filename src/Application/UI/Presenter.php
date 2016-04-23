@@ -10,6 +10,7 @@ namespace Nette\Application\UI;
 use Nette;
 use Nette\Application;
 use Nette\Application\Responses;
+use Nette\Application\Helpers;
 use Nette\Http;
 
 
@@ -497,8 +498,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function formatLayoutTemplateFiles()
 	{
-		$name = $this->getName();
-		$presenter = substr($name, strrpos(':' . $name, ':'));
+		list($module, $presenter) = Helpers::splitName($this->getName());
 		$layout = $this->layout ? $this->layout : 'layout';
 		$dir = dirname($this->getReflection()->getFileName());
 		$dir = is_dir("$dir/templates") ? $dir : dirname($dir);
@@ -509,7 +509,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		do {
 			$list[] = "$dir/templates/@$layout.latte";
 			$dir = dirname($dir);
-		} while ($dir && ($name = substr($name, 0, strrpos($name, ':'))));
+		} while ($dir && $module && (list($module) = Helpers::splitName($module)));
 		return $list;
 	}
 
@@ -520,8 +520,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function formatTemplateFiles()
 	{
-		$name = $this->getName();
-		$presenter = substr($name, strrpos(':' . $name, ':'));
+		list(, $presenter) = Helpers::splitName($this->getName());
 		$dir = dirname($this->getReflection()->getFileName());
 		$dir = is_dir("$dir/templates") ? $dir : dirname($dir);
 		return [
@@ -807,13 +806,11 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 		// 4) signal or empty
 		if (!$component instanceof self || substr($destination, -1) === '!') {
-			$signal = rtrim($destination, '!');
-			$a = strrpos($signal, ':');
-			if ($a !== FALSE) {
-				$component = $component->getComponent(strtr(substr($signal, 0, $a), ':', '-'));
-				$signal = (string) substr($signal, $a + 1);
+			list($cname, $signal) = Helpers::splitName(rtrim($destination, '!'));
+			if ($cname !== '') {
+				$component = $component->getComponent(strtr($cname, ':', '-'));
 			}
-			if ($signal == NULL) {  // intentionally ==
+			if ($signal === '') {
 				throw new InvalidLinkException('Signal must be non-empty string.');
 			}
 			$destination = 'this';
@@ -825,28 +822,21 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 		// 5) presenter: action
 		$current = FALSE;
-		$a = strrpos($destination, ':');
-		if ($a === FALSE) {
-			$action = $destination === 'this' ? $this->action : $destination;
+		list($presenter, $action) = Helpers::splitName($destination);
+		if ($presenter === '') {
+			$action = $destination === 'this' ? $this->action : $action;
 			$presenter = $this->getName();
 			$presenterClass = get_class($this);
 
 		} else {
-			$action = (string) substr($destination, $a + 1);
-			if ($destination[0] === ':') { // absolute
-				if ($a < 2) {
+			if ($presenter[0] === ':') { // absolute
+				$presenter = substr($presenter, 1);
+				if (!$presenter) {
 					throw new InvalidLinkException("Missing presenter name in '$destination'.");
 				}
-				$presenter = substr($destination, 1, $a - 1);
-
 			} else { // relative
-				$presenter = $this->getName();
-				$b = strrpos($presenter, ':');
-				if ($b === FALSE) { // no module
-					$presenter = substr($destination, 0, $a);
-				} else { // with module
-					$presenter = substr($presenter, 0, $b + 1) . substr($destination, 0, $a);
-				}
+				list($module, , $sep) = Helpers::splitName($this->getName());
+				$presenter = $module . $sep . $presenter;
 			}
 			if (!$this->presenterFactory) {
 				throw new Nette\InvalidStateException('Unable to create link to other presenter, service PresenterFactory has not been set.');
