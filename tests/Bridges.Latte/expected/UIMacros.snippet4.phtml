@@ -1,0 +1,64 @@
+<?php
+// source: %A%
+
+class Template%a% extends Latte\Template
+{
+	public $blocks = [
+		'_snippet' => ['blockSnippet', 'html'],
+		'block1' => ['blockBlock1', 'html'],
+		'_outer' => ['blockOuter', 'html'],
+		'block2' => ['blockBlock2', 'html'],
+	];
+
+
+	function render()
+	{
+%A%
+// main template
+if ($this->tryRenderParent(get_defined_vars())) return;call_user_func(reset($this->blockQueue['_snippet']), $this->params) ?>
+
+
+<div id="<?php echo $_control->getSnippetId('outer') ?>"><?php call_user_func(reset($this->blockQueue['_outer']), $this->params) ?>
+</div><?php
+	}
+
+
+	function blockSnippet($_args)
+	{
+		extract($_args);
+$_control->redrawControl('snippet', FALSE);
+
+
+	}
+
+
+	function blockBlock1($_args)
+	{
+		extract($_args)
+?><div<?php echo ' id="' . $_control->getSnippetId('snippet') . '"' ?>>
+		static
+</div>
+<?php
+	}
+
+
+	function blockOuter($_args)
+	{
+		extract($_args);
+$_control->redrawControl('outer', FALSE)
+?>begin
+end
+<?php if (isset($this->local->dynSnippets)) return $this->local->dynSnippets;
+	}
+
+
+	function blockBlock2($_args)
+	{
+		extract($_args)
+?><div<?php echo ' id="' . ($this->local->dynSnippetId = $_control->getSnippetId("inner-$id")) . '"' ?>>
+		dynamic
+</div>
+<?php
+	}
+
+}
