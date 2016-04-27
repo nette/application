@@ -36,6 +36,21 @@ class UIMacros extends Latte\Macros\MacroSet
 		$me->addMacro('plink', [$me, 'macroLink']);
 		$me->addMacro('link', [$me, 'macroLink']);
 		$me->addMacro('ifCurrent', [$me, 'macroIfCurrent'], '}'); // deprecated; use n:class="$presenter->linkCurrent ? ..."
+		$me->addMacro('extends', [$me, 'macroExtends']);
+		$me->addMacro('layout', [$me, 'macroExtends']);
+	}
+
+
+	/**
+	 * Initializes before template parsing.
+	 * @return void
+	 */
+	public function initialize()
+	{
+		$this->getCompiler()->addMethod('getParentName', '
+		return !$this->getReferrerTemplate() && $this->params["_control"] instanceof Nette\Application\UI\Presenter
+			? $this->params["_control"]->findLayoutTemplateFile() : NULL;
+		');
 	}
 
 
@@ -100,6 +115,18 @@ class UIMacros extends Latte\Macros\MacroSet
 			? 'if ($_presenter->isLinkCurrent(%node.word, %node.array?)) {'
 			: 'if ($_presenter->getLastCreatedRequestFlag("current")) {'
 		);
+	}
+
+
+	/**
+	 * {extends auto}
+	 */
+	public function macroExtends(MacroNode $node, PhpWriter $writer)
+	{
+		if ($node->modifiers || $node->parentNode || $node->args !== 'auto') {
+			return FALSE;
+		}
+		$this->getCompiler()->addMethod('getParentName', 'return $this->params["_presenter"]->findLayoutTemplateFile();');
 	}
 
 

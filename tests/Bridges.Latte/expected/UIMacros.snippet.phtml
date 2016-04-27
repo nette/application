@@ -40,6 +40,12 @@ if (Nette\Bridges\ApplicationLatte\UIRuntime::initialize($this)) return;
 	}
 
 
+	function getParentName()
+	{
+		return %A%
+	}
+
+
 	function block_%h%($_args)
 	{
 		extract($_args);
