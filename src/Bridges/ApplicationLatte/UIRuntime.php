@@ -26,6 +26,9 @@ class UIRuntime
 	 */
 	public static function initialize(Latte\Template $template)
 	{
+		// back compatibility
+		$template->params['template'] = new VariableTemplate($template);
+
 		// snippet support
 		$params = $template->params;
 		if (empty($template->local->parentName) && !empty($params['_control']->snippetMode)) {
