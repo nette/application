@@ -30,7 +30,7 @@ class UIRuntime
 				}
 				ob_start(function () {});
 				$function = reset($function);
-				$snippets = $function($local, $params + ['_snippetMode' => TRUE]);
+				$snippets = $function($params + ['_snippetMode' => TRUE]);
 				$payload->snippets[$id = $control->getSnippetId((string) substr($name, 1))] = ob_get_clean();
 				if ($snippets !== NULL) { // pass FALSE from snippetArea
 					if ($snippets) {

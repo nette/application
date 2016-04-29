@@ -87,7 +87,7 @@ link:['login']
 <a href="link:['default!#hash',10,20]"></a>
 EOD
 
-, $latte->renderToString(<<<EOD
+, strtr($latte->renderToString(<<<EOD
 {plink Homepage:}
 
 {plink  Homepage: }
@@ -118,4 +118,4 @@ EOD
 
 <a n:href="default!#hash 10, 20"></a>
 EOD
-, $params));
+, $params), ['&#039;' => "'"]));

@@ -1,62 +1,90 @@
-%A%
-// block _
-//
-if (!function_exists($_b->blocks['_'][] = '_%[a-z0-9]+%__')) { function _%[a-z0-9]+%__($_b, $_args) { foreach ($_args as $__k => $__v) $$__k = $__v; $_control->redrawControl(%[false']+%, FALSE)
-;
-}}
-
-//
-// block _outer
-//
-if (!function_exists($_b->blocks['_outer'][] = '_%[a-z0-9]+%__outer')) { function _%[a-z0-9]+%__outer($_b, $_args) { foreach ($_args as $__k => $__v) $$__k = $__v; $_control->redrawControl('outer', FALSE)
-?>	Outer
-		<div id="<?php echo $_control->getSnippetId('inner') ?>"><?php call_user_func(reset($_b->blocks['_inner']), $_b, $template->getParameters()) ?>
-</div>
-	/Outer
 <?php
-}}
+// source: %A%
 
-//
-// block _inner
-//
-if (!function_exists($_b->blocks['_inner'][] = '_%[a-z0-9]+%__inner')) { function _%[a-z0-9]+%__inner($_b, $_args) { foreach ($_args as $__k => $__v) $$__k = $__v; $_control->redrawControl('inner', FALSE)
-?>Inner<?php
-}}
+class Template%a% extends Latte\Template
+{
+	public $blocks = [
+		'_' => ['block_b14a7', 'html'],
+		'_outer' => ['blockOuter', 'html'],
+		'_inner' => ['blockInner', 'html'],
+		'_title' => ['blockTitle', 'html'],
+		'_title2' => ['blockTitle2', 'html'],
+	];
 
-//
-// block _title
-//
-if (!function_exists($_b->blocks['_title'][] = '_%[a-z0-9]+%__title')) { function _%[a-z0-9]+%__title($_b, $_args) { foreach ($_args as $__k => $__v) $$__k = $__v; $_control->redrawControl('title', FALSE)
-?>Title 1<?php
-}}
 
-//
-// block _title2
-//
-if (!function_exists($_b->blocks['_title2'][] = '_%[a-z0-9]+%__title2')) { function _%[a-z0-9]+%__title2($_b, $_args) { foreach ($_args as $__k => $__v) $$__k = $__v; $_control->redrawControl('title2', FALSE)
-?>Title 2<?php
-}}
-
-//
-// end of blocks
+	function render()
+	{
 %A%
+// prolog Nette\Bridges\ApplicationLatte\UIMacros
+
+// snippets support
+if (empty($this->local->parentName) && !empty($_control->snippetMode) && empty($_g->includingBlock)) {
 	return Nette\Bridges\ApplicationLatte\UIRuntime::renderSnippets($_control, $_b, get_defined_vars());
-%A%
-<div id="<?php echo $_control->getSnippetId('') ?>"><?php call_user_func(reset($_b->blocks['_']), $_b, $template->getParameters()) ?>
+}
+
+// main template
+?>
+
+<?php if ($this->tryRenderParent(get_defined_vars())) return ?>
+<div id="<?php echo $_control->getSnippetId('') ?>"><?php call_user_func(reset($this->blockQueue['_']), $this->params) ?>
 </div>
 
 
-<div id="<?php echo $_control->getSnippetId('outer') ?>"><?php call_user_func(reset($_b->blocks['_outer']), $_b, $template->getParameters()) ?>
+<div id="<?php echo $_control->getSnippetId('outer') ?>"><?php call_user_func(reset($this->blockQueue['_outer']), $this->params) ?>
 </div>
 
 
 	@<?php if (true) { ?> Hello World @<?php } ?>
 
 
-	<h2 id="<?php echo $_control->getSnippetId('title') ?>"><?php call_user_func(reset($_b->blocks['_title']), $_b, $template->getParameters()) ?>
+	<h2 id="<?php echo $_control->getSnippetId('title') ?>"><?php call_user_func(reset($this->blockQueue['_title']), $this->params) ?>
 </h2>
+	<h2 id="<?php echo $_control->getSnippetId('title2') ?>"><?php call_user_func(reset($this->blockQueue['_title2']), $this->params) ?>
+</h2><?php
+	}
 
-	<h2 id="<?php echo $_control->getSnippetId('title2') ?>"><?php call_user_func(reset($_b->blocks['_title2']), $_b, $template->getParameters()) ?>
-</h2>
+
+	function block_%h%($_args)
+	{
+		extract($_args);
+$_control->redrawControl('', FALSE);
+
+
+	}
+
+
+	function blockOuter($_args)
+	{
+		extract($_args);
+$_control->redrawControl('outer', FALSE)
+?>	Outer
+		<div id="<?php echo $_control->getSnippetId('inner') ?>"><?php call_user_func(reset($this->blockQueue['_inner']), $this->params) ?>
+</div>	/Outer
 <?php
-%A%
+	}
+
+
+	function blockInner($_args)
+	{
+		extract($_args);
+$_control->redrawControl('inner', FALSE)
+?>Inner<?php
+	}
+
+
+	function blockTitle($_args)
+	{
+		extract($_args);
+$_control->redrawControl('title', FALSE)
+?>Title 1<?php
+	}
+
+
+	function blockTitle2($_args)
+	{
+		extract($_args);
+$_control->redrawControl('title2', FALSE)
+?>Title 2<?php
+	}
+
+}

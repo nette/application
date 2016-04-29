@@ -47,7 +47,7 @@ class UIMacros extends Latte\Macros\MacroSet
 	{
 		$prolog = '
 // snippets support
-if (empty($_l->extends) && !empty($_control->snippetMode) && empty($_g->includingBlock)) {
+if (empty($this->local->parentName) && !empty($_control->snippetMode) && empty($_g->includingBlock)) {
 	return Nette\Bridges\ApplicationLatte\UIRuntime::renderSnippets($_control, $_b, get_defined_vars());
 }';
 		return [$prolog, ''];
@@ -73,10 +73,10 @@ if (empty($_l->extends) && !empty($_control->snippetMode) && empty($_g->includin
 		if (!Strings::contains($node->args, '=>')) {
 			$param = substr($param, $param[0] === '[' ? 1 : 6, -1); // removes array() or []
 		}
-		return ($name[0] === '$' ? "if (is_object($name)) \$_l->tmp = $name; else " : '')
-			. '$_l->tmp = $_control->getComponent(' . $name . '); '
-			. 'if ($_l->tmp instanceof Nette\Application\UI\IRenderable) $_l->tmp->redrawControl(NULL, FALSE); '
-			. ($node->modifiers === '' ? "\$_l->tmp->$method($param)" : $writer->write("ob_start(function () {}); \$_l->tmp->$method($param); echo %modify(ob_get_clean())"));
+		return ($name[0] === '$' ? "if (is_object($name)) \$_tmp = $name; else " : '')
+			. '$_tmp = $_control->getComponent(' . $name . '); '
+			. 'if ($_tmp instanceof Nette\Application\UI\IRenderable) $_tmp->redrawControl(NULL, FALSE); '
+			. ($node->modifiers === '' ? "\$_tmp->$method($param)" : $writer->write("ob_start(function () {}); \$_tmp->$method($param); echo %modify(ob_get_clean())"));
 	}
 
 

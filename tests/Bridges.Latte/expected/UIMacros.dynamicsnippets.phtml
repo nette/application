@@ -1,44 +1,45 @@
 <?php
-// source: %a%
+// source: %A%
+
+class Template%a% extends Latte\Template
+{
+	public $blocks = [
+		'_outer' => ['blockOuter', 'html'],
+	];
+
+
+	function render()
+	{
 %A%
-// prolog Latte\Macros\BlockMacros
-//
-// block _outer
-//
-if (!function_exists($_b->blocks['_outer'][] = '_%[a-z0-9]+%__outer')) { function _%[a-z0-9]+%__outer($_b, $_args) { foreach ($_args as $__k => $__v) $$__k = $__v; $_control->redrawControl('outer', FALSE)
-;%a% foreach (array(1,2,3) as $id) { ?>
-		<div id="<?php echo $_l->dynSnippetId = $_control->getSnippetId("inner-$id") ?>
-"><?php ob_start() ?>
-
-				#<?php echo Latte\Runtime\Filters::escapeHtml($id, ENT_NOQUOTES) ?>
-
-<?php $_l->dynSnippets[$_l->dynSnippetId] = ob_get_flush() ?>
-</div>
-<?php $iterations++; } ?>
-	<?php if (isset($_l->dynSnippets)) return $_l->dynSnippets;
-}}
-
-//
-// end of blocks
-//
-
-// template extending
-
-$_l->extends = empty($_g->extended) && isset($_control) && $_control instanceof Nette\Application\UI\Presenter ? $_control->findLayoutTemplateFile() : NULL; $_g->extended = TRUE;
-
-if ($_l->extends) { ob_start(function () {});}
-
 // prolog Nette\Bridges\ApplicationLatte\UIMacros
 
 // snippets support
-if (empty($_l->extends) && !empty($_control->snippetMode) && empty($_g->includingBlock)) {
+if (empty($this->local->parentName) && !empty($_control->snippetMode) && empty($_g->includingBlock)) {
 	return Nette\Bridges\ApplicationLatte\UIRuntime::renderSnippets($_control, $_b, get_defined_vars());
 }
 
-//
 // main template
-//
-if ($_l->extends) { ob_end_clean(); return $template->renderChildTemplate($_l->extends, get_defined_vars()); } ?>
-<div id="<?php echo $_control->getSnippetId('outer') ?>"><?php call_user_func(reset($_b->blocks['_outer']), $_b, $template->getParameters()) ?>
+if ($this->tryRenderParent(get_defined_vars())) return ?>
+<div id="<?php echo $_control->getSnippetId('outer') ?>"><?php call_user_func(reset($this->blockQueue['_outer']), $this->params) ?>
 </div><?php
-%A%
+	}
+
+
+	function blockOuter($_args)
+	{
+		extract($_args);
+$_control->redrawControl('outer', FALSE);
+
+%a% foreach (array(1,2,3) as $id) { ?>
+		<div id="<?php echo $this->local->dynSnippetId = $_control->getSnippetId("inner-$id") ?>
+"><?php ob_start() ?>
+
+				#<?php echo LFilters::escapeHtmlText($id) ?>
+
+<?php $this->local->dynSnippets[$this->local->dynSnippetId] = ob_get_flush() ?>
+</div>
+<?php $iterations++; } ?>
+	<?php if (isset($this->local->dynSnippets)) return $this->local->dynSnippets;
+	}
+
+}
