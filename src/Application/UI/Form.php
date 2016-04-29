@@ -76,7 +76,7 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 				$this->setAction(new Link($presenter, 'this', []));
 				$signal = new Nette\Forms\Controls\HiddenField($name . self::NAME_SEPARATOR . 'submit');
 				$signal->setOmitted()->setHtmlId(FALSE);
-				$this[Presenter::SIGNAL_KEY] = $signal;
+				$this['_' . Presenter::SIGNAL_KEY . '_'] = $signal;
 			}
 		}
 		parent::attached($presenter);
