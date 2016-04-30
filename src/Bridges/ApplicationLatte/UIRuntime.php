@@ -9,6 +9,7 @@ namespace Nette\Bridges\ApplicationLatte;
 
 use Nette;
 use Nette\Application\UI;
+use Latte;
 
 
 /**
@@ -19,25 +20,42 @@ class UIRuntime
 {
 	use Nette\StaticClass;
 
-	public static function renderSnippets(UI\Control $control, \stdClass $local = NULL, array $params = [])
+
+	/**
+	 * @return bool
+	 */
+	public static function initialize(Latte\Template $template)
+	{
+		// snippet support
+		$params = $template->params;
+		if (empty($template->local->parentName) && !empty($params['_control']->snippetMode)) {
+			$tmp = $template;
+			while (in_array($tmp->getReferenceType(), ['extends', 'include', NULL], TRUE) && ($tmp = $tmp->getReferrerTemplate()));
+			if (!$tmp) {
+				self::renderSnippets($params['_control'], $template->blockQueue, $params);
+				return TRUE;
+			}
+		};
+	}
+
+
+	public static function renderSnippets(UI\Control $control, array $blockQueue = NULL, array $params = [])
 	{
 		$control->snippetMode = FALSE;
 		$payload = $control->getPresenter()->getPayload();
-		if (isset($local->blocks)) {
-			foreach ($local->blocks as $name => $function) {
-				if ($name[0] !== '_' || !$control->isControlInvalid((string) substr($name, 1))) {
-					continue;
+		foreach ($blockQueue as $name => $function) {
+			if ($name[0] !== '_' || !$control->isControlInvalid((string) substr($name, 1))) {
+				continue;
+			}
+			ob_start(function () {});
+			$function = reset($function);
+			$snippets = $function($params + ['_snippetMode' => TRUE]);
+			$payload->snippets[$id = $control->getSnippetId((string) substr($name, 1))] = ob_get_clean();
+			if ($snippets !== NULL) { // pass FALSE from snippetArea
+				if ($snippets) {
+					$payload->snippets += $snippets;
 				}
-				ob_start(function () {});
-				$function = reset($function);
-				$snippets = $function($params + ['_snippetMode' => TRUE]);
-				$payload->snippets[$id = $control->getSnippetId((string) substr($name, 1))] = ob_get_clean();
-				if ($snippets !== NULL) { // pass FALSE from snippetArea
-					if ($snippets) {
-						$payload->snippets += $snippets;
-					}
-					unset($payload->snippets[$id]);
-				}
+				unset($payload->snippets[$id]);
 			}
 		}
 		$control->snippetMode = TRUE;

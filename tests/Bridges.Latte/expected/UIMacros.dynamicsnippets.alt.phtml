@@ -13,11 +13,7 @@ class Template%a% extends Latte\Template
 	{
 %A%
 // prolog Nette\Bridges\ApplicationLatte\UIMacros
-
-// snippets support
-if (empty($this->local->parentName) && !empty($_control->snippetMode) && empty($_g->includingBlock)) {
-	return Nette\Bridges\ApplicationLatte\UIRuntime::renderSnippets($_control, $_b, get_defined_vars());
-}
+if (Nette\Bridges\ApplicationLatte\UIRuntime::initialize($this)) return;
 
 // main template
 if ($this->tryRenderParent(get_defined_vars())) return ?>
