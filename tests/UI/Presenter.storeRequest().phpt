@@ -81,28 +81,55 @@ class MockUser extends Security\User
 	}
 }
 
+test(function () {
+	$presenter = new TestPresenter();
+	$presenter->injectPrimary(
+		NULL,
+		NULL,
+		new Application\Routers\SimpleRouter,
+		new Http\Request(new Http\UrlScript),
+		new Http\Response,
+		$session = new MockSession,
+		$user = new MockUser
+	);
 
-$presenter = new TestPresenter();
-$presenter->injectPrimary(
-	NULL,
-	NULL,
-	new Application\Routers\SimpleRouter,
-	new Http\Request(new Http\UrlScript),
-	new Http\Response,
-	$session = new MockSession,
-	$user = new MockUser
-);
+	$section = $session->testSection = new MockSessionSection($session);
 
-$section = $session->testSection = new MockSessionSection($session);
+	$applicationRequest = new Application\Request('', '', []);
+	$presenter->run($applicationRequest);
 
-$applicationRequest = new Application\Request('', '', []);
-$presenter->run($applicationRequest);
+	$expiration = '+1 year';
+	$key = $presenter->storeRequest($expiration);
 
-$expiration = '+1 year';
-$key = $presenter->storeRequest($expiration);
+	Assert::same($expiration, $section->testExpiration);
+	Assert::same($key, $section->testExpirationVariables);
+	Assert::same($key, $section->testedKeyExistence);
+	Assert::same($key, $section->storedKey);
+	Assert::same([$user->getId(), $applicationRequest], $section->storedValue);
+});
 
-Assert::same($expiration, $section->testExpiration);
-Assert::same($key, $section->testExpirationVariables);
-Assert::same($key, $section->testedKeyExistence);
-Assert::same($key, $section->storedKey);
-Assert::same([$user->getId(), $applicationRequest], $section->storedValue);
+test(function () {
+	$presenter = new TestPresenter();
+	$presenter->injectPrimary(
+		NULL,
+		NULL,
+		new Application\Routers\SimpleRouter,
+		new Http\Request(new Http\UrlScript),
+		new Http\Response,
+		$session = new MockSession
+	);
+
+	$section = $session->testSection = new MockSessionSection($session);
+
+	$applicationRequest = new Application\Request('', '', []);
+	$presenter->run($applicationRequest);
+
+	$expiration = '+1 year';
+	$key = $presenter->storeRequest($expiration);
+
+	Assert::same($expiration, $section->testExpiration);
+	Assert::same($key, $section->testExpirationVariables);
+	Assert::same($key, $section->testedKeyExistence);
+	Assert::same($key, $section->storedKey);
+	Assert::same([null, $applicationRequest], $section->storedValue);
+});
