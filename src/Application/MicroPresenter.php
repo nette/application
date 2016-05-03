@@ -78,7 +78,7 @@ class MicroPresenter implements Application\IPresenter
 
 		if ($this->context) {
 			foreach ($reflection->getParameters() as $param) {
-				if ($param->getClassName()) {
+				if ($param->getClass()) {
 					unset($params[$param->getPosition()]);
 				}
 			}
