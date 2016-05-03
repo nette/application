@@ -18,7 +18,6 @@
 		"nette/component-model": "~2.3",
 		"nette/http": "~2.2",
 		"nette/reflection": "~2.2",
-		"nette/security": "~2.2",
 		"nette/utils": "~2.4"
 	},
 	"suggest": {
@@ -30,6 +29,7 @@
 		"nette/di": "~2.3",
 		"nette/forms": "~2.2",
 		"nette/robot-loader": "~2.2",
+		"nette/security": "~2.2",
 		"latte/latte": "~2.4",
 		"tracy/tracy": "^2.3"
 	},

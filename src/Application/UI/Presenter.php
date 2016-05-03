@@ -1080,7 +1080,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			$key = Nette\Utils\Random::generate(5);
 		} while (isset($session[$key]));
 
-		$session[$key] = [$this->getUser()->getId(), $this->request];
+		$session[$key] = [$this->user ? $this->user->getId() : NULL, $this->request];
 		$session->setExpiration($expiration, $key);
 		return $key;
 	}
