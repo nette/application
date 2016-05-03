@@ -13,21 +13,26 @@ class Template%a% extends Latte\Template
 	function render()
 	{
 %A%
-// prolog Nette\Bridges\ApplicationLatte\UIMacros
-if (Nette\Bridges\ApplicationLatte\UIRuntime::initialize($this, $this->blockQueue)) return;
+		// prolog Nette\Bridges\ApplicationLatte\UIMacros
+		if (Nette\Bridges\ApplicationLatte\UIRuntime::initialize($this, $this->blockQueue)) return;
 
-// main template
-?>	<div class="test"<?php echo ' id="' . $_control->getSnippetId('outer') . '"' ?>>
-<?php if ($this->tryRenderParent(get_defined_vars())) return;call_user_func(reset($this->blockQueue['_outer']), $this->params) ?>
+		// main template
+		?>	<div class="test"<?php echo ' id="' . $_control->getSnippetId('outer') . '"' ?>>
+<?php
+		if ($this->tryRenderParent(get_defined_vars())) return;
+		call_user_func(reset($this->blockQueue['_outer']), $this->params) ?>
 	</div>
 
 	<div class="test"<?php echo ' id="' . $_control->getSnippetId('inner') . '"' ?>>
-<?php call_user_func(reset($this->blockQueue['_inner']), $this->params)  ?>	</div>
+<?php
+		call_user_func(reset($this->blockQueue['_inner']), $this->params);
+		?>	</div>
 
-	<div class="<?php echo LFilters::escapeHtmlAttr('class') ?>"<?php echo ' id="' . $_control->getSnippetId('gallery') . '"' ?>
-><?php call_user_func(reset($this->blockQueue['_gallery']), $this->params) ?>
+	<div class="<?php echo LFilters::escapeHtmlAttr('class') ?>"<?php echo ' id="' . $_control->getSnippetId('gallery') . '"' ?>><?php
+		call_user_func(reset($this->blockQueue['_gallery']), $this->params) ?>
 </div>
 <?php
+
 	}
 
 
@@ -40,8 +45,9 @@ if (Nette\Bridges\ApplicationLatte\UIRuntime::initialize($this, $this->blockQueu
 	function blockOuter($_args)
 	{
 		extract($_args);
-$_control->redrawControl('outer', FALSE)
-?>	<p>Outer</p>
+		$_control->redrawControl('outer', FALSE);
+
+		?>	<p>Outer</p>
 <?php
 	}
 
@@ -49,8 +55,9 @@ $_control->redrawControl('outer', FALSE)
 	function blockInner($_args)
 	{
 		extract($_args);
-$_control->redrawControl('inner', FALSE)
-?>	<p>Inner</p>
+		$_control->redrawControl('inner', FALSE);
+
+		?>	<p>Inner</p>
 <?php
 	}
 
@@ -58,7 +65,7 @@ $_control->redrawControl('inner', FALSE)
 	function blockGallery($_args)
 	{
 		extract($_args);
-$_control->redrawControl('gallery', FALSE);
+		$_control->redrawControl('gallery', FALSE);
 
 
 	}

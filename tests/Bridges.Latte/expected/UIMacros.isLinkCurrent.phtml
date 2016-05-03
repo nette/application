@@ -6,10 +6,15 @@
 
 <a href="%A%"%A%>href after n:class</a>
 
-<?php if ($_presenter->getLastCreatedRequestFlag("current")) { ?>empty<?php } ?>
+<?php
+		if ($_presenter->getLastCreatedRequestFlag("current")) {
+			?>empty<?php
+		}
+		?>
 
-
-<?php if ($_presenter->isLinkCurrent("default")) { ?>default<?php } ?>
 
 <?php
+		if ($_presenter->isLinkCurrent("default")) {
+			?>default<?php
+		}
 %A%
