@@ -176,7 +176,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			}
 
 			$this->initGlobalParameters();
-			$this->checkRequirements(new \ReflectionClass($this));
+			$this->checkRequirements($this->getReflection());
 			$this->startup();
 			if (!$this->startupCheck) {
 				$class = $this->getReflection()->getMethod('startup')->getDeclaringClass()->getName();
