@@ -291,7 +291,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function checkRequirements($element)
 	{
-		$user = (array) PresenterComponentReflection::parseAnnotation($element, 'User');
+		$user = (array) ComponentReflection::parseAnnotation($element, 'User');
 		if (in_array('loggedIn', $user, TRUE) && !$this->getUser()->isLoggedIn()) {
 			throw new Application\ForbiddenRequestException;
 		}
@@ -855,7 +855,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 		// PROCESS SIGNAL ARGUMENTS
 		if (isset($signal)) { // $component must be IStatePersistent
-			$reflection = new PresenterComponentReflection(get_class($component));
+			$reflection = new ComponentReflection(get_class($component));
 			if ($signal === 'this') { // means "no signal"
 				$signal = '';
 				if (array_key_exists(0, $args)) {
@@ -894,7 +894,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 			$current = ($action === '*' || strcasecmp($action, $this->action) === 0) && $presenterClass === get_class($this);
 
-			$reflection = new PresenterComponentReflection($presenterClass);
+			$reflection = new ComponentReflection($presenterClass);
 
 			// counterpart of run() & tryCall()
 			$method = $presenterClass::formatActionMethod($action);
@@ -1005,7 +1005,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		$i = 0;
 		$rm = new \ReflectionMethod($class, $method);
 		foreach ($rm->getParameters() as $param) {
-			list($type, $isClass) = PresenterComponentReflection::getParameterType($param);
+			list($type, $isClass) = ComponentReflection::getParameterType($param);
 			$name = $param->getName();
 
 			if (array_key_exists($i, $args)) {
@@ -1027,7 +1027,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 				throw new InvalidLinkException("Missing parameter \$$name required by $class::{$rm->getName()}()");
 			}
 
-			if (!PresenterComponentReflection::convertType($args[$name], $type, $isClass)) {
+			if (!ComponentReflection::convertType($args[$name], $type, $isClass)) {
 				throw new InvalidLinkException(sprintf(
 					'Argument $%s passed to %s() must be %s, %s given.',
 					$name,
@@ -1119,7 +1119,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public static function getPersistentComponents()
 	{
-		return (array) PresenterComponentReflection::parseAnnotation(new \ReflectionClass(get_called_class()), 'persistent');
+		return (array) ComponentReflection::parseAnnotation(new \ReflectionClass(get_called_class()), 'persistent');
 	}
 
 
@@ -1139,7 +1139,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 					$state[$prefix . $key] = $val;
 				}
 			}
-			$this->saveState($state, $forClass ? new PresenterComponentReflection($forClass) : NULL);
+			$this->saveState($state, $forClass ? new ComponentReflection($forClass) : NULL);
 
 			if ($sinces === NULL) {
 				$sinces = [];

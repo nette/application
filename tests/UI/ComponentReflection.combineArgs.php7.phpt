@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Test: PresenterComponentReflection::combineArgs()
+ * Test: ComponentReflection::combineArgs()
  * @phpVersion 7
  */
 
-use Nette\Application\UI\PresenterComponentReflection as Reflection;
+use Nette\Application\UI\ComponentReflection as Reflection;
 use Nette\Application\BadRequestException;
 use Tester\Assert;
 
