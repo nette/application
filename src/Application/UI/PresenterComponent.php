@@ -108,11 +108,11 @@ abstract class PresenterComponent extends Nette\ComponentModel\Container impleme
 
 	/**
 	 * Access to reflection.
-	 * @return PresenterComponentReflection
+	 * @return ComponentReflection
 	 */
 	public static function getReflection()
 	{
-		return new PresenterComponentReflection(get_called_class());
+		return new ComponentReflection(get_called_class());
 	}
 
 
@@ -151,7 +151,7 @@ abstract class PresenterComponent extends Nette\ComponentModel\Container impleme
 	/**
 	 * Saves state informations for next request.
 	 * @param  array
-	 * @param  PresenterComponentReflection (internal, used by Presenter)
+	 * @param  ComponentReflection (internal, used by Presenter)
 	 * @return void
 	 */
 	public function saveState(array & $params, $reflection = NULL)
@@ -173,7 +173,7 @@ abstract class PresenterComponent extends Nette\ComponentModel\Container impleme
 			}
 
 			$type = gettype($meta['def']);
-			if (!PresenterComponentReflection::convertType($params[$name], $type)) {
+			if (!ComponentReflection::convertType($params[$name], $type)) {
 				throw new InvalidLinkException(sprintf(
 					"Value passed to persistent parameter '%s' in %s must be %s, %s given.",
 					$name,
@@ -247,7 +247,7 @@ abstract class PresenterComponent extends Nette\ComponentModel\Container impleme
 		$rc = new \ReflectionClass(get_called_class());
 		$params = [];
 		foreach ($rc->getProperties(\ReflectionProperty::IS_PUBLIC) as $rp) {
-			if (!$rp->isStatic() && PresenterComponentReflection::parseAnnotation($rp, 'persistent')) {
+			if (!$rp->isStatic() && ComponentReflection::parseAnnotation($rp, 'persistent')) {
 				$params[] = $rp->getName();
 			}
 		}

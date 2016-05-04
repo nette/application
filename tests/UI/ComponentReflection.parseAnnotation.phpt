@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Test: PresenterComponentReflection annotation parser.
+ * Test: ComponentReflection annotation parser.
  */
 
-use Nette\Application\UI\PresenterComponentReflection as Reflection;
+use Nette\Application\UI\ComponentReflection as Reflection;
 use Tester\Assert;
 
 

@@ -18,7 +18,7 @@ use Nette\Reflection\ClassType;
  * @property-read string $fileName
  * @internal
  */
-class PresenterComponentReflection extends \ReflectionClass
+class ComponentReflection extends \ReflectionClass
 {
 	use Nette\SmartObject;
 

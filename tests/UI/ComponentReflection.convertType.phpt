@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Test: PresenterComponentReflection::convertType()
+ * Test: ComponentReflection::convertType()
  */
 
-use Nette\Application\UI\PresenterComponentReflection;
+use Nette\Application\UI\ComponentReflection;
 use Tester\Assert;
 
 
@@ -23,10 +23,10 @@ function testIt($type, $val, $res = NULL)
 {
 	$isClass = class_exists($type);
 	if (func_num_args() === 3) {
-		Assert::true(PresenterComponentReflection::convertType($val, $type, $isClass));
+		Assert::true(ComponentReflection::convertType($val, $type, $isClass));
 	} else {
 		$res = $val;
-		Assert::false(PresenterComponentReflection::convertType($val, $type, $isClass));
+		Assert::false(ComponentReflection::convertType($val, $type, $isClass));
 	}
 	Assert::same($res, $val);
 }

@@ -25,7 +25,7 @@ class MethodReflection extends \ReflectionMethod
 	 */
 	public function hasAnnotation($name)
 	{
-		return (bool) PresenterComponentReflection::parseAnnotation($this, $name);
+		return (bool) ComponentReflection::parseAnnotation($this, $name);
 	}
 
 
@@ -36,7 +36,7 @@ class MethodReflection extends \ReflectionMethod
 	 */
 	public function getAnnotation($name)
 	{
-		$res = PresenterComponentReflection::parseAnnotation($this, $name);
+		$res = ComponentReflection::parseAnnotation($this, $name);
 		return $res ? end($res) : NULL;
 	}
 

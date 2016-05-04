@@ -74,7 +74,7 @@ class MicroPresenter implements Application\IPresenter
 		$params['presenter'] = $this;
 		$callback = $params['callback'];
 		$reflection = Nette\Utils\Callback::toReflection(Nette\Utils\Callback::check($callback));
-		$params = Application\UI\PresenterComponentReflection::combineArgs($reflection, $params);
+		$params = Application\UI\ComponentReflection::combineArgs($reflection, $params);
 
 		if ($this->context) {
 			foreach ($reflection->getParameters() as $param) {
