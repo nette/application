@@ -19,9 +19,6 @@ class Template%a% extends Latte\Template
 		if (Nette\Bridges\ApplicationLatte\UIRuntime::initialize($this, $this->blockQueue)) return;
 
 		// main template
-		?>
-
-<?php
 		if ($this->tryRenderParent(get_defined_vars())) return;
 		?><div id="<?php echo $_control->getSnippetId('') ?>"><?php call_user_func(reset($this->blockQueue['_']), $this->params) ?></div>
 
@@ -53,7 +50,9 @@ class Template%a% extends Latte\Template
 		extract($_args);
 		$_control->redrawControl('', FALSE);
 
+		?>
 
+<?php
 	}
 
 
@@ -62,7 +61,8 @@ class Template%a% extends Latte\Template
 		extract($_args);
 		$_control->redrawControl('outer', FALSE);
 
-		?>	Outer
+		?>
+	Outer
 		<div id="<?php echo $_control->getSnippetId('inner') ?>"><?php call_user_func(reset($this->blockQueue['_inner']), $this->params) ?></div>	/Outer
 <?php
 	}
