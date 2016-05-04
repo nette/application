@@ -60,7 +60,7 @@ class UIMacros extends Latte\Macros\MacroSet
 	 */
 	public function finalize()
 	{
-		return ['if (Nette\Bridges\ApplicationLatte\UIRuntime::initialize($this, $this->blockQueue)) return;', ''];
+		return ['if (Nette\Bridges\ApplicationLatte\UIRuntime::initialize($this, $this->blockQueue)) return; $template = $this->params["template"];', ''];
 	}
 
 
