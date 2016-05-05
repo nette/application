@@ -33,7 +33,7 @@ class UIRuntime
 		$params = $template->getParameters();
 		if (!$template->getParentName() && !empty($params['_control']->snippetMode)) {
 			$tmp = $template;
-			while (in_array($tmp->getReferenceType(), ['extends', 'include', NULL], TRUE) && ($tmp = $tmp->getReferrerTemplate()));
+			while (in_array($tmp->getReferenceType(), ['extends', 'include', NULL], TRUE) && ($tmp = $tmp->getReferringTemplate()));
 			if (!$tmp) {
 				self::renderSnippets($params['_control'], $blockQueue, $params);
 				return TRUE;

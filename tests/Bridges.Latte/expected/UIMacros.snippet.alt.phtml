@@ -4,9 +4,15 @@
 class Template%a% extends Latte\Template
 {
 	public $blocks = [
-		'_outer' => ['blockOuter', 'html'],
-		'_inner' => ['blockInner', 'html'],
-		'_gallery' => ['blockGallery', 'html'],
+		'_outer' => 'blockOuter',
+		'_inner' => 'blockInner',
+		'_gallery' => 'blockGallery',
+	];
+
+	public $blockTypes = [
+		'_outer' => 'html',
+		'_inner' => 'html',
+		'_gallery' => 'html',
 	];
 
 
@@ -19,9 +25,7 @@ class Template%a% extends Latte\Template
 
 		// main template
 		?>	<div class="test"<?php echo ' id="' . $_control->getSnippetId('outer') . '"' ?>>
-<?php
-		if ($this->tryRenderParent(get_defined_vars())) return;
-		call_user_func(reset($this->blockQueue['_outer']), $this->params) ?>
+<?php call_user_func(reset($this->blockQueue['_outer']), $this->params) ?>
 	</div>
 
 	<div class="test"<?php echo ' id="' . $_control->getSnippetId('inner') . '"' ?>>
