@@ -48,7 +48,7 @@ class UIMacros extends Latte\Macros\MacroSet
 	public function initialize()
 	{
 		$this->getCompiler()->addMethod('getParentName', '
-		return !$this->getReferringTemplate() && $this->params["_control"] instanceof Nette\Application\UI\Presenter
+		return $this->blocks && !$this->getReferringTemplate() && $this->params["_control"] instanceof Nette\Application\UI\Presenter
 			? $this->params["_control"]->findLayoutTemplateFile() : NULL;
 		');
 	}
