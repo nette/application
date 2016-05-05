@@ -78,4 +78,14 @@ class VariableTemplate extends Latte\Template
 		unset($this->template->params[$name]);
 	}
 
+
+	/**
+	 * Returns array of all parameters.
+	 * @return array
+	 */
+	public function getParameters()
+	{
+		return $this->template->getParameters();
+	}
+
 }
