@@ -25,9 +25,12 @@ class Template%a% extends Latte\Template
 	}
 
 
-	function getParentName()
+	function prepare()
 	{
-		%A%
+		extract($this->params);
+		$this->parentName = $this->parentName ?: ($this->blocks && !$this->getReferringTemplate() && $this->params["_control"] instanceof Nette\Application\UI\Presenter
+		? $this->params["_control"]->findLayoutTemplateFile() : NULL);
+		return get_defined_vars();
 	}
 
 
