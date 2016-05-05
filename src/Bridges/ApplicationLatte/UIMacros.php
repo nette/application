@@ -24,6 +24,9 @@ use Nette\Utils\Strings;
  */
 class UIMacros extends Latte\Macros\MacroSet
 {
+	/** @var bool */
+	private $extends;
+
 
 	public static function install(Latte\Compiler $compiler)
 	{
@@ -47,10 +50,7 @@ class UIMacros extends Latte\Macros\MacroSet
 	 */
 	public function initialize()
 	{
-		$this->getCompiler()->addMethod('getParentName', '
-		return $this->blocks && !$this->getReferringTemplate() && $this->params["_control"] instanceof Nette\Application\UI\Presenter
-			? $this->params["_control"]->findLayoutTemplateFile() : NULL;
-		');
+		$this->extends = FALSE;
 	}
 
 
@@ -60,7 +60,12 @@ class UIMacros extends Latte\Macros\MacroSet
 	 */
 	public function finalize()
 	{
-		return ['if (Nette\Bridges\ApplicationLatte\UIRuntime::initialize($this, $this->blockQueue)) return; $template = $this->params["template"];', ''];
+		return [
+			'if (Nette\Bridges\ApplicationLatte\UIRuntime::initialize($this, $this->blockQueue)) return; $template = $this->params["template"];',
+			'',
+			$this->extends ? '' : '$this->parentName = $this->parentName ?: ($this->blocks && !$this->getReferringTemplate() && $this->params["_control"] instanceof Nette\Application\UI\Presenter
+				? $this->params["_control"]->findLayoutTemplateFile() : NULL);',
+		];
 	}
 
 
@@ -123,10 +128,11 @@ class UIMacros extends Latte\Macros\MacroSet
 	 */
 	public function macroExtends(MacroNode $node, PhpWriter $writer)
 	{
+		$this->extends = TRUE;
 		if ($node->modifiers || $node->parentNode || $node->args !== 'auto') {
 			return FALSE;
 		}
-		$this->getCompiler()->addMethod('getParentName', 'return $this->params["_presenter"]->findLayoutTemplateFile();');
+		return $writer->write('$this->parentName = $this->params["_presenter"]->findLayoutTemplateFile();');
 	}
 
 
