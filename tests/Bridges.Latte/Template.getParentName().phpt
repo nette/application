@@ -24,13 +24,13 @@ $template = $latte->createTemplate(
 	'',
 	['_control' => new MockPresenter]
 );
-Assert::same('layout.latte', $template->getParentName());
+Assert::null($template->getParentName());
 
 $template = $latte->createTemplate(
 	'{block}...{/block}',
 	['_control' => new MockPresenter]
 );
-Assert::same('layout.latte', $template->getParentName());
+Assert::null($template->getParentName());
 
 $template = $latte->createTemplate(
 	'{block name}...{/block}',
