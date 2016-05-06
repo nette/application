@@ -27,7 +27,10 @@ class UIRuntime
 	public static function initialize(Latte\Template $template, $blockQueue)
 	{
 		// back compatibility
-		new VariableTemplate($template);
+		$tmp = $template;
+		do {
+			new VariableTemplate($tmp);
+		} while ($tmp = $tmp->getReferringTemplate());
 
 		// snippet support
 		$params = $template->getParameters();
