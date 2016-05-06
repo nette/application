@@ -21,7 +21,6 @@ class Template%a% extends Latte\Template
 %A%
 		// prolog Nette\Bridges\ApplicationLatte\UIMacros
 		if (Nette\Bridges\ApplicationLatte\UIRuntime::initialize($this, $this->blockQueue)) return;
-		$template = $this->params["template"];
 
 		// main template
 		?>	<div class="test"<?php echo ' id="' . $_control->getSnippetId('outer') . '"' ?>>

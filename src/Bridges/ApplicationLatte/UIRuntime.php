@@ -26,9 +26,6 @@ class UIRuntime
 	 */
 	public static function initialize(Latte\Template $template, $blockQueue)
 	{
-		// back compatibility
-		new VariableTemplate($template);
-
 		// snippet support
 		$params = $template->getParameters();
 		if (!$template->getParentName() && !empty($params['_control']->snippetMode)) {
