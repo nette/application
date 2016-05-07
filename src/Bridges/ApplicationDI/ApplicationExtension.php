@@ -53,14 +53,14 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 	public function loadConfiguration()
 	{
 		$config = $this->validateConfig($this->defaults);
-		$container = $this->getContainerBuilder();
-		$container->addExcludedClasses([UI\Control::class]);
+		$builder = $this->getContainerBuilder();
+		$builder->addExcludedClasses([UI\Control::class]);
 
 		$this->invalidLinkMode = $this->debugMode
 			? UI\Presenter::INVALID_LINK_TEXTUAL | ($config['silentLinks'] ? 0 : UI\Presenter::INVALID_LINK_WARNING)
 			: UI\Presenter::INVALID_LINK_WARNING;
 
-		$application = $container->addDefinition($this->prefix('application'))
+		$application = $builder->addDefinition($this->prefix('application'))
 			->setClass(Nette\Application\Application::class)
 			->addSetup('$catchExceptions', [$config['catchExceptions']])
 			->addSetup('$errorPresenter', [$config['errorPresenter']]);
@@ -70,7 +70,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 		}
 
 		$touch = $this->debugMode && $config['scanDirs'] ? $this->tempFile : NULL;
-		$presenterFactory = $container->addDefinition($this->prefix('presenterFactory'))
+		$presenterFactory = $builder->addDefinition($this->prefix('presenterFactory'))
 			->setClass(Nette\Application\IPresenterFactory::class)
 			->setFactory(Nette\Application\PresenterFactory::class, [new Nette\DI\Statement(
 				Nette\Bridges\ApplicationDI\PresenterFactoryCallback::class, [1 => $this->invalidLinkMode, $touch]
@@ -80,31 +80,31 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 			$presenterFactory->addSetup('setMapping', [$config['mapping']]);
 		}
 
-		$container->addDefinition($this->prefix('linkGenerator'))
+		$builder->addDefinition($this->prefix('linkGenerator'))
 			->setFactory(Nette\Application\LinkGenerator::class, [
 				1 => new Nette\DI\Statement('@Nette\Http\IRequest::getUrl'),
 			]);
 
 		if ($this->name === 'application') {
-			$container->addAlias('application', $this->prefix('application'));
-			$container->addAlias('nette.presenterFactory', $this->prefix('presenterFactory'));
+			$builder->addAlias('application', $this->prefix('application'));
+			$builder->addAlias('nette.presenterFactory', $this->prefix('presenterFactory'));
 		}
 	}
 
 
 	public function beforeCompile()
 	{
-		$container = $this->getContainerBuilder();
+		$builder = $this->getContainerBuilder();
 		$all = [];
 
-		foreach ($container->findByType(Nette\Application\IPresenter::class) as $def) {
+		foreach ($builder->findByType(Nette\Application\IPresenter::class) as $def) {
 			$all[$def->getClass()] = $def;
 		}
 
 		$counter = 0;
 		foreach ($this->findPresenters() as $class) {
 			if (empty($all[$class])) {
-				$all[$class] = $container->addDefinition($this->prefix(++$counter))->setClass($class);
+				$all[$class] = $builder->addDefinition($this->prefix(++$counter))->setClass($class);
 			}
 		}
 

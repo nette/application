@@ -1177,7 +1177,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 				}
 				if ($since !== $sinces[$key]) {
 					$since = $sinces[$key];
-					$ok = $since && (is_subclass_of($forClass, $since) || $forClass === $since);
+					$ok = $since && is_a($forClass, $since, TRUE);
 				}
 				if (!$ok) {
 					unset($state[$key]);

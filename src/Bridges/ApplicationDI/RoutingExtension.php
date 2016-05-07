@@ -36,9 +36,9 @@ class RoutingExtension extends Nette\DI\CompilerExtension
 	public function loadConfiguration()
 	{
 		$config = $this->validateConfig($this->defaults);
-		$container = $this->getContainerBuilder();
+		$builder = $this->getContainerBuilder();
 
-		$router = $container->addDefinition($this->prefix('router'))
+		$router = $builder->addDefinition($this->prefix('router'))
 			->setClass(Nette\Application\IRouter::class)
 			->setFactory(Nette\Application\Routers\RouteList::class);
 
@@ -47,17 +47,17 @@ class RoutingExtension extends Nette\DI\CompilerExtension
 		}
 
 		if ($this->name === 'routing') {
-			$container->addAlias('router', $this->prefix('router'));
+			$builder->addAlias('router', $this->prefix('router'));
 		}
 	}
 
 
 	public function beforeCompile()
 	{
-		$container = $this->getContainerBuilder();
+		$builder = $this->getContainerBuilder();
 
-		if ($this->debugMode && $this->config['debugger'] && $application = $container->getByType(Nette\Application\Application::class)) {
-			$container->getDefinition($application)->addSetup('@Tracy\Bar::addPanel', [
+		if ($this->debugMode && $this->config['debugger'] && $application = $builder->getByType(Nette\Application\Application::class)) {
+			$builder->getDefinition($application)->addSetup('@Tracy\Bar::addPanel', [
 				new Nette\DI\Statement(Nette\Bridges\ApplicationTracy\RoutingPanel::class),
 			]);
 		}

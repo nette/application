@@ -42,9 +42,9 @@ class LatteExtension extends Nette\DI\CompilerExtension
 		}
 
 		$config = $this->validateConfig($this->defaults);
-		$container = $this->getContainerBuilder();
+		$builder = $this->getContainerBuilder();
 
-		$container->addDefinition($this->prefix('latteFactory'))
+		$builder->addDefinition($this->prefix('latteFactory'))
 			->setClass(Latte\Engine::class)
 			->addSetup('setTempDirectory', [$this->tempDir])
 			->addSetup('setAutoRefresh', [$this->debugMode])
@@ -52,7 +52,7 @@ class LatteExtension extends Nette\DI\CompilerExtension
 			->addSetup('Nette\Utils\Html::$xhtml = ?', [(bool) $config['xhtml']])
 			->setImplement(Nette\Bridges\ApplicationLatte\ILatteFactory::class);
 
-		$container->addDefinition($this->prefix('templateFactory'))
+		$builder->addDefinition($this->prefix('templateFactory'))
 			->setClass(Nette\Application\UI\ITemplateFactory::class)
 			->setFactory(Nette\Bridges\ApplicationLatte\TemplateFactory::class);
 
@@ -64,8 +64,8 @@ class LatteExtension extends Nette\DI\CompilerExtension
 		}
 
 		if ($this->name === 'latte') {
-			$container->addAlias('nette.latteFactory', $this->prefix('latteFactory'));
-			$container->addAlias('nette.templateFactory', $this->prefix('templateFactory'));
+			$builder->addAlias('nette.latteFactory', $this->prefix('latteFactory'));
+			$builder->addAlias('nette.templateFactory', $this->prefix('templateFactory'));
 		}
 	}
 
@@ -76,8 +76,8 @@ class LatteExtension extends Nette\DI\CompilerExtension
 	 */
 	public function addMacro(callable $macro)
 	{
-		$container = $this->getContainerBuilder();
-		$container->getDefinition($this->prefix('latteFactory'))
+		$builder = $this->getContainerBuilder();
+		$builder->getDefinition($this->prefix('latteFactory'))
 			->addSetup('?->onCompile[] = function ($engine) { ' . $macro . '($engine->getCompiler()); }', ['@self']);
 	}
 
