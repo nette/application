@@ -73,7 +73,7 @@ test(function () {
 	//_signal_ in POST
 	$presenter = createPresenter();
 	$presenter->run(new Application\Request('Foo', 'POST', [], [
-		'_do_' => 'foo'
+		'_do' => 'foo'
 	]));
 	Assert::same(['', 'foo'], $presenter->getSignal());
 });
@@ -91,7 +91,7 @@ test(function () {
 	//_signal_ in POST overwriting GET
 	$presenter = createPresenter();
 	$presenter->run(new Application\Request('Foo', 'POST', ['do' => 'bar'], [
-		'_do_' => 'foo'
+		'_do' => 'foo'
 	]));
 	Assert::same(['', 'foo'], $presenter->getSignal());
 });
@@ -121,7 +121,7 @@ test(function () {
 	$presenter = createPresenter();
 	$presenter->ajax = TRUE;
 	$presenter->run(new Application\Request('Foo', 'POST', ['do' => 'bar'], [
-		'_do_' => 'foo'
+		'_do' => 'foo'
 	]));
 	Assert::same(['', 'foo'], $presenter->getSignal());
 });

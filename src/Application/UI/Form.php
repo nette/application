@@ -59,24 +59,20 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 	{
 		if ($presenter instanceof Presenter) {
 			$name = $this->lookupPath(Presenter::class);
-
 			if (!isset($this->getElementPrototype()->id)) {
 				$this->getElementPrototype()->id = 'frm-' . $name;
 			}
+			if (!$this->getAction()) {
+				$this->setAction(new Link($presenter, $name . self::NAME_SEPARATOR . 'submit'));
+			}
 
-			if (iterator_count($this->getControls()) && $this->isSubmitted()) {
-				foreach ($this->getControls() as $control) {
+			$controls = $this->getControls();
+			if (iterator_count($controls) && $this->isSubmitted()) {
+				foreach ($controls as $control) {
 					if (!$control->isDisabled()) {
 						$control->loadHttpData();
 					}
 				}
-			}
-
-			if (!$this->getAction()) {
-				$this->setAction(new Link($presenter, 'this', []));
-				$signal = new Nette\Forms\Controls\HiddenField($name . self::NAME_SEPARATOR . 'submit');
-				$signal->setOmitted()->setHtmlId(FALSE);
-				$this['_' . Presenter::SIGNAL_KEY . '_'] = $signal;
 			}
 		}
 		parent::attached($presenter);
@@ -100,11 +96,20 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 	protected function receiveHttpData()
 	{
 		$presenter = $this->getPresenter();
+		$isPost = $this->getMethod() === self::POST;
+
+		$action = $this->getAction();
+		if ($action instanceof Link) {
+			$this[($isPost ? '_' : '') . Presenter::SIGNAL_KEY] =
+				(new Nette\Forms\Controls\HiddenField($action->getDestination()))
+				->setOmitted()->setHtmlId(FALSE);
+			$this->setAction(new Link($presenter, 'this'));
+		}
+
 		if (!$presenter->isSignalReceiver($this, 'submit')) {
 			return;
 		}
 
-		$isPost = $this->getMethod() === self::POST;
 		$request = $presenter->getRequest();
 		if ($request->isMethod('forward') || $request->isMethod('post') !== $isPost) {
 			return;

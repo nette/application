@@ -31,7 +31,7 @@ class Link
 	/**
 	 * Link specification.
 	 */
-	public function __construct(PresenterComponent $component, $destination, array $params)
+	public function __construct(PresenterComponent $component, $destination, array $params = [])
 	{
 		$this->component = $component;
 		$this->destination = $destination;
