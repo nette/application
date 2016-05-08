@@ -199,10 +199,12 @@ class PresenterComponentReflection extends \ReflectionClass
 		if (!preg_match_all("#[\\s*]@$name(?:\(\\s*([^)]*)\\s*\))?#", $ref->getDocComment(), $m)) {
 			return FALSE;
 		}
+		static $tokens = ['true' => TRUE, 'false' => FALSE, 'null' => NULL];
 		$res = [];
 		foreach ($m[1] as $s) {
-			$arr = $s === '' ? [TRUE] : preg_split('#\s*,\s*#', $s, -1, PREG_SPLIT_NO_EMPTY);
-			$res = array_merge($res, $arr);
+			foreach (preg_split('#\s*,\s*#', $s, -1, PREG_SPLIT_NO_EMPTY) ?: ['true'] as $item) {
+				$res[] = array_key_exists($tmp = strtolower($item), $tokens) ? $tokens[$tmp] : $item;
+			}
 		}
 		return $res;
 	}
