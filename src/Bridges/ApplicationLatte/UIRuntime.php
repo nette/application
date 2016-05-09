@@ -20,19 +20,28 @@ class UIRuntime
 {
 	use Nette\StaticClass;
 
-
 	/**
 	 * @return bool
 	 */
 	public static function initialize(Latte\Template $template, $blockQueue)
 	{
-		// snippet support
+		// back compatiblity
 		$params = $template->getParameters();
-		if (!$template->getParentName() && !empty($params['_control']->snippetMode)) {
+		if (empty($template->global->uiControl) && isset($params['_control'])) {
+			trigger_error('Replace template variable $_control with provider: $latte->addProvider("uiControl", ...)', E_USER_DEPRECATED);
+			$template->global->uiControl = $params['_control'];
+		}
+		if (empty($template->global->uiPresenter) && isset($params['_presenter'])) {
+			trigger_error('Replace template variable $_presenter with provider: $latte->addProvider("uiPresenter", ...)', E_USER_DEPRECATED);
+			$template->global->uiPresenter = $params['_presenter'];
+		}
+
+		// snippet support
+		if (!$template->getParentName() && !empty($template->global->uiControl->snippetMode)) {
 			$tmp = $template;
 			while (in_array($tmp->getReferenceType(), ['extends', 'include', NULL], TRUE) && ($tmp = $tmp->getReferringTemplate()));
 			if (!$tmp) {
-				self::renderSnippets($params['_control'], $blockQueue, $params);
+				self::renderSnippets($template->global->uiControl, $blockQueue, $params);
 				return TRUE;
 			}
 		};

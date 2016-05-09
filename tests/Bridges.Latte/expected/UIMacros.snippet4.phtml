@@ -26,7 +26,7 @@ class Template%a% extends Latte\Template
 		?>
 
 
-<div id="<?php echo $_control->getSnippetId('outer') ?>"><?php call_user_func(reset($this->blockQueue['_outer']), $this->params) ?></div><?php
+<div id="<?php echo $this->global->uiControl->getSnippetId('outer') ?>"><?php call_user_func(reset($this->blockQueue['_outer']), $this->params) ?></div><?php
 
 	}
 
@@ -34,7 +34,7 @@ class Template%a% extends Latte\Template
 	function blockBlock1($_args)
 	{
 		extract($_args);
-		?><div<?php echo ' id="' . $_control->getSnippetId('snippet') . '"' ?>>
+		?><div<?php echo ' id="' . $this->global->uiControl->getSnippetId('snippet') . '"' ?>>
 <?php call_user_func(reset($this->blockQueue['_snippet']), $this->params) ?>
 </div>
 <?php
@@ -45,7 +45,7 @@ class Template%a% extends Latte\Template
 	function blockSnippet($_args)
 	{
 		extract($_args);
-		$_control->redrawControl('snippet', FALSE);
+		$this->global->uiControl->redrawControl('snippet', FALSE);
 
 		?>		static
 <?php
@@ -55,7 +55,7 @@ class Template%a% extends Latte\Template
 	function blockOuter($_args)
 	{
 		extract($_args);
-		$_control->redrawControl('outer', FALSE);
+		$this->global->uiControl->redrawControl('outer', FALSE);
 
 		?>
 begin
@@ -72,7 +72,7 @@ end
 	function blockBlock2($_args)
 	{
 		extract($_args);
-		?><div<?php echo ' id="' . ($this->global->dynSnippetId = $_control->getSnippetId("inner-$id")) . '"' ?>>
+		?><div<?php echo ' id="' . ($this->global->dynSnippetId = $this->global->uiControl->getSnippetId("inner-$id")) . '"' ?>>
 <?php ob_start() ?>		dynamic
 <?php $this->global->dynSnippets[$this->global->dynSnippetId] = ob_get_flush() ?></div>
 <?php

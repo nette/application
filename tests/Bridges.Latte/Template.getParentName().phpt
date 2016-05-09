@@ -18,60 +18,41 @@ class MockPresenter extends Nette\Application\UI\Presenter
 
 $latte = new Latte\Engine;
 $latte->setLoader(new Latte\Loaders\StringLoader);
+$latte->addProvider('uiControl', new MockPresenter);
 UIMacros::install($latte->getCompiler());
 
-$template = $latte->createTemplate(
-	'',
-	['_control' => new MockPresenter]
-);
+$template = $latte->createTemplate('');
 $template->prepare();
 Assert::null($template->getParentName());
 
-$template = $latte->createTemplate(
-	'{block}...{/block}',
-	['_control' => new MockPresenter]
-);
+$template = $latte->createTemplate('{block}...{/block}');
 $template->prepare();
 Assert::null($template->getParentName());
 
-$template = $latte->createTemplate(
-	'{block name}...{/block}',
-	['_control' => new MockPresenter]
-);
+$template = $latte->createTemplate('{block name}...{/block}');
 $template->prepare();
 Assert::same('layout.latte', $template->getParentName());
 
-$template = $latte->createTemplate(
-	'{extends "file.latte"} {block name}...{/block}',
-	['_control' => new MockPresenter]
-);
+$template = $latte->createTemplate('{extends "file.latte"} {block name}...{/block}');
 $template->prepare();
 Assert::same('file.latte', $template->getParentName());
 
-$template = $latte->createTemplate(
-	'{extends "file.latte"}',
-	['_control' => new MockPresenter]
-);
+$template = $latte->createTemplate('{extends "file.latte"}');
 $template->prepare();
 Assert::same('file.latte', $template->getParentName());
 
 $template = $latte->createTemplate(
 	'{extends $file} {block name}...{/block}',
-	['_control' => new MockPresenter, 'file' => 'file.latte']
+	['file' => 'file.latte']
 );
 $template->prepare();
 Assert::same('file.latte', $template->getParentName());
 
-$template = $latte->createTemplate(
-	'{extends none}',
-	['_control' => new MockPresenter]
-);
+$template = $latte->createTemplate('{extends none}');
 $template->prepare();
 Assert::null($template->getParentName());
 
-$template = $latte->createTemplate(
-	'{extends auto}',
-	['_presenter' => new MockPresenter]
-);
+$latte->addProvider('uiPresenter', new MockPresenter);
+$template = $latte->createTemplate('{extends auto}');
 $template->prepare();
 Assert::same('layout.latte', $template->getParentName());

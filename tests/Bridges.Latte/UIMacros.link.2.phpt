@@ -50,8 +50,8 @@ $latte = new Latte\Engine;
 $latte->setLoader(new Latte\Loaders\StringLoader);
 UIMacros::install($latte->getCompiler());
 
-$params['_control'] = new MockControl;
-$params['_presenter'] = new MockPresenter;
+$latte->addProvider('uiControl', new MockControl);
+$latte->addProvider('uiPresenter', new MockPresenter);
 $params['action'] = 'login';
 $params['arr'] = ['link' => 'login', 'param' => 123];
 

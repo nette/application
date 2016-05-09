@@ -86,13 +86,20 @@ class TemplateFactory implements UI\ITemplateFactory
 		}
 
 		// default parameters
-		$template->control = $template->_control = $control;
-		$template->presenter = $template->_presenter = $presenter;
+		$template->control = $control;
+		$template->presenter = $presenter;
 		$template->user = $this->user;
-		$template->netteCacheStorage = $this->cacheStorage;
 		$template->baseUri = $template->baseUrl = $this->httpRequest ? rtrim($this->httpRequest->getUrl()->getBaseUrl(), '/') : NULL;
 		$template->basePath = preg_replace('#https?://[^/]+#A', '', $template->baseUrl);
 		$template->flashes = [];
+		$latte->addProvider('uiControl', $control);
+		$latte->addProvider('uiPresenter', $presenter);
+		$latte->addProvider('cacheStorage', $this->cacheStorage);
+
+		// back compatibility
+		$template->_control = $control;
+		$template->_presenter = $presenter;
+		$template->netteCacheStorage = $this->cacheStorage;
 
 		if ($presenter instanceof UI\Presenter && $presenter->hasFlashSession()) {
 			$id = $control->getParameterId('flash');

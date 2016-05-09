@@ -22,6 +22,7 @@ class MockControl
 $latte = new Latte\Engine;
 UIMacros::install($latte->getCompiler());
 $latte->setLoader(new Latte\Loaders\StringLoader);
+$latte->addProvider('uiControl', new MockControl);
 
 Assert::match(<<<EOD
 <div>
@@ -35,4 +36,4 @@ EOD
 	{/snippet}
 </div>
 EOD
-, ['_control' => new MockControl]));
+));

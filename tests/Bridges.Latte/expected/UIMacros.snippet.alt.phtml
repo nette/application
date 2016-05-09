@@ -23,16 +23,16 @@ class Template%a% extends Latte\Template
 		if (Nette\Bridges\ApplicationLatte\UIRuntime::initialize($this, $this->blockQueue)) return;
 
 		// main template
-		?>	<div class="test"<?php echo ' id="' . $_control->getSnippetId('outer') . '"' ?>>
+		?>	<div class="test"<?php echo ' id="' . $this->global->uiControl->getSnippetId('outer') . '"' ?>>
 <?php call_user_func(reset($this->blockQueue['_outer']), $this->params) ?>
 	</div>
 
-	<div class="test"<?php echo ' id="' . $_control->getSnippetId('inner') . '"' ?>>
+	<div class="test"<?php echo ' id="' . $this->global->uiControl->getSnippetId('inner') . '"' ?>>
 <?php
 		call_user_func(reset($this->blockQueue['_inner']), $this->params);
 		?>	</div>
 
-	<div class="<?php echo LR\Filters::escapeHtmlAttr('class') ?>"<?php echo ' id="' . $_control->getSnippetId('gallery') . '"' ?>><?php
+	<div class="<?php echo LR\Filters::escapeHtmlAttr('class') ?>"<?php echo ' id="' . $this->global->uiControl->getSnippetId('gallery') . '"' ?>><?php
 		call_user_func(reset($this->blockQueue['_gallery']), $this->params) ?>
 </div>
 <?php
@@ -43,8 +43,8 @@ class Template%a% extends Latte\Template
 	function prepare()
 	{
 		extract($this->params);
-		$this->parentName = $this->parentName ?: ($this->blocks && !$this->getReferringTemplate() && $this->params["_control"] instanceof Nette\Application\UI\Presenter
-		? $this->params["_control"]->findLayoutTemplateFile() : NULL);
+		$this->parentName = $this->parentName ?: ($this->blocks && !$this->getReferringTemplate() && isset($this->global->uiControl) && $this->global->uiControl instanceof Nette\Application\UI\Presenter
+		? $this->global->uiControl->findLayoutTemplateFile() : NULL);
 		return get_defined_vars();
 	}
 
@@ -52,7 +52,7 @@ class Template%a% extends Latte\Template
 	function blockOuter($_args)
 	{
 		extract($_args);
-		$_control->redrawControl('outer', FALSE);
+		$this->global->uiControl->redrawControl('outer', FALSE);
 
 		?>	<p>Outer</p>
 <?php
@@ -62,7 +62,7 @@ class Template%a% extends Latte\Template
 	function blockInner($_args)
 	{
 		extract($_args);
-		$_control->redrawControl('inner', FALSE);
+		$this->global->uiControl->redrawControl('inner', FALSE);
 
 		?>	<p>Inner</p>
 <?php
@@ -72,7 +72,7 @@ class Template%a% extends Latte\Template
 	function blockGallery($_args)
 	{
 		extract($_args);
-		$_control->redrawControl('gallery', FALSE);
+		$this->global->uiControl->redrawControl('gallery', FALSE);
 
 
 	}

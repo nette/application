@@ -24,8 +24,8 @@ class InnerControl extends Nette\Application\UI\Control
 		$latte = new Latte\Engine;
 		$latte->setLoader(new Latte\Loaders\StringLoader);
 		UIMacros::install($latte->getCompiler());
-		$params['_presenter'] = $this->getPresenter();
-		$params['_control'] = $this;
+		$latte->addProvider('uiPresenter', $this->getPresenter());
+		$latte->addProvider('uiControl', $this);
 		$params['say'] = 'Hello';
 		$latte->render('{snippet testA}{$say}{/snippet}', $params);
 	}
@@ -35,8 +35,8 @@ class InnerControl extends Nette\Application\UI\Control
 		$latte = new Latte\Engine;
 		$latte->setLoader(new Latte\Loaders\StringLoader);
 		UIMacros::install($latte->getCompiler());
-		$params['_presenter'] = $this->getPresenter();
-		$params['_control'] = $this;
+		$latte->addProvider('uiPresenter', $this->getPresenter());
+		$latte->addProvider('uiControl', $this);
 		$params['say'] = 'world';
 		$latte->render('{snippet testB}{$say}{/snippet}', $params);
 	}
@@ -57,8 +57,8 @@ class TestPresenter extends Nette\Application\UI\Presenter
 		$latte = new Latte\Engine;
 		$latte->setLoader(new Latte\Loaders\StringLoader);
 		UIMacros::install($latte->getCompiler());
-		$params['_control'] = $this;
-		$latte->render('', $params);
+		$latte->addProvider('uiControl', $this);
+		$latte->render('');
 	}
 }
 

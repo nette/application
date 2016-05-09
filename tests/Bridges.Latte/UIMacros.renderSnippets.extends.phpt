@@ -19,8 +19,8 @@ class TestPresenter extends Nette\Application\UI\Presenter
 	{
 		$latte = new Latte\Engine;
 		UIMacros::install($latte->getCompiler());
-		$params['_control'] = $this;
-		return $latte->renderToString(__DIR__ . '/templates/snippets.extends.latte', $params);
+		$latte->addProvider('uiControl', $this);
+		return $latte->renderToString(__DIR__ . '/templates/snippets.extends.latte');
 	}
 }
 

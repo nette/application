@@ -39,7 +39,7 @@ $latte = new Latte\Engine;
 $latte->setLoader(new Latte\Loaders\StringLoader);
 UIMacros::install($latte->getCompiler());
 
-$params['_control'] = new MockComponent;
+$latte->addProvider('uiControl', new MockComponent);
 $params['form'] = new MockControl;
 $params['name'] = 'form';
 
