@@ -40,3 +40,8 @@ EOD
 <p n:snippet="abc">hello</p>
 EOD
 , $params));
+
+
+Assert::error(function () use ($latte) {
+	$latte->compile('<p n:snippet="abc" n:foreach="$items as $item">hello</p>');
+}, E_USER_WARNING, 'Combination of n:snippet with n:foreach is invalid, use n:inner-foreach.');
