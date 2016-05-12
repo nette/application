@@ -23,10 +23,10 @@ test(function () {
 
 	$compiler = new DI\Compiler;
 	$compiler->addExtension('routing', new RoutingExtension(FALSE));
-	$code = $compiler->compile($config, 'Container1');
+	$code = $compiler->addConfig($config)->compile();
 	eval($code);
 
-	$container = new Container1;
+	$container = new Container;
 	$router = $container->getService('router');
 	Assert::type(Nette\Application\Routers\RouteList::class, $router);
 	Assert::count(2, $router);

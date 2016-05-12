@@ -21,7 +21,7 @@ test(function () {
 	$builder->addDefinition('myHttpRequest')->setFactory(Nette\Http\Request::class, [new DI\Statement(Nette\Http\UrlScript::class)]);
 	$builder->addDefinition('myHttpResponse')->setClass(Nette\Http\Response::class);
 
-	$code = $compiler->compile([], 'Container1');
+	$code = $compiler->setClassName('Container1')->compile();
 	eval($code);
 
 	$container = new Container1;

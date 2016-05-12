@@ -74,7 +74,7 @@ latte:
 $compiler = new DI\Compiler;
 $compiler->addExtension('latte', new Nette\Bridges\ApplicationDI\LatteExtension(NULL, FALSE));
 $compiler->addExtension('another', new AnotherExtension);
-$code = $compiler->compile($config, 'Container');
+$code = $compiler->addConfig($config)->compile();
 eval($code);
 
 $container = new Container;

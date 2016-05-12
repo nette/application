@@ -35,7 +35,7 @@ test(function () {
 		presenter: Presenter1
 	');
 	$compiler->addExtension('application', new ApplicationExtension(TRUE));
-	$code = $compiler->compile(NULL, 'Container4');
+	$code = $compiler->setClassName('Container4')->compile();
 	eval($code);
 
 	$container = new Container4;
@@ -55,7 +55,7 @@ test(function () {
 		presenter: Presenter1
 	');
 	$compiler->addExtension('application', new ApplicationExtension(TRUE));
-	$code = $compiler->compile(NULL, 'Container5');
+	$code = $compiler->setClassName('Container5')->compile();
 	eval($code);
 
 	$container = new Container5;
@@ -75,7 +75,7 @@ test(function () {
 		presenter: Presenter1
 	');
 	$compiler->addExtension('application', new ApplicationExtension(FALSE));
-	$code = $compiler->compile(NULL, 'Container6');
+	$code = $compiler->setClassName('Container6')->compile();
 	eval($code);
 
 	$container = new Container6;
@@ -95,7 +95,7 @@ test(function () {
 		presenter: Presenter1
 	');
 	$compiler->addExtension('application', new ApplicationExtension(FALSE));
-	$code = $compiler->compile(NULL, 'Container7');
+	$code = $compiler->setClassName('Container7')->compile();
 	eval($code);
 
 	$container = new Container7;

@@ -21,7 +21,7 @@ test(function () {
 	$builder->addDefinition('myRouter')->setClass(Nette\Application\Routers\SimpleRouter::class);
 	$builder->addDefinition('myHttpRequest')->setFactory(Nette\Http\Request::class, [new DI\Statement(Nette\Http\UrlScript::class)]);
 	$builder->addDefinition('myHttpResponse')->setClass(Nette\Http\Response::class);
-	$code = $compiler->compile([], 'Container1');
+	$code = $compiler->setClassName('Container1')->compile();
 	eval($code);
 
 	$container = new Container1;
@@ -40,11 +40,11 @@ test(function () {
 	$builder->addDefinition('myRouter')->setClass(Nette\Application\Routers\SimpleRouter::class);
 	$builder->addDefinition('myHttpRequest')->setFactory(Nette\Http\Request::class, [new DI\Statement(Nette\Http\UrlScript::class)]);
 	$builder->addDefinition('myHttpResponse')->setClass(Nette\Http\Response::class);
-	$code = $compiler->compile([
+	$code = $compiler->addConfig([
 		'application' => [
 			'scanDirs' => [__DIR__ . '/files'],
 		],
-	], 'Container2');
+	])->setClassName('Container2')->compile();
 	eval($code);
 
 	$container = new Container2;
@@ -71,7 +71,7 @@ test(function () {
 			setup:
 				- setView(test)
 	', 'neon'));
-	$code = $compiler->compile($config, 'Container3');
+	$code = $compiler->addConfig($config)->setClassName('Container3')->compile();
 	eval($code);
 
 	$container = new Container3;

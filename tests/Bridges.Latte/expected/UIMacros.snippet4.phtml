@@ -64,7 +64,7 @@ begin
 		?>
 end
 <?php
-		if (isset($this->local->dynSnippets)) return $this->local->dynSnippets;
+		if (isset($this->global->dynSnippets)) return $this->global->dynSnippets;
 
 	}
 
@@ -72,9 +72,9 @@ end
 	function blockBlock2($_args)
 	{
 		extract($_args);
-		?><div<?php echo ' id="' . ($this->local->dynSnippetId = $_control->getSnippetId("inner-$id")) . '"' ?>>
+		?><div<?php echo ' id="' . ($this->global->dynSnippetId = $_control->getSnippetId("inner-$id")) . '"' ?>>
 <?php ob_start() ?>		dynamic
-<?php $this->local->dynSnippets[$this->local->dynSnippetId] = ob_get_flush() ?></div>
+<?php $this->global->dynSnippets[$this->global->dynSnippetId] = ob_get_flush() ?></div>
 <?php
 
 	}
