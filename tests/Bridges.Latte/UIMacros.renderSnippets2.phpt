@@ -5,6 +5,7 @@
  */
 
 use Nette\Bridges\ApplicationLatte\UIMacros;
+use Nette\Bridges\ApplicationLatte\SnippetBridge;
 use Tester\Assert;
 
 
@@ -26,6 +27,7 @@ class InnerControl extends Nette\Application\UI\Control
 		UIMacros::install($latte->getCompiler());
 		$latte->addProvider('uiPresenter', $this->getPresenter());
 		$latte->addProvider('uiControl', $this);
+		$latte->addProvider('snippetBridge', new SnippetBridge($this));
 		$params['say'] = 'Hello';
 		$latte->render('{snippet testA}{$say}{/snippet}', $params);
 	}
@@ -37,6 +39,7 @@ class InnerControl extends Nette\Application\UI\Control
 		UIMacros::install($latte->getCompiler());
 		$latte->addProvider('uiPresenter', $this->getPresenter());
 		$latte->addProvider('uiControl', $this);
+		$latte->addProvider('snippetBridge', new SnippetBridge($this));
 		$params['say'] = 'world';
 		$latte->render('{snippet testB}{$say}{/snippet}', $params);
 	}
@@ -58,6 +61,7 @@ class TestPresenter extends Nette\Application\UI\Presenter
 		$latte->setLoader(new Latte\Loaders\StringLoader);
 		UIMacros::install($latte->getCompiler());
 		$latte->addProvider('uiControl', $this);
+		$latte->addProvider('snippetBridge', new SnippetBridge($this));
 		$latte->render('');
 	}
 }
