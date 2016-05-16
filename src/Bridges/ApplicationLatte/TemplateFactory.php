@@ -94,6 +94,9 @@ class TemplateFactory implements UI\ITemplateFactory
 		$template->flashes = [];
 		$latte->addProvider('uiControl', $control);
 		$latte->addProvider('uiPresenter', $presenter);
+		if ($control) {
+			$latte->addProvider('snippetBridge', new Nette\Bridges\ApplicationLatte\SnippetBridge($control));
+		}
 		$latte->addProvider('cacheStorage', $this->cacheStorage);
 
 		// back compatibility
