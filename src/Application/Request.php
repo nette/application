@@ -13,10 +13,11 @@ use Nette;
 /**
  * Presenter request.
  *
- * @property   array $parameters
- * @property   array $post
- * @property   array $files
- * @property   string|NULL $method
+ * @property string $presenterName
+ * @property array $parameters
+ * @property array $post
+ * @property array $files
+ * @property string|NULL $method
  */
 class Request
 {
