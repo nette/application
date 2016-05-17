@@ -31,7 +31,8 @@ class Template%a% extends Latte\Template
 	function prepare()
 	{
 		extract($this->params);
-		$this->parentName = $this->parentName ?: ($this->blocks && !$this->getReferringTemplate() && isset($this->global->uiControl) && $this->global->uiControl instanceof Nette\Application\UI\Presenter
+		$this->parentName = $this->parentName ?: ($this->blocks && !$this->getReferringTemplate()
+		&& isset($this->global->uiControl) && $this->global->uiControl instanceof Nette\Application\UI\Presenter
 		? $this->global->uiControl->findLayoutTemplateFile() : NULL);
 		return get_defined_vars();
 	}
@@ -43,12 +44,15 @@ class Template%a% extends Latte\Template
 		$this->global->uiControl->redrawControl('outer1', FALSE);
 
 		$iterations = 0;
-		%a%
 		foreach (array(1,2,3) as $id) {
 			?>		<div<?php echo ' id="' . ($this->global->dynSnippetId = $this->global->uiControl->getSnippetId("inner-$id")) . '"' ?>>
-<?php ob_start() ?>				#<?php echo LR\Filters::escapeHtml($id) ?>
+<?php
+			ob_start();
+			?>				#<?php echo LR\Filters::escapeHtml($id) /* line 4 */ ?>
 
-<?php $this->global->dynSnippets[$this->global->dynSnippetId] = ob_get_flush() ?>		</div>
+<?php
+			$this->global->dynSnippets[$this->global->dynSnippetId] = ob_get_flush();
+?>		</div>
 <?php
 			$iterations++;
 		}
@@ -64,12 +68,15 @@ class Template%a% extends Latte\Template
 		$this->global->uiControl->redrawControl('outer2', FALSE);
 
 		$iterations = 0;
-		%a%
 		foreach (array(1,2,3) as $id) {
 			?>		<div<?php echo ' id="' . ($this->global->dynSnippetId = $this->global->uiControl->getSnippetId("inner-$id")) . '"' ?>>
-<?php ob_start() ?>				#<?php echo LR\Filters::escapeHtml($id) ?>
+<?php
+			ob_start();
+			?>				#<?php echo LR\Filters::escapeHtml($id) /* line 13 */ ?>
 
-<?php $this->global->dynSnippets[$this->global->dynSnippetId] = ob_get_flush() ?>		</div>
+<?php
+			$this->global->dynSnippets[$this->global->dynSnippetId] = ob_get_flush();
+?>		</div>
 <?php
 			$iterations++;
 		}

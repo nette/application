@@ -30,9 +30,9 @@ class Template%a% extends Latte\Template
 	<div class="test"<?php echo ' id="' . $this->global->uiControl->getSnippetId('inner') . '"' ?>>
 <?php
 		call_user_func(reset($this->blockQueue['_inner']), $this->params);
-		?>	</div>
+?>	</div>
 
-	<div class="<?php echo LR\Filters::escapeHtmlAttr('class') ?>"<?php echo ' id="' . $this->global->uiControl->getSnippetId('gallery') . '"' ?>><?php
+	<div class="<?php echo LR\Filters::escapeHtmlAttr('class') /* line 9 */ ?>"<?php echo ' id="' . $this->global->uiControl->getSnippetId('gallery') . '"' ?>><?php
 		call_user_func(reset($this->blockQueue['_gallery']), $this->params) ?>
 </div>
 <?php
@@ -43,7 +43,8 @@ class Template%a% extends Latte\Template
 	function prepare()
 	{
 		extract($this->params);
-		$this->parentName = $this->parentName ?: ($this->blocks && !$this->getReferringTemplate() && isset($this->global->uiControl) && $this->global->uiControl instanceof Nette\Application\UI\Presenter
+		$this->parentName = $this->parentName ?: ($this->blocks && !$this->getReferringTemplate()
+		&& isset($this->global->uiControl) && $this->global->uiControl instanceof Nette\Application\UI\Presenter
 		? $this->global->uiControl->findLayoutTemplateFile() : NULL);
 		return get_defined_vars();
 	}
@@ -54,7 +55,7 @@ class Template%a% extends Latte\Template
 		extract($_args);
 		$this->global->uiControl->redrawControl('outer', FALSE);
 
-		?>	<p>Outer</p>
+?>	<p>Outer</p>
 <?php
 	}
 
@@ -64,7 +65,7 @@ class Template%a% extends Latte\Template
 		extract($_args);
 		$this->global->uiControl->redrawControl('inner', FALSE);
 
-		?>	<p>Inner</p>
+?>	<p>Inner</p>
 <?php
 	}
 

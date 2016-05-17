@@ -63,7 +63,8 @@ class UIMacros extends Latte\Macros\MacroSet
 		return [
 			'if (Nette\Bridges\ApplicationLatte\UIRuntime::initialize($this, $this->blockQueue)) return;',
 			'',
-			$this->extends ? '' : '$this->parentName = $this->parentName ?: ($this->blocks && !$this->getReferringTemplate() && isset($this->global->uiControl) && $this->global->uiControl instanceof Nette\Application\UI\Presenter
+			$this->extends ? '' : '$this->parentName = $this->parentName ?: ($this->blocks && !$this->getReferringTemplate()
+				&& isset($this->global->uiControl) && $this->global->uiControl instanceof Nette\Application\UI\Presenter
 				? $this->global->uiControl->findLayoutTemplateFile() : NULL);',
 		];
 	}
@@ -98,10 +99,14 @@ class UIMacros extends Latte\Macros\MacroSet
 		if (empty($wrap)) {
 			$param = substr($param, 1, -1); // removes array() or []
 		}
-		return ($name[0] === '$' ? "if (is_object($name)) \$_tmp = $name; else " : '')
+		return "/* line $node->startLine */ "
+			. ($name[0] === '$' ? "if (is_object($name)) \$_tmp = $name; else " : '')
 			. '$_tmp = $this->global->uiControl->getComponent(' . $name . '); '
 			. 'if ($_tmp instanceof Nette\Application\UI\IRenderable) $_tmp->redrawControl(NULL, FALSE); '
-			. ($node->modifiers === '' ? "\$_tmp->$method($param)" : $writer->write("ob_start(function () {}); \$_tmp->$method($param); echo %modify(ob_get_clean())"));
+			. ($node->modifiers === ''
+				? "\$_tmp->$method($param);"
+				: $writer->write("ob_start(function () {}); \$_tmp->$method($param); echo %modify(ob_get_clean());")
+			);
 	}
 
 
@@ -114,7 +119,10 @@ class UIMacros extends Latte\Macros\MacroSet
 	{
 		$node->modifiers = preg_replace('#\|safeurl\s*(?=\||\z)#i', '', $node->modifiers);
 		return $writer->using($node, $this->getCompiler())
-			->write('echo %escape(%modify(' . ($node->name === 'plink' ? '$this->global->uiPresenter' : '$this->global->uiControl') . '->link(%node.word, %node.array?)))');
+			->write('echo %escape(%modify('
+				. ($node->name === 'plink' ? '$this->global->uiPresenter' : '$this->global->uiControl')
+				. '->link(%node.word, %node.array?)))'
+			);
 	}
 
 
@@ -124,7 +132,7 @@ class UIMacros extends Latte\Macros\MacroSet
 	public function macroIfCurrent(MacroNode $node, PhpWriter $writer)
 	{
 		if ($node->modifiers) {
-			throw new CompileException("Modifiers are not allowed in {{$node->name}}");
+			throw new CompileException('Modifiers are not allowed in ' . $node->getNotation());
 		}
 		return $writer->write($node->args
 			? 'if ($this->global->uiPresenter->isLinkCurrent(%node.word, %node.array?)) {'
