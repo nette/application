@@ -36,7 +36,7 @@ test(function () {
 		presenter: Presenter1
 	');
 	$compiler->addExtension('application', new ApplicationExtension(TRUE));
-	$code = $compiler->compile(NULL, 'Container4');
+	$code = @$compiler->compile(NULL, 'Container4'); // @ compatibility with 2.4
 	eval($code);
 
 	$container = new Container4;
@@ -57,7 +57,7 @@ test(function () {
 		presenter: Presenter1
 	');
 	$compiler->addExtension('application', new ApplicationExtension(TRUE));
-	$code = $compiler->compile(NULL, 'Container5');
+	$code = @$compiler->compile(NULL, 'Container5'); // @ compatibility with 2.4
 	eval($code);
 
 	$container = new Container5;
@@ -78,7 +78,7 @@ test(function () {
 		presenter: Presenter1
 	');
 	$compiler->addExtension('application', new ApplicationExtension(FALSE));
-	$code = $compiler->compile(NULL, 'Container6');
+	$code = @$compiler->compile(NULL, 'Container6'); // @ compatibility with 2.4
 	eval($code);
 
 	$container = new Container6;
@@ -99,7 +99,7 @@ test(function () {
 		presenter: Presenter1
 	');
 	$compiler->addExtension('application', new ApplicationExtension(FALSE));
-	$code = $compiler->compile(NULL, 'Container7');
+	$code = @$compiler->compile(NULL, 'Container7'); // @ compatibility with 2.4
 	eval($code);
 
 	$container = new Container7;

@@ -21,7 +21,7 @@ test(function () {
 	$builder->addDefinition('myRouter')->setClass('Nette\Application\Routers\SimpleRouter');
 	$builder->addDefinition('myHttpRequest')->setFactory('Nette\Http\Request', array(new DI\Statement('Nette\Http\UrlScript')));
 	$builder->addDefinition('myHttpResponse')->setClass('Nette\Http\Response');
-	$code = $compiler->compile(array(
+	$code = @$compiler->compile(array( // @ compatibility with 2.4
 		'application' => array('debugger' => FALSE),
 	), 'Container1');
 	eval($code);
@@ -42,7 +42,7 @@ test(function () {
 	$builder->addDefinition('myRouter')->setClass('Nette\Application\Routers\SimpleRouter');
 	$builder->addDefinition('myHttpRequest')->setFactory('Nette\Http\Request', array(new DI\Statement('Nette\Http\UrlScript')));
 	$builder->addDefinition('myHttpResponse')->setClass('Nette\Http\Response');
-	$code = $compiler->compile(array(
+	$code = @$compiler->compile(array( // @ compatibility with 2.4
 		'application' => array(
 			'scanDirs' => array(__DIR__ . '/files'),
 			'debugger' => FALSE,
@@ -77,7 +77,7 @@ test(function () {
 			setup:
 				- setView(test)
 	', 'neon'));
-	$code = $compiler->compile($config, 'Container3');
+	$code = @$compiler->compile($config, 'Container3'); // @ compatibility with 2.4
 	eval($code);
 
 	$container = new Container3;

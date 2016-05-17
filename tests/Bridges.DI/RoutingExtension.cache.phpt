@@ -39,7 +39,7 @@ test(function () {
 
 	$compiler = new DI\Compiler;
 	$compiler->addExtension('routing', new RoutingExtension(FALSE));
-	$code = $compiler->compile($config, 'Container1');
+	$code = @$compiler->compile($config, 'Container1'); // @ compatibility with 2.4
 	eval($code);
 
 	$container = new Container1;
@@ -60,7 +60,7 @@ test(function () {
 
 	$compiler = new DI\Compiler;
 	$compiler->addExtension('routing', new RoutingExtension(FALSE));
-	$code = $compiler->compile($config, 'Container2');
+	$code = @$compiler->compile($config, 'Container2'); // @ compatibility with 2.4
 	eval($code);
 
 	$container = new Container2;
@@ -88,5 +88,5 @@ Assert::exception(function () {
 
 	$compiler = new DI\Compiler;
 	$compiler->addExtension('routing', new RoutingExtension(FALSE));
-	$compiler->compile($config, 'Container3');
+	@$compiler->compile($config, 'Container3'); // @ compatibility with 2.4
 }, 'Nette\DI\ServiceCreationException', 'Unable to cache router due to error: %a%');

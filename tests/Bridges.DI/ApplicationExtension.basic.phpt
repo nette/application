@@ -21,7 +21,7 @@ test(function () {
 	$builder->addDefinition('myHttpRequest')->setFactory('Nette\Http\Request', array(new DI\Statement('Nette\Http\UrlScript')));
 	$builder->addDefinition('myHttpResponse')->setClass('Nette\Http\Response');
 
-	$code = $compiler->compile(array(), 'Container1');
+	$code = @$compiler->compile(array(), 'Container1'); // @ compatibility with 2.4
 	eval($code);
 
 	$container = new Container1;
