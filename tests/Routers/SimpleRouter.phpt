@@ -40,4 +40,4 @@ Assert::same('http://nette.org/file.php?action=action&test=testvalue&presenter=m
 
 $url = new Http\UrlScript('https://nette.org/file.php');
 $res = $router->constructUrl($req, $url);
-Assert::same('http://nette.org/file.php?action=action&test=testvalue&presenter=myPresenter', $res);
+Assert::same('https://nette.org/file.php?action=action&test=testvalue&presenter=myPresenter', $res);

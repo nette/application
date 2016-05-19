@@ -383,25 +383,30 @@ class Route implements Application\IRouter
 		} while (TRUE);
 
 
-		if ($this->type !== self::HOST) {
+		if ($this->type === self::HOST) {
+			$host = $refUrl->getHost();
+			$parts = ip2long($host) ? [$host] : array_reverse(explode('.', $host));
+			$url = strtr($url, [
+				'/%basePath%/' => $refUrl->getBasePath(),
+				'%tld%' => $parts[0],
+				'%domain%' => isset($parts[1]) ? "$parts[1].$parts[0]" : $parts[0],
+				'%sld%' => isset($parts[1]) ? $parts[1] : '',
+			]);
+			if ($this->flags & self::SECURED) {
+				$url = 'https:' . $url;
+			} elseif (strncmp($url, "//$host/", strlen($host) + 3) === 0) {
+				$url = $refUrl->getScheme() . ':' . $url;
+			} else {
+				$url = 'http:' . $url;
+			}
+		} else {
 			if ($this->lastRefUrl !== $refUrl) {
-				$scheme = ($this->flags & self::SECURED ? 'https://' : 'http://');
+				$scheme = ($this->flags & self::SECURED ? 'https://' : $refUrl->getScheme() . '://');
 				$basePath = ($this->type === self::RELATIVE ? $refUrl->getBasePath() : '');
 				$this->lastBaseUrl = $scheme . $refUrl->getAuthority() . $basePath;
 				$this->lastRefUrl = $refUrl;
 			}
 			$url = $this->lastBaseUrl . $url;
-
-		} else {
-			$host = $refUrl->getHost();
-			$host = ip2long($host) ? [$host] : array_reverse(explode('.', $host));
-			$url = strtr($url, [
-				'/%basePath%/' => $refUrl->getBasePath(),
-				'%tld%' => $host[0],
-				'%domain%' => isset($host[1]) ? "$host[1].$host[0]" : $host[0],
-				'%sld%' => isset($host[1]) ? $host[1] : '',
-			]);
-			$url = ($this->flags & self::SECURED ? 'https:' : 'http:') . $url;
 		}
 
 		if (strpos($url, '//', 7) !== FALSE) {

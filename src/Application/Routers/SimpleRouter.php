@@ -115,7 +115,7 @@ class SimpleRouter implements Application\IRouter
 			}
 		}
 
-		$url = ($this->flags & self::SECURED ? 'https://' : 'http://') . $refUrl->getAuthority() . $refUrl->getPath();
+		$url = ($this->flags & self::SECURED ? 'https://' : $refUrl->getScheme() . '://') . $refUrl->getAuthority() . $refUrl->getPath();
 		$sep = ini_get('arg_separator.input');
 		$query = http_build_query($params, '', $sep ? $sep[0] : '&');
 		if ($query != '') { // intentionally ==

@@ -23,7 +23,7 @@ $url = $route->constructUrl(
 	new Request('Presenter', NULL, ['param' => 'any']),
 	new Url('https://example.org')
 );
-Assert::same('http://example.org/any', $url);
+Assert::same('https://example.org/any', $url);
 
 
 $route = new Route('<param>', [
