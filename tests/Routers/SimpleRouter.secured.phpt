@@ -12,7 +12,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-$router = new Application\Routers\SimpleRouter([
+$router = @new Application\Routers\SimpleRouter([ // @ SECURED is deprecated
 	'id' => 12,
 	'any' => 'anyvalue',
 ], Application\Routers\SimpleRouter::SECURED);

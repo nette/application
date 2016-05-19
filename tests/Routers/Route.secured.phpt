@@ -26,7 +26,7 @@ $url = $route->constructUrl(
 Assert::same('https://example.org/any', $url);
 
 
-$route = new Route('<param>', [
+$route = @new Route('<param>', [ // @ SECURED is deprecated
 	'presenter' => 'Presenter',
 ], Route::SECURED);
 
