@@ -96,6 +96,9 @@ class Route implements Application\IRouter
 	/** @var int HOST, PATH, RELATIVE */
 	private $type;
 
+	/** @var string  http | https */
+	private $scheme;
+
 	/** @var int */
 	private $flags;
 
@@ -136,8 +139,9 @@ class Route implements Application\IRouter
 		$this->setMask($mask, $metadata);
 		if (static::$defaultFlags) {
 			trigger_error('Route::$defaultFlags is deprecated, router by default keeps the used protocol.', E_USER_DEPRECATED);
-		} elseif ($this->type !== self::HOST && $flags & self::SECURED) {
-			trigger_error('Router::SECURED is deprecated for routes without host, router by default keeps the used protocol.', E_USER_DEPRECATED);
+		} elseif ($flags & self::SECURED) {
+			trigger_error('Router::SECURED is deprecated, specify scheme in mask.', E_USER_DEPRECATED);
+			$this->scheme = 'https';
 		}
 	}
 
@@ -397,8 +401,8 @@ class Route implements Application\IRouter
 				'%domain%' => isset($parts[1]) ? "$parts[1].$parts[0]" : $parts[0],
 				'%sld%' => isset($parts[1]) ? $parts[1] : '',
 			]);
-			if ($this->flags & self::SECURED) {
-				$url = 'https:' . $url;
+			if ($this->scheme) {
+				$url = $this->scheme . ':' . $url;
 			} elseif (strncmp($url, "//$host/", strlen($host) + 3) === 0) {
 				$url = $refUrl->getScheme() . ':' . $url;
 			} else {
@@ -406,9 +410,9 @@ class Route implements Application\IRouter
 			}
 		} else {
 			if ($this->lastRefUrl !== $refUrl) {
-				$scheme = ($this->flags & self::SECURED ? 'https://' : $refUrl->getScheme() . '://');
+				$scheme = ($this->scheme ?: $refUrl->getScheme());
 				$basePath = ($this->type === self::RELATIVE ? $refUrl->getBasePath() : '');
-				$this->lastBaseUrl = $scheme . $refUrl->getAuthority() . $basePath;
+				$this->lastBaseUrl = $scheme . '://' . $refUrl->getAuthority() . $basePath;
 				$this->lastRefUrl = $refUrl;
 			}
 			$url = $this->lastBaseUrl . $url;
@@ -444,8 +448,9 @@ class Route implements Application\IRouter
 		$this->mask = $mask;
 
 		// detect '//host/path' vs. '/abs. path' vs. 'relative path'
-		if (substr($mask, 0, 2) === '//') {
+		if (preg_match('#(?:(https?):)?(//.*)#A', $mask, $m)) {
 			$this->type = self::HOST;
+			list(, $this->scheme, $mask) = $m;
 
 		} elseif (substr($mask, 0, 1) === '/') {
 			$this->type = self::PATH;

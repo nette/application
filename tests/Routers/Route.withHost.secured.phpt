@@ -34,10 +34,10 @@ Assert::same('http://example.org/test', $url);
 
 
 
-$route = new Route('//example.org/test', [
+$route = new Route('https://example.org/test', [
 	'presenter' => 'Default',
 	'action' => 'default',
-], Route::SECURED);
+]);
 
 $url = $route->constructUrl(
 	new Request('Default', NULL, ['action' => 'default']),
