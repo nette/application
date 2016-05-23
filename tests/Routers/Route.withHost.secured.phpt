@@ -30,7 +30,7 @@ $url = $route->constructUrl(
 	new Request('Default', NULL, ['action' => 'default']),
 	new Url('https://example.com')
 );
-Assert::same('http://example.org/test', $url);
+Assert::same('https://example.org/test', $url);
 
 
 

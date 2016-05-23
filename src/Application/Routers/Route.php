@@ -401,13 +401,7 @@ class Route implements Application\IRouter
 				'%domain%' => isset($parts[1]) ? "$parts[1].$parts[0]" : $parts[0],
 				'%sld%' => isset($parts[1]) ? $parts[1] : '',
 			]);
-			if ($this->scheme) {
-				$url = $this->scheme . ':' . $url;
-			} elseif (strncmp($url, "//$host/", strlen($host) + 3) === 0) {
-				$url = $refUrl->getScheme() . ':' . $url;
-			} else {
-				$url = 'http:' . $url;
-			}
+			$url = ($this->scheme ?: $refUrl->getScheme()) . ':' . $url;
 		} else {
 			if ($this->lastRefUrl !== $refUrl) {
 				$scheme = ($this->scheme ?: $refUrl->getScheme());
