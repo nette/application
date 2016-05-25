@@ -112,7 +112,7 @@ abstract class Control extends PresenterComponent implements IRenderable
 			$this->invalidSnippets = [];
 
 		} else {
-			unset($this->invalidSnippets[$snippet]);
+			$this->invalidSnippets[$snippet] = FALSE;
 		}
 	}
 
@@ -160,8 +160,10 @@ abstract class Control extends PresenterComponent implements IRenderable
 				return FALSE;
 			}
 
+		} elseif (isset($this->invalidSnippets[$snippet])) {
+			return $this->invalidSnippets[$snippet];
 		} else {
-			return isset($this->invalidSnippets["\0"]) || isset($this->invalidSnippets[$snippet]);
+			return isset($this->invalidSnippets["\0"]);
 		}
 	}
 

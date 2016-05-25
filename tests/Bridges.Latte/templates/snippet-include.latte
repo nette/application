@@ -19,3 +19,7 @@
 {snippetArea}
 	{include snippet-included.latte say => 'Hello include snippet'}
 {/snippetArea}
+
+{snippet nested1}
+	{snippet nested2}Foo{/snippet}
+{/snippet}
