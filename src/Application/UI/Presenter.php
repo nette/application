@@ -229,6 +229,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 						$this->response->send($this->httpRequest, $this->httpResponse);
 						$this->sendPayload();
 					} elseif (!$this->response && $hasPayload) { // back compatibility for use terminate() instead of sendPayload()
+						trigger_error('Use $presenter->sendPayload() instead of terminate() to send payload.');
 						$this->sendPayload();
 					}
 				} catch (Application\AbortException $e) {
