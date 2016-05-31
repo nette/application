@@ -8,7 +8,7 @@
 namespace Nette\Bridges\ApplicationLatte;
 
 
-use Latte\ISnippetBridge;
+use Latte\Runtime\ISnippetBridge;
 use Nette\Application\UI\Control;
 use Nette\Application\UI\IRenderable;
 use Nette\ComponentModel\IContainer;
