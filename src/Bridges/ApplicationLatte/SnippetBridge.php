@@ -39,7 +39,7 @@ class SnippetBridge implements ISnippetBridge
 	}
 
 
-	public function isInvalid($name)
+	public function needsRedraw($name)
 	{
 		return $this->control->isControlInvalid($name);
 	}
@@ -47,7 +47,9 @@ class SnippetBridge implements ISnippetBridge
 
 	public function markRedrawn($name)
 	{
-		$this->control->redrawControl($name, FALSE);
+		if ($name !== "") {
+			$this->control->redrawControl($name, FALSE);
+		}
 	}
 
 
@@ -57,7 +59,7 @@ class SnippetBridge implements ISnippetBridge
 	}
 
 
-	public function addToPayload($name, $content)
+	public function addSnippet($name, $content)
 	{
 		if ($this->payload === NULL) {
 			$this->payload = $this->control->getPresenter()->getPayload();
