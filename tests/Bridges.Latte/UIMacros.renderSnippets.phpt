@@ -19,6 +19,7 @@ class InnerControl extends Nette\Application\UI\Control
 		UIMacros::install($latte->getCompiler());
 		$latte->addProvider('uiPresenter', $this->getPresenter());
 		$latte->addProvider('uiControl', $this);
+		$latte->addProvider('snippetBridge', new Nette\Bridges\ApplicationLatte\SnippetBridge($this));
 		$params['say'] = 'Hello';
 		$latte->render(__DIR__ . '/templates/snippet-included.latte', $params);
 	}
@@ -39,7 +40,7 @@ class TestPresenter extends Nette\Application\UI\Presenter
 	{
 		$latte = new Latte\Engine;
 		UIMacros::install($latte->getCompiler());
-		$latte->addProvider('uiControl', $this);
+		$latte->addProvider('snippetBridge', new Nette\Bridges\ApplicationLatte\SnippetBridge($this));
 		$latte->render(__DIR__ . '/templates/snippet-include.latte');
 	}
 }
@@ -61,8 +62,8 @@ Assert::same([
 		'snippet--array2-2' => 'Value 2',
 		'snippet--array2-3' => 'Value 3',
 		'snippet--includeSay' => 'Hello include snippet',
-		'snippet-multi-1-includeSay' => 'Hello',
 		'snippet--nested1' => "\t<div id=\"snippet--nested2\">Foo</div>",
+		'snippet-multi-1-includeSay' => 'Hello',
 	],
 ], (array) $presenter->payload);
 

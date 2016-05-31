@@ -61,7 +61,7 @@ class UIMacros extends Latte\Macros\MacroSet
 	public function finalize()
 	{
 		return [
-			'if (Nette\Bridges\ApplicationLatte\UIRuntime::initialize($this, $this->blockQueue)) return;',
+			'Nette\Bridges\ApplicationLatte\UIRuntime::initialize($this)',
 			'',
 			$this->extends ? '' : '$this->parentName = $this->parentName ?: ($this->blocks && !$this->getReferringTemplate()
 				&& isset($this->global->uiControl) && $this->global->uiControl instanceof Nette\Application\UI\Presenter
