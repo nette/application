@@ -23,7 +23,7 @@ class UIRuntime
 	/**
 	 * @return bool
 	 */
-	public static function initialize(Latte\Template $template)
+	public static function initialize(Latte\Runtime\Template $template)
 	{
 		// back compatiblity
 		$params = $template->getParameters();
