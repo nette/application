@@ -58,12 +58,11 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 	protected function attached($presenter)
 	{
 		if ($presenter instanceof Presenter) {
-			$name = $this->lookupPath(Presenter::class);
 			if (!isset($this->getElementPrototype()->id)) {
-				$this->getElementPrototype()->id = 'frm-' . $name;
+				$this->getElementPrototype()->id = 'frm-' . $this->lookupPath(Presenter::class);
 			}
 			if (!$this->getAction()) {
-				$this->setAction(new Link($presenter, $name . self::NAME_SEPARATOR . 'submit'));
+				$this->setAction(new Link($presenter, 'this'));
 			}
 
 			$controls = $this->getControls();
@@ -96,29 +95,30 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 	protected function receiveHttpData()
 	{
 		$presenter = $this->getPresenter();
-		$isPost = $this->getMethod() === self::POST;
-
-		$action = $this->getAction();
-		if ($action instanceof Link) {
-			$this[($isPost ? '_' : '') . Presenter::SIGNAL_KEY] =
-				(new Nette\Forms\Controls\HiddenField($action->getDestination()))
-				->setOmitted()->setHtmlId(FALSE);
-			$this->setAction(new Link($presenter, 'this'));
-		}
-
 		if (!$presenter->isSignalReceiver($this, 'submit')) {
 			return;
 		}
 
 		$request = $presenter->getRequest();
-		if ($request->isMethod('forward') || $request->isMethod('post') !== $isPost) {
+		if ($request->isMethod('forward') || $request->isMethod('post') !== $this->isMethod('post')) {
 			return;
 		}
 
-		if ($isPost) {
+		if ($this->isMethod('post')) {
 			return Nette\Utils\Arrays::mergeTree($request->getPost(), $request->getFiles());
 		} else {
 			return $request->getParameters();
+		}
+	}
+
+
+	protected function beforeRender()
+	{
+		parent::beforeRender();
+		$key = ($this->isMethod('post') ? '_' : '') . Presenter::SIGNAL_KEY;
+		if (!isset($this[$key])) {
+			$do = $this->lookupPath(Presenter::class) . self::NAME_SEPARATOR . 'submit';
+			$this[$key] = (new Nette\Forms\Controls\HiddenField($do))->setOmitted()->setHtmlId(FALSE);
 		}
 	}
 
