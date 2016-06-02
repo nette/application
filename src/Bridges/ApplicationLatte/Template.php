@@ -95,7 +95,7 @@ class Template implements Nette\Application\UI\ITemplate
 	 */
 	public function registerHelper($name, $callback)
 	{
-		//trigger_error(__METHOD__ . '() is deprecated, use getLatte()->addFilter().', E_USER_DEPRECATED);
+		trigger_error(__METHOD__ . '() is deprecated, use getLatte()->addFilter().', E_USER_DEPRECATED);
 		return $this->latte->addFilter($name, $callback);
 	}
 

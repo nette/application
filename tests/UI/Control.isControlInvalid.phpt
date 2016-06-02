@@ -23,7 +23,7 @@ test(function () {
 	$control->addComponent($child, 'foo');
 
 	Assert::false($control->isControlInvalid());
-	$child->invalidateControl();
+	$child->redrawControl();
 	Assert::true($control->isControlInvalid());
 });
 
@@ -36,6 +36,6 @@ test(function () {
 	$child->addComponent($grandChild, 'bar');
 
 	Assert::false($control->isControlInvalid());
-	$grandChild->invalidateControl();
+	$grandChild->redrawControl();
 	Assert::true($control->isControlInvalid());
 });

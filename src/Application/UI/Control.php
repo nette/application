@@ -120,12 +120,14 @@ abstract class Control extends PresenterComponent implements IRenderable
 	/** @deprecated */
 	function invalidateControl($snippet = NULL)
 	{
+		trigger_error(__METHOD__ . '() is deprecated; use $this->redrawControl($snippet) instead.', E_USER_DEPRECATED);
 		$this->redrawControl($snippet);
 	}
 
 	/** @deprecated */
 	function validateControl($snippet = NULL)
 	{
+		trigger_error(__METHOD__ . '() is deprecated; use $this->redrawControl($snippet, FALSE) instead.', E_USER_DEPRECATED);
 		$this->redrawControl($snippet, FALSE);
 	}
 

@@ -157,6 +157,7 @@ class UIMacros extends Latte\Macros\MacroSet
 	/** @deprecated */
 	public static function renderSnippets(Nette\Application\UI\Control $control, \stdClass $local, array $params)
 	{
+		trigger_error(__METHOD__ . '() is deprecated.', E_USER_DEPRECATED);
 		UIRuntime::renderSnippets($control, $local, $params);
 	}
 

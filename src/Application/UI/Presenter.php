@@ -700,6 +700,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function backlink()
 	{
+		trigger_error(__METHOD__ . '() is deprecated.', E_USER_DEPRECATED);
 		return $this->getAction(TRUE);
 	}
 
