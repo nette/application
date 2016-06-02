@@ -70,22 +70,20 @@ class SnippetBridge implements ISnippetBridge
 
 	public function renderChildren()
 	{
-		if ($this->control instanceof IRenderable) {
-			$queue = [$this->control];
-			do {
-				foreach (array_shift($queue)->getComponents() as $child) {
-					if ($child instanceof IRenderable) {
-						if ($child->isControlInvalid()) {
-							$child->snippetMode = TRUE;
-							$child->render();
-							$child->snippetMode = FALSE;
-						}
-					} elseif ($child instanceof Nette\ComponentModel\IContainer) {
-						$queue[] = $child;
+		$queue = [$this->control];
+		do {
+			foreach (array_shift($queue)->getComponents() as $child) {
+				if ($child instanceof IRenderable) {
+					if ($child->isControlInvalid()) {
+						$child->snippetMode = TRUE;
+						$child->render();
+						$child->snippetMode = FALSE;
 					}
+				} elseif ($child instanceof Nette\ComponentModel\IContainer) {
+					$queue[] = $child;
 				}
-			} while ($queue);
-		}
+			}
+		} while ($queue);
 	}
 
 }
