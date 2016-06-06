@@ -55,6 +55,13 @@ testRouteIn(new Route('//%sld%.%tld%/<path>', 'Default:default'), '/abc', 'Defau
 ], '/abc?test=testvalue');
 
 
+testRouteIn(new Route('//%host%/<path>', 'Default:default'), '/abc', 'Default', [
+	'path' => 'abc',
+	'action' => 'default',
+	'test' => 'testvalue',
+], '/abc?test=testvalue');
+
+
 // alternative
 testRouteIn(new Route('//example.%tld%/<path>', 'Default:default'), '/abc', 'Default', [
 	'path' => 'abc',
@@ -97,3 +104,10 @@ Assert::same('http://localhost/', $route->constructUrl($route->match($httpReques
 
 $route = new Route('//%tld%/', 'Default:default');
 Assert::same('http://localhost/', $route->constructUrl($route->match($httpRequest), $url));
+
+
+// host
+$url = new Nette\Http\UrlScript('http://www.example.com/');
+$httpRequest = new Nette\Http\Request($url);
+$route = new Route('//%host%/', 'Default:default');
+Assert::same('http://www.example.com/', $route->constructUrl($route->match($httpRequest), $url));
