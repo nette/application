@@ -9,6 +9,7 @@ namespace Nette\Bridges\ApplicationLatte;
 
 use Nette;
 use Nette\Application\UI;
+use Latte;
 
 
 /**
@@ -80,7 +81,7 @@ class TemplateFactory implements UI\ITemplateFactory
 		});
 
 		if (!isset($latte->getFilters()['translate'])) {
-			$latte->addFilter('translate', function () {
+			$latte->addFilter('translate', function (Latte\Runtime\FilterInfo $fi) {
 				throw new Nette\InvalidStateException('Translator has not been set. Set translator using $template->setTranslator().');
 			});
 		}
