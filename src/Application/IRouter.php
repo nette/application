@@ -18,7 +18,7 @@ interface IRouter
 	/** only matching route */
 	const ONE_WAY = 0b0001;
 
-	/** HTTPS route */
+	/** @deprecated */
 	const SECURED = 0b0010;
 
 	/**
