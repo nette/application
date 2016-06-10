@@ -54,6 +54,7 @@ namespace {
 		Assert::same('http://nette.org/en/?a=10&action=default&presenter=Homepage',  $generator->link('Homepage:', [10]));
 		Assert::same('http://nette.org/en/?id=20&b=10&action=detail&presenter=Homepage',  $generator->link('Homepage:detail', [10, 'id' => 20]));
 		Assert::same('http://nette.org/en/?action=default&presenter=Homepage#frag:ment',  $generator->link('Homepage:#frag:ment'));
+		Assert::same('http://nette.org/en/?id=10&action=missing&presenter=Homepage', $generator->link('Homepage:missing', ['id' => 10]));
 	});
 
 
@@ -67,6 +68,12 @@ namespace {
 		$generator = new LinkGenerator(new Routers\Route('/', 'Product:'), new Http\Url('http://nette.org/en/'), $pf);
 		$generator->link('Homepage:default', ['id' => 10]);
 	}, Nette\Application\UI\InvalidLinkException::class, 'No route for Homepage:default(id=10)');
+
+
+	Assert::exception(function () use ($pf) {
+		$generator = new LinkGenerator(new Routers\Route('/', 'Homepage:'), new Http\Url('http://nette.org/en/'), $pf);
+		$generator->link('Homepage:missing', [10]);
+	}, Nette\Application\UI\InvalidLinkException::class, "Unable to pass parameters to action 'Homepage:missing', missing corresponding method.");
 
 
 	test(function () {
