@@ -62,6 +62,8 @@ class LinkGenerator
 				|| method_exists($class, $method = $class::formatRenderMethod($action))
 			) {
 				UI\Presenter::argsToParams($class, $method, $params);
+			} elseif (array_key_exists(0, $params)) {
+				throw new UI\InvalidLinkException("Unable to pass parameters to action '$presenter:$action', missing corresponding method.");
 			}
 		}
 
