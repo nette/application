@@ -8,7 +8,6 @@
 namespace Nette\Bridges\ApplicationLatte;
 
 use Nette;
-use Nette\Application\UI;
 use Latte;
 
 
@@ -21,19 +20,26 @@ class UIRuntime
 	use Nette\StaticClass;
 
 	/**
-	 * @return bool
+	 * @return void
 	 */
-	public static function initialize(Latte\Runtime\Template $template)
+	public static function initialize(Latte\Runtime\Template $template, & $parentName, array $blocks)
 	{
+		$providers = $template->global;
+		if ($parentName === NULL && $blocks && !$template->getReferringTemplate()
+			&& isset($providers->uiControl) && $providers->uiControl instanceof Nette\Application\UI\Presenter
+		) {
+			$parentName = $providers->uiControl->findLayoutTemplateFile();
+		}
+
 		// back compatiblity
 		$params = $template->getParameters();
-		if (empty($template->global->uiControl) && isset($params['_control'])) {
+		if (empty($providers->uiControl) && isset($params['_control'])) {
 			trigger_error('Replace template variable $_control with provider: $latte->addProvider("uiControl", ...)', E_USER_DEPRECATED);
-			$template->global->uiControl = $params['_control'];
+			$providers->uiControl = $params['_control'];
 		}
-		if (empty($template->global->uiPresenter) && isset($params['_presenter'])) {
+		if (empty($providers->uiPresenter) && isset($params['_presenter'])) {
 			trigger_error('Replace template variable $_presenter with provider: $latte->addProvider("uiPresenter", ...)', E_USER_DEPRECATED);
-			$template->global->uiPresenter = $params['_presenter'];
+			$providers->uiPresenter = $params['_presenter'];
 		}
 	}
 

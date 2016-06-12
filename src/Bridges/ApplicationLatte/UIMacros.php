@@ -60,13 +60,7 @@ class UIMacros extends Latte\Macros\MacroSet
 	 */
 	public function finalize()
 	{
-		return [
-			'Nette\Bridges\ApplicationLatte\UIRuntime::initialize($this)',
-			'',
-			$this->extends ? '' : '$this->parentName = $this->parentName ?: ($this->blocks && !$this->getReferringTemplate()
-				&& isset($this->global->uiControl) && $this->global->uiControl instanceof Nette\Application\UI\Presenter
-				? $this->global->uiControl->findLayoutTemplateFile() : NULL);',
-		];
+		return [$this->extends . 'Nette\Bridges\ApplicationLatte\UIRuntime::initialize($this, $this->parentName, $this->blocks);'];
 	}
 
 
@@ -146,11 +140,10 @@ class UIMacros extends Latte\Macros\MacroSet
 	 */
 	public function macroExtends(MacroNode $node, PhpWriter $writer)
 	{
-		$this->extends = TRUE;
 		if ($node->modifiers || $node->parentNode || $node->args !== 'auto') {
-			return FALSE;
+			return $this->extends = FALSE;
 		}
-		return $writer->write('$this->parentName = $this->global->uiPresenter->findLayoutTemplateFile();');
+		$this->extends = $writer->write('$this->parentName = $this->global->uiPresenter->findLayoutTemplateFile();');
 	}
 
 
