@@ -87,15 +87,15 @@ class TemplateFactory implements UI\ITemplateFactory
 		}
 
 		// default parameters
-		$template->control = $control;
-		$template->presenter = $presenter;
 		$template->user = $this->user;
 		$template->baseUri = $template->baseUrl = $this->httpRequest ? rtrim($this->httpRequest->getUrl()->getBaseUrl(), '/') : NULL;
 		$template->basePath = preg_replace('#https?://[^/]+#A', '', $template->baseUrl);
 		$template->flashes = [];
-		$latte->addProvider('uiControl', $control);
-		$latte->addProvider('uiPresenter', $presenter);
 		if ($control) {
+			$template->control = $control;
+			$template->presenter = $presenter;
+			$latte->addProvider('uiControl', $control);
+			$latte->addProvider('uiPresenter', $presenter);
 			$latte->addProvider('snippetBridge', new Nette\Bridges\ApplicationLatte\SnippetBridge($control));
 		}
 		$latte->addProvider('cacheStorage', $this->cacheStorage);
