@@ -26,15 +26,18 @@
 	},
 	"require-dev": {
 		"nette/tester": "~2.0",
-		"nette/di": "~2.3",
-		"nette/forms": "~2.2",
-		"nette/robot-loader": "~2.2",
-		"nette/security": "~2.2",
+		"nette/di": "~2.4",
+		"nette/forms": "~2.4",
+		"nette/robot-loader": "~2.4",
+		"nette/security": "~2.4",
 		"latte/latte": "~2.4",
-		"tracy/tracy": "^2.3"
+		"tracy/tracy": "^2.4"
 	},
 	"conflict": {
-		"nette/nette": "<2.2"
+		"nette/nette": "<2.2",
+		"nette/di": "<2.4",
+		"nette/forms": "<2.4",
+		"nette/latte": "<2.4"
 	},
 	"autoload": {
 		"classmap": ["src/"]
