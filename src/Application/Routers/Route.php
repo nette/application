@@ -264,6 +264,7 @@ class Route implements Application\IRouter
 			$httpRequest->getMethod(),
 			$params,
 			$httpRequest->getPost(),
+			$httpRequest->getBody(),
 			$httpRequest->getFiles(),
 			[Application\Request::SECURED => $httpRequest->isSecured()]
 		);
