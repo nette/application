@@ -60,7 +60,6 @@ class TemplateFactory implements UI\ITemplateFactory
 		}
 
 		array_unshift($latte->onCompile, function ($latte) use ($control, $template) {
-			$latte->getParser()->shortNoEscape = TRUE;
 			$latte->getCompiler()->addMacro('cache', new Nette\Bridges\CacheLatte\CacheMacro($latte->getCompiler()));
 			UIMacros::install($latte->getCompiler());
 			if (class_exists(Nette\Bridges\FormsLatte\FormMacros::class)) {
