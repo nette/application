@@ -22,6 +22,9 @@ use Nette;
  */
 abstract class PresenterComponent extends Nette\ComponentModel\Container implements ISignalReceiver, IStatePersistent, \ArrayAccess
 {
+	/** @var callable[]  function (self $sender); Occurs when component is attached to presenter */
+	public $onAnchor;
+
 	/** @var array */
 	protected $params = [];
 
@@ -58,6 +61,7 @@ abstract class PresenterComponent extends Nette\ComponentModel\Container impleme
 	{
 		if ($presenter instanceof Presenter) {
 			$this->loadState($presenter->popGlobalParameters($this->getUniqueId()));
+			$this->onAnchor($this);
 		}
 	}
 
