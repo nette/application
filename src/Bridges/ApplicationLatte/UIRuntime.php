@@ -25,6 +25,7 @@ class UIRuntime
 	public static function initialize(Latte\Runtime\Template $template, & $parentName, array $blocks)
 	{
 		$providers = $template->global;
+		$blocks = array_filter(array_keys($blocks), function ($s) { return $s[0] !== '_'; });
 		if ($parentName === NULL && $blocks && !$template->getReferringTemplate()
 			&& isset($providers->uiControl) && $providers->uiControl instanceof Nette\Application\UI\Presenter
 		) {
