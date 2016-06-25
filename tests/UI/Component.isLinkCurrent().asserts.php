@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test: Nette\Application\UI\PresenterComponent::isLinkCurrent()
+ * Test: Nette\Application\UI\Component::isLinkCurrent()
  */
 
 use Nette\Application;
@@ -16,7 +16,7 @@ function callIsLinkCurrent(Application\Request $request, $destination, array $ar
 
 function callIsComponentLinkCurrent(
 	Application\UI\Presenter $presenter,
-	Application\UI\PresenterComponent $component,
+	Application\UI\Component $component,
 	Application\Request $request,
 	$destination,
 	array $args

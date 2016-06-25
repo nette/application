@@ -11,7 +11,7 @@ use Nette;
 
 
 /**
- * PresenterComponent is the base class for all Presenter components.
+ * Component is the base class for all Presenter components.
  *
  * Components are persistent objects located on a presenter. They have ability to own
  * other child components, and interact with user. Components have properties
@@ -20,7 +20,7 @@ use Nette;
  * @property-read Presenter $presenter
  * @property-read bool $linkCurrent
  */
-abstract class PresenterComponent extends Nette\ComponentModel\Container implements ISignalReceiver, IStatePersistent, \ArrayAccess
+abstract class Component extends Nette\ComponentModel\Container implements ISignalReceiver, IStatePersistent, \ArrayAccess
 {
 	/** @var callable[]  function (self $sender); Occurs when component is attached to presenter */
 	public $onAnchor;

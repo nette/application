@@ -15,7 +15,7 @@ use Nette;
  *
  * @property-read ITemplate $template
  */
-abstract class Control extends PresenterComponent implements IRenderable
+abstract class Control extends Component implements IRenderable
 {
 	/** @var ITemplateFactory */
 	private $templateFactory;
