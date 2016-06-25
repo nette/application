@@ -127,7 +127,7 @@ class Route implements Application\IRouter
 			}
 		} elseif ($metadata instanceof \Closure || $metadata instanceof Nette\Callback) {
 			if ($metadata instanceof Nette\Callback) {
-				trigger_error('Nette\Callback is deprecated, use Nette\Utils\Callback::toClosure().', E_USER_DEPRECATED);
+				trigger_error('Nette\Callback is deprecated, use Nette\Utils\Callback::closure().', E_USER_DEPRECATED);
 			}
 			$metadata = [
 				self::PRESENTER_KEY => 'Nette:Micro',
