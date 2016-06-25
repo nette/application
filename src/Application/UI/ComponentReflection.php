@@ -13,7 +13,7 @@ use Nette\Reflection\ClassType;
 
 
 /**
- * Helpers for Presenter & PresenterComponent.
+ * Helpers for Presenter & Component.
  * @property-read string $name
  * @property-read string $fileName
  * @internal
@@ -44,7 +44,7 @@ class ComponentReflection extends \ReflectionClass
 			return $params;
 		}
 		$params = [];
-		if (is_subclass_of($class, PresenterComponent::class)) {
+		if (is_subclass_of($class, Component::class)) {
 			$defaults = get_class_vars($class);
 			foreach ($class::getPersistentParams() as $name => $default) {
 				if (is_int($name)) {

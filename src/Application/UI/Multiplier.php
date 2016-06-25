@@ -13,7 +13,7 @@ use Nette;
 /**
  * Component multiplier.
  */
-class Multiplier extends PresenterComponent
+class Multiplier extends Component
 {
 	/** @var callable */
 	private $factory;

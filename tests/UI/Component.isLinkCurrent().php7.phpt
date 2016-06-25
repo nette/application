@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Test: Nette\Application\UI\PresenterComponent::isLinkCurrent()
+ * Test: Nette\Application\UI\Component::isLinkCurrent()
+ * @phpVersion 7
  */
 
 use Nette\Application;
@@ -12,7 +13,7 @@ require __DIR__ . '/MockPresenterFactory.php';
 class TestPresenter extends Application\UI\Presenter
 {
 
-	public function actionDefault($int, $bool)
+	public function actionDefault(int $int, bool $bool)
 	{
 	}
 
@@ -29,7 +30,7 @@ class TestPresenter extends Application\UI\Presenter
 class TestControl extends Application\UI\Control
 {
 
-	public function handleClick($x, $y)
+	public function handleClick(int $x)
 	{
 	}
 
@@ -39,4 +40,4 @@ class TestControl extends Application\UI\Control
 
 }
 
-require __DIR__ . '/PresenterComponent.isLinkCurrent().asserts.php';
+require __DIR__ . '/Component.isLinkCurrent().asserts.php';

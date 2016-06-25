@@ -11,14 +11,14 @@ use Nette;
 
 
 /**
- * Lazy encapsulation of PresenterComponent::link().
- * Do not instantiate directly, use PresenterComponent::lazyLink()
+ * Lazy encapsulation of Component::link().
+ * Do not instantiate directly, use Component::lazyLink()
  */
 class Link
 {
 	use Nette\SmartObject;
 
-	/** @var PresenterComponent */
+	/** @var Component */
 	private $component;
 
 	/** @var string */
@@ -31,7 +31,7 @@ class Link
 	/**
 	 * Link specification.
 	 */
-	public function __construct(PresenterComponent $component, $destination, array $params = [])
+	public function __construct(Component $component, $destination, array $params = [])
 	{
 		$this->component = $component;
 		$this->destination = $destination;

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test: Nette\Application\UI\PresenterComponent::redirect()
+ * Test: Nette\Application\UI\Component::redirect()
  */
 
 use Nette\Http;
