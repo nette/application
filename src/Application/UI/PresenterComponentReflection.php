@@ -10,7 +10,6 @@ namespace Nette\Application\UI;
 use Nette;
 use Nette\Application\BadRequestException;
 use Nette\Reflection\ClassType;
-use Nette\Reflection\Method;
 
 
 /**
@@ -266,14 +265,14 @@ class PresenterComponentReflection extends \ReflectionClass
 
 	public function getMethod($name)
 	{
-		return new MethodCompatibility($this->getName(), $name);
+		return new MethodReflection($this->getName(), $name);
 	}
 
 
 	public function getMethods($filter = -1)
 	{
 		foreach ($res = parent::getMethods($filter) as $key => $val) {
-			$res[$key] = new MethodCompatibility($this->getName(), $val->getName());
+			$res[$key] = new MethodReflection($this->getName(), $val->getName());
 		}
 		return $res;
 	}
@@ -300,59 +299,6 @@ class PresenterComponentReflection extends \ReflectionClass
 			return call_user_func_array([new ClassType($this->getName()), $name], $args);
 		}
 		Nette\Utils\ObjectMixin::strictCall(get_class($this), $name);
-	}
-
-}
-
-
-/**
- * @internal
- */
-class MethodCompatibility extends \ReflectionMethod
-{
-	use Nette\SmartObject;
-
-	/**
-	 * Has method specified annotation?
-	 * @param  string
-	 * @return bool
-	 */
-	public function hasAnnotation($name)
-	{
-		return (bool) PresenterComponentReflection::parseAnnotation($this, $name);
-	}
-
-
-	/**
-	 * Returns an annotation value.
-	 * @param  string
-	 * @return string|NULL
-	 */
-	public function getAnnotation($name)
-	{
-		$res = PresenterComponentReflection::parseAnnotation($this, $name);
-		return $res ? end($res) : NULL;
-	}
-
-
-	public function __toString()
-	{
-		trigger_error(__METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
-		return parent::getDeclaringClass()->getName() . '::' . $this->getName() . '()';
-	}
-
-
-	public function __get($name)
-	{
-		trigger_error("getMethod('{$this->getName()}')->$name is deprecated.", E_USER_DEPRECATED);
-		return (new Method(parent::getDeclaringClass()->getName(), $this->getName()))->$name;
-	}
-
-
-	public function __call($name, $args)
-	{
-		trigger_error("getMethod('{$this->getName()}')->$name() is deprecated, use Nette\\Reflection\\Method::from(\$presenter, '{$this->getName()}')->$name()", E_USER_DEPRECATED);
-		return call_user_func_array([new Method(parent::getDeclaringClass()->getName(), $this->getName()), $name], $args);
 	}
 
 }
