@@ -40,6 +40,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 		FLASH_KEY = '_fid',
 		DEFAULT_ACTION = 'default';
 
+	const FLASH_SESSION_NAMESPACE = 'Nette.Application.Flash';
+
 	/** @var int */
 	public $invalidLinkMode;
 
@@ -1289,7 +1291,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	public function hasFlashSession()
 	{
 		return !empty($this->params[self::FLASH_KEY])
-			&& $this->getSession()->hasSection('Nette.Application.Flash/' . $this->params[self::FLASH_KEY]);
+			&& $this->getFlashSession()->hasSection(self::FLASH_SESSION_NAMESPACE);
 	}
 
 
@@ -1300,9 +1302,14 @@ abstract class Presenter extends Control implements Application\IPresenter
 	public function getFlashSession()
 	{
 		if (empty($this->params[self::FLASH_KEY])) {
-			$this->params[self::FLASH_KEY] = Nette\Utils\Random::generate(4);
+			$this->params[self::FLASH_KEY] = Http\FlashSession::generateId();
 		}
-		return $this->getSession('Nette.Application.Flash/' . $this->params[self::FLASH_KEY]);
+
+		if ($this->flashSession === NULL) {
+			$this->flashSession = new Http\FlashSession($this->params[self::FLASH_KEY], $this->session);
+		}
+
+		return $this->getSession(self::FLASH_SESSION_NAMESPACE);
 	}
 
 
