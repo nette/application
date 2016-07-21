@@ -22,6 +22,7 @@ require __DIR__ . '/../bootstrap.php';
  * @author
  *@renderable
  * @secured(role = "admin", level = 2)
+ * @Secured\User(loggedIn)
  */
 class TestClass {}
 
@@ -32,4 +33,5 @@ Assert::same(['value ="Johno\'s addendum"', 'mode=True', TRUE, TRUE], Reflection
 Assert::same(['item 1'], Reflection::parseAnnotation($rc, 'components'));
 Assert::same([TRUE, FALSE, NULL], Reflection::parseAnnotation($rc, 'persistent'));
 Assert::same([TRUE], Reflection::parseAnnotation($rc, 'renderable'));
+Assert::same(['loggedIn'], Reflection::parseAnnotation($rc, 'Secured\User'));
 Assert::false(Reflection::parseAnnotation($rc, 'missing'));
