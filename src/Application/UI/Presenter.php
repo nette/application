@@ -945,7 +945,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			$current = $current && $args[self::SIGNAL_KEY] === $this->getParameter(self::SIGNAL_KEY);
 		}
 		if (($mode === 'redirect' || $mode === 'forward') && $this->hasFlashSession()) {
-			$args[self::FLASH_KEY] = $this->getParameter(self::FLASH_KEY);
+			$args[self::FLASH_KEY] = $this->getFlashKey();
 		}
 
 		$this->lastCreatedRequest = new Application\Request(
@@ -1103,7 +1103,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		unset($session[$key]);
 		$request->setFlag(Application\Request::RESTORED, TRUE);
 		$params = $request->getParameters();
-		$params[self::FLASH_KEY] = $this->getParameter(self::FLASH_KEY);
+		$params[self::FLASH_KEY] = $this->getFlashKey();
 		$request->setParameters($params);
 		$this->sendResponse(new Responses\ForwardResponse($request));
 	}
@@ -1283,13 +1283,29 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 
 	/**
+	 * @return string|NULL
+	 */
+	private function getFlashKey()
+	{
+		$flashKey = $this->getParameter(self::FLASH_KEY);
+
+		if (is_string($flashKey) && !empty($flashKey)) {
+			return $flashKey;
+		}
+
+		return NULL;
+	}
+
+
+	/**
 	 * Checks if a flash session namespace exists.
 	 * @return bool
 	 */
 	public function hasFlashSession()
 	{
-		return !empty($this->params[self::FLASH_KEY])
-			&& $this->getSession()->hasSection('Nette.Application.Flash/' . $this->params[self::FLASH_KEY]);
+		$flashKey = $this->getFlashKey();
+		return $flashKey !== NULL
+			&& $this->getSession()->hasSection('Nette.Application.Flash/' . $flashKey);
 	}
 
 
@@ -1299,10 +1315,11 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function getFlashSession()
 	{
-		if (empty($this->params[self::FLASH_KEY])) {
-			$this->params[self::FLASH_KEY] = Nette\Utils\Random::generate(4);
+		$flashKey = $this->getFlashKey();
+		if ($flashKey === NULL) {
+			$this->params[self::FLASH_KEY] = $flashKey = Nette\Utils\Random::generate(4);
 		}
-		return $this->getSession('Nette.Application.Flash/' . $this->params[self::FLASH_KEY]);
+		return $this->getSession('Nette.Application.Flash/' . $flashKey);
 	}
 
 
