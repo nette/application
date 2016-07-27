@@ -100,6 +100,7 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same('/index.php?pint=0&pbool=0&p=0&action=params&presenter=Test', $this->link('params', ['pint' => FALSE, 'pbool' => FALSE, 'p' => FALSE, 'parr' => NULL]));
 		Assert::same("#error: Value passed to persistent parameter 'pbool' in presenter Test must be boolean, string given.", $this->link('this', ['p' => NULL, 'pbool' => 'a']));
 		Assert::same("#error: Value passed to persistent parameter 'p' in presenter Test must be scalar, array given.", $this->link('this', ['p' => [1], 'pbool' => FALSE]));
+		Assert::same('/index.php?action=persistent&presenter=Test', $this->link('persistent'));
 
 		// Other presenter & action link
 		Assert::same('/index.php?action=product&presenter=Other', $this->link('Other:product', ['p' => $this->p]));
@@ -237,6 +238,12 @@ class TestPresenter extends Application\UI\Presenter
 	public function actionObjects(stdClass $req, stdClass $opt = NULL)
 	{
 	}
+
+
+	public function actionPersistent(int $pint)
+	{
+	}
+
 
 	public function handleSignal($x = 1, $y = 1)
 	{

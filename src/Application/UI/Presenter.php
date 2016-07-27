@@ -869,7 +869,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 					throw new InvalidLinkException("Unknown signal '$signal', missing handler {$reflection->getName()}::$method()");
 				}
 				// convert indexed parameters to named
-				self::argsToParams(get_class($component), $method, $args, [], $mode === 'test');
+				self::argsToParams(get_class($component), $method, $args, [], $missing);
 			}
 
 			// counterpart of IStatePersistent
@@ -911,7 +911,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 					throw new InvalidLinkException("Unable to pass parameters to action '$presenter:$action', missing corresponding method.");
 				}
 			} else {
-				self::argsToParams($presenterClass, $method, $args, $destination === 'this' ? $this->params : [], $mode === 'test');
+				self::argsToParams($presenterClass, $method, $args, $destination === 'this' ? $this->params : [], $missing);
 			}
 
 			// counterpart of IStatePersistent
@@ -934,6 +934,14 @@ abstract class Presenter extends Control implements Application\IPresenter
 				}
 			}
 			$args += $globalState;
+		}
+
+		if ($mode !== 'test' && !empty($missing)) {
+			foreach ($missing as $rp) {
+				if (!array_key_exists($rp->getName(), $args)) {
+					throw new InvalidLinkException("Missing parameter \${$rp->getName()} required by {$rp->getDeclaringClass()->getName()}::{$rp->getDeclaringFunction()->getName()}()");
+				}
+			}
 		}
 
 		// ADD ACTION & SIGNAL & FLASH
@@ -995,12 +1003,12 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * @param  string  method name
 	 * @param  array   arguments
 	 * @param  array   supplemental arguments
-	 * @param  bool    prevents 'Missing parameter' exception
+	 * @param  ReflectionParameter[]  missing arguments
 	 * @return void
 	 * @throws InvalidLinkException
 	 * @internal
 	 */
-	public static function argsToParams($class, $method, & $args, $supplemental = [], $ignoreMissing = FALSE)
+	public static function argsToParams($class, $method, & $args, $supplemental = [], & $missing = [])
 	{
 		$i = 0;
 		$rm = new \ReflectionMethod($class, $method);
@@ -1021,10 +1029,11 @@ abstract class Presenter extends Control implements Application\IPresenter
 			}
 
 			if (!isset($args[$name])) {
-				if ($param->isDefaultValueAvailable() || $type === 'NULL' || $type === 'array' || $ignoreMissing) {
-					continue;
+				if (!$param->isDefaultValueAvailable() && $type !== 'NULL' && $type !== 'array') {
+					$missing[] = $param;
+					unset($args[$name]);
 				}
-				throw new InvalidLinkException("Missing parameter \$$name required by $class::{$rm->getName()}()");
+				continue;
 			}
 
 			if (!ComponentReflection::convertType($args[$name], $type, $isClass)) {

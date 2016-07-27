@@ -61,7 +61,12 @@ class LinkGenerator
 			if (method_exists($class, $method = $class::formatActionMethod($action))
 				|| method_exists($class, $method = $class::formatRenderMethod($action))
 			) {
-				UI\Presenter::argsToParams($class, $method, $params);
+				UI\Presenter::argsToParams($class, $method, $params, [], $missing);
+				if ($missing) {
+					$rp = $missing[0];
+					throw new UI\InvalidLinkException("Missing parameter \${$rp->getName()} required by {$rp->getDeclaringClass()->getName()}::{$rp->getDeclaringFunction()->getName()}()");
+				}
+
 			} elseif (array_key_exists(0, $params)) {
 				throw new UI\InvalidLinkException("Unable to pass parameters to action '$presenter:$action', missing corresponding method.");
 			}
