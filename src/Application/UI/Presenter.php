@@ -121,6 +121,9 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @var ITemplateFactory */
 	private $templateFactory;
 
+	/** @var Nette\Http\Url */
+	private $refUrlCache;
+
 
 	public function __construct()
 	{
@@ -970,15 +973,14 @@ abstract class Presenter extends Control implements Application\IPresenter
 		}
 
 		// CONSTRUCT URL
-		static $refUrl;
-		if ($refUrl === NULL) {
-			$refUrl = new Http\Url($this->httpRequest->getUrl());
-			$refUrl->setPath($this->httpRequest->getUrl()->getScriptPath());
+		if ($this->refUrlCache === NULL) {
+			$this->refUrlCache = new Http\Url($this->httpRequest->getUrl());
+			$this->refUrlCache->setPath($this->httpRequest->getUrl()->getScriptPath());
 		}
 		if (!$this->router) {
 			throw new Nette\InvalidStateException('Unable to generate URL, service Router has not been set.');
 		}
-		$url = $this->router->constructUrl($this->lastCreatedRequest, $refUrl);
+		$url = $this->router->constructUrl($this->lastCreatedRequest, $this->refUrlCache);
 		if ($url === NULL) {
 			unset($args[self::ACTION_KEY]);
 			$params = urldecode(http_build_query($args, NULL, ', '));
@@ -987,7 +989,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 		// make URL relative if possible
 		if ($mode === 'link' && $scheme === FALSE && !$this->absoluteUrls) {
-			$hostUrl = $refUrl->getHostUrl() . '/';
+			$hostUrl = $this->refUrlCache->getHostUrl() . '/';
 			if (strncmp($url, $hostUrl, strlen($hostUrl)) === 0) {
 				$url = substr($url, strlen($hostUrl) - 1);
 			}
