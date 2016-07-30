@@ -39,6 +39,12 @@ class SnippetBridge implements ISnippetBridge
 	}
 
 
+	public function setSnippetMode($snippetMode)
+	{
+		$this->control->snippetMode = $snippetMode;
+	}
+
+
 	public function needsRedraw($name)
 	{
 		return $this->control->isControlInvalid($name);
