@@ -117,14 +117,14 @@ class Application
 			throw new BadRequestException('No route for HTTP request.');
 
 		} elseif (strcasecmp($request->getPresenterName(), $this->errorPresenter) === 0) {
-			throw new BadRequestException('Invalid request. Presenter is not achievable.');
+			throw BadRequestException::fromRequest($request, 'Invalid request. Presenter is not achievable.');
 		}
 
 		try {
 			$name = $request->getPresenterName();
 			$this->presenterFactory->getPresenterClass($name);
 		} catch (InvalidPresenterException $e) {
-			throw new BadRequestException($e->getMessage(), 0, $e);
+			throw BadRequestException::fromRequest($request, $e->getMessage(), 0, $e);
 		}
 
 		return $request;
@@ -172,7 +172,7 @@ class Application
 			$this->httpResponse->setCode($e instanceof BadRequestException ? ($e->getCode() ?: 404) : 500);
 		}
 
-		$args = ['exception' => $e, 'request' => end($this->requests) ?: NULL];
+		$args = ['exception' => $e, 'request' => $e->getRequest() ?: (end($this->requests) ?: NULL)];
 		if ($this->presenter instanceof UI\Presenter) {
 			try {
 				$this->presenter->forward(":$this->errorPresenter:", $args);
