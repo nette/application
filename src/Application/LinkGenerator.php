@@ -80,6 +80,9 @@ class LinkGenerator
 		if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
 			$refUrl->setScheme(strcasecmp($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') === 0 ? 'https' : 'http');
 		}
+		if (!empty($_SERVER['HTTP_X_FORWARDED_PORT'])) {
+			$refUrl->setPort((int) $_SERVER['HTTP_X_FORWARDED_PORT']);
+		}
 
 		$url = $this->router->constructUrl(new Request($presenter, NULL, $params), $refUrl);
 		if ($url === NULL) {
