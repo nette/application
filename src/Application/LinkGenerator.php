@@ -76,7 +76,12 @@ class LinkGenerator
 			$params[UI\Presenter::ACTION_KEY] = $action;
 		}
 
-		$url = $this->router->constructUrl(new Request($presenter, NULL, $params), $this->refUrl);
+		$refUrl = clone $this->refUrl;
+		if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
+			$refUrl->setScheme(strcasecmp($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') === 0 ? 'https' : 'http');
+		}
+
+		$url = $this->router->constructUrl(new Request($presenter, NULL, $params), $refUrl);
 		if ($url === NULL) {
 			unset($params[UI\Presenter::ACTION_KEY]);
 			$params = urldecode(http_build_query($params, NULL, ', '));
