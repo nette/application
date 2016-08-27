@@ -15,8 +15,8 @@ require __DIR__ . '/Route.php';
 
 
 $identityMap = [];
-$identityMap[1] = new Object(1);
-$identityMap[2] = new Object(2);
+$identityMap[1] = new RouterObject(1);
+$identityMap[2] = new RouterObject(2);
 
 
 $route = new Route('<parameter>', [
@@ -26,7 +26,7 @@ $route = new Route('<parameter>', [
 			return isset($identityMap[$s]) ? $identityMap[$s] : NULL;
 		},
 		Route::FILTER_OUT => function ($obj) {
-			return $obj instanceof Object ? $obj->getId() : NULL;
+			return $obj instanceof RouterObject ? $obj->getId() : NULL;
 		},
 	],
 ]);
@@ -51,7 +51,7 @@ Assert::null(testRouteOut($route, 'presenter', [
 ]));
 
 
-class Object
+class RouterObject
 {
 	/** @var int */
 	private $id;
