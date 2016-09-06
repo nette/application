@@ -49,3 +49,28 @@ test(function () {
 		'Callback id 1 page 2',
 	], Notes::fetch());
 });
+
+
+
+class MockContainer extends Nette\DI\Container
+{
+	function getByType($class, $need = TRUE)
+	{
+		Notes::add("getByType($class)");
+		return new stdClass;
+	}
+}
+
+test(function () {
+	$presenter = new NetteModule\MicroPresenter(new MockContainer);
+
+	$presenter->run(new Request('Nette:Micro', 'GET', [
+		'callback' => function (stdClass $obj) {
+			Notes::add(get_class($obj));
+		},
+	]));
+	Assert::same([
+		'getByType(stdClass)',
+		'stdClass',
+	], Notes::fetch());
+});
