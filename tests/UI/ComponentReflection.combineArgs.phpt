@@ -72,13 +72,13 @@ test(function () {
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, []);
-	}, BadRequestException::class, 'Missing parameter $req required by MyPresenter::objects()');
+	}, Nette\InvalidArgumentException::class, 'Missing parameter $req required by MyPresenter::objects()');
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['req' => NULL, 'opt' => NULL]);
-	}, BadRequestException::class, 'Missing parameter $req required by MyPresenter::objects()');
+	}, Nette\InvalidArgumentException::class, 'Missing parameter $req required by MyPresenter::objects()');
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['req' => $method, 'opt' => NULL]);
-	}, BadRequestException::class, 'Argument $req passed to MyPresenter::objects() must be stdClass, ReflectionMethod given.');
+	}, Nette\InvalidArgumentException::class, 'Argument $req passed to MyPresenter::objects() must be stdClass, ReflectionMethod given.');
 });
