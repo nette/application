@@ -1027,7 +1027,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			}
 
 			if (!isset($args[$name])) {
-				if (!$param->isDefaultValueAvailable() && $type !== 'NULL' && $type !== 'array') {
+				if (!$param->isDefaultValueAvailable() && !$param->allowsNull() && $type !== 'NULL' && $type !== 'array') {
 					$missing[] = $param;
 					unset($args[$name]);
 				}

@@ -139,10 +139,10 @@ class ComponentReflection extends \ReflectionClass
 				}
 			} elseif ($param->isDefaultValueAvailable()) {
 				$res[$i] = $param->getDefaultValue();
+			} elseif ($type === 'NULL' || $param->allowsNull()) {
+				$res[$i] = NULL;
 			} elseif ($type === 'array') {
 				$res[$i] = [];
-			} elseif ($type === 'NULL') {
-				$res[$i] = NULL;
 			} else {
 				throw new $exception(sprintf(
 					'Missing parameter $%s required by %s()',
@@ -217,7 +217,9 @@ class ComponentReflection extends \ReflectionClass
 	{
 		$def = gettype($param->isDefaultValueAvailable() ? $param->getDefaultValue() : NULL);
 		if (PHP_VERSION_ID >= 70000) {
-			return [(string) $param->getType() ?: $def, $param->hasType() && !$param->getType()->isBuiltin()];
+			return $param->hasType()
+				? [PHP_VERSION_ID >= 70100 ? $param->getType()->getName() : (string) $param->getType(), !$param->getType()->isBuiltin()]
+				: [$def, FALSE];
 		} elseif ($param->isArray() || $param->isCallable()) {
 			return [$param->isArray() ? 'array' : 'callable', FALSE];
 		} else {
