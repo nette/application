@@ -31,6 +31,9 @@ class TemplateFactory implements UI\ITemplateFactory
 	/** @var Nette\Caching\IStorage */
 	private $cacheStorage;
 
+	/** @var string */
+	private $templateClass = Template::class;
+
 
 	public function __construct(ILatteFactory $latteFactory, Nette\Http\IRequest $httpRequest = NULL,
 		Nette\Security\User $user = NULL, Nette\Caching\IStorage $cacheStorage = NULL)
@@ -48,7 +51,7 @@ class TemplateFactory implements UI\ITemplateFactory
 	public function createTemplate(UI\Control $control = NULL)
 	{
 		$latte = $this->latteFactory->create();
-		$template = new Template($latte);
+		$template = new $this->templateClass($latte);
 		$presenter = $control ? $control->getPresenter(FALSE) : NULL;
 
 		if ($control instanceof UI\Presenter) {
@@ -110,6 +113,14 @@ class TemplateFactory implements UI\ITemplateFactory
 		}
 
 		return $template;
+	}
+
+	public function setTemplateClass($templateClass)
+	{
+		if (!class_exists($templateClass) || !is_a($templateClass, Template::class, TRUE)) {
+			throw new Nette\InvalidArgumentException("Class $templateClass does not extend " . Template::class . ' or it does not exist.');
+		}
+		$this->templateClass = $templateClass;
 	}
 
 }
