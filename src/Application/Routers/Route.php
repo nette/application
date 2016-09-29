@@ -291,6 +291,7 @@ class Route implements Application\IRouter
 			if ($params === NULL) {
 				return NULL;
 			}
+			$presenter = $params[self::PRESENTER_KEY];
 		}
 
 		if (isset($metadata[self::MODULE_KEY])) { // try split into module and [submodule:]presenter parts
