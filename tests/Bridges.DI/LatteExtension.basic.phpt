@@ -50,6 +50,36 @@ class FooMacros extends Latte\Macros\MacroSet
 }
 
 
+class NonStaticMacrosFactory
+{
+
+	/** @var string */
+	private $parameter;
+
+
+	public function __construct($parameter)
+	{
+		$this->parameter = $parameter;
+	}
+
+
+	public function install(Latte\Compiler $compiler)
+	{
+		$macros = new Latte\Macros\MacroSet($compiler);
+		$macros->addMacro('foo', 'foo ' . $this->parameter);
+		Notes::add(get_class($this) . '::install');
+	}
+
+
+	public function create(Latte\Compiler $compiler)
+	{
+		$macros = new Latte\Macros\MacroSet($compiler);
+		$macros->addMacro('foo2', 'foo ' . $this->parameter);
+		Notes::add(get_class($this) . '::create');
+	}
+}
+
+
 class AnotherExtension extends Nette\DI\CompilerExtension
 {
 
@@ -69,6 +99,11 @@ latte:
 	macros:
 		- LoremIpsumMacros
 		- IpsumLoremMacros::install
+		- @macroFactory
+		- @macroFactory::create
+
+services:
+	macroFactory: NonStaticMacrosFactory(foo)
 ', 'neon'));
 
 $compiler = new DI\Compiler;
@@ -86,5 +121,7 @@ $container->getService('nette.latteFactory')->create()->setLoader(new Latte\Load
 Assert::same([
 	'LoremIpsumMacros',
 	'IpsumLoremMacros',
+	'NonStaticMacrosFactory::install',
+	'NonStaticMacrosFactory::create',
 	'FooMacros',
 ], Notes::fetch());
