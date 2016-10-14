@@ -41,12 +41,24 @@ class BadRequestException extends \Exception
 	/** @var int */
 	protected $code = 404;
 
+	/** @var Request|NULL */
+	protected $request;
 
-	public function __construct($message = '', $code = 0, \Exception $previous = NULL)
+
+	public function __construct($message = '', $code = 0, \Exception $previous = NULL, Request $request = NULL)
 	{
 		parent::__construct($message, $code < 200 || $code > 504 ? $this->code : $code, $previous);
+		$this->request = $request;
 	}
 
+
+	/**
+	 * @return Request|NULL
+	 */
+	public function getRequest()
+	{
+		return $this->request;
+	}
 }
 
 

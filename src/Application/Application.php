@@ -124,7 +124,7 @@ class Application
 			$name = $request->getPresenterName();
 			$this->presenterFactory->getPresenterClass($name);
 		} catch (InvalidPresenterException $e) {
-			throw new BadRequestException($e->getMessage(), 0, $e);
+			throw new BadRequestException($e->getMessage(), 0, $e, $request);
 		}
 
 		return $request;
@@ -165,14 +165,22 @@ class Application
 	 */
 	public function processException($e)
 	{
-		if (!$e instanceof BadRequestException && $this->httpResponse instanceof Nette\Http\Response) {
-			$this->httpResponse->warnOnBuffer = FALSE;
-		}
-		if (!$this->httpResponse->isSent()) {
-			$this->httpResponse->setCode($e instanceof BadRequestException ? ($e->getCode() ?: 404) : 500);
+		if ($e instanceof BadRequestException) {
+			$httpCode = $e->getCode() ?: 404;
+			$lastRequest = $e->getRequest() ?: end($this->requests);
+		} else {
+			$httpCode = 500;
+			$lastRequest = end($this->requests);
+			if ($this->httpResponse instanceof Nette\Http\Response) {
+				$this->httpResponse->warnOnBuffer = FALSE;
+			}
 		}
 
-		$args = ['exception' => $e, 'request' => end($this->requests) ?: NULL];
+		if (!$this->httpResponse->isSent()) {
+			$this->httpResponse->setCode($httpCode);
+		}
+
+		$args = ['exception' => $e, 'request' => $lastRequest];
 		if ($this->presenter instanceof UI\Presenter) {
 			try {
 				$this->presenter->forward(":$this->errorPresenter:", $args);
