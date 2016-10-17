@@ -4,9 +4,9 @@
  * Test: Nette\Application\UI\Presenter::link()
  */
 
-use Nette\Http,
-	Nette\Application,
-	Tester\Assert;
+use Nette\Http;
+use Nette\Application;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
