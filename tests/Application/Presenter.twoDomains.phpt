@@ -21,16 +21,6 @@ class TestPresenter extends Application\UI\Presenter
 
 }
 
-class MockPresenterFactory extends Nette\Object implements Nette\Application\IPresenterFactory
-{
-	function getPresenterClass(& $name)
-	{
-		return str_replace(':', 'Module\\', $name) . 'Presenter';
-	}
-
-	function createPresenter($name)
-	{}
-}
 
 function testLink($domain)
 {
@@ -40,7 +30,7 @@ function testLink($domain)
 	$presenter = new TestPresenter;
 	$presenter->injectPrimary(
 		NULL,
-		new MockPresenterFactory,
+		Mockery::mock(Nette\Application\IPresenterFactory::class),
 		new Application\Routers\SimpleRouter,
 		new Http\Request($url),
 		new Http\Response

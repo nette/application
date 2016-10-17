@@ -15,7 +15,7 @@ class Invokable
 {
 	public function __invoke($page, $id, NetteModule\MicroPresenter $presenter)
 	{
-		Notes::add('Callback id ' . $id . ' page ' . $page);
+		$this->log[] = 'Callback id ' . $id . ' page ' . $page;
 	}
 }
 
@@ -24,16 +24,16 @@ test(function () {
 	$presenter = $p = new NetteModule\MicroPresenter;
 
 	$presenter->run(new Request('Nette:Micro', 'GET', [
-		'callback' => function ($id, $page, $presenter) use ($p) {
+		'callback' => function ($id, $page, $presenter) use ($p, & $log) {
 			Assert::same($p, $presenter);
-			Notes::add('Callback id ' . $id . ' page ' . $page);
+			$log[] = 'Callback id ' . $id . ' page ' . $page;
 		},
 		'id' => 1,
 		'page' => 2,
 	]));
 	Assert::same([
 		'Callback id 1 page 2',
-	], Notes::fetch());
+	], $log);
 });
 
 
@@ -41,36 +41,30 @@ test(function () {
 	$presenter = new NetteModule\MicroPresenter;
 
 	$presenter->run(new Request('Nette:Micro', 'GET', [
-		'callback' => new Invokable(),
+		'callback' => $invokable = new Invokable,
 		'id' => 1,
 		'page' => 2,
 	]));
 	Assert::same([
 		'Callback id 1 page 2',
-	], Notes::fetch());
+	], $invokable->log);
 });
 
 
 
-class MockContainer extends Nette\DI\Container
-{
-	function getByType($class, $need = TRUE)
-	{
-		Notes::add("getByType($class)");
-		return new stdClass;
-	}
-}
-
 test(function () {
-	$presenter = new NetteModule\MicroPresenter(new MockContainer);
+	$container = Mockery::mock(Nette\DI\Container::class)
+		->shouldReceive('getByType')->with('stdClass', FALSE)->once()->andReturn(new stdClass)
+		->mock();
+
+	$presenter = new NetteModule\MicroPresenter($container);
 
 	$presenter->run(new Request('Nette:Micro', 'GET', [
-		'callback' => function (stdClass $obj) {
-			Notes::add(get_class($obj));
+		'callback' => function (stdClass $obj) use (& $log) {
+			$log[] = get_class($obj);
 		},
 	]));
 	Assert::same([
-		'getByType(stdClass)',
 		'stdClass',
-	], Notes::fetch());
+	], $log);
 });

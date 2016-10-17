@@ -23,6 +23,7 @@ register_shutdown_function(function ($level) {
 function test(\Closure $function)
 {
 	$function();
+	Mockery::close();
 }
 
 

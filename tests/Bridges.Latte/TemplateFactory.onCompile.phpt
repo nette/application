@@ -5,6 +5,7 @@
  */
 
 use Nette\Bridges\ApplicationLatte\TemplateFactory;
+use Nette\Bridges\ApplicationLatte\ILatteFactory;
 use Nette\Http;
 use Tester\Assert;
 
@@ -12,26 +13,11 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-class LatteFactoryMock implements Nette\Bridges\ApplicationLatte\ILatteFactory
-{
-	private $engine;
-
-	public function __construct(Latte\Engine $engine)
-	{
-		$this->engine = $engine;
-	}
-
-	public function create()
-	{
-		return $this->engine;
-	}
-}
-
-
-
 test(function () {
 	$engine = new Latte\Engine;
-	$factory = new TemplateFactory(new LatteFactoryMock($engine), new Http\Request(new Http\UrlScript('http://nette.org')));
+	$latteFactory = Mockery::mock(ILatteFactory::class);
+	$latteFactory->shouldReceive('create')->andReturn($engine);
+	$factory = new TemplateFactory($latteFactory, new Http\Request(new Http\UrlScript('http://nette.org')));
 	$engine->onCompile[] = $callback = function () {};
 
 	$factory->createTemplate();
@@ -44,7 +30,9 @@ test(function () {
 
 test(function () {
 	$engine = new Latte\Engine;
-	$factory = new TemplateFactory(new LatteFactoryMock($engine), new Http\Request(new Http\UrlScript('http://nette.org')));
+	$latteFactory = Mockery::mock(ILatteFactory::class);
+	$latteFactory->shouldReceive('create')->andReturn($engine);
+	$factory = new TemplateFactory($latteFactory, new Http\Request(new Http\UrlScript('http://nette.org')));
 	$engine->onCompile = new ArrayIterator([$callback = function () {}]);
 
 	$factory->createTemplate();
@@ -72,7 +60,9 @@ test(function () {
 	}
 
 	$engine = new Latte\Engine;
-	$factory = new TemplateFactory(new LatteFactoryMock($engine), new Http\Request(new Http\UrlScript('http://nette.org')));
+	$latteFactory = Mockery::mock(ILatteFactory::class);
+	$latteFactory->shouldReceive('create')->andReturn($engine);
+	$factory = new TemplateFactory($latteFactory, new Http\Request(new Http\UrlScript('http://nette.org')));
 	$engine->onCompile = new Event([$callback = function () {}]);
 
 	$factory->createTemplate();

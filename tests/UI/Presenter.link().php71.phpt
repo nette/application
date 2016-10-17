@@ -11,7 +11,6 @@ use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
-require __DIR__ . '/MockPresenterFactory.php';
 
 
 class TestControl extends Application\UI\Control
@@ -261,10 +260,13 @@ class OtherPresenter extends TestPresenter
 $url = new Http\UrlScript('http://localhost/index.php');
 $url->setScriptPath('/index.php');
 
+$presenterFactory = Mockery::mock(Nette\Application\IPresenterFactory::class);
+$presenterFactory->shouldReceive('getPresenterClass');
+
 $presenter = new TestPresenter;
 $presenter->injectPrimary(
 	NULL,
-	new MockPresenterFactory,
+	$presenterFactory,
 	new Application\Routers\SimpleRouter,
 	new Http\Request($url),
 	new Http\Response

@@ -23,10 +23,12 @@ function callIsComponentLinkCurrent(
 ) {
 	$url = new Http\UrlScript('http://localhost/index.php');
 	$url->setScriptPath('/index.php');
+	$presenterFactory = Mockery::mock(Nette\Application\IPresenterFactory::class);
+	$presenterFactory->shouldReceive('getPresenterClass')->andReturn('TestPresenter');
 
 	$presenter->injectPrimary(
 		NULL,
-		new MockPresenterFactory,
+		$presenterFactory,
 		new Application\Routers\SimpleRouter,
 		new Http\Request($url),
 		new Http\Response

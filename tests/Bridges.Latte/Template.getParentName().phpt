@@ -7,18 +7,13 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-class MockPresenter extends Nette\Application\UI\Presenter
-{
-	function findLayoutTemplateFile()
-	{
-		return 'layout.latte';
-	}
-}
-
+$presenter = Mockery::mock(Nette\Application\UI\Presenter::class)
+	->shouldReceive('findLayoutTemplateFile')->andReturn('layout.latte')
+	->mock();
 
 $latte = new Latte\Engine;
 $latte->setLoader(new Latte\Loaders\StringLoader);
-$latte->addProvider('uiControl', new MockPresenter);
+$latte->addProvider('uiControl', $presenter);
 UIMacros::install($latte->getCompiler());
 
 $template = $latte->createTemplate('');
@@ -52,7 +47,7 @@ $template = $latte->createTemplate('{extends none}');
 $template->prepare();
 Assert::null($template->getParentName());
 
-$latte->addProvider('uiPresenter', new MockPresenter);
+$latte->addProvider('uiPresenter', $presenter);
 $template = $latte->createTemplate('{extends auto}');
 $template->prepare();
 Assert::same('layout.latte', $template->getParentName());

@@ -7,7 +7,6 @@
 use Nette\Application;
 
 require __DIR__ . '/../bootstrap.php';
-require __DIR__ . '/MockPresenterFactory.php';
 
 class TestPresenter extends Application\UI\Presenter
 {
