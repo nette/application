@@ -109,12 +109,14 @@ test(function () use ($httpRequest, $httpResponse) {
 	$app->run();
 
 	$requests = $app->getRequests();
-	Assert::count(1, $requests);
-	Assert::same(Request::FORWARD, $requests[0]->getMethod());
+	Assert::count(2, $requests);
+	Assert::same('GET', $requests[0]->getMethod());
 	Assert::same('Error', $requests[0]->getPresenterName());
+	Assert::same(Request::FORWARD, $requests[1]->getMethod());
+	Assert::same('Error', $requests[1]->getPresenterName());
 
-	Assert::equal($requests[0], $errorPresenter->request);
-	Assert::null($errorPresenter->request->getParameter('request'));
+	Assert::equal($requests[1], $errorPresenter->request);
+	Assert::equal($requests[0], $errorPresenter->request->getParameter('request'));
 	Assert::type(BadRequestException::class, $errorPresenter->request->getParameter('exception'));
 });
 
@@ -122,7 +124,7 @@ test(function () use ($httpRequest, $httpResponse) {
 // missing presenter without error presenter
 Assert::exception(function () use ($httpRequest, $httpResponse) {
 	$presenterFactory = Mockery::mock(IPresenterFactory::class);
-	$presenterFactory->shouldReceive('getPresenterClass')->with('Missing')->andThrow(Nette\Application\InvalidPresenterException::class);
+	$presenterFactory->shouldReceive('createPresenter')->with('Missing')->andThrow(Nette\Application\InvalidPresenterException::class);
 
 	$router = Mockery::mock(IRouter::class);
 	$router->shouldReceive('match')->andReturn(new Request('Missing', 'GET'));
@@ -137,7 +139,7 @@ test(function () use ($httpRequest, $httpResponse) {
 	$errorPresenter = new ErrorPresenter;
 
 	$presenterFactory = Mockery::mock(IPresenterFactory::class);
-	$presenterFactory->shouldReceive('getPresenterClass')->with('Missing')->andThrow(Nette\Application\InvalidPresenterException::class);
+	$presenterFactory->shouldReceive('createPresenter')->with('Missing')->andThrow(Nette\Application\InvalidPresenterException::class);
 	$presenterFactory->shouldReceive('createPresenter')->with('Error')->andReturn($errorPresenter);
 
 	$router = Mockery::mock(IRouter::class);
@@ -149,12 +151,14 @@ test(function () use ($httpRequest, $httpResponse) {
 	$app->run();
 
 	$requests = $app->getRequests();
-	Assert::count(1, $requests);
-	Assert::same(Request::FORWARD, $requests[0]->getMethod());
-	Assert::same('Error', $requests[0]->getPresenterName());
+	Assert::count(2, $requests);
+	Assert::same('GET', $requests[0]->getMethod());
+	Assert::same('Missing', $requests[0]->getPresenterName());
+	Assert::same(Request::FORWARD, $requests[1]->getMethod());
+	Assert::same('Error', $requests[1]->getPresenterName());
 
-	Assert::equal($requests[0], $errorPresenter->request);
-	Assert::null($errorPresenter->request->getParameter('request'));
+	Assert::equal($requests[1], $errorPresenter->request);
+	Assert::equal($requests[0], $errorPresenter->request->getParameter('request'));
 	Assert::type(BadRequestException::class, $errorPresenter->request->getParameter('exception'));
 });
 
@@ -162,7 +166,6 @@ test(function () use ($httpRequest, $httpResponse) {
 // presenter error without error presenter
 Assert::exception(function () use ($httpRequest, $httpResponse) {
 	$presenterFactory = Mockery::mock(IPresenterFactory::class);
-	$presenterFactory->shouldReceive('getPresenterClass');
 	$presenterFactory->shouldReceive('createPresenter')->with('Bad')->andReturn(new BadPresenter);
 
 	$router = Mockery::mock(IRouter::class);
@@ -178,7 +181,6 @@ test(function () use ($httpRequest, $httpResponse) {
 	$errorPresenter = new ErrorPresenter;
 
 	$presenterFactory = Mockery::mock(IPresenterFactory::class);
-	$presenterFactory->shouldReceive('getPresenterClass');
 	$presenterFactory->shouldReceive('createPresenter')->with('Bad')->andReturn(new BadPresenter);
 	$presenterFactory->shouldReceive('createPresenter')->with('Error')->andReturn($errorPresenter);
 
@@ -208,7 +210,6 @@ Assert::noError(function () use ($httpRequest, $httpResponse) {
 	$presenter = new GoodPresenter;
 
 	$presenterFactory = Mockery::mock(IPresenterFactory::class);
-	$presenterFactory->shouldReceive('getPresenterClass');
 	$presenterFactory->shouldReceive('createPresenter')->with('Good')->andReturn($presenter);
 
 	$router = Mockery::mock(IRouter::class);
@@ -232,7 +233,6 @@ Assert::noError(function () use ($httpRequest, $httpResponse) {
 	$errorPresenter = new ErrorPresenter;
 
 	$presenterFactory = Mockery::mock(IPresenterFactory::class);
-	$presenterFactory->shouldReceive('getPresenterClass');
 	$presenterFactory->shouldReceive('createPresenter')->with('Good')->andReturn($presenter);
 	$presenterFactory->shouldReceive('createPresenter')->with('Error')->andReturn($errorPresenter);
 

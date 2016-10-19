@@ -112,21 +112,9 @@ class Application
 	public function createInitialRequest()
 	{
 		$request = $this->router->match($this->httpRequest);
-
 		if (!$request instanceof Request) {
 			throw new BadRequestException('No route for HTTP request.');
-
-		} elseif (strcasecmp($request->getPresenterName(), $this->errorPresenter) === 0) {
-			throw new BadRequestException('Invalid request. Presenter is not achievable.');
 		}
-
-		try {
-			$name = $request->getPresenterName();
-			$this->presenterFactory->getPresenterClass($name);
-		} catch (InvalidPresenterException $e) {
-			throw new BadRequestException($e->getMessage(), 0, $e);
-		}
-
 		return $request;
 	}
 
@@ -144,7 +132,15 @@ class Application
 		$this->requests[] = $request;
 		$this->onRequest($this, $request);
 
-		$this->presenter = $this->presenterFactory->createPresenter($request->getPresenterName());
+		if (!$request->isMethod($request::FORWARD) && !strcasecmp($request->getPresenterName(), $this->errorPresenter)) {
+			throw new BadRequestException('Invalid request. Presenter is not achievable.');
+		}
+
+		try {
+			$this->presenter = $this->presenterFactory->createPresenter($request->getPresenterName());
+		} catch (InvalidPresenterException $e) {
+			throw count($this->requests) > 1 ? $e : new BadRequestException($e->getMessage(), 0, $e);
+		}
 		$this->onPresenter($this, $this->presenter);
 		$response = $this->presenter->run(clone $request);
 
