@@ -41,18 +41,30 @@ testRouteIn($route, '/abc?param=1', 'Abc.in', [
 
 testRouteIn($route, '/cde?param=1');
 
-\Tester\Assert::null(testRouteOut($route, 'Cde'));
+Assert::null(testRouteOut($route, 'Cde'));
 
 
 $route = new Route('<lang>/<presenter>/<action>', [
 	NULL => [
 		Route::FILTER_IN => function (array $arr) {
-			$arr['presenter'] =  substr($arr['presenter'], 0, -2); // App:AbcCs -> App:Abc
+			if ($arr['module'] !== 'App') {
+				return NULL;
+			}
+			if ($arr['presenter'] !== 'AbcCs') {
+				return NULL;
+			}
+			$arr['presenter'] =  substr($arr['presenter'], 0, -2); // AbcCs -> Abc
 			$arr['action'] = substr($arr['action'], 0, -2);
 			return $arr;
 		},
 		Route::FILTER_OUT => function (array $arr) {
-			$arr['presenter'] .= ucfirst($arr['lang']); // App:Abc -> App:AbcCs
+			if ($arr['module'] !== 'App') {
+				return NULL;
+			}
+			if ($arr['presenter'] !== 'Abc') {
+				return NULL;
+			}
+			$arr['presenter'] .= ucfirst($arr['lang']); // Abc -> AbcCs
 			$arr['action'] .= ucfirst($arr['lang']);
 			return $arr;
 		},
