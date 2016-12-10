@@ -286,14 +286,6 @@ class Route implements Application\IRouter
 		$presenter = $appRequest->getPresenterName();
 		$params[self::PRESENTER_KEY] = $presenter;
 
-		if (isset($metadata[NULL][self::FILTER_OUT])) {
-			$params = call_user_func($metadata[NULL][self::FILTER_OUT], $params);
-			if ($params === NULL) {
-				return NULL;
-			}
-			$presenter = $params[self::PRESENTER_KEY];
-		}
-
 		if (isset($metadata[self::MODULE_KEY])) { // try split into module and [submodule:]presenter parts
 			$module = $metadata[self::MODULE_KEY];
 			if (isset($module['fixity']) && strncmp($presenter, $module[self::VALUE] . ':', strlen($module[self::VALUE]) + 1) === 0) {
@@ -306,6 +298,13 @@ class Route implements Application\IRouter
 			} else {
 				$params[self::MODULE_KEY] = substr($presenter, 0, $a);
 				$params[self::PRESENTER_KEY] = substr($presenter, $a + 1);
+			}
+		}
+
+		if (isset($metadata[NULL][self::FILTER_OUT])) {
+			$params = call_user_func($metadata[NULL][self::FILTER_OUT], $params);
+			if ($params === NULL) {
+				return NULL;
 			}
 		}
 
