@@ -93,7 +93,7 @@ class PresenterFactory implements IPresenterFactory
 
 	/**
 	 * Sets mapping as pairs [module => mask]
-	 * @return self
+	 * @return static
 	 */
 	public function setMapping(array $mapping)
 	{

@@ -53,7 +53,7 @@ class Link
 	 * Changes link parameter.
 	 * @param  string
 	 * @param  mixed
-	 * @return self
+	 * @return static
 	 */
 	public function setParameter($key, $value)
 	{

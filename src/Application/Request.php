@@ -73,7 +73,7 @@ class Request
 	/**
 	 * Sets the presenter name.
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function setPresenterName($name)
 	{
@@ -94,7 +94,7 @@ class Request
 
 	/**
 	 * Sets variables provided to the presenter.
-	 * @return self
+	 * @return static
 	 */
 	public function setParameters(array $params)
 	{
@@ -126,7 +126,7 @@ class Request
 
 	/**
 	 * Sets variables provided to the presenter via POST.
-	 * @return self
+	 * @return static
 	 */
 	public function setPost(array $params)
 	{
@@ -157,7 +157,7 @@ class Request
 
 	/**
 	 * Sets all uploaded files.
-	 * @return self
+	 * @return static
 	 */
 	public function setFiles(array $files)
 	{
@@ -179,7 +179,7 @@ class Request
 	/**
 	 * Sets the method.
 	 * @param  string|NULL
-	 * @return self
+	 * @return static
 	 */
 	public function setMethod($method)
 	{
@@ -213,7 +213,7 @@ class Request
 	 * Sets the flag.
 	 * @param  string
 	 * @param  bool
-	 * @return self
+	 * @return static
 	 */
 	public function setFlag($flag, $value = TRUE)
 	{
