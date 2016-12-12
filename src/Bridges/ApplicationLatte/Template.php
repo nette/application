@@ -85,7 +85,8 @@ class Template implements Nette\Application\UI\ITemplate
 	 */
 	public function addFilter($name, $callback)
 	{
-		return $this->latte->addFilter($name, $callback);
+		$this->latte->addFilter($name, $callback);
+		return $this;
 	}
 
 
