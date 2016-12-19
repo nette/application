@@ -26,3 +26,15 @@ test(function () {
 	Assert::same($encoded, ob_get_clean());
 	Assert::same('application/json; charset=utf-8', $response->getHeader('Content-Type'));
 });
+
+test(function () {
+	$data = TRUE;
+	$encoded = json_encode($data, JSON_UNESCAPED_UNICODE);
+	$jsonResponse = new JsonResponse($data, 'application/json');
+
+	ob_start();
+	$jsonResponse->send(new Http\Request(new Http\UrlScript), $response = new Http\Response);
+
+	Assert::same($encoded, ob_get_clean());
+	Assert::same('application/json; charset=utf-8', $response->getHeader('Content-Type'));
+});
