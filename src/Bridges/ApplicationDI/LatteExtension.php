@@ -19,6 +19,7 @@ class LatteExtension extends Nette\DI\CompilerExtension
 	public $defaults = [
 		'xhtml' => FALSE,
 		'macros' => [],
+		'templateClass' => NULL
 	];
 
 	/** @var bool */
@@ -52,9 +53,12 @@ class LatteExtension extends Nette\DI\CompilerExtension
 			->addSetup('Nette\Utils\Html::$xhtml = ?', [(bool) $config['xhtml']])
 			->setImplement(Nette\Bridges\ApplicationLatte\ILatteFactory::class);
 
-		$builder->addDefinition($this->prefix('templateFactory'))
+		$templateFactory = $builder->addDefinition($this->prefix('templateFactory'))
 			->setClass(Nette\Application\UI\ITemplateFactory::class)
 			->setFactory(Nette\Bridges\ApplicationLatte\TemplateFactory::class);
+		if ($config['templateClass'] !== NULL) {
+			$templateFactory->addSetup('?->setTemplateClass(?)', ['@self', $config['templateClass']]);
+		}
 
 		foreach ($config['macros'] as $macro) {
 			$this->addMacro($macro);
