@@ -1365,7 +1365,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/**
 	 * @return Nette\Http\IRequest
 	 */
-	protected function getHttpRequest()
+	public function getHttpRequest()
 	{
 		return $this->httpRequest;
 	}
@@ -1374,7 +1374,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/**
 	 * @return Nette\Http\IResponse
 	 */
-	protected function getHttpResponse()
+	public function getHttpResponse()
 	{
 		return $this->httpResponse;
 	}

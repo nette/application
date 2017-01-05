@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * Test: TemplateFactory nonce
+ */
+
+use Nette\Application\UI;
+use Nette\Bridges\ApplicationLatte;
+use Tester\Assert;
+
+
+require __DIR__ . '/../bootstrap.php';
+
+
+$latte = new Latte\Engine;
+
+$latteFactory = Mockery::mock(ApplicationLatte\ILatteFactory::class);
+$latteFactory->shouldReceive('create')->andReturn($latte);
+
+$response = Mockery::mock(Nette\Http\Response::class);
+$response->shouldReceive('getHeader')->with('Content-Security-Policy')->andReturn("hello 'nonce-abcd123==' world");
+
+$presenter = Mockery::mock(UI\Presenter::class);
+$presenter->shouldReceive('getPresenter')->andReturn($presenter);
+$presenter->shouldReceive('getHttpResponse')->andReturn($response);
+$presenter->shouldIgnoreMissing();
+
+$factory = new ApplicationLatte\TemplateFactory($latteFactory);
+$factory->createTemplate($presenter);
+
+$latte->setLoader(new Latte\Loaders\StringLoader);
+
+Assert::match(
+	'<script nonce="abcd123=="></script>',
+	$latte->renderToString('<script n:nonce></script>')
+);

@@ -103,6 +103,8 @@ class TemplateFactory implements UI\ITemplateFactory
 			$latte->addProvider('uiControl', $control);
 			$latte->addProvider('uiPresenter', $presenter);
 			$latte->addProvider('snippetBridge', new Nette\Bridges\ApplicationLatte\SnippetBridge($control));
+			$nonce = preg_match('#\s\'nonce-([\w+/]+=*)\'#', $presenter->getHttpResponse()->getHeader('Content-Security-Policy'), $m) ? $m[1] : NULL;
+			$latte->addProvider('uiNonce', $nonce);
 		}
 		$latte->addProvider('cacheStorage', $this->cacheStorage);
 
