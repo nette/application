@@ -161,7 +161,7 @@ class ComponentReflection extends \ReflectionClass
 	 * @param  string
 	 * @return bool
 	 */
-	public static function convertType(& $val, $type, $isClass = FALSE)
+	public static function convertType(&$val, $type, $isClass = FALSE)
 	{
 		if ($isClass) {
 			return $val instanceof $type;

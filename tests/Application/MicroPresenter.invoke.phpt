@@ -24,7 +24,7 @@ test(function () {
 	$presenter = $p = new NetteModule\MicroPresenter;
 
 	$presenter->run(new Request('Nette:Micro', 'GET', [
-		'callback' => function ($id, $page, $presenter) use ($p, & $log) {
+		'callback' => function ($id, $page, $presenter) use ($p, &$log) {
 			Assert::same($p, $presenter);
 			$log[] = 'Callback id ' . $id . ' page ' . $page;
 		},
@@ -60,7 +60,7 @@ test(function () {
 	$presenter = new NetteModule\MicroPresenter($container);
 
 	$presenter->run(new Request('Nette:Micro', 'GET', [
-		'callback' => function (stdClass $obj) use (& $log) {
+		'callback' => function (stdClass $obj) use (&$log) {
 			$log[] = get_class($obj);
 		},
 	]));

@@ -24,6 +24,6 @@ interface IStatePersistent
 	 * Saves state informations for next request.
 	 * @return void
 	 */
-	function saveState(array & $params);
+	function saveState(array &$params);
 
 }

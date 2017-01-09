@@ -1006,7 +1006,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * @throws InvalidLinkException
 	 * @internal
 	 */
-	public static function argsToParams($class, $method, & $args, $supplemental = [], & $missing = [])
+	public static function argsToParams($class, $method, &$args, $supplemental = [], &$missing = [])
 	{
 		$i = 0;
 		$rm = new \ReflectionMethod($class, $method);
@@ -1136,7 +1136,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	protected function getGlobalState($forClass = NULL)
 	{
-		$sinces = & $this->globalStateSinces;
+		$sinces = &$this->globalStateSinces;
 
 		if ($this->globalState === NULL) {
 			$state = [];

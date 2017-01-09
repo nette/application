@@ -34,7 +34,7 @@ class TestControl extends Application\UI\Control
 		parent::loadState($params);
 	}
 
-	public function saveState(array & $params)
+	public function saveState(array &$params)
 	{
 		parent::saveState($params);
 		if (isset($params['order'])) {

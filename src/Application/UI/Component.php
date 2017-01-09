@@ -154,7 +154,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	 * @param  ComponentReflection (internal, used by Presenter)
 	 * @return void
 	 */
-	public function saveState(array & $params, $reflection = NULL)
+	public function saveState(array &$params, $reflection = NULL)
 	{
 		$reflection = $reflection === NULL ? $this->getReflection() : $reflection;
 		foreach ($reflection->getPersistentParams() as $name => $meta) {

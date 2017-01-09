@@ -13,7 +13,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 test(function () {
-	$response = new CallbackResponse(function (Http\IRequest $request, Http\IResponse $response) use (& $ok) {
+	$response = new CallbackResponse(function (Http\IRequest $request, Http\IResponse $response) use (&$ok) {
 		$ok = TRUE;
 	});
 	$response->send(new Http\Request(new Http\UrlScript), new Http\Response);
