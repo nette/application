@@ -5,6 +5,8 @@
  * @phpVersion 7
  */
 
+declare(strict_types=1);
+
 use Nette\Application;
 
 require __DIR__ . '/../bootstrap.php';

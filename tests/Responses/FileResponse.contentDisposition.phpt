@@ -4,6 +4,8 @@
  * Test: Nette\Application\Responses\FileResponse.
  */
 
+declare(strict_types=1);
+
 use Nette\Application\Responses\FileResponse;
 use Nette\Http;
 use Tester\Assert;

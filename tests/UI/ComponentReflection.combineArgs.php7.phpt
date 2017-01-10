@@ -4,6 +4,8 @@
  * Test: ComponentReflection::combineArgs()
  */
 
+declare(strict_types=1);
+
 use Nette\Application\UI\ComponentReflection as Reflection;
 use Nette\Application\BadRequestException;
 use Tester\Assert;

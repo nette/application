@@ -4,6 +4,8 @@
  * Test: Nette\Application\LinkGenerator basic functions.
  */
 
+declare(strict_types=1);
+
 namespace {
 
 	require __DIR__ . '/../bootstrap.php';

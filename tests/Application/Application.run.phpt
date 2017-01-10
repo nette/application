@@ -4,6 +4,8 @@
  * Test: Application
  */
 
+declare(strict_types=1);
+
 use Nette\Application\Application;
 use Nette\Application\BadRequestException;
 use Nette\Application\IPresenterFactory;

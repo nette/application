@@ -4,6 +4,8 @@
  * Test: Nette\Application\Routers\Route with 'required' optional sequences II.
  */
 
+declare(strict_types=1);
+
 use Nette\Application\Routers\Route;
 use Tester\Assert;
 

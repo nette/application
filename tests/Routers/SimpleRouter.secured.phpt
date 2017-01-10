@@ -4,6 +4,8 @@
  * Test: Nette\Application\Routers\SimpleRouter with secured connection.
  */
 
+declare(strict_types=1);
+
 use Nette\Http;
 use Nette\Application;
 use Tester\Assert;
