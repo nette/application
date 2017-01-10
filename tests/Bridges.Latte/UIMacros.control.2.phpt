@@ -4,6 +4,8 @@
  * Test: {control ...}
  */
 
+declare(strict_types=1);
+
 use Nette\Bridges\ApplicationLatte\UIMacros;
 use Tester\Assert;
 

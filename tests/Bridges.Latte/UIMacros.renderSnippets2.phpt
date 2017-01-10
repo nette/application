@@ -4,6 +4,8 @@
  * Test: UIMacros, renderSnippets and control with two templates.
  */
 
+declare(strict_types=1);
+
 use Nette\Bridges\ApplicationLatte\UIMacros;
 use Nette\Bridges\ApplicationLatte\SnippetBridge;
 use Tester\Assert;

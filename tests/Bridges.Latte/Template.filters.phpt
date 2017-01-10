@@ -4,6 +4,8 @@
  * Test: Template filters
  */
 
+declare(strict_types=1);
+
 use Nette\Bridges\ApplicationLatte\Template;
 use Tester\Assert;
 

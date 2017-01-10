@@ -4,6 +4,8 @@
  * Test: ComponentReflection::convertType()
  */
 
+declare(strict_types=1);
+
 use Nette\Application\UI\ComponentReflection;
 use Tester\Assert;
 
