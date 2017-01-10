@@ -4,6 +4,8 @@
  * Test: RoutingExtension caching.
  */
 
+declare(strict_types=1);
+
 use Nette\DI;
 use Nette\Bridges\ApplicationDI\RoutingExtension;
 use Nette\Application\Routers\Route;

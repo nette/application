@@ -4,6 +4,8 @@
  * Test: RoutingExtension.
  */
 
+declare(strict_types=1);
+
 use Nette\DI;
 use Nette\Bridges\ApplicationDI\RoutingExtension;
 use Tester\Assert;

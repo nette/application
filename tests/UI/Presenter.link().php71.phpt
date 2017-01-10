@@ -5,6 +5,8 @@
  * @phpVersion 7.1
  */
 
+declare(strict_types=1);
+
 use Nette\Http;
 use Nette\Application;
 use Tester\Assert;
