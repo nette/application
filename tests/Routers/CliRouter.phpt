@@ -4,6 +4,8 @@
  * Test: Nette\Application\Routers\CliRouter basic usage
  */
 
+declare(strict_types=1);
+
 use Nette\Http;
 use Nette\Application\Routers\CliRouter;
 use Tester\Assert;

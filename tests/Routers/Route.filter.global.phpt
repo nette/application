@@ -4,6 +4,8 @@
  * Test: Nette\Application\Routers\Route with FILTER_IN & FILTER_OUT
  */
 
+declare(strict_types=1);
+
 use Nette\Application\Routers\Route;
 use Tester\Assert;
 

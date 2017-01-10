@@ -4,6 +4,8 @@
  * Test: Nette\Application\UI\Presenter::storeRequest()
  */
 
+declare(strict_types=1);
+
 use Nette\Http;
 use Nette\Application;
 use Nette\DI;

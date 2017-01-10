@@ -4,6 +4,8 @@
  * Test: Nette\Application\UI\Form
  */
 
+declare(strict_types=1);
+
 use Nette\Application\UI;
 use Tester\Assert;
 

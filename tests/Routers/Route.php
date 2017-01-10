@@ -4,6 +4,8 @@
  * Common code for Route test cases.
  */
 
+declare(strict_types=1);
+
 use Tester\Assert;
 
 

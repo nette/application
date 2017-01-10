@@ -4,6 +4,8 @@
  * Test: Nette\Application\Routers\Route default usage.
  */
 
+declare(strict_types=1);
+
 use Nette\Application\Routers\Route;
 use Nette\Application\Request;
 use Tester\Assert;

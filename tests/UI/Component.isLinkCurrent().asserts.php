@@ -4,6 +4,8 @@
  * Test: Nette\Application\UI\Component::isLinkCurrent()
  */
 
+declare(strict_types=1);
+
 use Nette\Application;
 use Nette\Http;
 use Tester\Assert;

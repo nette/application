@@ -4,6 +4,8 @@
  * Test: TemplateFactory filters
  */
 
+declare(strict_types=1);
+
 use Nette\Bridges\ApplicationLatte\TemplateFactory;
 use Tester\Assert;
 

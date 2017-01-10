@@ -4,6 +4,8 @@
  * Test: NetteModule\MicroPresenter
  */
 
+declare(strict_types=1);
+
 use Nette\Application\Request;
 use Nette\Http;
 use Tester\Assert;

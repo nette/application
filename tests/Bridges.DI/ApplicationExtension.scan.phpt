@@ -4,6 +4,8 @@
  * Test: ApplicationExtension
  */
 
+declare(strict_types=1);
+
 use Nette\DI;
 use Nette\Bridges\ApplicationDI\ApplicationExtension;
 use Tester\Assert;
