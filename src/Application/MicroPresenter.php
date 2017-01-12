@@ -95,7 +95,7 @@ class MicroPresenter implements Application\IPresenter
 			if (!$templateSource instanceof \SplFileInfo) {
 				$response->getLatte()->setLoader(new Latte\Loaders\StringLoader);
 			}
-			$response->setFile($templateSource);
+			$response->setFile((string) $templateSource);
 		}
 		if ($response instanceof Application\UI\ITemplate) {
 			return new Responses\TextResponse($response);
@@ -148,7 +148,7 @@ class MicroPresenter implements Application\IPresenter
 	 */
 	public function error($message = NULL, $httpCode = Http\IResponse::S404_NOT_FOUND)
 	{
-		throw new Application\BadRequestException($message, $httpCode);
+		throw new Application\BadRequestException((string) $message, (int) $httpCode);
 	}
 
 

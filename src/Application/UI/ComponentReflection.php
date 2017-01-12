@@ -194,7 +194,7 @@ class ComponentReflection extends \ReflectionClass
 	 */
 	public static function parseAnnotation(\Reflector $ref, $name)
 	{
-		if (!preg_match_all('#[\\s*]@' . preg_quote($name, '#') . '(?:\(\\s*([^)]*)\\s*\)|\\s|$)#', $ref->getDocComment(), $m)) {
+		if (!preg_match_all('#[\\s*]@' . preg_quote($name, '#') . '(?:\(\\s*([^)]*)\\s*\)|\\s|$)#', (string) $ref->getDocComment(), $m)) {
 			return FALSE;
 		}
 		static $tokens = ['true' => TRUE, 'false' => FALSE, 'null' => NULL];

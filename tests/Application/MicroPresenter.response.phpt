@@ -116,7 +116,7 @@ test(function () {
 				return new Latte\Engine;
 			});
 			$template->getLatte()->setLoader(new Latte\Loaders\FileLoader());
-			$template->setFile(new SplFileInfo(Tester\FileMock::create('{$param}')));
+			$template->setFile(Tester\FileMock::create('{$param}'));
 			$template->setParameters(['param' => 'test']);
 
 			return $template;

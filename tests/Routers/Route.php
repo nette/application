@@ -30,7 +30,7 @@ function testRouteIn(Nette\Application\IRouter $route, $url, $expectedPresenter 
 		unset($params['extra']);
 		$request->setParameters($params);
 		$result = $route->constructUrl($request, $url);
-		$result = strncmp($result, 'http://example.com', 18) ? $result : substr($result, 18);
+		$result = $result && !strncmp($result, 'http://example.com', 18) ? substr($result, 18) : $result;
 		Assert::same($expectedUrl, $result);
 
 	} else { // not matched
