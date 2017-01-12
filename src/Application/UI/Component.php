@@ -85,7 +85,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	protected function tryCall($method, array $params)
 	{
 		$rc = $this->getReflection();
-		if ($rc->hasMethod($method)) {
+		if ($rc->hasMethod((string) $method)) {
 			$rm = $rc->getMethod($method);
 			if ($rm->isPublic() && !$rm->isAbstract() && !$rm->isStatic()) {
 				$this->checkRequirements($rm);

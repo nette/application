@@ -127,7 +127,7 @@ class Application
 		$this->requests[] = $request;
 		$this->onRequest($this, $request);
 
-		if (!$request->isMethod($request::FORWARD) && !strcasecmp($request->getPresenterName(), $this->errorPresenter)) {
+		if (!$request->isMethod($request::FORWARD) && !strcasecmp($request->getPresenterName(), (string) $this->errorPresenter)) {
 			throw new BadRequestException('Invalid request. Presenter is not achievable.');
 		}
 

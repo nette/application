@@ -95,7 +95,7 @@ class MicroPresenter implements Application\IPresenter
 			if (!$templateSource instanceof \SplFileInfo) {
 				$response->getLatte()->setLoader(new Latte\Loaders\StringLoader);
 			}
-			$response->setFile($templateSource);
+			$response->setFile((string) $templateSource);
 		}
 		if ($response instanceof Application\UI\ITemplate) {
 			return new Responses\TextResponse($response);

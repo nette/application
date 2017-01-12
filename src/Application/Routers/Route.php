@@ -288,7 +288,7 @@ class Route implements Application\IRouter
 
 		if (isset($metadata[self::MODULE_KEY])) { // try split into module and [submodule:]presenter parts
 			$module = $metadata[self::MODULE_KEY];
-			if (isset($module['fixity']) && strncmp($presenter, $module[self::VALUE] . ':', strlen($module[self::VALUE]) + 1) === 0) {
+			if (isset($module['fixity'], $module[self::VALUE]) && strncmp($presenter, $module[self::VALUE] . ':', strlen($module[self::VALUE]) + 1) === 0) {
 				$a = strlen($module[self::VALUE]);
 			} else {
 				$a = strrpos($presenter, ':');
@@ -339,7 +339,7 @@ class Route implements Application\IRouter
 				$params[$name] = $meta[self::FILTER_OUT]($params[$name]);
 			}
 
-			if (isset($meta[self::PATTERN]) && !preg_match($meta[self::PATTERN], rawurldecode($params[$name]))) {
+			if (isset($meta[self::PATTERN]) && !preg_match($meta[self::PATTERN], rawurldecode((string) $params[$name]))) {
 				return NULL; // pattern not match
 			}
 		}
@@ -576,7 +576,7 @@ class Route implements Application\IRouter
 			}
 
 			$meta['filterTable2'] = empty($meta[self::FILTER_TABLE]) ? NULL : array_flip($meta[self::FILTER_TABLE]);
-			if (array_key_exists(self::VALUE, $meta)) {
+			if (isset($meta[self::VALUE])) {
 				if (isset($meta['filterTable2'][$meta[self::VALUE]])) {
 					$meta['defOut'] = $meta['filterTable2'][$meta[self::VALUE]];
 

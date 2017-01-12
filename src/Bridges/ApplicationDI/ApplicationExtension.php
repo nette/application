@@ -104,7 +104,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 		$counter = 0;
 		foreach ($this->findPresenters() as $class) {
 			if (empty($all[$class])) {
-				$all[$class] = $builder->addDefinition($this->prefix(++$counter))->setClass($class);
+				$all[$class] = $builder->addDefinition($this->prefix((string) ++$counter))->setClass($class);
 			}
 		}
 

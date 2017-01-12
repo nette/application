@@ -498,7 +498,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function formatLayoutTemplateFiles()
 	{
-		if (preg_match('#/|\\\\#', $this->layout)) {
+		if (preg_match('#/|\\\\#', (string) $this->layout)) {
 			return [$this->layout];
 		}
 		list($module, $presenter) = Helpers::splitName($this->getName());
@@ -891,7 +891,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 				$action = self::DEFAULT_ACTION;
 			}
 
-			$current = ($action === '*' || strcasecmp($action, $this->action) === 0) && $presenterClass === get_class($this);
+			$current = ($action === '*' || strcasecmp($action, (string) $this->action) === 0) && $presenterClass === get_class($this);
 
 			$reflection = new ComponentReflection($presenterClass);
 
@@ -979,7 +979,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		$url = $this->router->constructUrl($this->lastCreatedRequest, $this->refUrlCache);
 		if ($url === NULL) {
 			unset($args[self::ACTION_KEY]);
-			$params = urldecode(http_build_query($args, NULL, ', '));
+			$params = urldecode(http_build_query($args, '', ', '));
 			throw new InvalidLinkException("No route for $presenter:$action($params)");
 		}
 
@@ -1231,7 +1231,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		}
 
 		foreach ($params as $key => $value) {
-			if (!preg_match('#^((?:[a-z0-9_]+-)*)((?!\d+\z)[a-z0-9_]+)\z#i', $key, $matches)) {
+			if (!preg_match('#^((?:[a-z0-9_]+-)*)((?!\d+\z)[a-z0-9_]+)\z#i', (string) $key, $matches)) {
 				continue;
 			} elseif (!$matches[1]) {
 				$selfParams[$key] = $value;
