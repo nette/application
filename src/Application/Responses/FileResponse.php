@@ -98,7 +98,7 @@ class FileResponse implements Nette\Application\IResponse
 
 		if ($this->resuming) {
 			$httpResponse->setHeader('Accept-Ranges', 'bytes');
-			if (preg_match('#^bytes=(\d*)-(\d*)\z#', $httpRequest->getHeader('Range'), $matches)) {
+			if (preg_match('#^bytes=(\d*)-(\d*)\z#', (string) $httpRequest->getHeader('Range'), $matches)) {
 				[, $start, $end] = $matches;
 				if ($start === '') {
 					$start = max(0, $filesize - $end);
@@ -115,14 +115,14 @@ class FileResponse implements Nette\Application\IResponse
 				$httpResponse->setCode(206);
 				$httpResponse->setHeader('Content-Range', 'bytes ' . $start . '-' . $end . '/' . $filesize);
 				$length = $end - $start + 1;
-				fseek($handle, $start);
+				fseek($handle, (int) $start);
 
 			} else {
 				$httpResponse->setHeader('Content-Range', 'bytes 0-' . ($filesize - 1) . '/' . $filesize);
 			}
 		}
 
-		$httpResponse->setHeader('Content-Length', $length);
+		$httpResponse->setHeader('Content-Length', (string) $length);
 		while (!feof($handle) && $length > 0) {
 			echo $s = fread($handle, min(4e6, $length));
 			$length -= strlen($s);

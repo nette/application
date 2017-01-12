@@ -81,5 +81,5 @@ test(function () {
 	Assert::count(1, array_keys($tags, 'Presenter2'));
 
 	$tmp = array_keys($tags, 'Presenter1');
-	Assert::same('test', $container->getService($tmp[0])->getView());
+	Assert::same('test', $container->getService((string) $tmp[0])->getView());
 });

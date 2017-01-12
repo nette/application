@@ -20,7 +20,7 @@ class TemplateMock extends Template
 
 	public function render()
 	{
-		return strrev($this->file);
+		echo strrev($this->file);
 	}
 
 	public function setFile($file)
@@ -55,7 +55,11 @@ test(function () {
 	Assert::type(TemplateMock::class, $template);
 	Assert::type(UI\ITemplate::class, $template);
 	Assert::same([], $template->flashes);
-	Assert::same('ok', $template->render());
+	ob_start();
+	$template->render();
+	Assert::same('ok', ob_get_clean());
 	$template->setFile('bla');
-	Assert::same('alb', $template->render());
+	ob_start();
+	$template->render();
+	Assert::same('alb', ob_get_clean());
 });

@@ -79,7 +79,7 @@ class LinkGenerator
 		$url = $this->router->constructUrl(new Request($presenter, NULL, $params), $this->refUrl);
 		if ($url === NULL) {
 			unset($params[UI\Presenter::ACTION_KEY]);
-			$params = urldecode(http_build_query($params, NULL, ', '));
+			$params = urldecode(http_build_query($params, '', ', '));
 			throw new UI\InvalidLinkException("No route for $dest($params)");
 		}
 		return $url . $frag;
