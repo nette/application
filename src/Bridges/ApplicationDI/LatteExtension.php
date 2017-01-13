@@ -22,6 +22,7 @@ class LatteExtension extends Nette\DI\CompilerExtension
 		'xhtml' => FALSE,
 		'macros' => [],
 		'templateClass' => NULL,
+		'strictTypes' => FALSE,
 	];
 
 	/** @var bool */
@@ -47,13 +48,17 @@ class LatteExtension extends Nette\DI\CompilerExtension
 		$config = $this->validateConfig($this->defaults);
 		$builder = $this->getContainerBuilder();
 
-		$builder->addDefinition($this->prefix('latteFactory'))
+		$latteFactory = $builder->addDefinition($this->prefix('latteFactory'))
 			->setClass(Latte\Engine::class)
 			->addSetup('setTempDirectory', [$this->tempDir])
 			->addSetup('setAutoRefresh', [$this->debugMode])
 			->addSetup('setContentType', [$config['xhtml'] ? Latte\Compiler::CONTENT_XHTML : Latte\Compiler::CONTENT_HTML])
 			->addSetup('Nette\Utils\Html::$xhtml = ?', [(bool) $config['xhtml']])
 			->setImplement(Nette\Bridges\ApplicationLatte\ILatteFactory::class);
+
+		if ($config['strictTypes']) {
+			$latteFactory->addSetup('setStrictTypes', [TRUE]);
+		}
 
 		$builder->addDefinition($this->prefix('templateFactory'))
 			->setClass(Nette\Application\UI\ITemplateFactory::class)
