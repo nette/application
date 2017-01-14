@@ -9,7 +9,6 @@ namespace Nette\Application\UI;
 
 use Nette;
 use Nette\Application\BadRequestException;
-use Nette\Reflection\ClassType;
 
 
 /**
