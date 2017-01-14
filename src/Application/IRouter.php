@@ -20,9 +20,6 @@ interface IRouter
 	/** only matching route */
 	const ONE_WAY = 0b0001;
 
-	/** @deprecated */
-	const SECURED = 0b0010;
-
 	/**
 	 * Maps HTTP request to a Request object.
 	 * @return Request|NULL
