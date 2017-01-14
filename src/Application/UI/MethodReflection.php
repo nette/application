@@ -42,25 +42,4 @@ class MethodReflection extends \ReflectionMethod
 		return $res ? end($res) : NULL;
 	}
 
-
-	public function __toString()
-	{
-		trigger_error(__METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
-		return parent::getDeclaringClass()->getName() . '::' . $this->getName() . '()';
-	}
-
-
-	public function __get($name)
-	{
-		trigger_error("getMethod('{$this->getName()}')->$name is deprecated.", E_USER_DEPRECATED);
-		return (new Method(parent::getDeclaringClass()->getName(), $this->getName()))->$name;
-	}
-
-
-	public function __call($name, $args)
-	{
-		trigger_error("getMethod('{$this->getName()}')->$name() is deprecated, use Nette\\Reflection\\Method::from(\$presenter, '{$this->getName()}')->$name()", E_USER_DEPRECATED);
-		return call_user_func_array([new Method(parent::getDeclaringClass()->getName(), $this->getName()), $name], $args);
-	}
-
 }

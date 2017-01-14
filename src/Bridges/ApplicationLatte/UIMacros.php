@@ -148,12 +148,4 @@ class UIMacros extends Latte\Macros\MacroSet
 		$this->extends = $writer->write('$this->parentName = $this->global->uiPresenter->findLayoutTemplateFile();');
 	}
 
-
-	/** @deprecated */
-	public static function renderSnippets(Nette\Application\UI\Control $control, \stdClass $local, array $params)
-	{
-		trigger_error(__METHOD__ . '() is deprecated.', E_USER_DEPRECATED);
-		UIRuntime::renderSnippets($control, $local, $params);
-	}
-
 }

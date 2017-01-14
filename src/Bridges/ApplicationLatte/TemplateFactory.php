@@ -108,11 +108,6 @@ class TemplateFactory implements UI\ITemplateFactory
 		}
 		$latte->addProvider('cacheStorage', $this->cacheStorage);
 
-		// back compatibility
-		$template->_control = $control;
-		$template->_presenter = $presenter;
-		$template->netteCacheStorage = $this->cacheStorage;
-
 		if ($presenter instanceof UI\Presenter && $presenter->hasFlashSession()) {
 			$id = $control->getParameterId('flash');
 			$template->flashes = (array) $presenter->getFlashSession()->$id;

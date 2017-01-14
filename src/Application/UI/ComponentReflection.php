@@ -223,9 +223,6 @@ class ComponentReflection extends \ReflectionClass
 	}
 
 
-	/********************* compatiblity with Nette\Reflection ****************d*g**/
-
-
 	/**
 	 * Has class specified annotation?
 	 * @param  string
@@ -261,30 +258,6 @@ class ComponentReflection extends \ReflectionClass
 			$res[$key] = new MethodReflection($this->getName(), $val->getName());
 		}
 		return $res;
-	}
-
-
-	public function __toString()
-	{
-		trigger_error(__METHOD__ . ' is deprecated.', E_USER_DEPRECATED);
-		return $this->getName();
-	}
-
-
-	public function __get($name)
-	{
-		trigger_error("getReflection()->$name is deprecated.", E_USER_DEPRECATED);
-		return (new ClassType($this->getName()))->$name;
-	}
-
-
-	public function __call($name, $args)
-	{
-		if (method_exists(ClassType::class, $name)) {
-			trigger_error("getReflection()->$name() is deprecated, use Nette\\Reflection\\ClassType::from(\$presenter)->$name()", E_USER_DEPRECATED);
-			return call_user_func_array([new ClassType($this->getName()), $name], $args);
-		}
-		Nette\Utils\ObjectMixin::strictCall(get_class($this), $name);
 	}
 
 }
