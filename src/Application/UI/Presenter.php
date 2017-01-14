@@ -231,9 +231,6 @@ abstract class Presenter extends Control implements Application\IPresenter
 						$this->snippetMode = TRUE;
 						$this->response->send($this->httpRequest, $this->httpResponse);
 						$this->sendPayload();
-					} elseif (!$this->response && $hasPayload) { // back compatibility for use terminate() instead of sendPayload()
-						trigger_error('Use $presenter->sendPayload() instead of terminate() to send payload.');
-						$this->sendPayload();
 					}
 				} catch (Application\AbortException $e) {
 				}
@@ -693,18 +690,6 @@ abstract class Presenter extends Control implements Application\IPresenter
 	public function error($message = NULL, $httpCode = Http\IResponse::S404_NOT_FOUND)
 	{
 		throw new Application\BadRequestException($message, $httpCode);
-	}
-
-
-	/**
-	 * Link to myself.
-	 * @return string
-	 * @deprecated
-	 */
-	public function backlink()
-	{
-		trigger_error(__METHOD__ . '() is deprecated.', E_USER_DEPRECATED);
-		return $this->getAction(TRUE);
 	}
 
 

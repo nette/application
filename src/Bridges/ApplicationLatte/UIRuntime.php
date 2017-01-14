@@ -31,17 +31,6 @@ class UIRuntime
 		) {
 			$parentName = $providers->uiControl->findLayoutTemplateFile();
 		}
-
-		// back compatiblity
-		$params = $template->getParameters();
-		if (empty($providers->uiControl) && isset($params['_control'])) {
-			trigger_error('Replace template variable $_control with provider: $latte->addProvider("uiControl", ...)', E_USER_DEPRECATED);
-			$providers->uiControl = $params['_control'];
-		}
-		if (empty($providers->uiPresenter) && isset($params['_presenter'])) {
-			trigger_error('Replace template variable $_presenter with provider: $latte->addProvider("uiPresenter", ...)', E_USER_DEPRECATED);
-			$providers->uiPresenter = $params['_presenter'];
-		}
 	}
 
 }

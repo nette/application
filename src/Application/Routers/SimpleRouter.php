@@ -55,9 +55,6 @@ class SimpleRouter implements Application\IRouter
 
 		$this->defaults = $defaults;
 		$this->flags = $flags;
-		if ($flags & self::SECURED) {
-			trigger_error('IRouter::SECURED is deprecated, router by default keeps the used protocol.', E_USER_DEPRECATED);
-		}
 	}
 
 
@@ -118,7 +115,7 @@ class SimpleRouter implements Application\IRouter
 			}
 		}
 
-		$url = ($this->flags & self::SECURED ? 'https://' : $refUrl->getScheme() . '://') . $refUrl->getAuthority() . $refUrl->getPath();
+		$url = $refUrl->getScheme() . '://' . $refUrl->getAuthority() . $refUrl->getPath();
 		$sep = ini_get('arg_separator.input');
 		$query = http_build_query($params, '', $sep ? $sep[0] : '&');
 		if ($query != '') { // intentionally ==

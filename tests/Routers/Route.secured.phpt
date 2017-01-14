@@ -24,19 +24,3 @@ $url = $route->constructUrl(
 	new Url('https://example.org')
 );
 Assert::same('https://example.org/any', $url);
-
-
-$route = @new Route('<param>', [ // @ SECURED is deprecated
-	'presenter' => 'Presenter',
-], Route::SECURED);
-
-testRouteIn($route, '/any', 'Presenter', [
-	'param' => 'any',
-	'test' => 'testvalue',
-], 'https://example.com/any?test=testvalue');
-
-$url = $route->constructUrl(
-	new Request('Presenter', NULL, ['param' => 'any']),
-	new Url('http://example.org')
-);
-Assert::same('https://example.org/any', $url);
