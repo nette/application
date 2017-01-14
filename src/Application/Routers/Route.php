@@ -41,9 +41,6 @@ class Route implements Application\IRouter
 		PATH_OPTIONAL = 1,
 		CONSTANT = 2;
 
-	/** @deprecated */
-	public static $defaultFlags = 0;
-
 	/** @var array */
 	public static $styles = [
 		'#' => [ // default style for path parameters
@@ -125,24 +122,15 @@ class Route implements Application\IRouter
 			if ($action !== '') {
 				$metadata['action'] = $action;
 			}
-		} elseif ($metadata instanceof \Closure || $metadata instanceof Nette\Callback) {
-			if ($metadata instanceof Nette\Callback) {
-				trigger_error('Nette\Callback is deprecated, use Nette\Utils\Callback::closure().', E_USER_DEPRECATED);
-			}
+		} elseif ($metadata instanceof \Closure) {
 			$metadata = [
 				self::PRESENTER_KEY => 'Nette:Micro',
 				'callback' => $metadata,
 			];
 		}
 
-		$this->flags = $flags | static::$defaultFlags;
+		$this->flags = $flags;
 		$this->setMask($mask, $metadata);
-		if (static::$defaultFlags) {
-			trigger_error('Route::$defaultFlags is deprecated, router by default keeps the used protocol.', E_USER_DEPRECATED);
-		} elseif ($flags & self::SECURED) {
-			trigger_error('Router::SECURED is deprecated, specify scheme in mask.', E_USER_DEPRECATED);
-			$this->scheme = 'https';
-		}
 	}
 
 

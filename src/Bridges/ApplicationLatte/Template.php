@@ -88,17 +88,6 @@ class Template implements Nette\Application\UI\ITemplate
 
 
 	/**
-	 * Alias for addFilter()
-	 * @deprecated
-	 */
-	public function registerHelper($name, $callback)
-	{
-		trigger_error(__METHOD__ . '() is deprecated, use getLatte()->addFilter().', E_USER_DEPRECATED);
-		return $this->latte->addFilter($name, $callback);
-	}
-
-
-	/**
 	 * Sets translate adapter.
 	 * @return static
 	 */
@@ -168,16 +157,6 @@ class Template implements Nette\Application\UI\ITemplate
 	public function getParameters()
 	{
 		return $this->params;
-	}
-
-
-	/**
-	 * @deprecated
-	 */
-	public function __call($name, $args)
-	{
-		trigger_error('Invoking filters on Template object is deprecated, use getLatte()->invokeFilter().', E_USER_DEPRECATED);
-		return $this->latte->invokeFilter($name, $args);
 	}
 
 
