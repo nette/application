@@ -8,7 +8,6 @@
 namespace Nette\Application\UI;
 
 use Nette;
-use Nette\Reflection\Method;
 
 
 /**
