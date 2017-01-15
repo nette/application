@@ -1148,7 +1148,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			foreach ($iterator as $name => $component) {
 				if ($iterator->getDepth() === 0) {
 					// counts with Nette\Application\RecursiveIteratorIterator::SELF_FIRST
-					$since = isset($components[$name]['since']) ? $components[$name]['since'] : FALSE; // FALSE = nonpersistent
+					$since = $components[$name]['since'] ?? FALSE; // FALSE = nonpersistent
 				}
 				$prefix = $component->getUniqueId() . self::NAME_SEPARATOR;
 				$params = [];
@@ -1169,7 +1169,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 				if (!isset($sinces[$key])) {
 					$x = strpos($key, self::NAME_SEPARATOR);
 					$x = $x === FALSE ? $key : substr($key, 0, $x);
-					$sinces[$key] = isset($sinces[$x]) ? $sinces[$x] : FALSE;
+					$sinces[$key] = $sinces[$x] ?? FALSE;
 				}
 				if ($since !== $sinces[$key]) {
 					$since = $sinces[$key];
@@ -1228,7 +1228,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		}
 
 		// init & validate $this->action & $this->view
-		$this->changeAction(isset($selfParams[self::ACTION_KEY]) ? $selfParams[self::ACTION_KEY] : self::DEFAULT_ACTION);
+		$this->changeAction($selfParams[self::ACTION_KEY] ?? self::DEFAULT_ACTION);
 
 		// init $this->signalReceiver and key 'signal' in appropriate params array
 		$this->signalReceiver = $this->getUniqueId();
@@ -1262,14 +1262,9 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function popGlobalParameters($id)
 	{
-		if (isset($this->globalParams[$id])) {
-			$res = $this->globalParams[$id];
-			unset($this->globalParams[$id]);
-			return $res;
-
-		} else {
-			return [];
-		}
+		$res = $this->globalParams[$id] ?? [];
+		unset($this->globalParams[$id]);
+		return $res;
 	}
 
 

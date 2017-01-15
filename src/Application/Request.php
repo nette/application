@@ -122,7 +122,7 @@ class Request
 	 */
 	public function getParameter($key)
 	{
-		return isset($this->params[$key]) ? $this->params[$key] : NULL;
+		return $this->params[$key] ?? NULL;
 	}
 
 
@@ -145,15 +145,9 @@ class Request
 	 */
 	public function getPost($key = NULL)
 	{
-		if (func_num_args() === 0) {
-			return $this->post;
-
-		} elseif (isset($this->post[$key])) {
-			return $this->post[$key];
-
-		} else {
-			return NULL;
-		}
+		return func_num_args() === 0
+			? $this->post
+			: ($this->post[$key] ?? NULL);
 	}
 
 

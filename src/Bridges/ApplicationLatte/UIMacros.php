@@ -79,7 +79,7 @@ class UIMacros extends Latte\Macros\MacroSet
 			throw new CompileException('Missing control name in {control}');
 		}
 		$name = $writer->formatWord($words[0]);
-		$method = isset($words[1]) ? ucfirst($words[1]) : '';
+		$method = ucfirst($words[1] ?? '');
 		$method = Strings::match($method, '#^\w*\z#') ? "render$method" : "{\"render$method\"}";
 
 		$tokens = $node->tokenizer;

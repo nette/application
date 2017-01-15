@@ -156,7 +156,7 @@ class Route implements Application\IRouter
 				'/%basePath%/' => preg_quote($url->getBasePath(), '#'),
 				'%tld%' => preg_quote($parts[0], '#'),
 				'%domain%' => preg_quote(isset($parts[1]) ? "$parts[1].$parts[0]" : $parts[0], '#'),
-				'%sld%' => preg_quote(isset($parts[1]) ? $parts[1] : '', '#'),
+				'%sld%' => preg_quote($parts[1] ?? '', '#'),
 				'%host%' => preg_quote($host, '#'),
 			]);
 
@@ -391,7 +391,7 @@ class Route implements Application\IRouter
 				'/%basePath%/' => $refUrl->getBasePath(),
 				'%tld%' => $parts[0],
 				'%domain%' => isset($parts[1]) ? "$parts[1].$parts[0]" : $parts[0],
-				'%sld%' => isset($parts[1]) ? $parts[1] : '',
+				'%sld%' => $parts[1] ?? '',
 				'%host%' => $host,
 			]);
 			$url = $scheme . ':' . $url;
@@ -478,15 +478,7 @@ class Route implements Application\IRouter
 			$matches = Strings::matchAll($parts[$i - 1], '/(?:([a-zA-Z0-9_.-]+)=)?<([^> ]+) *([^>]*)>/');
 
 			foreach ($matches as list(, $param, $name, $pattern)) { // $pattern is not used
-				if (isset(static::$styles['?' . $name])) {
-					$meta = static::$styles['?' . $name];
-				} else {
-					$meta = static::$styles['?#'];
-				}
-
-				if (isset($metadata[$name])) {
-					$meta = $metadata[$name] + $meta;
-				}
+				$meta = ($metadata[$name] ?? []) + (static::$styles['?' . $name] ?? static::$styles['?#']);
 
 				if (array_key_exists(self::VALUE, $meta)) {
 					$meta['fixity'] = self::OPTIONAL;
@@ -546,15 +538,7 @@ class Route implements Application\IRouter
 			}
 
 			// pattern, condition & metadata
-			if (isset(static::$styles[$name])) {
-				$meta = static::$styles[$name];
-			} else {
-				$meta = static::$styles['#'];
-			}
-
-			if (isset($metadata[$name])) {
-				$meta = $metadata[$name] + $meta;
-			}
+			$meta = ($metadata[$name] ?? []) + (static::$styles[$name] ?? static::$styles['#']);
 
 			if ($pattern == '' && isset($meta[self::PATTERN])) {
 				$pattern = $meta[self::PATTERN];
@@ -667,14 +651,14 @@ class Route implements Application\IRouter
 		$module = '';
 
 		if (isset($m[self::MODULE_KEY])) {
-			if (isset($m[self::MODULE_KEY]['fixity']) && $m[self::MODULE_KEY]['fixity'] === self::CONSTANT) {
+			if (($m[self::MODULE_KEY]['fixity'] ?? NULL) === self::CONSTANT) {
 				$module = $m[self::MODULE_KEY][self::VALUE] . ':';
 			} else {
 				return NULL;
 			}
 		}
 
-		if (isset($m[self::PRESENTER_KEY]['fixity']) && $m[self::PRESENTER_KEY]['fixity'] === self::CONSTANT) {
+		if (($m[self::PRESENTER_KEY]['fixity'] ?? NULL) === self::CONSTANT) {
 			return [$module . $m[self::PRESENTER_KEY][self::VALUE]];
 		}
 		return NULL;
