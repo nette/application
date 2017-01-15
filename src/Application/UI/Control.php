@@ -149,10 +149,8 @@ abstract class Control extends Component implements IRenderable
 				return FALSE;
 			}
 
-		} elseif (isset($this->invalidSnippets[$snippet])) {
-			return $this->invalidSnippets[$snippet];
 		} else {
-			return isset($this->invalidSnippets["\0"]);
+			return $this->invalidSnippets[$snippet] ?? isset($this->invalidSnippets["\0"]);
 		}
 	}
 

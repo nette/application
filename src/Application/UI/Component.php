@@ -200,12 +200,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	 */
 	public function getParameter($name, $default = NULL)
 	{
-		if (isset($this->params[$name])) {
-			return $this->params[$name];
-
-		} else {
-			return $default;
-		}
+		return $this->params[$name] ?? $default;
 	}
 
 
