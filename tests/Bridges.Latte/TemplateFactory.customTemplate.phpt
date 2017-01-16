@@ -7,33 +7,14 @@
 use Nette\Application\UI;
 use Nette\Bridges\ApplicationLatte\Template;
 use Nette\Bridges\ApplicationLatte\TemplateFactory;
+use Nette\Bridges\ApplicationLatte\ILatteFactory;
 use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
 
 
-class LatteFactoryMock implements Nette\Bridges\ApplicationLatte\ILatteFactory
-{
-	private $engine;
-
-	public function __construct(Latte\Engine $engine)
-	{
-		$this->engine = $engine;
-	}
-
-	public function create()
-	{
-		return $this->engine;
-	}
-}
-
-class TemplateMockWithoutImplement
-{
-
-}
-
-class TemplateMock extends Nette\Bridges\ApplicationLatte\Template
+class TemplateMock extends Template
 {
 	private $file = 'ko';
 
@@ -55,17 +36,21 @@ class TemplateMock extends Nette\Bridges\ApplicationLatte\Template
 
 
 test(function () {
-	$factory = new TemplateFactory(new LatteFactoryMock(new Latte\Engine));
+	$latteFactory = Mockery::mock(ILatteFactory::class);
+	$latteFactory->shouldReceive('create')->andReturn(new Latte\Engine);
+	$factory = new TemplateFactory($latteFactory);
 	Assert::type(Template::class, $factory->createTemplate());
 });
 
 Assert::exception(function () {
-	$factory = new TemplateFactory(new LatteFactoryMock(new Latte\Engine), NULL, NULL, NULL, TemplateMockWithoutImplement::class);
-}, \Nette\InvalidArgumentException::class, 'Class TemplateMockWithoutImplement does not extend Nette\Bridges\ApplicationLatte\Template or it does not exist.');
+	$factory = new TemplateFactory(Mockery::mock(ILatteFactory::class), NULL, NULL, NULL, stdClass::class);
+}, \Nette\InvalidArgumentException::class, 'Class stdClass does not extend Nette\Bridges\ApplicationLatte\Template or it does not exist.');
 
 
 test(function () {
-	$factory = new TemplateFactory(new LatteFactoryMock(new Latte\Engine), NULL, NULL, NULL, TemplateMock::class);
+	$latteFactory = Mockery::mock(ILatteFactory::class);
+	$latteFactory->shouldReceive('create')->andReturn(new Latte\Engine);
+	$factory = new TemplateFactory($latteFactory, NULL, NULL, NULL, TemplateMock::class);
 	$template = $factory->createTemplate();
 	Assert::type(TemplateMock::class, $template);
 	Assert::type(UI\ITemplate::class, $template);
