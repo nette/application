@@ -78,12 +78,22 @@ class TemplateFactory implements UI\ITemplateFactory
 			}
 		});
 
-		$latte->addFilter('url', 'rawurlencode'); // back compatiblity
-		foreach (['normalize', 'toAscii', 'webalize', 'reverse'] as $name) {
-			$latte->addFilter($name, 'Nette\Utils\Strings::' . $name);
+		$latte->addFilter('webalize', 'Nette\Utils\Strings::webalize');
+		$latte->addFilter('url', function ($s) {
+			trigger_error('Filter |url is deprecated, use |escapeUrl.', E_USER_DEPRECATED);
+			return rawurlencode($s);
+		});
+		foreach (['normalize', 'toAscii', 'reverse'] as $name) {
+			$latte->addFilter($name, function ($s) use ($name) {
+				trigger_error("Filter |$name is deprecated.", E_USER_DEPRECATED);
+				return [Nette\Utils\Strings::class, $name]($s);
+			});
 		}
-		$latte->addFilter('null', function () {});
+		$latte->addFilter('null', function () {
+			trigger_error('Filter |null is deprecated.', E_USER_DEPRECATED);
+		});
 		$latte->addFilter('modifyDate', function ($time, $delta, $unit = NULL) {
+			trigger_error('Filter |modifyDate is deprecated.', E_USER_DEPRECATED);
 			return $time == NULL ? NULL : Nette\Utils\DateTime::from($time)->modify($delta . $unit); // intentionally ==
 		});
 
