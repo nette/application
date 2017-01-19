@@ -44,6 +44,4 @@ Assert::same('%25', $latte->invokeFilter('url', ['%']));
 Assert::null($latte->invokeFilter('null', ['x']));
 Assert::same('', $latte->invokeFilter('normalize', ['  ']));
 Assert::same('a-b', $latte->invokeFilter('webalize', ['a b']));
-Assert::same('  a', $latte->invokeFilter('padLeft', ['a', 3]));
-Assert::same('a  ', $latte->invokeFilter('padRight', ['a', 3]));
 Assert::same('cba', $latte->invokeFilter('reverse', ['abc']));
