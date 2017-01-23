@@ -83,7 +83,7 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 	 * Tells if the form is anchored.
 	 * @return bool
 	 */
-	public function isAnchored()
+	public function isAnchored(): bool
 	{
 		return (bool) $this->getPresenter(FALSE);
 	}
@@ -91,18 +91,17 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 
 	/**
 	 * Internal: returns submitted HTTP data or NULL when form was not submitted.
-	 * @return array|NULL
 	 */
-	protected function receiveHttpData()
+	protected function receiveHttpData(): ?array
 	{
 		$presenter = $this->getPresenter();
 		if (!$presenter->isSignalReceiver($this, 'submit')) {
-			return;
+			return NULL;
 		}
 
 		$request = $presenter->getRequest();
 		if ($request->isMethod('forward') || $request->isMethod('post') !== $this->isMethod('post')) {
-			return;
+			return NULL;
 		}
 
 		if ($this->isMethod('post')) {
@@ -119,7 +118,7 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 		$key = ($this->isMethod('post') ? '_' : '') . Presenter::SIGNAL_KEY;
 		if (!isset($this[$key])) {
 			$do = $this->lookupPath(Presenter::class) . self::NAME_SEPARATOR . 'submit';
-			$this[$key] = (new Nette\Forms\Controls\HiddenField($do))->setOmitted()->setHtmlId(FALSE);
+			$this[$key] = (new Nette\Forms\Controls\HiddenField($do))->setOmitted();
 		}
 	}
 
