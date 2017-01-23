@@ -144,7 +144,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * Returns self.
 	 * @return Presenter
 	 */
-	public function getPresenter($need = TRUE)
+	public function getPresenter($throw = TRUE)
 	{
 		return $this;
 	}
@@ -690,9 +690,9 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * @return void
 	 * @throws Nette\Application\BadRequestException
 	 */
-	public function error($message = NULL, $code = Http\IResponse::S404_NOT_FOUND)
+	public function error($message = NULL, $httpCode = Http\IResponse::S404_NOT_FOUND)
 	{
-		throw new Application\BadRequestException($message, $code);
+		throw new Application\BadRequestException($message, $httpCode);
 	}
 
 
