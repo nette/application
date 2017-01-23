@@ -144,7 +144,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * Returns self.
 	 * @return Presenter
 	 */
-	public function getPresenter($need = TRUE)
+	public function getPresenter($throw = TRUE)
 	{
 		return $this;
 	}
@@ -664,18 +664,18 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * @return void
 	 * @throws Nette\Application\AbortException
 	 */
-	public function redirectUrl($url, $code = NULL)
+	public function redirectUrl($url, $httpCode = NULL)
 	{
 		if ($this->isAjax()) {
 			$this->payload->redirect = (string) $url;
 			$this->sendPayload();
 
-		} elseif (!$code) {
-			$code = $this->httpRequest->isMethod('post')
+		} elseif (!$httpCode) {
+			$httpCode = $this->httpRequest->isMethod('post')
 				? Http\IResponse::S303_POST_GET
 				: Http\IResponse::S302_FOUND;
 		}
-		$this->sendResponse(new Responses\RedirectResponse($url, $code));
+		$this->sendResponse(new Responses\RedirectResponse($url, $httpCode));
 	}
 
 
@@ -686,9 +686,9 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * @return void
 	 * @throws Nette\Application\BadRequestException
 	 */
-	public function error($message = NULL, $code = Http\IResponse::S404_NOT_FOUND)
+	public function error($message = NULL, $httpCode = Http\IResponse::S404_NOT_FOUND)
 	{
-		throw new Application\BadRequestException($message, $code);
+		throw new Application\BadRequestException($message, $httpCode);
 	}
 
 

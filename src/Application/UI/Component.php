@@ -34,9 +34,9 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	 * @param  bool   throw exception if presenter doesn't exist?
 	 * @return Presenter|NULL
 	 */
-	public function getPresenter($need = TRUE)
+	public function getPresenter($throw = TRUE)
 	{
-		return $this->lookup(Presenter::class, $need);
+		return $this->lookup(Presenter::class, $throw);
 	}
 
 
