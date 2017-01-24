@@ -222,33 +222,36 @@ abstract class Presenter extends Control implements Application\IPresenter
 			}
 
 		} catch (Application\AbortException $e) {
-			// continue with shutting down
-			if ($this->isAjax()) {
-				try {
-					$hasPayload = (array) $this->payload;
-					unset($hasPayload['state']);
-					if ($this->response instanceof Responses\TextResponse && $this->isControlInvalid()) {
-						$this->snippetMode = TRUE;
-						$this->response->send($this->httpRequest, $this->httpResponse);
-						$this->sendPayload();
-					} elseif (!$this->response && $hasPayload) { // back compatibility for use terminate() instead of sendPayload()
-						trigger_error('Use $presenter->sendPayload() instead of terminate() to send payload.');
-						$this->sendPayload();
-					}
-				} catch (Application\AbortException $e) {
-				}
-			}
-
-			if ($this->hasFlashSession()) {
-				$this->getFlashSession()->setExpiration($this->response instanceof Responses\RedirectResponse ? '+ 30 seconds' : '+ 3 seconds');
-			}
-
-			// SHUTDOWN
-			$this->onShutdown($this, $this->response);
-			$this->shutdown($this->response);
-
-			return $this->response;
 		}
+
+		if ($this->isAjax()) {
+			try {
+				$hasPayload = (array) $this->payload;
+				unset($hasPayload['state']);
+				if ($this->response instanceof Responses\TextResponse && $this->isControlInvalid()) {
+					$this->snippetMode = TRUE;
+					$this->response->send($this->httpRequest, $this->httpResponse);
+					$this->sendPayload();
+				} elseif (!$this->response && $hasPayload) { // back compatibility for use terminate() instead of sendPayload()
+					trigger_error('Use $presenter->sendPayload() instead of terminate() to send payload.');
+					$this->sendPayload();
+				}
+			} catch (Application\AbortException $e) {
+			}
+		}
+
+		if ($this->hasFlashSession()) {
+			$this->getFlashSession()->setExpiration($this->response instanceof Responses\RedirectResponse ? '+ 30 seconds' : '+ 3 seconds');
+		}
+
+		if (!$this->response) {
+			$this->response = new Responses\VoidResponse;
+		}
+
+		$this->onShutdown($this, $this->response);
+		$this->shutdown($this->response);
+
+		return $this->response;
 	}
 
 
