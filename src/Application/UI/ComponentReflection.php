@@ -257,7 +257,7 @@ class ComponentReflection extends \ReflectionClass
 	/**
 	 * Returns an annotation value.
 	 * @param  string
-	 * @return string|NULL
+	 * @return mixed
 	 */
 	public function getAnnotation($name)
 	{
@@ -266,12 +266,18 @@ class ComponentReflection extends \ReflectionClass
 	}
 
 
+	/**
+	 * @return MethodReflection
+	 */
 	public function getMethod($name)
 	{
 		return new MethodReflection($this->getName(), $name);
 	}
 
 
+	/**
+	 * @return MethodReflection[]
+	 */
 	public function getMethods($filter = -1)
 	{
 		foreach ($res = parent::getMethods($filter) as $key => $val) {

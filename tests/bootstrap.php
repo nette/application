@@ -29,7 +29,7 @@ function test(\Closure $function)
 
 class Notes
 {
-	static public $notes = [];
+	public static $notes = [];
 
 	public static function add($message)
 	{

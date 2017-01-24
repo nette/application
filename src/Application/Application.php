@@ -47,7 +47,7 @@ class Application
 	/** @var Request[] */
 	private $requests = [];
 
-	/** @var IPresenter */
+	/** @var IPresenter|NULL */
 	private $presenter;
 
 	/** @var Nette\Http\IRequest */
@@ -193,7 +193,7 @@ class Application
 
 	/**
 	 * Returns current presenter.
-	 * @return IPresenter
+	 * @return IPresenter|NULL
 	 */
 	public function getPresenter()
 	{

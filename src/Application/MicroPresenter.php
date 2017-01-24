@@ -30,7 +30,7 @@ class MicroPresenter implements Application\IPresenter
 	/** @var Application\IRouter|NULL */
 	private $router;
 
-	/** @var Application\Request */
+	/** @var Application\Request|NULL */
 	private $request;
 
 
@@ -44,7 +44,7 @@ class MicroPresenter implements Application\IPresenter
 
 	/**
 	 * Gets the context.
-	 * @return Nette\DI\Container
+	 * @return Nette\DI\Container|NULL
 	 */
 	public function getContext()
 	{
@@ -153,7 +153,7 @@ class MicroPresenter implements Application\IPresenter
 
 
 	/**
-	 * @return Nette\Application\Request
+	 * @return Nette\Application\Request|NULL
 	 */
 	public function getRequest()
 	{

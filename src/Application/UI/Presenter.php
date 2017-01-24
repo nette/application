@@ -46,7 +46,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @var callable[]  function (Presenter $sender, IResponse $response = NULL); Occurs when the presenter is shutting down */
 	public $onShutdown;
 
-	/** @var Nette\Application\Request */
+	/** @var Nette\Application\Request|NULL */
 	private $request;
 
 	/** @var Nette\Application\IResponse */
@@ -91,7 +91,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @var bool */
 	private $startupCheck;
 
-	/** @var Nette\Application\Request */
+	/** @var Nette\Application\Request|NULL */
 	private $lastCreatedRequest;
 
 	/** @var array */
@@ -132,7 +132,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 
 	/**
-	 * @return Nette\Application\Request
+	 * @return Nette\Application\Request|NULL
 	 */
 	public function getRequest()
 	{
@@ -469,7 +469,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Finds layout template file name.
-	 * @return string
+	 * @return string|NULL
 	 * @internal
 	 */
 	public function findLayoutTemplateFile()
@@ -706,7 +706,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Returns the last created Request.
-	 * @return Nette\Application\Request
+	 * @return Nette\Application\Request|NULL
 	 * @internal
 	 */
 	public function getLastCreatedRequest()
@@ -772,7 +772,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * @param  string   destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
 	 * @param  array    array of arguments
 	 * @param  string   forward|redirect|link
-	 * @return string   URL
+	 * @return string|NULL   URL
 	 * @throws InvalidLinkException
 	 * @internal
 	 */

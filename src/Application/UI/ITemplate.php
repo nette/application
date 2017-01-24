@@ -22,13 +22,14 @@ interface ITemplate
 
 	/**
 	 * Sets the path to the template file.
-	 * @return void
+	 * @param  string
+	 * @return static
 	 */
 	function setFile($file);
 
 	/**
 	 * Returns the path to the template file.
-	 * @return string
+	 * @return string|NULL
 	 */
 	function getFile();
 
