@@ -391,9 +391,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 		if (is_string($action) && Nette\Utils\Strings::match($action, '#^[a-zA-Z0-9][a-zA-Z0-9_\x7f-\xff]*\z#')) {
 			$this->action = $action;
 			$this->view = $action;
-
 		} else {
-			$this->error('Action name is not alphanumeric string.');
+			throw new Nette\InvalidArgumentException('Action name is not alphanumeric string.');
 		}
 	}
 
@@ -1232,7 +1231,11 @@ abstract class Presenter extends Control implements Application\IPresenter
 		}
 
 		// init & validate $this->action & $this->view
-		$this->changeAction($selfParams[self::ACTION_KEY] ?? self::DEFAULT_ACTION);
+		try {
+			$this->changeAction($selfParams[self::ACTION_KEY] ?? self::DEFAULT_ACTION);
+		} catch (\Throwable $e) {
+			$this->error('Action name is not valid.', 0, $e);
+		}
 
 		// init $this->signalReceiver and key 'signal' in appropriate params array
 		$this->signalReceiver = $this->getUniqueId();
