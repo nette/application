@@ -62,7 +62,7 @@ $httpResponse->shouldIgnoreMissing();
 Assert::exception(function () use ($httpRequest, $httpResponse) {
 	$presenterFactory = Mockery::mock(IPresenterFactory::class);
 	$router = Mockery::mock(IRouter::class);
-	$router->shouldReceive('match');
+	$router->shouldReceive('match')->andReturn(NULL);
 
 	$app = new Application($presenterFactory, $router, $httpRequest, $httpResponse);
 	$app->run();
@@ -77,7 +77,7 @@ test(function () use ($httpRequest, $httpResponse) {
 	$presenterFactory->shouldReceive('createPresenter')->with('Error')->andReturn($errorPresenter);
 
 	$router = Mockery::mock(IRouter::class);
-	$router->shouldReceive('match');
+	$router->shouldReceive('match')->andReturn(NULL);
 
 	$app = new Application($presenterFactory, $router, $httpRequest, $httpResponse);
 	$app->catchExceptions = TRUE;
