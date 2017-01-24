@@ -100,7 +100,7 @@ class MicroPresenter implements Application\IPresenter
 		if ($response instanceof Application\UI\ITemplate) {
 			return new Responses\TextResponse($response);
 		} else {
-			return $response;
+			return $response ?: new Responses\VoidResponse;
 		}
 	}
 
