@@ -21,7 +21,7 @@ use Nette\Utils\Strings;
  * - {link destination ...} control link
  * - {plink destination ...} presenter link
  * - {snippet ?} ... {/snippet ?} control snippet
- * - n:once
+ * - n:nonce
  */
 class UIMacros extends Latte\Macros\MacroSet
 {

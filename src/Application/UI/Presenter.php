@@ -473,7 +473,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Finds layout template file name.
-	 * @return string
+	 * @return string|NULL
 	 * @internal
 	 */
 	public function findLayoutTemplateFile()
@@ -776,7 +776,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * @param  string   destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
 	 * @param  array    array of arguments
 	 * @param  string   forward|redirect|link
-	 * @return string   URL
+	 * @return string|NULL   URL
 	 * @throws InvalidLinkException
 	 * @internal
 	 */
