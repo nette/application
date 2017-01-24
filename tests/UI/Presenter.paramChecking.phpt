@@ -38,7 +38,7 @@ $presenter->injectPrimary(
 Assert::exception(function () use ($presenter) {
 	$request = new Application\Request('Test', Http\Request::GET, ['action' => []]);
 	$presenter->run($request);
-}, Nette\Application\BadRequestException::class, 'Action name is not alphanumeric string.');
+}, Nette\Application\BadRequestException::class, 'Action name is not valid.');
 
 
 Assert::exception(function () use ($presenter) {

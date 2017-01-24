@@ -381,19 +381,13 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 
 	/**
-	 * Changes current action. Only alphanumeric characters are allowed.
+	 * Changes current action.
 	 * @param  string
 	 * @return void
 	 */
 	public function changeAction($action)
 	{
-		if (is_string($action) && Nette\Utils\Strings::match($action, '#^[a-zA-Z0-9][a-zA-Z0-9_\x7f-\xff]*\z#')) {
-			$this->action = $action;
-			$this->view = $action;
-
-		} else {
-			$this->error('Action name is not alphanumeric string.');
-		}
+		$this->action = $this->view = (string) $action;
 	}
 
 
@@ -1231,7 +1225,11 @@ abstract class Presenter extends Control implements Application\IPresenter
 		}
 
 		// init & validate $this->action & $this->view
-		$this->changeAction(isset($selfParams[self::ACTION_KEY]) ? $selfParams[self::ACTION_KEY] : self::DEFAULT_ACTION);
+		$action = $selfParams[self::ACTION_KEY] ?? self::DEFAULT_ACTION;
+		if (!is_string($action) || !Nette\Utils\Strings::match($action, '#^[a-zA-Z0-9][a-zA-Z0-9_\x7f-\xff]*\z#')) {
+			$this->error('Action name is not valid.');
+		}
+		$this->changeAction($action);
 
 		// init $this->signalReceiver and key 'signal' in appropriate params array
 		$this->signalReceiver = $this->getUniqueId();
