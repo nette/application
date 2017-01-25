@@ -15,21 +15,21 @@
 	],
 	"require": {
 		"php": ">=5.6.0",
-		"nette/component-model": "~2.3",
-		"nette/http": "~2.2",
-		"nette/reflection": "~2.2",
-		"nette/utils": "~2.4"
+		"nette/component-model": "^2.3",
+		"nette/http": "^2.2",
+		"nette/reflection": "^2.2",
+		"nette/utils": "^2.4 || ~3.0.0"
 	},
 	"suggest": {
 		"nette/forms": "Allows to use Nette\\Application\\UI\\Form",
 		"latte/latte": "Allows using Latte in templates"
 	},
 	"require-dev": {
-		"nette/tester": "~2.0",
-		"nette/di": "~2.4",
-		"nette/forms": "~2.4",
+		"nette/tester": "^2.0",
+		"nette/di": "^2.4 || ~3.0.0",
+		"nette/forms": "^2.4",
 		"nette/robot-loader": "^2.4.2 || ^3.0",
-		"nette/security": "~2.4",
+		"nette/security": "^2.4",
 		"latte/latte": "^2.4.3",
 		"tracy/tracy": "^2.4",
 		"mockery/mockery": "^0.9.5"
