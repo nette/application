@@ -21,9 +21,8 @@ class Helpers
 
 	/**
 	 * Splits name into [module, presenter] or [presenter, action]
-	 * @return array
 	 */
-	public static function splitName($name)
+	public static function splitName(string $name): array
 	{
 		$pos = strrpos($name, ':');
 		return $pos === FALSE

@@ -20,8 +20,7 @@ interface IResponse
 
 	/**
 	 * Sends response to output.
-	 * @return void
 	 */
-	function send(Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse);
+	function send(Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse): void;
 
 }

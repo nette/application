@@ -36,10 +36,7 @@ class PresenterFactoryCallback
 	}
 
 
-	/**
-	 * @return Nette\Application\IPresenter
-	 */
-	public function __invoke($class)
+	public function __invoke($class): Nette\Application\IPresenter
 	{
 		$services = array_keys($this->container->findByTag('nette.presenter'), $class);
 		if (count($services) > 1) {

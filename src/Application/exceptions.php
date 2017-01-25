@@ -46,16 +46,13 @@ class BadRequestException extends \Exception
 	protected $code = Http\IResponse::S404_NOT_FOUND;
 
 
-	public function __construct($message = '', $httpCode = 0, \Exception $previous = NULL)
+	public function __construct(string $message = '', int $httpCode = 0, \Exception $previous = NULL)
 	{
 		parent::__construct($message, $httpCode ?: $this->code, $previous);
 	}
 
 
-	/**
-	 * @return int
-	 */
-	public function getHttpCode()
+	public function getHttpCode(): int
 	{
 		return $this->code;
 	}

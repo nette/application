@@ -29,7 +29,7 @@ class CliRouter implements Application\IRouter
 	/**
 	 * @param  array   default values
 	 */
-	public function __construct($defaults = [])
+	public function __construct(array $defaults = [])
 	{
 		$this->defaults = $defaults;
 	}
@@ -37,9 +37,8 @@ class CliRouter implements Application\IRouter
 
 	/**
 	 * Maps command line arguments to a Request object.
-	 * @return Nette\Application\Request|NULL
 	 */
-	public function match(Nette\Http\IRequest $httpRequest)
+	public function match(Nette\Http\IRequest $httpRequest): ?Application\Request
 	{
 		if (empty($_SERVER['argv']) || !is_array($_SERVER['argv'])) {
 			return NULL;
@@ -97,18 +96,17 @@ class CliRouter implements Application\IRouter
 
 	/**
 	 * This router is only unidirectional.
-	 * @return void
 	 */
-	public function constructUrl(Application\Request $appRequest, Nette\Http\Url $refUrl)
+	public function constructUrl(Application\Request $appRequest, Nette\Http\Url $refUrl): ?string
 	{
+		return NULL;
 	}
 
 
 	/**
 	 * Returns default values.
-	 * @return array
 	 */
-	public function getDefaults()
+	public function getDefaults(): array
 	{
 		return $this->defaults;
 	}

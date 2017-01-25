@@ -20,17 +20,17 @@ class TemplateMock extends Template
 {
 	private $file = 'ko';
 
-	public function render()
+	public function render(): void
 	{
 		echo strrev($this->file);
 	}
 
-	public function setFile($file)
+	public function setFile(string $file)
 	{
 		$this->file = $file;
 	}
 
-	public function getFile()
+	public function getFile(): string
 	{
 		return $this->file;
 	}

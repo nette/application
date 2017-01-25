@@ -42,9 +42,8 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 	/**
 	 * Returns the presenter where this component belongs to.
 	 * @param  bool   throw exception if presenter doesn't exist?
-	 * @return Presenter|NULL
 	 */
-	public function getPresenter($throw = TRUE)
+	public function getPresenter(bool $throw = TRUE): ?Presenter
 	{
 		return $this->lookup(Presenter::class, $throw);
 	}
@@ -81,7 +80,6 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 
 	/**
 	 * Tells if the form is anchored.
-	 * @return bool
 	 */
 	public function isAnchored(): bool
 	{
@@ -128,10 +126,8 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 
 	/**
 	 * This method is called by presenter.
-	 * @param  string
-	 * @return void
 	 */
-	public function signalReceived($signal)
+	public function signalReceived(string $signal): void
 	{
 		if ($signal === 'submit') {
 			if (!$this->getPresenter()->getRequest()->hasFlag(Nette\Application\Request::RESTORED)) {

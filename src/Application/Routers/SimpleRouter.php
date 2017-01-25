@@ -33,11 +33,7 @@ class SimpleRouter implements Application\IRouter
 	private $flags;
 
 
-	/**
-	 * @param  array   default values
-	 * @param  int     flags
-	 */
-	public function __construct($defaults = [], $flags = 0)
+	public function __construct($defaults = [], int $flags = 0)
 	{
 		if (is_string($defaults)) {
 			[$presenter, $action] = Nette\Application\Helpers::splitName($defaults);
@@ -62,9 +58,8 @@ class SimpleRouter implements Application\IRouter
 
 	/**
 	 * Maps HTTP request to a Request object.
-	 * @return Nette\Application\Request|NULL
 	 */
-	public function match(Nette\Http\IRequest $httpRequest)
+	public function match(Nette\Http\IRequest $httpRequest): ?Application\Request
 	{
 		if ($httpRequest->getUrl()->getPathInfo() !== '') {
 			return NULL;
@@ -93,9 +88,8 @@ class SimpleRouter implements Application\IRouter
 
 	/**
 	 * Constructs absolute URL from Request object.
-	 * @return string|NULL
 	 */
-	public function constructUrl(Application\Request $appRequest, Nette\Http\Url $refUrl)
+	public function constructUrl(Application\Request $appRequest, Nette\Http\Url $refUrl): ?string
 	{
 		if ($this->flags & self::ONE_WAY) {
 			return NULL;
@@ -129,9 +123,8 @@ class SimpleRouter implements Application\IRouter
 
 	/**
 	 * Returns default values.
-	 * @return array
 	 */
-	public function getDefaults()
+	public function getDefaults(): array
 	{
 		return $this->defaults;
 	}
@@ -139,9 +132,8 @@ class SimpleRouter implements Application\IRouter
 
 	/**
 	 * Returns flags.
-	 * @return int
 	 */
-	public function getFlags()
+	public function getFlags(): int
 	{
 		return $this->flags;
 	}

@@ -38,13 +38,11 @@ abstract class Control extends Component implements IRenderable
 	public function setTemplateFactory(ITemplateFactory $templateFactory)
 	{
 		$this->templateFactory = $templateFactory;
+		return $this;
 	}
 
 
-	/**
-	 * @return ITemplate
-	 */
-	public function getTemplate()
+	public function getTemplate(): ITemplate
 	{
 		if ($this->template === NULL) {
 			$value = $this->createTemplate();
@@ -58,10 +56,7 @@ abstract class Control extends Component implements IRenderable
 	}
 
 
-	/**
-	 * @return ITemplate
-	 */
-	protected function createTemplate()
+	protected function createTemplate(): ITemplate
 	{
 		$templateFactory = $this->templateFactory ?: $this->getPresenter()->getTemplateFactory();
 		return $templateFactory->createTemplate($this);
@@ -70,21 +65,16 @@ abstract class Control extends Component implements IRenderable
 
 	/**
 	 * Descendant can override this method to customize template compile-time filters.
-	 * @param  ITemplate
-	 * @return void
 	 */
-	public function templatePrepareFilters($template)
+	public function templatePrepareFilters(ITemplate $template): void
 	{
 	}
 
 
 	/**
 	 * Saves the message to template, that can be displayed after redirect.
-	 * @param  string
-	 * @param  string
-	 * @return \stdClass
 	 */
-	public function flashMessage($message, $type = 'info')
+	public function flashMessage(string $message, string $type = 'info'): \stdClass
 	{
 		$id = $this->getParameterId('flash');
 		$messages = $this->getPresenter()->getFlashSession()->$id;
@@ -103,9 +93,8 @@ abstract class Control extends Component implements IRenderable
 
 	/**
 	 * Forces control or its snippet to repaint.
-	 * @return void
 	 */
-	public function redrawControl($snippet = NULL, $redraw = TRUE)
+	public function redrawControl($snippet = NULL, bool $redraw = TRUE): void
 	{
 		if ($redraw) {
 			$this->invalidSnippets[$snippet === NULL ? "\0" : $snippet] = TRUE;
@@ -121,10 +110,8 @@ abstract class Control extends Component implements IRenderable
 
 	/**
 	 * Is required to repaint the control or its snippet?
-	 * @param  string  snippet name
-	 * @return bool
 	 */
-	public function isControlInvalid($snippet = NULL)
+	public function isControlInvalid(string $snippet = NULL): bool
 	{
 		if ($snippet === NULL) {
 			if (count($this->invalidSnippets) > 0) {
@@ -157,10 +144,8 @@ abstract class Control extends Component implements IRenderable
 
 	/**
 	 * Returns snippet HTML ID.
-	 * @param  string  snippet name
-	 * @return string
 	 */
-	public function getSnippetId($name = NULL)
+	public function getSnippetId(string $name): string
 	{
 		// HTML 4 ID & NAME: [A-Za-z][A-Za-z0-9:_.-]*
 		return 'snippet-' . $this->getUniqueId() . '-' . $name;

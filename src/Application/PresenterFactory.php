@@ -44,9 +44,8 @@ class PresenterFactory implements IPresenterFactory
 	/**
 	 * Creates new presenter instance.
 	 * @param  string  presenter name
-	 * @return IPresenter
 	 */
-	public function createPresenter($name)
+	public function createPresenter(string $name): IPresenter
 	{
 		return ($this->factory)($this->getPresenterClass($name));
 	}
@@ -58,7 +57,7 @@ class PresenterFactory implements IPresenterFactory
 	 * @return string  class name
 	 * @throws InvalidPresenterException
 	 */
-	public function getPresenterClass(&$name)
+	public function getPresenterClass(string &$name): string
 	{
 		if (isset($this->cache[$name])) {
 			return $this->cache[$name];
@@ -117,11 +116,9 @@ class PresenterFactory implements IPresenterFactory
 
 	/**
 	 * Formats presenter class name from its name.
-	 * @param  string
-	 * @return string
 	 * @internal
 	 */
-	public function formatPresenterClass($presenter)
+	public function formatPresenterClass(string $presenter): string
 	{
 		$parts = explode(':', $presenter);
 		$mapping = isset($parts[1], $this->mapping[$parts[0]])
@@ -137,11 +134,9 @@ class PresenterFactory implements IPresenterFactory
 
 	/**
 	 * Formats presenter name from class name.
-	 * @param  string
-	 * @return string|NULL
 	 * @internal
 	 */
-	public function unformatPresenterClass($class)
+	public function unformatPresenterClass(string $class): ?string
 	{
 		foreach ($this->mapping as $module => $mapping) {
 			$mapping = str_replace(['\\', '*'], ['\\\\', '(\w+)'], $mapping);

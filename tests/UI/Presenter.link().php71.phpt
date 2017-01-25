@@ -28,7 +28,7 @@ class TestControl extends Application\UI\Control
 	{
 	}
 
-	public function loadState(array $params)
+	public function loadState(array $params): void
 	{
 		if (isset($params['order'])) {
 			$params['order'] = explode('.', $params['order']);
@@ -36,7 +36,7 @@ class TestControl extends Application\UI\Control
 		parent::loadState($params);
 	}
 
-	public function saveState(array &$params)
+	public function saveState(array &$params): void
 	{
 		parent::saveState($params);
 		if (isset($params['order'])) {
@@ -60,11 +60,6 @@ class TestPresenter extends Application\UI\Presenter
 
 	/** @persistent */
 	public $pbool = TRUE;
-
-
-	protected function createTemplate($class = NULL)
-	{
-	}
 
 
 	protected function startup()
@@ -213,6 +208,7 @@ class TestPresenter extends Application\UI\Presenter
 
 		$this->p = NULL; // NULL in persistent parameter means default
 		Assert::same('/index.php?action=params&presenter=Test', $this->link('params'));
+		$this->terminate();
 	}
 
 

@@ -46,18 +46,14 @@ class MicroPresenter implements Application\IPresenter
 
 	/**
 	 * Gets the context.
-	 * @return Nette\DI\Container|NULL
 	 */
-	public function getContext()
+	public function getContext(): ?Nette\DI\Container
 	{
 		return $this->context;
 	}
 
 
-	/**
-	 * @return Nette\Application\IResponse
-	 */
-	public function run(Application\Request $request)
+	public function run(Application\Request $request): Application\IResponse
 	{
 		$this->request = $request;
 
@@ -113,10 +109,8 @@ class MicroPresenter implements Application\IPresenter
 
 	/**
 	 * Template factory.
-	 * @param  string
-	 * @return Application\UI\ITemplate
 	 */
-	public function createTemplate($class = NULL, callable $latteFactory = NULL)
+	public function createTemplate(string $class = NULL, callable $latteFactory = NULL): Application\UI\ITemplate
 	{
 		$latte = $latteFactory ? $latteFactory() : $this->getContext()->getByType(Nette\Bridges\ApplicationLatte\ILatteFactory::class)->create();
 		$template = $class ? new $class : new Nette\Bridges\ApplicationLatte\Template($latte);
@@ -135,11 +129,8 @@ class MicroPresenter implements Application\IPresenter
 
 	/**
 	 * Redirects to another URL.
-	 * @param  string
-	 * @param  int HTTP code
-	 * @return Nette\Application\Responses\RedirectResponse
 	 */
-	public function redirectUrl($url, $httpCode = Http\IResponse::S302_FOUND)
+	public function redirectUrl(string $url, int $httpCode = Http\IResponse::S302_FOUND): Responses\RedirectResponse
 	{
 		return new Responses\RedirectResponse($url, $httpCode);
 	}
@@ -147,21 +138,15 @@ class MicroPresenter implements Application\IPresenter
 
 	/**
 	 * Throws HTTP error.
-	 * @param  string
-	 * @param  int HTTP error code
-	 * @return void
 	 * @throws Nette\Application\BadRequestException
 	 */
-	public function error($message = NULL, $httpCode = Http\IResponse::S404_NOT_FOUND)
+	public function error(string $message = NULL, int $httpCode = Http\IResponse::S404_NOT_FOUND): void
 	{
 		throw new Application\BadRequestException((string) $message, (int) $httpCode);
 	}
 
 
-	/**
-	 * @return Nette\Application\Request|NULL
-	 */
-	public function getRequest()
+	public function getRequest(): ?Nette\Application\Request
 	{
 		return $this->request;
 	}

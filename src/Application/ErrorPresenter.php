@@ -31,10 +31,7 @@ class ErrorPresenter implements Application\IPresenter
 	}
 
 
-	/**
-	 * @return Application\IResponse
-	 */
-	public function run(Application\Request $request)
+	public function run(Application\Request $request): Application\IResponse
 	{
 		$e = $request->getParameter('exception');
 		if ($e instanceof Application\BadRequestException) {

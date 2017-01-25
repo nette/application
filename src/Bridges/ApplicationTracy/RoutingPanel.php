@@ -42,7 +42,7 @@ class RoutingPanel implements Tracy\IBarPanel
 	private $source;
 
 
-	public static function initializePanel(Nette\Application\Application $application)
+	public static function initializePanel(Nette\Application\Application $application): void
 	{
 		Tracy\Debugger::getBlueScreen()->addPanel(function ($e) use ($application) {
 			return $e ? NULL : [
@@ -64,9 +64,8 @@ class RoutingPanel implements Tracy\IBarPanel
 
 	/**
 	 * Renders tab.
-	 * @return string
 	 */
-	public function getTab()
+	public function getTab(): string
 	{
 		$this->analyse($this->router);
 		ob_start(function () {});
@@ -78,9 +77,8 @@ class RoutingPanel implements Tracy\IBarPanel
 
 	/**
 	 * Renders panel.
-	 * @return string
 	 */
-	public function getPanel()
+	public function getPanel(): string
 	{
 		ob_start(function () {});
 		$request = $this->request;
@@ -96,10 +94,8 @@ class RoutingPanel implements Tracy\IBarPanel
 
 	/**
 	 * Analyses simple route.
-	 * @param  Nette\Application\IRouter
-	 * @return void
 	 */
-	private function analyse($router, $module = '')
+	private function analyse(Nette\Application\IRouter $router, string $module = ''): void
 	{
 		if ($router instanceof Routers\RouteList) {
 			foreach ($router as $subRouter) {
@@ -131,7 +127,7 @@ class RoutingPanel implements Tracy\IBarPanel
 	}
 
 
-	private function findSource()
+	private function findSource(): void
 	{
 		$request = $this->request;
 		$presenter = $request->getPresenterName();

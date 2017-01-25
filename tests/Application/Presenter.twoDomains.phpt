@@ -17,7 +17,7 @@ require __DIR__ . '/../bootstrap.php';
 class TestPresenter extends Application\UI\Presenter
 {
 
-	protected function createTemplate($class = NULL)
+	protected function createTemplate($class = NULL): Application\UI\ITemplate
 	{
 	}
 

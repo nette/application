@@ -51,10 +51,7 @@ class TemplateFactory implements UI\ITemplateFactory
 	}
 
 
-	/**
-	 * @return Template
-	 */
-	public function createTemplate(UI\Control $control = NULL)
+	public function createTemplate(UI\Control $control = NULL): UI\ITemplate
 	{
 		$latte = $this->latteFactory->create();
 		$template = new $this->templateClass($latte);

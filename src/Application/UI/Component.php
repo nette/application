@@ -34,9 +34,8 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	/**
 	 * Returns the presenter where this component belongs to.
 	 * @param  bool   throw exception if presenter doesn't exist?
-	 * @return Presenter|NULL
 	 */
-	public function getPresenter($throw = TRUE)
+	public function getPresenter(bool $throw = TRUE): ?Presenter
 	{
 		return $this->lookup(Presenter::class, $throw);
 	}
@@ -45,9 +44,8 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	/**
 	 * Returns a fully-qualified name that uniquely identifies the component
 	 * within the presenter hierarchy.
-	 * @return string
 	 */
-	public function getUniqueId()
+	public function getUniqueId(): string
 	{
 		return $this->lookupPath(Presenter::class, TRUE);
 	}
@@ -75,11 +73,9 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 	/**
 	 * Calls public method if exists.
-	 * @param  string
-	 * @param  array
 	 * @return bool  does method exist?
 	 */
-	protected function tryCall($method, array $params)
+	protected function tryCall(string $method, array $params): bool
 	{
 		$rc = $this->getReflection();
 		if ($rc->hasMethod((string) $method)) {
@@ -101,18 +97,16 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 	/**
 	 * Checks for requirements such as authorization.
-	 * @return void
 	 */
-	public function checkRequirements($element)
+	public function checkRequirements($element): void
 	{
 	}
 
 
 	/**
 	 * Access to reflection.
-	 * @return ComponentReflection
 	 */
-	public static function getReflection()
+	public static function getReflection(): ComponentReflection
 	{
 		return new ComponentReflection(get_called_class());
 	}
@@ -123,10 +117,8 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 	/**
 	 * Loads state informations.
-	 * @param  array
-	 * @return void
 	 */
-	public function loadState(array $params)
+	public function loadState(array $params): void
 	{
 		$reflection = $this->getReflection();
 		foreach ($reflection->getPersistentParams() as $name => $meta) {
@@ -152,11 +144,9 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 	/**
 	 * Saves state informations for next request.
-	 * @param  array
-	 * @param  ComponentReflection (internal, used by Presenter)
-	 * @return void
+	 * @param  ComponentReflection $reflection (internal, used by Presenter)
 	 */
-	public function saveState(array &$params, $reflection = NULL)
+	public function saveState(array &$params, ComponentReflection $reflection = NULL): void
 	{
 		$reflection = $reflection === NULL ? $this->getReflection() : $reflection;
 		foreach ($reflection->getPersistentParams() as $name => $meta) {
@@ -198,7 +188,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	 * @param  mixed  default value
 	 * @return mixed
 	 */
-	public function getParameter($name, $default = NULL)
+	public function getParameter(string $name, $default = NULL)
 	{
 		return $this->params[$name] ?? $default;
 	}
@@ -206,9 +196,8 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 	/**
 	 * Returns component parameters.
-	 * @return array
 	 */
-	public function getParameters()
+	public function getParameters(): array
 	{
 		return $this->params;
 	}
@@ -216,10 +205,8 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 	/**
 	 * Returns a fully-qualified name that uniquely identifies the parameter.
-	 * @param  string
-	 * @return string
 	 */
-	public function getParameterId($name)
+	public function getParameterId(string $name): string
 	{
 		$uid = $this->getUniqueId();
 		return $uid === '' ? $name : $uid . self::NAME_SEPARATOR . $name;
@@ -237,9 +224,8 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	/**
 	 * Returns array of classes persistent parameters. They have public visibility and are non-static.
 	 * This default implementation detects persistent parameters by annotation @persistent.
-	 * @return array
 	 */
-	public static function getPersistentParams()
+	public static function getPersistentParams(): array
 	{
 		$rc = new \ReflectionClass(get_called_class());
 		$params = [];
@@ -257,11 +243,9 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 	/**
 	 * Calls signal handler method.
-	 * @param  string
-	 * @return void
 	 * @throws BadSignalException if there is not handler method
 	 */
-	public function signalReceived($signal)
+	public function signalReceived(string $signal): void
 	{
 		if (!$this->tryCall($this->formatSignalMethod($signal), $this->params)) {
 			$class = get_class($this);
@@ -272,10 +256,8 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 	/**
 	 * Formats signal handler method name -> case sensitivity doesn't matter.
-	 * @param  string
-	 * @return string
 	 */
-	public static function formatSignalMethod($signal)
+	public static function formatSignalMethod(string $signal): string
 	{
 		return $signal == NULL ? NULL : 'handle' . $signal; // intentionally ==
 	}
@@ -288,10 +270,9 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	 * Generates URL to presenter, action or signal.
 	 * @param  string   destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
 	 * @param  array|mixed
-	 * @return string
 	 * @throws InvalidLinkException
 	 */
-	public function link($destination, $args = [])
+	public function link(string $destination, $args = []): string
 	{
 		try {
 			$args = func_num_args() < 3 && is_array($args) ? $args : array_slice(func_get_args(), 1);
@@ -307,9 +288,8 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	 * Returns destination as Link object.
 	 * @param  string   destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
 	 * @param  array|mixed
-	 * @return Link
 	 */
-	public function lazyLink($destination, $args = [])
+	public function lazyLink(string $destination, $args = []): Link
 	{
 		$args = func_num_args() < 3 && is_array($args) ? $args : array_slice(func_get_args(), 1);
 		return new Link($this, $destination, $args);
@@ -320,10 +300,9 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	 * Determines whether it links to the current page.
 	 * @param  string   destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
 	 * @param  array|mixed
-	 * @return bool
 	 * @throws InvalidLinkException
 	 */
-	public function isLinkCurrent($destination = NULL, $args = [])
+	public function isLinkCurrent(string $destination = NULL, $args = []): bool
 	{
 		if ($destination !== NULL) {
 			$args = func_num_args() < 3 && is_array($args) ? $args : array_slice(func_get_args(), 1);
@@ -338,10 +317,9 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	 * @param  int      [optional] HTTP error code
 	 * @param  string   destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
 	 * @param  array|mixed
-	 * @return void
 	 * @throws Nette\Application\AbortException
 	 */
-	public function redirect($code, $destination = NULL, $args = [])
+	public function redirect($code, $destination = NULL, $args = []): void
 	{
 		if (!is_numeric($code)) { // first parameter is optional
 			$args = func_num_args() < 3 && is_array($destination) ? $destination : array_slice(func_get_args(), 1);
@@ -361,10 +339,9 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	 * Permanently redirects to presenter, action or signal.
 	 * @param  string   destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
 	 * @param  array|mixed
-	 * @return void
 	 * @throws Nette\Application\AbortException
 	 */
-	public function redirectPermanent($destination = NULL, $args = [])
+	public function redirectPermanent(string $destination, $args = []): void
 	{
 		$args = func_num_args() < 3 && is_array($args) ? $args : array_slice(func_get_args(), 1);
 		$presenter = $this->getPresenter();
@@ -380,11 +357,9 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 	/**
 	 * Adds the component to the container.
-	 * @param  string  component name
 	 * @param  Nette\ComponentModel\IComponent
-	 * @return void
 	 */
-	public function offsetSet($name, $component)
+	public function offsetSet($name, $component): void
 	{
 		$this->addComponent($component, $name);
 	}
@@ -392,11 +367,9 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 	/**
 	 * Returns component specified by name. Throws exception if component doesn't exist.
-	 * @param  string  component name
-	 * @return Nette\ComponentModel\IComponent
 	 * @throws Nette\InvalidArgumentException
 	 */
-	public function offsetGet($name)
+	public function offsetGet($name): Nette\ComponentModel\IComponent
 	{
 		return $this->getComponent($name, TRUE);
 	}
@@ -404,10 +377,8 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 	/**
 	 * Does component specified by name exists?
-	 * @param  string  component name
-	 * @return bool
 	 */
-	public function offsetExists($name)
+	public function offsetExists($name): bool
 	{
 		return $this->getComponent($name, FALSE) !== NULL;
 	}
@@ -415,10 +386,8 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 	/**
 	 * Removes component from the container.
-	 * @param  string  component name
-	 * @return void
 	 */
-	public function offsetUnset($name)
+	public function offsetUnset($name): void
 	{
 		$component = $this->getComponent($name, FALSE);
 		if ($component !== NULL) {

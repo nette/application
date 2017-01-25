@@ -19,7 +19,7 @@ class TestPresenter extends Application\UI\Presenter
 	public $ajax = FALSE;
 
 
-	public function isAjax()
+	public function isAjax(): bool
 	{
 		return $this->ajax;
 	}

@@ -22,7 +22,7 @@ class LatteFactory implements Nette\Bridges\ApplicationLatte\ILatteFactory
 		$this->engine = $engine;
 	}
 
-	public function create()
+	public function create(): Latte\Engine
 	{
 		return $this->engine;
 	}

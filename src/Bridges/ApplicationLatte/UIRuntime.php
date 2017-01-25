@@ -21,10 +21,7 @@ class UIRuntime
 {
 	use Nette\StaticClass;
 
-	/**
-	 * @return void
-	 */
-	public static function initialize(Latte\Runtime\Template $template, &$parentName, array $blocks)
+	public static function initialize(Latte\Runtime\Template $template, &$parentName, array $blocks): void
 	{
 		$providers = $template->global;
 		$blocks = array_filter(array_keys($blocks), function ($s) { return $s[0] !== '_'; });

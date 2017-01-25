@@ -21,10 +21,8 @@ class MethodReflection extends \ReflectionMethod
 
 	/**
 	 * Has method specified annotation?
-	 * @param  string
-	 * @return bool
 	 */
-	public function hasAnnotation($name)
+	public function hasAnnotation(string $name): bool
 	{
 		return (bool) ComponentReflection::parseAnnotation($this, $name);
 	}
@@ -32,10 +30,9 @@ class MethodReflection extends \ReflectionMethod
 
 	/**
 	 * Returns an annotation value.
-	 * @param  string
 	 * @return mixed
 	 */
-	public function getAnnotation($name)
+	public function getAnnotation(string $name)
 	{
 		$res = ComponentReflection::parseAnnotation($this, $name);
 		return $res ? end($res) : NULL;

@@ -15,9 +15,6 @@ use Latte;
 interface ILatteFactory
 {
 
-	/**
-	 * @return Latte\Engine
-	 */
-	function create();
+	function create(): Latte\Engine;
 
 }
