@@ -45,12 +45,7 @@ abstract class Control extends Component implements IRenderable
 	public function getTemplate(): ITemplate
 	{
 		if ($this->template === NULL) {
-			$value = $this->createTemplate();
-			if (!$value instanceof ITemplate && $value !== NULL) {
-				$class2 = get_class($value); $class = get_class($this);
-				throw new Nette\UnexpectedValueException("Object returned by $class::createTemplate() must be instance of Nette\\Application\\UI\\ITemplate, '$class2' given.");
-			}
-			$this->template = $value;
+			$this->template = $this->createTemplate();
 		}
 		return $this->template;
 	}

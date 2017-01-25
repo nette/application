@@ -29,8 +29,8 @@ class RedirectResponse implements Nette\Application\IResponse
 
 	public function __construct(string $url, int $httpCode = Http\IResponse::S302_FOUND)
 	{
-		$this->url = (string) $url;
-		$this->httpCode = (int) $httpCode;
+		$this->url = $url;
+		$this->httpCode = $httpCode;
 	}
 
 

@@ -105,7 +105,7 @@ class Application
 	public function createInitialRequest(): Request
 	{
 		$request = $this->router->match($this->httpRequest);
-		if (!$request instanceof Request) {
+		if (!$request) {
 			throw new BadRequestException('No route for HTTP request.');
 		}
 		return $request;

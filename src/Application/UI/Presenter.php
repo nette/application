@@ -371,7 +371,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function changeAction(string $action): void
 	{
-		$this->action = $this->view = (string) $action;
+		$this->action = $this->view = $action;
 	}
 
 
@@ -390,7 +390,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function setView(string $view)
 	{
-		$this->view = (string) $view;
+		$this->view = $view;
 		return $this;
 	}
 
@@ -623,7 +623,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	public function redirectUrl(string $url, int $httpCode = NULL): void
 	{
 		if ($this->isAjax()) {
-			$this->payload->redirect = (string) $url;
+			$this->payload->redirect = $url;
 			$this->sendPayload();
 
 		} elseif (!$httpCode) {
