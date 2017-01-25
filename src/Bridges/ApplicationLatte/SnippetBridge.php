@@ -35,25 +35,25 @@ class SnippetBridge implements ISnippetBridge
 	}
 
 
-	public function isSnippetMode()
+	public function isSnippetMode(): bool
 	{
-		return $this->control->snippetMode;
+		return (bool) $this->control->snippetMode;
 	}
 
 
-	public function setSnippetMode($snippetMode)
+	public function setSnippetMode(bool $snippetMode)
 	{
 		$this->control->snippetMode = $snippetMode;
 	}
 
 
-	public function needsRedraw($name)
+	public function needsRedraw(string $name): bool
 	{
 		return $this->control->isControlInvalid($name);
 	}
 
 
-	public function markRedrawn($name)
+	public function markRedrawn(string $name): void
 	{
 		if ($name !== '') {
 			$this->control->redrawControl($name, FALSE);
@@ -61,13 +61,13 @@ class SnippetBridge implements ISnippetBridge
 	}
 
 
-	public function getHtmlId($name)
+	public function getHtmlId(string $name): string
 	{
 		return $this->control->getSnippetId($name);
 	}
 
 
-	public function addSnippet($name, $content)
+	public function addSnippet(string $name, string $content): void
 	{
 		if ($this->payload === NULL) {
 			$this->payload = $this->control->getPresenter()->getPayload();
@@ -76,7 +76,7 @@ class SnippetBridge implements ISnippetBridge
 	}
 
 
-	public function renderChildren()
+	public function renderChildren(): void
 	{
 		$queue = [$this->control];
 		do {

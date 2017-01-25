@@ -19,7 +19,7 @@ UIMacros::install($compiler);
 
 // {link ...}
 Assert::same('<?php echo $this->global->uiControl->link("p") ?>',  $compiler->expandMacro('link', 'p', '')->openingCode);
-Assert::same('<?php echo call_user_func($this->filters->filter, $this->global->uiControl->link("p")) ?>',  $compiler->expandMacro('link', 'p', 'filter')->openingCode);
+Assert::same('<?php echo ($this->filters->filter)($this->global->uiControl->link("p")) ?>',  $compiler->expandMacro('link', 'p', 'filter')->openingCode);
 Assert::same('<?php echo $this->global->uiControl->link("p:a") ?>',  $compiler->expandMacro('link', 'p:a', '')->openingCode);
 Assert::same('<?php echo $this->global->uiControl->link($dest) ?>',  $compiler->expandMacro('link', '$dest', '')->openingCode);
 Assert::same('<?php echo $this->global->uiControl->link($p:$a) ?>',  $compiler->expandMacro('link', '$p:$a', '')->openingCode);
