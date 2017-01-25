@@ -28,7 +28,7 @@ class Multiplier extends Component
 	}
 
 
-	protected function createComponent($name)
+	protected function createComponent(string $name): Nette\ComponentModel\IComponent
 	{
 		return ($this->factory)($name, $this);
 	}

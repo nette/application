@@ -32,10 +32,7 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 	}
 
 
-	/**
-	 * @return void
-	 */
-	protected function validateParent(Nette\ComponentModel\IContainer $parent)
+	protected function validateParent(Nette\ComponentModel\IContainer $parent): void
 	{
 		parent::validateParent($parent);
 		$this->monitor(Presenter::class);
@@ -56,10 +53,8 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 	/**
 	 * This method will be called when the component (or component's parent)
 	 * becomes attached to a monitored object. Do not call this method yourself.
-	 * @param  Nette\ComponentModel\IComponent
-	 * @return void
 	 */
-	protected function attached($presenter)
+	protected function attached(Nette\ComponentModel\IComponent $presenter): void
 	{
 		if ($presenter instanceof Presenter) {
 			if (!isset($this->getElementPrototype()->id)) {

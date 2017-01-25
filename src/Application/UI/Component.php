@@ -56,10 +56,8 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	/**
 	 * This method will be called when the component (or component's parent)
 	 * becomes attached to a monitored object. Do not call this method yourself.
-	 * @param  Nette\ComponentModel\IComponent
-	 * @return void
 	 */
-	protected function attached($presenter)
+	protected function attached(Nette\ComponentModel\IComponent $presenter): void
 	{
 		if ($presenter instanceof Presenter) {
 			$this->loadState($presenter->popGlobalParameters($this->getUniqueId()));
@@ -68,10 +66,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	}
 
 
-	/**
-	 * @return void
-	 */
-	protected function validateParent(Nette\ComponentModel\IContainer $parent)
+	protected function validateParent(Nette\ComponentModel\IContainer $parent): void
 	{
 		parent::validateParent($parent);
 		$this->monitor(Presenter::class);
