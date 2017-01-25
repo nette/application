@@ -13,13 +13,12 @@ use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
 
-
 $latte = new Latte\Engine;
 
 $latteFactory = Mockery::mock(ApplicationLatte\ILatteFactory::class);
 $latteFactory->shouldReceive('create')->andReturn($latte);
 
-$response = Mockery::mock(Nette\Http\Response::class);
+$response = Mockery::mock(Nette\Http\IResponse::class);
 $response->shouldReceive('getHeader')->with('Content-Security-Policy')->andReturn("hello 'nonce-abcd123==' world");
 
 $presenter = Mockery::mock(UI\Presenter::class);
