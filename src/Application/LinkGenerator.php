@@ -40,10 +40,9 @@ class LinkGenerator
 	/**
 	 * Generates URL to presenter.
 	 * @param  string   destination in format "[[[module:]presenter:]action] [#fragment]"
-	 * @return string
 	 * @throws UI\InvalidLinkException
 	 */
-	public function link($dest, array $params = [])
+	public function link(string $dest, array $params = []): string
 	{
 		if (!preg_match('~^([\w:]+):(\w*+)(#.*)?()\z~', $dest, $m)) {
 			throw new UI\InvalidLinkException("Invalid link destination '$dest'.");

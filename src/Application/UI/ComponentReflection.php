@@ -33,11 +33,7 @@ class ComponentReflection extends \ReflectionClass
 	private static $mcCache = [];
 
 
-	/**
-	 * @param  string|NULL
-	 * @return array of persistent parameters.
-	 */
-	public function getPersistentParams($class = NULL)
+	public function getPersistentParams(string $class = NULL): array
 	{
 		$class = $class === NULL ? $this->getName() : $class;
 		$params = & self::$ppCache[$class];
@@ -70,11 +66,7 @@ class ComponentReflection extends \ReflectionClass
 	}
 
 
-	/**
-	 * @param  string|NULL
-	 * @return array of persistent components.
-	 */
-	public function getPersistentComponents($class = NULL)
+	public function getPersistentComponents(string $class = NULL): array
 	{
 		$class = $class === NULL ? $this->getName() : $class;
 		$components = & self::$pcCache[$class];
@@ -98,10 +90,8 @@ class ComponentReflection extends \ReflectionClass
 	/**
 	 * Is a method callable? It means class is instantiable and method has
 	 * public visibility, is non-static and non-abstract.
-	 * @param  string  method name
-	 * @return bool
 	 */
-	public function hasCallableMethod($method)
+	public function hasCallableMethod(string $method): bool
 	{
 		$class = $this->getName();
 		$cache = & self::$mcCache[strtolower($class . ':' . $method)];
@@ -117,10 +107,7 @@ class ComponentReflection extends \ReflectionClass
 	}
 
 
-	/**
-	 * @return array
-	 */
-	public static function combineArgs(\ReflectionFunctionAbstract $method, $args)
+	public static function combineArgs(\ReflectionFunctionAbstract $method, $args): array
 	{
 		$res = [];
 		foreach ($method->getParameters() as $i => $param) {
@@ -158,11 +145,8 @@ class ComponentReflection extends \ReflectionClass
 
 	/**
 	 * Non data-loss type conversion.
-	 * @param  mixed
-	 * @param  string
-	 * @return bool
 	 */
-	public static function convertType(&$val, $type, $isClass = FALSE)
+	public static function convertType(&$val, string $type, bool $isClass = FALSE): bool
 	{
 		if ($isClass) {
 			return $val instanceof $type;
@@ -193,9 +177,8 @@ class ComponentReflection extends \ReflectionClass
 
 	/**
 	 * Returns an annotation value.
-	 * @return array|NULL
 	 */
-	public static function parseAnnotation(\Reflector $ref, $name)
+	public static function parseAnnotation(\Reflector $ref, $name): ?array
 	{
 		if (!preg_match_all('#[\\s*]@' . preg_quote($name, '#') . '(?:\(\\s*([^)]*)\\s*\)|\\s|$)#', (string) $ref->getDocComment(), $m)) {
 			return NULL;
@@ -224,10 +207,8 @@ class ComponentReflection extends \ReflectionClass
 
 	/**
 	 * Has class specified annotation?
-	 * @param  string
-	 * @return bool
 	 */
-	public function hasAnnotation($name)
+	public function hasAnnotation(string $name): bool
 	{
 		return (bool) self::parseAnnotation($this, $name);
 	}
@@ -235,10 +216,8 @@ class ComponentReflection extends \ReflectionClass
 
 	/**
 	 * Returns an annotation value.
-	 * @param  string
-	 * @return string|NULL
 	 */
-	public function getAnnotation($name)
+	public function getAnnotation(string $name): ?string
 	{
 		$res = self::parseAnnotation($this, $name);
 		return $res ? end($res) : NULL;

@@ -50,9 +50,8 @@ class UIMacros extends Latte\Macros\MacroSet
 
 	/**
 	 * Initializes before template parsing.
-	 * @return void
 	 */
-	public function initialize()
+	public function initialize(): void
 	{
 		$this->extends = FALSE;
 	}

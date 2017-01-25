@@ -22,7 +22,7 @@ class TestPresenter extends Application\UI\Presenter
 	{
 	}
 
-	function sendResponse(Application\IResponse $response)
+	function sendResponse(Application\IResponse $response): void
 	{
 		$this->response = $response;
 	}

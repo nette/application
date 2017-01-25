@@ -31,7 +31,7 @@ class LatteExtension extends Nette\DI\CompilerExtension
 	private $tempDir;
 
 
-	public function __construct($tempDir, $debugMode = FALSE)
+	public function __construct($tempDir, bool $debugMode = FALSE)
 	{
 		$this->tempDir = $tempDir;
 		$this->debugMode = $debugMode;
@@ -71,11 +71,7 @@ class LatteExtension extends Nette\DI\CompilerExtension
 	}
 
 
-	/**
-	 * @param  string
-	 * @return void
-	 */
-	public function addMacro($macro)
+	public function addMacro(string $macro): void
 	{
 		$builder = $this->getContainerBuilder();
 		$definition = $builder->getDefinition($this->prefix('latteFactory'));

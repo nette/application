@@ -22,13 +22,12 @@ interface IPresenterFactory
 	 * @return string  class name
 	 * @throws InvalidPresenterException
 	 */
-	function getPresenterClass(&$name);
+	function getPresenterClass(string &$name): string;
 
 	/**
 	 * Creates new presenter instance.
 	 * @param  string  presenter name
-	 * @return IPresenter
 	 */
-	function createPresenter($name);
+	function createPresenter(string $name): IPresenter;
 
 }

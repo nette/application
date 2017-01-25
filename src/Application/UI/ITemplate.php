@@ -18,21 +18,18 @@ interface ITemplate
 
 	/**
 	 * Renders template to output.
-	 * @return void
 	 */
-	function render();
+	function render(): void;
 
 	/**
 	 * Sets the path to the template file.
-	 * @param  string
 	 * @return static
 	 */
-	function setFile($file);
+	function setFile(string $file);
 
 	/**
 	 * Returns the path to the template file.
-	 * @return string|NULL
 	 */
-	function getFile();
+	function getFile(): ?string;
 
 }

@@ -43,9 +43,8 @@ class TextResponse implements Nette\Application\IResponse
 
 	/**
 	 * Sends response to output.
-	 * @return void
 	 */
-	public function send(Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse)
+	public function send(Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse): void
 	{
 		if ($this->source instanceof Nette\Application\UI\ITemplate) {
 			$this->source->render();

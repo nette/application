@@ -19,10 +19,10 @@ class MyRouter implements Nette\Application\IRouter
 {
 	public $woken;
 
-	function match(Nette\Http\IRequest $httpRequest)
+	function match(Nette\Http\IRequest $httpRequest): ?Nette\Application\Request
 	{}
 
-	function constructUrl(Nette\Application\Request $appRequest, Nette\Http\Url $refUrl)
+	function constructUrl(Nette\Application\Request $appRequest, Nette\Http\Url $refUrl): ?string
 	{}
 
 	function __wakeup()

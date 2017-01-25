@@ -32,9 +32,8 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 
 	/**
 	 * Maps HTTP request to a Request object.
-	 * @return Nette\Application\Request|NULL
 	 */
-	public function match(Nette\Http\IRequest $httpRequest)
+	public function match(Nette\Http\IRequest $httpRequest): ?Nette\Application\Request
 	{
 		foreach ($this as $route) {
 			$appRequest = $route->match($httpRequest);
@@ -52,9 +51,8 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 
 	/**
 	 * Constructs absolute URL from Request object.
-	 * @return string|NULL
 	 */
-	public function constructUrl(Nette\Application\Request $appRequest, Nette\Http\Url $refUrl)
+	public function constructUrl(Nette\Application\Request $appRequest, Nette\Http\Url $refUrl): ?string
 	{
 		if ($this->cachedRoutes === NULL) {
 			$this->warmupCache();
@@ -111,9 +109,8 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 	 * Adds the router.
 	 * @param  mixed
 	 * @param  Nette\Application\IRouter
-	 * @return void
 	 */
-	public function offsetSet($index, $route)
+	public function offsetSet($index, $route): void
 	{
 		if (!$route instanceof Nette\Application\IRouter) {
 			throw new Nette\InvalidArgumentException('Argument must be IRouter descendant.');
@@ -122,10 +119,7 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 	}
 
 
-	/**
-	 * @return string
-	 */
-	public function getModule()
+	public function getModule(): string
 	{
 		return $this->module;
 	}

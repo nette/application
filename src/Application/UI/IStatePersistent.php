@@ -18,14 +18,12 @@ interface IStatePersistent
 
 	/**
 	 * Loads state informations.
-	 * @return void
 	 */
-	function loadState(array $params);
+	function loadState(array $params): void;
 
 	/**
 	 * Saves state informations for next request.
-	 * @return void
 	 */
-	function saveState(array &$params);
+	function saveState(array &$params): void;
 
 }

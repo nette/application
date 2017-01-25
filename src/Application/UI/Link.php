@@ -43,9 +43,8 @@ class Link
 
 	/**
 	 * Returns link destination.
-	 * @return string
 	 */
-	public function getDestination()
+	public function getDestination(): string
 	{
 		return $this->destination;
 	}
@@ -53,11 +52,9 @@ class Link
 
 	/**
 	 * Changes link parameter.
-	 * @param  string
-	 * @param  mixed
 	 * @return static
 	 */
-	public function setParameter($key, $value)
+	public function setParameter(string $key, $value)
 	{
 		$this->params[$key] = $value;
 		return $this;
@@ -66,10 +63,9 @@ class Link
 
 	/**
 	 * Returns link parameter.
-	 * @param  string
 	 * @return mixed
 	 */
-	public function getParameter($key)
+	public function getParameter(string $key)
 	{
 		return $this->params[$key] ?? NULL;
 	}
@@ -77,9 +73,8 @@ class Link
 
 	/**
 	 * Returns link parameters.
-	 * @return array
 	 */
-	public function getParameters()
+	public function getParameters(): array
 	{
 		return $this->params;
 	}
@@ -87,9 +82,8 @@ class Link
 
 	/**
 	 * Converts link to URL.
-	 * @return string
 	 */
-	public function __toString()
+	public function __toString(): string
 	{
 		try {
 			return (string) $this->component->link($this->destination, $this->params);

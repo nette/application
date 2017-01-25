@@ -35,12 +35,7 @@ class FileResponse implements Nette\Application\IResponse
 	private $forceDownload;
 
 
-	/**
-	 * @param  string  file path
-	 * @param  string  imposed file name
-	 * @param  string  MIME content type
-	 */
-	public function __construct($file, $name = NULL, $contentType = NULL, $forceDownload = TRUE)
+	public function __construct(string $file, string $name = NULL, string $contentType = NULL, bool $forceDownload = TRUE)
 	{
 		if (!is_file($file)) {
 			throw new Nette\Application\BadRequestException("File '$file' doesn't exist.");
@@ -55,9 +50,8 @@ class FileResponse implements Nette\Application\IResponse
 
 	/**
 	 * Returns the path to a downloaded file.
-	 * @return string
 	 */
-	public function getFile()
+	public function getFile(): string
 	{
 		return $this->file;
 	}
@@ -65,9 +59,8 @@ class FileResponse implements Nette\Application\IResponse
 
 	/**
 	 * Returns the file name.
-	 * @return string
 	 */
-	public function getName()
+	public function getName(): string
 	{
 		return $this->name;
 	}
@@ -75,9 +68,8 @@ class FileResponse implements Nette\Application\IResponse
 
 	/**
 	 * Returns the MIME content type of a downloaded file.
-	 * @return string
 	 */
-	public function getContentType()
+	public function getContentType(): string
 	{
 		return $this->contentType;
 	}
@@ -85,9 +77,8 @@ class FileResponse implements Nette\Application\IResponse
 
 	/**
 	 * Sends response to output.
-	 * @return void
 	 */
-	public function send(Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse)
+	public function send(Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse): void
 	{
 		$httpResponse->setContentType($this->contentType);
 		$httpResponse->setHeader('Content-Disposition',

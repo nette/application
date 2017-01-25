@@ -26,11 +26,7 @@ class JsonResponse implements Nette\Application\IResponse
 	private $contentType;
 
 
-	/**
-	 * @param  mixed   payload
-	 * @param  string  MIME content type
-	 */
-	public function __construct($payload, $contentType = NULL)
+	public function __construct($payload, string $contentType = NULL)
 	{
 		$this->payload = $payload;
 		$this->contentType = $contentType ? $contentType : 'application/json';
@@ -48,9 +44,8 @@ class JsonResponse implements Nette\Application\IResponse
 
 	/**
 	 * Returns the MIME content type of a downloaded file.
-	 * @return string
 	 */
-	public function getContentType()
+	public function getContentType(): string
 	{
 		return $this->contentType;
 	}
@@ -58,9 +53,8 @@ class JsonResponse implements Nette\Application\IResponse
 
 	/**
 	 * Sends response to output.
-	 * @return void
 	 */
-	public function send(Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse)
+	public function send(Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse): void
 	{
 		$httpResponse->setContentType($this->contentType, 'utf-8');
 		echo Nette\Utils\Json::encode($this->payload);

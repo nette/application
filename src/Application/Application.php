@@ -76,9 +76,8 @@ class Application
 
 	/**
 	 * Dispatch a HTTP request to a front controller.
-	 * @return void
 	 */
-	public function run()
+	public function run(): void
 	{
 		try {
 			$this->onStartup($this);
@@ -103,10 +102,7 @@ class Application
 	}
 
 
-	/**
-	 * @return Request
-	 */
-	public function createInitialRequest()
+	public function createInitialRequest(): Request
 	{
 		$request = $this->router->match($this->httpRequest);
 		if (!$request instanceof Request) {
@@ -116,10 +112,7 @@ class Application
 	}
 
 
-	/**
-	 * @return void
-	 */
-	public function processRequest(Request $request)
+	public function processRequest(Request $request): void
 	{
 		process:
 		if (count($this->requests) > self::$maxLoop) {
@@ -152,10 +145,7 @@ class Application
 	}
 
 
-	/**
-	 * @return void
-	 */
-	public function processException($e)
+	public function processException(\Throwable $e): void
 	{
 		if (!$e instanceof BadRequestException && $this->httpResponse instanceof Nette\Http\Response) {
 			$this->httpResponse->warnOnBuffer = FALSE;
@@ -181,7 +171,7 @@ class Application
 	 * Returns all processed requests.
 	 * @return Request[]
 	 */
-	public function getRequests()
+	public function getRequests(): array
 	{
 		return $this->requests;
 	}
@@ -189,9 +179,8 @@ class Application
 
 	/**
 	 * Returns current presenter.
-	 * @return IPresenter
 	 */
-	public function getPresenter()
+	public function getPresenter(): IPresenter
 	{
 		return $this->presenter;
 	}
@@ -202,9 +191,8 @@ class Application
 
 	/**
 	 * Returns router.
-	 * @return IRouter
 	 */
-	public function getRouter()
+	public function getRouter(): IRouter
 	{
 		return $this->router;
 	}
@@ -212,9 +200,8 @@ class Application
 
 	/**
 	 * Returns presenter factory.
-	 * @return IPresenterFactory
 	 */
-	public function getPresenterFactory()
+	public function getPresenterFactory(): IPresenterFactory
 	{
 		return $this->presenterFactory;
 	}

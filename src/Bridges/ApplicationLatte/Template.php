@@ -36,10 +36,7 @@ class Template implements Nette\Application\UI\ITemplate
 	}
 
 
-	/**
-	 * @return Latte\Engine
-	 */
-	public function getLatte()
+	public function getLatte(): Latte\Engine
 	{
 		return $this->latte;
 	}
@@ -47,9 +44,8 @@ class Template implements Nette\Application\UI\ITemplate
 
 	/**
 	 * Renders template to output.
-	 * @return void
 	 */
-	public function render($file = NULL, array $params = [])
+	public function render($file = NULL, array $params = []): void
 	{
 		$this->latte->render($file ?: $this->file, $params + $this->params);
 	}
@@ -58,9 +54,8 @@ class Template implements Nette\Application\UI\ITemplate
 	/**
 	 * Renders template to string.
 	 * @param  can throw exceptions? (hidden parameter)
-	 * @return string
 	 */
-	public function __toString()
+	public function __toString(): string
 	{
 		try {
 			return $this->latte->renderToString($this->file, $this->params);
@@ -78,11 +73,9 @@ class Template implements Nette\Application\UI\ITemplate
 
 	/**
 	 * Registers run-time filter.
-	 * @param  string|NULL
-	 * @param  callable
 	 * @return static
 	 */
-	public function addFilter($name, $callback)
+	public function addFilter(?string $name, callable $callback)
 	{
 		$this->latte->addFilter($name, $callback);
 		return $this;
@@ -107,20 +100,16 @@ class Template implements Nette\Application\UI\ITemplate
 
 	/**
 	 * Sets the path to the template file.
-	 * @param  string
 	 * @return static
 	 */
-	public function setFile($file)
+	public function setFile(string $file)
 	{
 		$this->file = $file;
 		return $this;
 	}
 
 
-	/**
-	 * @return string|NULL
-	 */
-	public function getFile()
+	public function getFile(): ?string
 	{
 		return $this->file;
 	}
@@ -142,7 +131,6 @@ class Template implements Nette\Application\UI\ITemplate
 
 	/**
 	 * Sets all parameters.
-	 * @param  array
 	 * @return static
 	 */
 	public function setParameters(array $params)
@@ -154,9 +142,8 @@ class Template implements Nette\Application\UI\ITemplate
 
 	/**
 	 * Returns array of all parameters.
-	 * @return array
 	 */
-	public function getParameters()
+	public function getParameters(): array
 	{
 		return $this->params;
 	}
@@ -164,9 +151,8 @@ class Template implements Nette\Application\UI\ITemplate
 
 	/**
 	 * Sets a template parameter. Do not call directly.
-	 * @return void
 	 */
-	public function __set($name, $value)
+	public function __set($name, $value): void
 	{
 		$this->params[$name] = $value;
 	}
@@ -188,7 +174,6 @@ class Template implements Nette\Application\UI\ITemplate
 
 	/**
 	 * Determines whether parameter is defined. Do not call directly.
-	 * @return bool
 	 */
 	public function __isset($name)
 	{
@@ -198,10 +183,8 @@ class Template implements Nette\Application\UI\ITemplate
 
 	/**
 	 * Removes a template parameter. Do not call directly.
-	 * @param  string    name
-	 * @return void
 	 */
-	public function __unset($name)
+	public function __unset(string $name): void
 	{
 		unset($this->params[$name]);
 	}

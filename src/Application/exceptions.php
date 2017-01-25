@@ -44,7 +44,7 @@ class BadRequestException extends \Exception
 	protected $code = 404;
 
 
-	public function __construct($message = '', $code = 0, \Exception $previous = NULL)
+	public function __construct(string $message = '', int $code = 0, \Exception $previous = NULL)
 	{
 		parent::__construct($message, $code < 200 || $code > 504 ? $this->code : $code, $previous);
 	}

@@ -113,9 +113,8 @@ class Route implements Application\IRouter
 	/**
 	 * @param  string  URL mask, e.g. '<presenter>/<action>/<id \d{1,3}>'
 	 * @param  array|string|\Closure  default values or metadata or callback for NetteModule\MicroPresenter
-	 * @param  int     flags
 	 */
-	public function __construct($mask, $metadata = [], $flags = 0)
+	public function __construct(string $mask, $metadata = [], int $flags = 0)
 	{
 		if (is_string($metadata)) {
 			[$presenter, $action] = Nette\Application\Helpers::splitName($metadata);
@@ -140,9 +139,8 @@ class Route implements Application\IRouter
 
 	/**
 	 * Maps HTTP request to a Request object.
-	 * @return Nette\Application\Request|NULL
 	 */
-	public function match(Nette\Http\IRequest $httpRequest)
+	public function match(Nette\Http\IRequest $httpRequest): ?Application\Request
 	{
 		// combine with precedence: mask (params in URL-path), fixity, query, (post,) defaults
 
@@ -264,9 +262,8 @@ class Route implements Application\IRouter
 
 	/**
 	 * Constructs absolute URL from Request object.
-	 * @return string|NULL
 	 */
-	public function constructUrl(Application\Request $appRequest, Nette\Http\Url $refUrl)
+	public function constructUrl(Application\Request $appRequest, Nette\Http\Url $refUrl): ?string
 	{
 		if ($this->flags & self::ONE_WAY) {
 			return NULL;
@@ -427,11 +424,8 @@ class Route implements Application\IRouter
 
 	/**
 	 * Parse mask and array of default values; initializes object.
-	 * @param  string
-	 * @param  array
-	 * @return void
 	 */
-	private function setMask($mask, array $metadata)
+	private function setMask(string $mask, array $metadata): void
 	{
 		$this->mask = $mask;
 
@@ -601,9 +595,8 @@ class Route implements Application\IRouter
 
 	/**
 	 * Returns mask.
-	 * @return string
 	 */
-	public function getMask()
+	public function getMask(): string
 	{
 		return $this->mask;
 	}
@@ -611,9 +604,8 @@ class Route implements Application\IRouter
 
 	/**
 	 * Returns default values.
-	 * @return array
 	 */
-	public function getDefaults()
+	public function getDefaults(): array
 	{
 		$defaults = [];
 		foreach ($this->metadata as $name => $meta) {
@@ -627,9 +619,8 @@ class Route implements Application\IRouter
 
 	/**
 	 * Returns flags.
-	 * @return int
 	 */
-	public function getFlags()
+	public function getFlags(): int
 	{
 		return $this->flags;
 	}
@@ -643,7 +634,7 @@ class Route implements Application\IRouter
 	 * @internal
 	 * @return string[]|NULL
 	 */
-	public function getTargetPresenters()
+	public function getTargetPresenters(): ?array
 	{
 		if ($this->flags & self::ONE_WAY) {
 			return [];
@@ -669,11 +660,8 @@ class Route implements Application\IRouter
 
 	/**
 	 * Rename keys in array.
-	 * @param  array
-	 * @param  array
-	 * @return array
 	 */
-	private static function renameKeys($arr, $xlat)
+	private static function renameKeys(array $arr, array $xlat): array
 	{
 		if (empty($xlat)) {
 			return $arr;
@@ -698,10 +686,8 @@ class Route implements Application\IRouter
 
 	/**
 	 * camelCaseAction name -> dash-separated.
-	 * @param  string
-	 * @return string
 	 */
-	private static function action2path($s)
+	private static function action2path(string $s): string
 	{
 		$s = preg_replace('#(.)(?=[A-Z])#', '$1-', $s);
 		$s = strtolower($s);
@@ -712,10 +698,8 @@ class Route implements Application\IRouter
 
 	/**
 	 * dash-separated -> camelCaseAction name.
-	 * @param  string
-	 * @return string
 	 */
-	private static function path2action($s)
+	private static function path2action(string $s): string
 	{
 		$s = preg_replace('#-(?=[a-z])#', ' ', $s);
 		$s = lcfirst(ucwords($s));
@@ -726,10 +710,8 @@ class Route implements Application\IRouter
 
 	/**
 	 * PascalCase:Presenter name -> dash-and-dot-separated.
-	 * @param  string
-	 * @return string
 	 */
-	private static function presenter2path($s)
+	private static function presenter2path(string $s): string
 	{
 		$s = strtr($s, ':', '.');
 		$s = preg_replace('#([^.])(?=[A-Z])#', '$1-', $s);
@@ -741,10 +723,8 @@ class Route implements Application\IRouter
 
 	/**
 	 * dash-and-dot-separated -> PascalCase:Presenter name.
-	 * @param  string
-	 * @return string
 	 */
-	private static function path2presenter($s)
+	private static function path2presenter(string $s): string
 	{
 		$s = preg_replace('#([.-])(?=[a-z])#', '$1 ', $s);
 		$s = ucwords($s);
@@ -756,10 +736,8 @@ class Route implements Application\IRouter
 
 	/**
 	 * Url encode.
-	 * @param  string
-	 * @return string
 	 */
-	private static function param2path($s)
+	private static function param2path(string $s): string
 	{
 		return str_replace('%2F', '/', rawurlencode($s));
 	}

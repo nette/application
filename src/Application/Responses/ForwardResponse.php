@@ -29,10 +29,7 @@ class ForwardResponse implements Nette\Application\IResponse
 	}
 
 
-	/**
-	 * @return Nette\Application\Request
-	 */
-	public function getRequest()
+	public function getRequest(): Nette\Application\Request
 	{
 		return $this->request;
 	}
@@ -40,9 +37,8 @@ class ForwardResponse implements Nette\Application\IResponse
 
 	/**
 	 * Sends response to output.
-	 * @return void
 	 */
-	public function send(Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse)
+	public function send(Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse): void
 	{
 	}
 
