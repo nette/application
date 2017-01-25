@@ -137,11 +137,10 @@ class Application
 		if ($response instanceof Responses\ForwardResponse) {
 			$request = $response->getRequest();
 			goto process;
-
-		} elseif ($response) {
-			$this->onResponse($this, $response);
-			$response->send($this->httpRequest, $this->httpResponse);
 		}
+
+		$this->onResponse($this, $response);
+		$response->send($this->httpRequest, $this->httpResponse);
 	}
 
 
