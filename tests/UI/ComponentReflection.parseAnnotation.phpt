@@ -34,10 +34,10 @@ class TestClass {}
 $rc = new ReflectionClass('TestClass');
 
 Assert::same(['value ="Johno\'s addendum"', 'mode=True', TRUE, TRUE], Reflection::parseAnnotation($rc, 'title'));
-Assert::same(FALSE, Reflection::parseAnnotation($rc, 'public'));
-Assert::same(FALSE, Reflection::parseAnnotation($rc, 'private'));
+Assert::null(Reflection::parseAnnotation($rc, 'public'));
+Assert::null(Reflection::parseAnnotation($rc, 'private'));
 Assert::same(['item 1'], Reflection::parseAnnotation($rc, 'components'));
 Assert::same([TRUE, FALSE, NULL], Reflection::parseAnnotation($rc, 'persistent'));
 Assert::same([TRUE], Reflection::parseAnnotation($rc, 'renderable'));
 Assert::same(['loggedIn'], Reflection::parseAnnotation($rc, 'Secured\User'));
-Assert::false(Reflection::parseAnnotation($rc, 'missing'));
+Assert::null(Reflection::parseAnnotation($rc, 'missing'));
