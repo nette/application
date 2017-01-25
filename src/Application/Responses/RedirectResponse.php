@@ -33,8 +33,8 @@ class RedirectResponse implements Nette\Application\IResponse
 	 */
 	public function __construct(string $url, int $code = Http\IResponse::S302_FOUND)
 	{
-		$this->url = (string) $url;
-		$this->code = (int) $code;
+		$this->url = $url;
+		$this->code = $code;
 	}
 
 

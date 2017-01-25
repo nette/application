@@ -199,7 +199,7 @@ class Request
 	 */
 	public function setFlag(string $flag, bool $value = TRUE)
 	{
-		$this->flags[$flag] = (bool) $value;
+		$this->flags[$flag] = $value;
 		return $this;
 	}
 

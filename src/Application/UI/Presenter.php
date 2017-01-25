@@ -372,7 +372,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function changeAction(string $action): void
 	{
-		if (is_string($action) && Nette\Utils\Strings::match($action, '#^[a-zA-Z0-9][a-zA-Z0-9_\x7f-\xff]*\z#')) {
+		if (Nette\Utils\Strings::match($action, '#^[a-zA-Z0-9][a-zA-Z0-9_\x7f-\xff]*\z#')) {
 			$this->action = $action;
 			$this->view = $action;
 		} else {
@@ -396,7 +396,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function setView(string $view)
 	{
-		$this->view = (string) $view;
+		$this->view = $view;
 		return $this;
 	}
 
@@ -629,7 +629,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	public function redirectUrl(string $url, int $code = NULL): void
 	{
 		if ($this->isAjax()) {
-			$this->payload->redirect = (string) $url;
+			$this->payload->redirect = $url;
 			$this->sendPayload();
 
 		} elseif (!$code) {
