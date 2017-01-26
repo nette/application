@@ -7,7 +7,6 @@
 declare(strict_types=1);
 
 use Nette\Application\UI\ComponentReflection as Reflection;
-use Nette\Application\BadRequestException;
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
@@ -54,7 +53,7 @@ test(function () {
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['int' => []]);
-	}, BadRequestException::class, 'Argument $int passed to MyPresenter::params() must be scalar, array given.');
+	}, Nette\InvalidArgumentException::class, 'Argument $int passed to MyPresenter::params() must be scalar, array given.');
 });
 
 
@@ -66,31 +65,31 @@ test(function () {
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, []);
-	}, BadRequestException::class, 'Missing parameter $int required by MyPresenter::hints()');
+	}, Nette\InvalidArgumentException::class, 'Missing parameter $int required by MyPresenter::hints()');
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['int' => '']);
-	}, BadRequestException::class, 'Argument $int passed to MyPresenter::hints() must be int, string given.');
+	}, Nette\InvalidArgumentException::class, 'Argument $int passed to MyPresenter::hints() must be int, string given.');
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['int' => NULL]);
-	}, BadRequestException::class, 'Missing parameter $int required by MyPresenter::hints()');
+	}, Nette\InvalidArgumentException::class, 'Missing parameter $int required by MyPresenter::hints()');
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['int' => new stdClass]);
-	}, BadRequestException::class, 'Argument $int passed to MyPresenter::hints() must be int, stdClass given.');
+	}, Nette\InvalidArgumentException::class, 'Argument $int passed to MyPresenter::hints() must be int, stdClass given.');
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['int' => []]);
-	}, BadRequestException::class, 'Argument $int passed to MyPresenter::hints() must be int, array given.');
+	}, Nette\InvalidArgumentException::class, 'Argument $int passed to MyPresenter::hints() must be int, array given.');
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['int' => '1', 'bool' => '']);
-	}, BadRequestException::class, 'Argument $bool passed to MyPresenter::hints() must be bool, string given.');
+	}, Nette\InvalidArgumentException::class, 'Argument $bool passed to MyPresenter::hints() must be bool, string given.');
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['int' => '1', 'bool' => '1', 'str' => '', 'arr' => '']);
-	}, BadRequestException::class, 'Argument $arr passed to MyPresenter::hints() must be array, string given.');
+	}, Nette\InvalidArgumentException::class, 'Argument $arr passed to MyPresenter::hints() must be array, string given.');
 });
 
 
@@ -104,23 +103,23 @@ test(function () {
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['int' => '']);
-	}, BadRequestException::class, 'Argument $int passed to MyPresenter::hintsNulls() must be int, string given.');
+	}, Nette\InvalidArgumentException::class, 'Argument $int passed to MyPresenter::hintsNulls() must be int, string given.');
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['int' => new stdClass]);
-	}, BadRequestException::class, 'Argument $int passed to MyPresenter::hintsNulls() must be int, stdClass given.');
+	}, Nette\InvalidArgumentException::class, 'Argument $int passed to MyPresenter::hintsNulls() must be int, stdClass given.');
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['int' => []]);
-	}, BadRequestException::class, 'Argument $int passed to MyPresenter::hintsNulls() must be int, array given.');
+	}, Nette\InvalidArgumentException::class, 'Argument $int passed to MyPresenter::hintsNulls() must be int, array given.');
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['int' => '1', 'bool' => '']);
-	}, BadRequestException::class, 'Argument $bool passed to MyPresenter::hintsNulls() must be bool, string given.');
+	}, Nette\InvalidArgumentException::class, 'Argument $bool passed to MyPresenter::hintsNulls() must be bool, string given.');
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['int' => '1', 'bool' => '1', 'str' => '', 'arr' => '']);
-	}, BadRequestException::class, 'Argument $arr passed to MyPresenter::hintsNulls() must be array, string given.');
+	}, Nette\InvalidArgumentException::class, 'Argument $arr passed to MyPresenter::hintsNulls() must be array, string given.');
 });
 
 
@@ -134,23 +133,23 @@ test(function () {
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['int' => '']);
-	}, BadRequestException::class, 'Argument $int passed to MyPresenter::hintsDefaults() must be int, string given.');
+	}, Nette\InvalidArgumentException::class, 'Argument $int passed to MyPresenter::hintsDefaults() must be int, string given.');
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['int' => new stdClass]);
-	}, BadRequestException::class, 'Argument $int passed to MyPresenter::hintsDefaults() must be int, stdClass given.');
+	}, Nette\InvalidArgumentException::class, 'Argument $int passed to MyPresenter::hintsDefaults() must be int, stdClass given.');
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['int' => []]);
-	}, BadRequestException::class, 'Argument $int passed to MyPresenter::hintsDefaults() must be int, array given.');
+	}, Nette\InvalidArgumentException::class, 'Argument $int passed to MyPresenter::hintsDefaults() must be int, array given.');
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['int' => '1', 'bool' => '']);
-	}, BadRequestException::class, 'Argument $bool passed to MyPresenter::hintsDefaults() must be bool, string given.');
+	}, Nette\InvalidArgumentException::class, 'Argument $bool passed to MyPresenter::hintsDefaults() must be bool, string given.');
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['int' => '1', 'bool' => '1', 'str' => '', 'arr' => '']);
-	}, BadRequestException::class, 'Argument $arr passed to MyPresenter::hintsDefaults() must be array, string given.');
+	}, Nette\InvalidArgumentException::class, 'Argument $arr passed to MyPresenter::hintsDefaults() must be array, string given.');
 });
 
 
@@ -164,23 +163,23 @@ test(function () {
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['int' => '']);
-	}, BadRequestException::class, 'Argument $int passed to MyPresenter::defaults() must be integer, string given.');
+	}, Nette\InvalidArgumentException::class, 'Argument $int passed to MyPresenter::defaults() must be integer, string given.');
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['int' => new stdClass]);
-	}, BadRequestException::class, 'Argument $int passed to MyPresenter::defaults() must be integer, stdClass given.');
+	}, Nette\InvalidArgumentException::class, 'Argument $int passed to MyPresenter::defaults() must be integer, stdClass given.');
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['int' => []]);
-	}, BadRequestException::class, 'Argument $int passed to MyPresenter::defaults() must be integer, array given.');
+	}, Nette\InvalidArgumentException::class, 'Argument $int passed to MyPresenter::defaults() must be integer, array given.');
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['int' => '1', 'bool' => '']);
-	}, BadRequestException::class, 'Argument $bool passed to MyPresenter::defaults() must be boolean, string given.');
+	}, Nette\InvalidArgumentException::class, 'Argument $bool passed to MyPresenter::defaults() must be boolean, string given.');
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['int' => '1', 'bool' => '1', 'str' => '', 'arr' => '']);
-	}, BadRequestException::class, 'Argument $arr passed to MyPresenter::defaults() must be array, string given.');
+	}, Nette\InvalidArgumentException::class, 'Argument $arr passed to MyPresenter::defaults() must be array, string given.');
 });
 
 
@@ -191,17 +190,17 @@ test(function () {
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, []);
-	}, BadRequestException::class, 'Missing parameter $req required by MyPresenter::objects()');
+	}, Nette\InvalidArgumentException::class, 'Missing parameter $req required by MyPresenter::objects()');
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['req' => NULL, 'opt' => NULL]);
-	}, BadRequestException::class, 'Missing parameter $req required by MyPresenter::objects()');
+	}, Nette\InvalidArgumentException::class, 'Missing parameter $req required by MyPresenter::objects()');
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['req' => $method, 'opt' => NULL]);
-	}, BadRequestException::class, 'Argument $req passed to MyPresenter::objects() must be stdClass, ReflectionMethod given.');
+	}, Nette\InvalidArgumentException::class, 'Argument $req passed to MyPresenter::objects() must be stdClass, ReflectionMethod given.');
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['req' => [], 'opt' => NULL]);
-	}, BadRequestException::class, 'Argument $req passed to MyPresenter::objects() must be stdClass, array given.');
+	}, Nette\InvalidArgumentException::class, 'Argument $req passed to MyPresenter::objects() must be stdClass, array given.');
 });

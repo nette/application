@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace Nette\Application\UI;
 
 use Nette;
-use Nette\Application\BadRequestException;
 
 
 /**
@@ -129,7 +128,7 @@ class ComponentReflection extends \ReflectionClass
 			if (isset($args[$name])) {
 				$res[$i] = $args[$name];
 				if (!self::convertType($res[$i], $type, $isClass)) {
-					throw new BadRequestException(sprintf(
+					throw new Nette\InvalidArgumentException(sprintf(
 						'Argument $%s passed to %s() must be %s, %s given.',
 						$name,
 						($method instanceof \ReflectionMethod ? $method->getDeclaringClass()->getName() . '::' : '') . $method->getName(),
@@ -144,7 +143,7 @@ class ComponentReflection extends \ReflectionClass
 			} elseif ($type === 'array') {
 				$res[$i] = [];
 			} else {
-				throw new BadRequestException(sprintf(
+				throw new Nette\InvalidArgumentException(sprintf(
 					'Missing parameter $%s required by %s()',
 					$name,
 					($method instanceof \ReflectionMethod ? $method->getDeclaringClass()->getName() . '::' : '') . $method->getName()

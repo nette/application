@@ -86,7 +86,12 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 			$rm = $rc->getMethod($method);
 			if ($rm->isPublic() && !$rm->isAbstract() && !$rm->isStatic()) {
 				$this->checkRequirements($rm);
-				$rm->invokeArgs($this, $rc->combineArgs($rm, $params));
+				try {
+					$args = $rc->combineArgs($rm, $params);
+				} catch (Nette\InvalidArgumentException $e) {
+					throw new Nette\Application\BadRequestException($e->getMessage());
+				}
+				$rm->invokeArgs($this, $args);
 				return TRUE;
 			}
 		}
