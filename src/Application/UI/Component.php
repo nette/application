@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Nette\Application\UI;
 
 use Nette;
+use Nette\Application\RejectRequestException;
 
 
 /**
@@ -85,7 +86,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 				try {
 					$args = $rc->combineArgs($rm, $params);
 				} catch (Nette\InvalidArgumentException $e) {
-					throw new Nette\Application\BadRequestException($e->getMessage());
+					throw new RejectRequestException($e->getMessage(), RejectRequestException::WRONG_ARGUMENT);
 				}
 				$rm->invokeArgs($this, $args);
 				return true;
@@ -125,13 +126,13 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 			if (isset($params[$name])) { // nulls are ignored
 				$type = gettype($meta['def']);
 				if (!$reflection->convertType($params[$name], $type)) {
-					throw new Nette\Application\BadRequestException(sprintf(
+					throw new RejectRequestException(sprintf(
 						"Value passed to persistent parameter '%s' in %s must be %s, %s given.",
 						$name,
 						$this instanceof Presenter ? 'presenter ' . $this->getName() : "component '{$this->getUniqueId()}'",
 						$type === 'NULL' ? 'scalar' : $type,
 						is_object($params[$name]) ? get_class($params[$name]) : gettype($params[$name])
-					));
+					), RejectRequestException::WRONG_ARGUMENT);
 				}
 				$this->$name = $params[$name];
 			} else {
@@ -212,13 +213,13 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 	/**
 	 * Calls signal handler method.
-	 * @throws BadSignalException if there is not handler method
+	 * @throws RejectRequestException if there is not handler method
 	 */
 	public function signalReceived(string $signal): void
 	{
 		if (!$this->tryCall($this->formatSignalMethod($signal), $this->params)) {
 			$class = get_class($this);
-			throw new BadSignalException("There is no handler for signal '$signal' in class $class.");
+			throw new RejectRequestException("There is no handler for signal '$signal' in class $class.", RejectRequestException::WRONG_SIGNAL);
 		}
 	}
 
