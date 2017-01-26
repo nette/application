@@ -47,6 +47,15 @@ class BadRequestException extends \Exception
 		parent::__construct($message, $httpCode ?: $this->code, $previous);
 	}
 
+
+	/**
+	 * @return int
+	 */
+	public function getHttpCode()
+	{
+		return $this->code;
+	}
+
 }
 
 

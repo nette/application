@@ -165,7 +165,7 @@ class Application
 			$this->httpResponse->warnOnBuffer = FALSE;
 		}
 		if (!$this->httpResponse->isSent()) {
-			$this->httpResponse->setCode($e instanceof BadRequestException ? ($e->getCode() ?: 404) : 500);
+			$this->httpResponse->setCode($e instanceof BadRequestException ? ($e->getHttpCode() ?: 404) : 500);
 		}
 
 		$args = ['exception' => $e, 'request' => end($this->requests) ?: NULL];
