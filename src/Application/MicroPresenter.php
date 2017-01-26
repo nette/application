@@ -67,7 +67,7 @@ class MicroPresenter implements Application\IPresenter
 
 		$params = $request->getParameters();
 		if (!isset($params['callback'])) {
-			throw new Application\BadRequestException('Parameter callback is missing.');
+			throw new Nette\InvalidStateException('Parameter callback is missing.');
 		}
 		$callback = $params['callback'];
 		$reflection = Nette\Utils\Callback::toReflection(Nette\Utils\Callback::check($callback));
