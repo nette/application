@@ -371,7 +371,10 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	{
 		$args = func_num_args() < 3 && is_array($args) ? $args : array_slice(func_get_args(), 1);
 		$presenter = $this->getPresenter();
-		$presenter->redirectUrl($presenter->createRequest($this, $destination, $args, 'redirect'), 301);
+		$presenter->redirectUrl(
+			$presenter->createRequest($this, $destination, $args, 'redirect'),
+			Nette\Http\IResponse::S301_MOVED_PERMANENTLY
+		);
 	}
 
 
