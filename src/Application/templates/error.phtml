@@ -18,21 +18,30 @@ $messages = [
 $message = isset($messages[$code]) ? $messages[$code] : $messages[0];
 
 ?>
-<!DOCTYPE html>
+<!DOCTYPE html><!-- "' --></textarea></script></style></pre></xmp></a></audio></button></canvas></datalist></details></dialog></iframe></listing></meter></noembed></noframes></noscript></optgroup></option></progress></rp></select></table></template></title></video>
 <meta charset="utf-8">
 <meta name=robots content=noindex>
 <meta name=generator content="Nette Framework">
-<style>
-	body { color: #333; background: white; width: 500px; margin: 100px auto }
-	h1 { font: bold 47px/1.5 sans-serif; margin: .6em 0 }
-	p { font: 21px/1.5 Georgia,serif; margin: 1.5em 0 }
-	small { font-size: 70%; color: gray }
-</style>
-
 <title><?= $message[0] ?></title>
 
-<h1><?= $message[0] ?></h1>
+<style>
+	#nette-error { all: initial; position: absolute; top: 0; left: 0; right: 0; height: 70vh; min-height: 400px; display: flex; align-items: center; justify-content: center; z-index: 1000 }
+	#nette-error div { all: initial; max-width: 550px; background: white; color: #333; display: block }
+	#nette-error h1 { all: initial; font: bold 50px/1.1 sans-serif; display: block; margin: 40px }
+	#nette-error p { all: initial; font: 20px/1.4 sans-serif; margin: 40px; display: block }
+	#nette-error small { color: gray }
+</style>
 
-<p><?= $message[1] ?></p>
+<div id=nette-error>
+	<div>
+		<h1><?= $message[0] ?></h1>
 
-<?php if ($code): ?><p><small>error <?= $code ?></small></p><?php endif ?>
+		<p><?= $message[1] ?></p>
+
+		<?php if ($code): ?><p><small>error <?= $code ?></small></p><?php endif ?>
+	</div>
+</div>
+
+<script>
+	document.body.insertBefore(document.getElementById('nette-error'), document.body.firstChild);
+</script>
