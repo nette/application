@@ -31,13 +31,15 @@ use Nette\Http;
 abstract class Presenter extends Control implements Application\IPresenter
 {
 	/** bad link handling {@link Presenter::$invalidLinkMode} */
-	const INVALID_LINK_SILENT = 0b0000,
+	public const
+		INVALID_LINK_SILENT = 0b0000,
 		INVALID_LINK_WARNING = 0b0001,
 		INVALID_LINK_EXCEPTION = 0b0010,
 		INVALID_LINK_TEXTUAL = 0b0100;
 
 	/** @internal special parameter key */
-	const SIGNAL_KEY = 'do',
+	public const
+		SIGNAL_KEY = 'do',
 		ACTION_KEY = 'action',
 		FLASH_KEY = '_fid',
 		DEFAULT_ACTION = 'default';

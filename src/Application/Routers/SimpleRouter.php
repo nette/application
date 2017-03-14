@@ -20,8 +20,9 @@ class SimpleRouter implements Application\IRouter
 {
 	use Nette\SmartObject;
 
-	const PRESENTER_KEY = 'presenter';
-	const MODULE_KEY = 'module';
+	public const
+		PRESENTER_KEY = 'presenter',
+		MODULE_KEY = 'module';
 
 	/** @var string */
 	private $module = '';

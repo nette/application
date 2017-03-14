@@ -22,8 +22,9 @@ class Route implements Application\IRouter
 {
 	use Nette\SmartObject;
 
-	const PRESENTER_KEY = 'presenter';
-	const MODULE_KEY = 'module';
+	public const
+		PRESENTER_KEY = 'presenter',
+		MODULE_KEY = 'module';
 
 	/** url type */
 	private const
@@ -32,12 +33,13 @@ class Route implements Application\IRouter
 		RELATIVE = 3;
 
 	/** key used in {@link Route::$styles} or metadata {@link Route::__construct} */
-	const VALUE = 'value';
-	const PATTERN = 'pattern';
-	const FILTER_IN = 'filterIn';
-	const FILTER_OUT = 'filterOut';
-	const FILTER_TABLE = 'filterTable';
-	const FILTER_STRICT = 'filterStrict';
+	public const
+		VALUE = 'value',
+		PATTERN = 'pattern',
+		FILTER_IN = 'filterIn',
+		FILTER_OUT = 'filterOut',
+		FILTER_TABLE = 'filterTable',
+		FILTER_STRICT = 'filterStrict';
 
 	/** fixity types - how to handle default value? {@link Route::$metadata} */
 	private const

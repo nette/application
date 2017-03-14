@@ -26,13 +26,13 @@ class Request
 	use Nette\SmartObject;
 
 	/** method */
-	const FORWARD = 'FORWARD';
+	public const FORWARD = 'FORWARD';
 
 	/** flag */
-	const SECURED = 'secured';
+	public const SECURED = 'secured';
 
 	/** flag */
-	const RESTORED = 'restored';
+	public const RESTORED = 'restored';
 
 	/** @var string|NULL */
 	private $method;

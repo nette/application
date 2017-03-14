@@ -18,7 +18,7 @@ use Nette;
 interface IRouter
 {
 	/** only matching route */
-	const ONE_WAY = 0b0001;
+	public const ONE_WAY = 0b0001;
 
 	/**
 	 * Maps HTTP request to a Request object.
