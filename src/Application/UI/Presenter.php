@@ -1156,12 +1156,15 @@ abstract class Presenter extends Control implements Application\IPresenter
 			}
 
 			$components = $this->getReflection()->getPersistentComponents();
-			$iterator = $this->getComponents(TRUE, IStatePersistent::class);
+			$iterator = $this->getComponents(TRUE);
 
 			foreach ($iterator as $name => $component) {
 				if ($iterator->getDepth() === 0) {
 					// counts with Nette\Application\RecursiveIteratorIterator::SELF_FIRST
 					$since = isset($components[$name]['since']) ? $components[$name]['since'] : FALSE; // FALSE = nonpersistent
+				}
+				if (!$component instanceof IStatePersistent) {
+					continue;
 				}
 				$prefix = $component->getUniqueId() . self::NAME_SEPARATOR;
 				$params = [];
