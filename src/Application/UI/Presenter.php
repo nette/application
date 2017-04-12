@@ -63,7 +63,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	public $absoluteUrls = FALSE;
 
 	/** @var array */
-	private $globalParams;
+	private $globalParams = [];
 
 	/** @var array */
 	private $globalState;
