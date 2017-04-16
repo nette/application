@@ -628,6 +628,16 @@ class Route implements Application\IRouter
 	}
 
 
+	/**
+	 * Returns internal metadata.
+	 * @return array
+	 */
+	public function getMetadata()
+	{
+		return $this->metadata;
+	}
+
+
 	/********************* Utilities ****************d*g**/
 
 
