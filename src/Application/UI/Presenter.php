@@ -675,7 +675,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	{
 		if (!$this->isAjax() && ($this->request->isMethod('get') || $this->request->isMethod('head'))) {
 			try {
-				$url = $this->createRequest($this, $this->action, $this->getGlobalState() + $this->request->getParameters(), 'redirectX');
+				$url = $this->createRequest($this, $this->action, $this->getGlobalState() + $this->request->getParameters(), 'redirect');
 			} catch (InvalidLinkException $e) {
 			}
 			if (isset($url) && !$this->httpRequest->getUrl()->isEqual($url)) {
