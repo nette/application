@@ -335,6 +335,12 @@ class Route implements Application\IRouter
 			}
 		}
 
+		array_walk_recursive($params, function (&$value) {
+			if ($value instanceof IObjectParameter) {
+				$value = (string) $value;
+			}
+		});
+
 		// compositing path
 		$sequence = $this->sequence;
 		$brackets = [];
