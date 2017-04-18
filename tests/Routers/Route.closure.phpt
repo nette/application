@@ -18,7 +18,7 @@ require __DIR__ . '/Route.php';
 $closure = function() {};
 $route = new Route('<id>', $closure);
 
-testRouteIn($route, '/12', 'Nette:Micro', [
+testRouteIn($route, '/12', 'NetteModule:Micro', [
 	'id' => '12',
 	'test' => 'testvalue',
 	'callback' => $closure,

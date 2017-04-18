@@ -129,7 +129,7 @@ class Route implements Application\IRouter
 			}
 		} elseif ($metadata instanceof \Closure) {
 			$metadata = [
-				self::PRESENTER_KEY => 'Nette:Micro',
+				self::PRESENTER_KEY => 'NetteModule:Micro',
 				'callback' => $metadata,
 			];
 		}
