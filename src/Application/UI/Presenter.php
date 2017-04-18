@@ -671,11 +671,16 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * Conditional redirect to canonicalized URI.
 	 * @throws Nette\Application\AbortException
 	 */
-	public function canonicalize(): void
+	public function canonicalize(string $destination = NULL, array $args = []): void
 	{
 		if (!$this->isAjax() && ($this->request->isMethod('get') || $this->request->isMethod('head'))) {
 			try {
-				$url = $this->createRequest($this, $this->action, $this->getGlobalState() + $this->request->getParameters(), 'redirectX');
+				$url = $this->createRequest(
+					$this,
+					$destination ?: $this->action,
+					$args + $this->getGlobalState() + $this->request->getParameters(),
+					'redirectX'
+				);
 			} catch (InvalidLinkException $e) {
 			}
 			if (isset($url) && !$this->httpRequest->getUrl()->isEqual($url)) {
