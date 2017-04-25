@@ -37,7 +37,7 @@ class Application
 	/** @var callable[]  function (Application $sender, Request $request); Occurs when a new request is received */
 	public $onRequest;
 
-	/** @var callable[]  function (Application $sender, Presenter $presenter); Occurs when a presenter is created */
+	/** @var callable[]  function (Application $sender, IPresenter $presenter); Occurs when a presenter is created */
 	public $onPresenter;
 
 	/** @var callable[]  function (Application $sender, IResponse $response); Occurs when a new response is ready for dispatch */
