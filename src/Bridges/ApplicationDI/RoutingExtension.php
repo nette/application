@@ -19,6 +19,7 @@ class RoutingExtension extends Nette\DI\CompilerExtension
 	public $defaults = [
 		'debugger' => NULL,
 		'routes' => [], // of [mask => action]
+		'routeClass' => NULL,
 		'cache' => FALSE,
 	];
 
@@ -42,8 +43,9 @@ class RoutingExtension extends Nette\DI\CompilerExtension
 			->setClass(Nette\Application\IRouter::class)
 			->setFactory(Nette\Application\Routers\RouteList::class);
 
+		$routeClass = $config['routeClass'] ?: 'Nette\Application\Routers\Route';
 		foreach ($config['routes'] as $mask => $action) {
-			$router->addSetup('$service[] = new Nette\Application\Routers\Route(?, ?);', [$mask, $action]);
+			$router->addSetup('$service[] = new ' . $routeClass . '(?, ?)', [$mask, $action]);
 		}
 
 		if ($this->name === 'routing') {
