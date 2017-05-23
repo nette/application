@@ -854,7 +854,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			try {
 				$presenterClass = $this->presenterFactory->getPresenterClass($presenter);
 			} catch (Application\InvalidPresenterException $e) {
-				throw new InvalidLinkException($e->getMessage(), NULL, $e);
+				throw new InvalidLinkException($e->getMessage(), 0, $e);
 			}
 		}
 

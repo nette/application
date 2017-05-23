@@ -51,7 +51,7 @@ class LinkGenerator
 		try {
 			$class = $this->presenterFactory ? $this->presenterFactory->getPresenterClass($presenter) : NULL;
 		} catch (InvalidPresenterException $e) {
-			throw new UI\InvalidLinkException($e->getMessage(), NULL, $e);
+			throw new UI\InvalidLinkException($e->getMessage(), 0, $e);
 		}
 
 		if (is_subclass_of($class, UI\Presenter::class)) {
