@@ -89,4 +89,16 @@ namespace {
 		Assert::same('http://nette.org/en/?presenter=Homepage#frag:ment',  $generator->link('Homepage:#frag:ment'));
 	});
 
+	test(function () {
+		$generator = new LinkGenerator(new Routers\SimpleRouter, new Http\Url('http://nette.org/en/'));
+
+		$_SERVER['HTTP_X_FORWARDED_PROTO'] = 'https';
+		$_SERVER['HTTP_X_FORWARDED_PORT'] = 443;
+		Assert::same('https://nette.org/en/?presenter=Homepage',  $generator->link('Homepage:'));
+
+		unset($_SERVER['HTTP_X_FORWARDED_PROTO']);
+		unset($_SERVER['HTTP_X_FORWARDED_PORT']);
+		Assert::same('http://nette.org/en/?presenter=Homepage',  $generator->link('Homepage:'));
+	});
+
 }
