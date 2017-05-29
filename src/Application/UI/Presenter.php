@@ -1095,6 +1095,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			$iterator = $this->getComponents(TRUE);
 
 			foreach ($iterator as $name => $component) {
+				$since = NULL;
 				if ($iterator->getDepth() === 0) {
 					// counts with Nette\Application\RecursiveIteratorIterator::SELF_FIRST
 					$since = $components[$name]['since'] ?? FALSE; // FALSE = nonpersistent
