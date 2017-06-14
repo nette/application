@@ -961,20 +961,22 @@ abstract class Presenter extends Control implements Application\IPresenter
 			$args[self::FLASH_KEY] = $this->getFlashKey();
 		}
 
-		$this->lastCreatedRequest = new Application\Request(
-			$presenter,
-			Application\Request::FORWARD,
-			$args,
-			[],
-			[]
-		);
+		$this->lastCreatedRequest = new Application\Request($presenter, Application\Request::FORWARD, $args);
 		$this->lastCreatedRequestFlag = ['current' => $current];
 
-		if ($mode === 'forward' || $mode === 'test') {
-			return;
-		}
+		return $mode === 'forward' || $mode === 'test'
+			? NULL
+			: $this->requestToUrl($this->lastCreatedRequest, $mode === 'link' && $scheme === FALSE) . $fragment;
+	}
 
-		// CONSTRUCT URL
+
+	/**
+	 * Converts Request to URL.
+	 * @return string
+	 * @internal
+	 */
+	protected function requestToUrl(Application\Request $request, $relative = NULL)
+	{
 		if ($this->refUrlCache === NULL) {
 			$this->refUrlCache = new Http\Url($this->httpRequest->getUrl());
 			$this->refUrlCache->setPath($this->httpRequest->getUrl()->getScriptPath());
@@ -982,22 +984,23 @@ abstract class Presenter extends Control implements Application\IPresenter
 		if (!$this->router) {
 			throw new Nette\InvalidStateException('Unable to generate URL, service Router has not been set.');
 		}
-		$url = $this->router->constructUrl($this->lastCreatedRequest, $this->refUrlCache);
+
+		$url = $this->router->constructUrl($request, $this->refUrlCache);
 		if ($url === NULL) {
-			unset($args[self::ACTION_KEY]);
-			$params = urldecode(http_build_query($args, NULL, ', '));
-			throw new InvalidLinkException("No route for $presenter:$action($params)");
+			$params = $request->getParameters();
+			unset($params[self::ACTION_KEY]);
+			$params = urldecode(http_build_query($params, '', ', '));
+			throw new InvalidLinkException("No route for {$request->getPresenterName()}:{$request->getParameter('action')}($params)");
 		}
 
-		// make URL relative if possible
-		if ($mode === 'link' && $scheme === FALSE && !$this->absoluteUrls) {
+		if ($relative === NULL ? !$this->absoluteUrls : $relative) {
 			$hostUrl = $this->refUrlCache->getHostUrl() . '/';
 			if (strncmp($url, $hostUrl, strlen($hostUrl)) === 0) {
 				$url = substr($url, strlen($hostUrl) - 1);
 			}
 		}
 
-		return $url . $fragment;
+		return $url;
 	}
 
 
