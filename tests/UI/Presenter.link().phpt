@@ -68,7 +68,7 @@ class TestPresenter extends Application\UI\Presenter
 		$this->invalidLinkMode = self::INVALID_LINK_TEXTUAL;
 
 		// standard
-		Assert::same('#error: Destination must be non-empty string.', $this->link(''));
+		Assert::same("#error: Invalid destination ''.", $this->link(''));
 		Assert::same('/index.php?action=params&presenter=Test', $this->link('params'));
 		Assert::same(['pint' => NULL, 'parr' => NULL, 'pbool' => NULL, 'action' => 'params'], $this->getLastCreatedRequest()->getParameters());
 		Assert::same('http://localhost/index.php?action=params&presenter=Test', $this->link('//params'));
@@ -104,7 +104,7 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same(['p' => 123], $this->getLastCreatedRequest()->getParameters());
 
 		// signal link
-		Assert::same('#error: Signal must be non-empty string.', $this->link('!'));
+		Assert::same('#error: Signal must be non-empty string.', $this->link('mycontrol:!'));
 		Assert::same('/index.php?action=default&presenter=Test', $this->link('this', ['p' => $this->p]));
 		Assert::same('/index.php?action=default&presenter=Test', $this->link('this!', ['p' => $this->p]));
 		Assert::same('/index.php?action=default&do=signal&presenter=Test', $this->link('signal!', ['p' => $this->p]));
@@ -113,7 +113,7 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same(['x' => NULL, 'y' => 2, 'pint' => NULL, 'parr' => NULL, 'pbool' => NULL, 'mycontrol-order' => NULL, 'mycontrol-round' => NULL, 'action' => 'default', 'do' => 'signal'], $this->getLastCreatedRequest()->getParameters());
 
 		// Component link
-		Assert::same('#error: Signal must be non-empty string.', $this['mycontrol']->link('', 0, 1));
+		Assert::same("#error: Invalid destination ''.", $this['mycontrol']->link('', 0, 1));
 		Assert::same('/index.php?mycontrol-x=0&mycontrol-y=1&action=default&do=mycontrol-click&presenter=Test', $this['mycontrol']->link('click', 0, 1));
 		Assert::same('/index.php?mycontrol-x=0a&mycontrol-y=1a&action=default&do=mycontrol-click&presenter=Test', $this['mycontrol']->link('click', '0a', '1a'));
 		Assert::same('/index.php?mycontrol-x=1&action=default&do=mycontrol-click&presenter=Test', $this['mycontrol']->link('click', [1]));

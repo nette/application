@@ -726,52 +726,30 @@ abstract class Presenter extends Control implements Application\IPresenter
 		$this->lastCreatedRequest = $this->lastCreatedRequestFlag = NULL;
 
 		// PARSE DESTINATION
-		// 1) fragment
-		$a = strpos($destination, '#');
-		if ($a === FALSE) {
-			$fragment = '';
-		} else {
-			$fragment = substr($destination, $a);
-			$destination = substr($destination, 0, $a);
+		if (!preg_match('~^ (?<absolute>//)?+ (?<path>[^!?#]++) (?<signal>!)?+ (?<query>\?[^#]*)?+ (?<fragment>\#.*)?+ $~x', $destination, $parts)) {
+			throw new InvalidLinkException("Invalid destination '$destination'.");
 		}
 
-		// 2) ?query syntax
-		$a = strpos($destination, '?');
-		if ($a !== FALSE) {
-			parse_str(substr($destination, $a + 1), $args);
-			$destination = substr($destination, 0, $a);
+		$path = $parts['path'];
+		if (!empty($parts['query'])) {
+			parse_str(substr($parts['query'], 1), $args);
 		}
 
-		// 3) URL scheme
-		$a = strpos($destination, '//');
-		if ($a === FALSE) {
-			$scheme = FALSE;
-		} else {
-			$scheme = substr($destination, 0, $a);
-			$destination = substr($destination, $a + 2);
-		}
-
-		// 4) signal or empty
-		if (!$component instanceof self || substr($destination, -1) === '!') {
-			[$cname, $signal] = Helpers::splitName(rtrim($destination, '!'));
+		if (!$component instanceof self || !empty($parts['signal'])) {
+			[$cname, $signal] = Helpers::splitName($path);
 			if ($cname !== '') {
 				$component = $component->getComponent(strtr($cname, ':', '-'));
 			}
 			if ($signal === '') {
 				throw new InvalidLinkException('Signal must be non-empty string.');
 			}
-			$destination = 'this';
+			$path = 'this';
 		}
 
-		if ($destination == NULL) {  // intentionally ==
-			throw new InvalidLinkException('Destination must be non-empty string.');
-		}
-
-		// 5) presenter: action
 		$current = FALSE;
-		[$presenter, $action] = Helpers::splitName($destination);
+		[$presenter, $action] = Helpers::splitName($path);
 		if ($presenter === '') {
-			$action = $destination === 'this' ? $this->action : $action;
+			$action = $path === 'this' ? $this->action : $action;
 			$presenter = $this->getName();
 			$presenterClass = get_class($this);
 
@@ -853,7 +831,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 					throw new InvalidLinkException("Unable to pass parameters to action '$presenter:$action', missing corresponding method.");
 				}
 			} else {
-				self::argsToParams($presenterClass, $method, $args, $destination === 'this' ? $this->params : [], $missing);
+				self::argsToParams($presenterClass, $method, $args, $path === 'this' ? $this->params : [], $missing);
 			}
 
 			// counterpart of IStatePersistent
@@ -865,7 +843,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 				$this->saveGlobalState();
 			}
 
-			$globalState = $this->getGlobalState($destination === 'this' ? NULL : $presenterClass);
+			$globalState = $this->getGlobalState($path === 'this' ? NULL : $presenterClass);
 			if ($current && $args) {
 				$tmp = $globalState + $this->params;
 				foreach ($args as $key => $val) {
@@ -903,7 +881,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 		return $mode === 'forward' || $mode === 'test'
 			? NULL
-			: $this->requestToUrl($this->lastCreatedRequest, $mode === 'link' && $scheme === FALSE) . $fragment;
+			: $this->requestToUrl($this->lastCreatedRequest, $mode === 'link' && !$parts['absolute']) . ($parts['fragment'] ?? '');
 	}
 
 
