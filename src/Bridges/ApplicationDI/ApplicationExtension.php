@@ -20,7 +20,7 @@ use Composer\Autoload\ClassLoader;
  */
 class ApplicationExtension extends Nette\DI\CompilerExtension
 {
-	public $defaults = [
+	private $defaults = [
 		'debugger' => NULL,
 		'errorPresenter' => 'Nette:Error',
 		'catchExceptions' => NULL,
