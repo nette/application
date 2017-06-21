@@ -725,17 +725,11 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 		$this->lastCreatedRequest = $this->lastCreatedRequestFlag = NULL;
 
-		// PARSE DESTINATION
-		if (!preg_match('~^ (?<absolute>//)?+ (?<path>[^!?#]++) (?<signal>!)?+ (?<query>\?[^#]*)?+ (?<fragment>\#.*)?+ $~x', $destination, $parts)) {
-			throw new InvalidLinkException("Invalid destination '$destination'.");
-		}
-
+		$parts = $this->parseDestination($destination);
 		$path = $parts['path'];
-		if (!empty($parts['query'])) {
-			parse_str(substr($parts['query'], 1), $args);
-		}
+		$args = $parts['args'] ?? $args;
 
-		if (!$component instanceof self || !empty($parts['signal'])) {
+		if (!$component instanceof self || $parts['signal']) {
 			[$cname, $signal] = Helpers::splitName($path);
 			if ($cname !== '') {
 				$component = $component->getComponent(strtr($cname, ':', '-'));
@@ -881,7 +875,30 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 		return $mode === 'forward' || $mode === 'test'
 			? NULL
-			: $this->requestToUrl($this->lastCreatedRequest, $mode === 'link' && !$parts['absolute']) . ($parts['fragment'] ?? '');
+			: $this->requestToUrl($this->lastCreatedRequest, $mode === 'link' && !$parts['absolute']) . $parts['fragment'];
+	}
+
+
+	/**
+	 * Parse destination in format "[//] [[[module:]presenter:]action | signal! | this] [?query] [#fragment]"
+	 * @throws InvalidLinkException
+	 * @internal
+	 */
+	public static function parseDestination(string $destination): array
+	{
+		if (!preg_match('~^ (?<absolute>//)?+ (?<path>[^!?#]++) (?<signal>!)?+ (?<query>\?[^#]*)?+ (?<fragment>\#.*)?+ $~x', $destination, $matches)) {
+			throw new InvalidLinkException("Invalid destination '$destination'.");
+		}
+		if (!empty($matches['query'])) {
+			parse_str(substr($matches['query'], 1), $args);
+		}
+		return [
+			'absolute' => (bool) $matches['absolute'],
+			'path' => $matches['path'],
+			'signal' => !empty($matches['signal']),
+			'args' => $args ?? NULL,
+			'fragment' => $matches['fragment'] ?? '',
+		];
 	}
 
 
