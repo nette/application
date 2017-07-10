@@ -39,5 +39,4 @@ class CallbackResponse implements Nette\Application\IResponse
 	{
 		($this->callback)($httpRequest, $httpResponse);
 	}
-
 }

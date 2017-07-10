@@ -38,6 +38,7 @@ class TestPresenter extends Nette\Application\UI\Presenter
 		});
 	}
 
+
 	public function render()
 	{
 		$latte = new Latte\Engine;

@@ -7,9 +7,9 @@
 declare(strict_types=1);
 
 use Nette\Application\UI;
+use Nette\Bridges\ApplicationLatte\ILatteFactory;
 use Nette\Bridges\ApplicationLatte\Template;
 use Nette\Bridges\ApplicationLatte\TemplateFactory;
-use Nette\Bridges\ApplicationLatte\ILatteFactory;
 use Tester\Assert;
 
 
@@ -20,15 +20,18 @@ class TemplateMock extends Template
 {
 	private $file = 'ko';
 
+
 	public function render(): void
 	{
 		echo strrev($this->file);
 	}
 
+
 	public function setFile(string $file)
 	{
 		$this->file = $file;
 	}
+
 
 	public function getFile(): string
 	{

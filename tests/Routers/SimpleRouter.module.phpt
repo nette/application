@@ -6,8 +6,8 @@
 
 declare(strict_types=1);
 
-use Nette\Http;
 use Nette\Application;
+use Nette\Http;
 use Tester\Assert;
 
 

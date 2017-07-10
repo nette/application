@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace Nette\Bridges\ApplicationLatte;
 
-use Nette;
 use Latte;
+use Nette;
 
 
 /**
@@ -27,5 +27,4 @@ class Loader extends Latte\Loaders\FileLoader
 		parent::__construct();
 		$this->presenter = $presenter;
 	}
-
 }

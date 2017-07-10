@@ -6,8 +6,8 @@
 
 declare(strict_types=1);
 
-use Nette\Bridges\ApplicationLatte\UIMacros;
 use Nette\Bridges\ApplicationLatte\SnippetBridge;
+use Nette\Bridges\ApplicationLatte\UIMacros;
 use Tester\Assert;
 
 
@@ -17,7 +17,6 @@ require __DIR__ . '/../bootstrap.php';
 
 class TestPresenter extends Nette\Application\UI\Presenter
 {
-
 	public function render()
 	{
 		$latte = new Latte\Engine;
@@ -27,6 +26,7 @@ class TestPresenter extends Nette\Application\UI\Presenter
 		$latte->addProvider('snippetBridge', new SnippetBridge($this));
 		$latte->render('{snippet foo}{php $presenter->renderFoo()}{/snippet}', ['presenter' => $this]);
 	}
+
 
 	public function renderFoo()
 	{

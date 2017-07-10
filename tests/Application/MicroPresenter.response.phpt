@@ -14,7 +14,8 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-function renderResponse(Nette\Application\Responses\TextResponse $response) {
+function renderResponse(Nette\Application\Responses\TextResponse $response)
+{
 	ob_start();
 	try {
 		$response->send(new Http\Request(new Http\UrlScript()), new Http\Response(NULL));
@@ -26,7 +27,8 @@ function renderResponse(Nette\Application\Responses\TextResponse $response) {
 }
 
 
-function createContainer() {
+function createContainer()
+{
 	$latteFactory = Mockery::mock(Nette\Bridges\ApplicationLatte\ILatteFactory::class);
 	$latteFactory->shouldReceive('create')->andReturn(new Latte\Engine);
 	$container = Mockery::mock(Nette\DI\Container::class);

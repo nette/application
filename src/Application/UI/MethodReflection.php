@@ -37,5 +37,4 @@ class MethodReflection extends \ReflectionMethod
 		$res = ComponentReflection::parseAnnotation($this, $name);
 		return $res ? end($res) : NULL;
 	}
-
 }

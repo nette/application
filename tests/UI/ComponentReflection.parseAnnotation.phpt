@@ -28,7 +28,9 @@ require __DIR__ . '/../bootstrap.php';
  * @secured(role = "admin", level = 2)
  * @Secured\User(loggedIn)
  */
-class TestClass {}
+class TestClass
+{
+}
 
 
 $rc = new ReflectionClass('TestClass');

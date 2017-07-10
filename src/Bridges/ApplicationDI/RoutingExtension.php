@@ -84,5 +84,4 @@ class RoutingExtension extends Nette\DI\CompilerExtension
 			$method->setBody('return unserialize(?);', [$s]);
 		}
 	}
-
 }

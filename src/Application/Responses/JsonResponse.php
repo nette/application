@@ -59,5 +59,4 @@ class JsonResponse implements Nette\Application\IResponse
 		$httpResponse->setContentType($this->contentType, 'utf-8');
 		echo Nette\Utils\Json::encode($this->payload);
 	}
-
 }

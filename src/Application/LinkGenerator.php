@@ -85,5 +85,4 @@ class LinkGenerator
 		}
 		return $url . $frag;
 	}
-
 }

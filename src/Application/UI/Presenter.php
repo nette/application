@@ -11,8 +11,8 @@ namespace Nette\Application\UI;
 
 use Nette;
 use Nette\Application;
-use Nette\Application\Responses;
 use Nette\Application\Helpers;
+use Nette\Application\Responses;
 use Nette\Http;
 
 
@@ -1328,5 +1328,4 @@ abstract class Presenter extends Control implements Application\IPresenter
 		}
 		return $this->templateFactory;
 	}
-
 }

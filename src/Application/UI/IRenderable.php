@@ -25,5 +25,4 @@ interface IRenderable
 	 * Is required to repaint the control?
 	 */
 	function isControlInvalid(): bool;
-
 }

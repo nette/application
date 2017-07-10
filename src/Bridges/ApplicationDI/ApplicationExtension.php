@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace Nette\Bridges\ApplicationDI;
 
+use Composer\Autoload\ClassLoader;
 use Nette;
 use Nette\Application\UI;
 use Tracy;
-use Composer\Autoload\ClassLoader;
 
 
 /**
@@ -160,5 +160,4 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 		}
 		return $presenters;
 	}
-
 }

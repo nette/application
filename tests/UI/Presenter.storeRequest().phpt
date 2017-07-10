@@ -6,9 +6,8 @@
 
 declare(strict_types=1);
 
-use Nette\Http;
 use Nette\Application;
-use Nette\DI;
+use Nette\Http;
 use Nette\Security;
 use Tester\Assert;
 
@@ -28,7 +27,11 @@ class MockSession extends Http\Session
 {
 	public $testSection;
 
-	public function __construct() {}
+
+	public function __construct()
+	{
+	}
+
 
 	public function getSection(string $section, string $class = Nette\Http\SessionSection::class): Nette\Http\SessionSection
 	{
@@ -44,9 +47,11 @@ class MockSessionSection extends Nette\Http\SessionSection
 	public $testExpiration;
 	public $testExpirationVariables;
 
+
 	public function __construct()
 	{
 	}
+
 
 	public function __isset(string $name): bool
 	{
@@ -54,11 +59,13 @@ class MockSessionSection extends Nette\Http\SessionSection
 		return FALSE;
 	}
 
+
 	public function __set(string $name, $value): void
 	{
 		$this->storedKey = $name;
 		$this->storedValue = $value;
 	}
+
 
 	public function setExpiration($expiraton, $variables = NULL)
 	{
@@ -66,23 +73,35 @@ class MockSessionSection extends Nette\Http\SessionSection
 		$this->testExpirationVariables = $variables;
 	}
 
+
 	public function offsetExists($name): bool
 	{
 		return $this->__isset($name);
 	}
+
 
 	public function offsetSet($name, $value): void
 	{
 		$this->__set($name, $value);
 	}
 
-	public function offsetGet($name) {}
-	public function offsetUnset($name): void {}
+
+	public function offsetGet($name)
+	{
+	}
+
+
+	public function offsetUnset($name): void
+	{
+	}
 }
 
 class MockUser extends Security\User
 {
-	public function __construct() {}
+	public function __construct()
+	{
+	}
+
 
 	public function getId()
 	{

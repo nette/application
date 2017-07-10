@@ -239,5 +239,4 @@ class ComponentReflection extends \ReflectionClass
 		}
 		return $res;
 	}
-
 }

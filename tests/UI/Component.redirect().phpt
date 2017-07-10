@@ -6,8 +6,8 @@
 
 declare(strict_types=1);
 
-use Nette\Http;
 use Nette\Application;
+use Nette\Http;
 use Tester\Assert;
 
 
@@ -18,9 +18,11 @@ class TestPresenter extends Application\UI\Presenter
 {
 	public $response;
 
+
 	function actionFoo($val)
 	{
 	}
+
 
 	function sendResponse(Application\IResponse $response): void
 	{

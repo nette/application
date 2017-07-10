@@ -57,5 +57,4 @@ class PresenterFactoryCallback
 
 		return $this->container->createService($services[0]);
 	}
-
 }

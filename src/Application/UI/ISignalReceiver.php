@@ -15,7 +15,5 @@ namespace Nette\Application\UI;
  */
 interface ISignalReceiver
 {
-
 	function signalReceived(string $signal): void; // handleSignal
-
 }

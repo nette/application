@@ -32,5 +32,4 @@ class Multiplier extends Component
 	{
 		return ($this->factory)($name, $this);
 	}
-
 }

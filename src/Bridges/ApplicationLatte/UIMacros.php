@@ -9,11 +9,11 @@ declare(strict_types=1);
 
 namespace Nette\Bridges\ApplicationLatte;
 
-use Nette;
 use Latte;
+use Latte\CompileException;
 use Latte\MacroNode;
 use Latte\PhpWriter;
-use Latte\CompileException;
+use Nette;
 use Nette\Utils\Strings;
 
 
@@ -148,5 +148,4 @@ class UIMacros extends Latte\Macros\MacroSet
 		}
 		$this->extends = $writer->write('$this->parentName = $this->global->uiPresenter->findLayoutTemplateFile();');
 	}
-
 }

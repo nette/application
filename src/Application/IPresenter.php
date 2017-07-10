@@ -15,7 +15,5 @@ namespace Nette\Application;
  */
 interface IPresenter
 {
-
 	function run(Request $request): IResponse;
-
 }

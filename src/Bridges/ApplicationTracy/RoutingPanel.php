@@ -153,5 +153,4 @@ class RoutingPanel implements Tracy\IBarPanel
 
 		$this->source = isset($method) && $rc->hasMethod($method) ? $rc->getMethod($method) : $rc;
 	}
-
 }

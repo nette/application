@@ -29,5 +29,4 @@ interface IRouter
 	 * Constructs absolute URL from Request object.
 	 */
 	function constructUrl(Request $appRequest, Nette\Http\Url $refUrl): ?string;
-
 }

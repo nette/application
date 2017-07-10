@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace Nette\Bridges\ApplicationLatte;
 
-use Nette;
 use Latte;
+use Nette;
 
 
 /**
@@ -188,5 +188,4 @@ class Template implements Nette\Application\UI\ITemplate
 	{
 		unset($this->params[$name]);
 	}
-
 }
