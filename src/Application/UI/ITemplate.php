@@ -29,7 +29,7 @@ interface ITemplate
 
 	/**
 	 * Returns the path to the template file.
-	 * @return string|NULL
+	 * @return string|null
 	 */
 	function getFile();
 }

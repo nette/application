@@ -17,9 +17,9 @@ use Nette;
 class LatteExtension extends Nette\DI\CompilerExtension
 {
 	public $defaults = [
-		'xhtml' => FALSE,
+		'xhtml' => false,
 		'macros' => [],
-		'templateClass' => NULL,
+		'templateClass' => null,
 	];
 
 	/** @var bool */
@@ -29,7 +29,7 @@ class LatteExtension extends Nette\DI\CompilerExtension
 	private $tempDir;
 
 
-	public function __construct($tempDir, $debugMode = FALSE)
+	public function __construct($tempDir, $debugMode = false)
 	{
 		$this->tempDir = $tempDir;
 		$this->debugMode = $debugMode;
@@ -79,7 +79,7 @@ class LatteExtension extends Nette\DI\CompilerExtension
 		$definition = $builder->getDefinition($this->prefix('latteFactory'));
 
 		if (isset($macro[0]) && $macro[0] === '@') {
-			if (strpos($macro, '::') === FALSE) {
+			if (strpos($macro, '::') === false) {
 				$method = 'install';
 			} else {
 				list($macro, $method) = explode('::', $macro);
@@ -87,7 +87,7 @@ class LatteExtension extends Nette\DI\CompilerExtension
 			$definition->addSetup('?->onCompile[] = function ($engine) { ?->' . $method . '($engine->getCompiler()); }', ['@self', $macro]);
 
 		} else {
-			if (strpos($macro, '::') === FALSE && class_exists($macro)) {
+			if (strpos($macro, '::') === false && class_exists($macro)) {
 				$macro .= '::install';
 			}
 			$definition->addSetup('?->onCompile[] = function ($engine) { ' . $macro . '($engine->getCompiler()); }', ['@self']);

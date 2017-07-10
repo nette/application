@@ -13,7 +13,7 @@ require __DIR__ . '/Route.php';
 
 
 $route = new Route('<presenter>/<action>/<id \d{1,3}>/', [
-	'extra' => NULL,
+	'extra' => null,
 ]);
 
 testRouteIn($route, '/presenter/action/12/any');
@@ -21,7 +21,7 @@ testRouteIn($route, '/presenter/action/12/any');
 testRouteIn($route, '/presenter/action/12', 'Presenter', [
 	'action' => 'action',
 	'id' => '12',
-	'extra' => NULL,
+	'extra' => null,
 	'test' => 'testvalue',
 ], '/presenter/action/12/?test=testvalue');
 

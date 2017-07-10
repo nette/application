@@ -23,10 +23,10 @@ $route = new Route('<parameter>', [
 	'presenter' => 'presenter',
 	'parameter' => [
 		Route::FILTER_IN => function ($s) use ($identityMap) {
-			return isset($identityMap[$s]) ? $identityMap[$s] : NULL;
+			return isset($identityMap[$s]) ? $identityMap[$s] : null;
 		},
 		Route::FILTER_OUT => function ($obj) {
-			return $obj instanceof RouterObject ? $obj->getId() : NULL;
+			return $obj instanceof RouterObject ? $obj->getId() : null;
 		},
 	],
 ]);
@@ -47,7 +47,7 @@ Assert::same('http://example.com/1', testRouteOut($route, 'presenter', [
 testRouteIn($route, '/3/');
 
 Assert::null(testRouteOut($route, 'presenter', [
-	'parameter' => NULL,
+	'parameter' => null,
 ]));
 
 

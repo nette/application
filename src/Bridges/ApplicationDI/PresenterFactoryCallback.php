@@ -22,7 +22,7 @@ class PresenterFactoryCallback
 	/** @var int */
 	private $invalidLinkMode;
 
-	/** @var string|NULL */
+	/** @var string|null */
 	private $touchToRefresh;
 
 
@@ -50,7 +50,7 @@ class PresenterFactoryCallback
 
 			$presenter = $this->container->createInstance($class);
 			$this->container->callInjects($presenter);
-			if ($presenter instanceof Nette\Application\UI\Presenter && $presenter->invalidLinkMode === NULL) {
+			if ($presenter instanceof Nette\Application\UI\Presenter && $presenter->invalidLinkMode === null) {
 				$presenter->invalidLinkMode = $this->invalidLinkMode;
 			}
 			return $presenter;

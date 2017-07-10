@@ -17,17 +17,17 @@ use Tracy;
 class RoutingExtension extends Nette\DI\CompilerExtension
 {
 	public $defaults = [
-		'debugger' => NULL,
+		'debugger' => null,
 		'routes' => [], // of [mask => action]
-		'routeClass' => NULL,
-		'cache' => FALSE,
+		'routeClass' => null,
+		'cache' => false,
 	];
 
 	/** @var bool */
 	private $debugMode;
 
 
-	public function __construct($debugMode = FALSE)
+	public function __construct($debugMode = false)
 	{
 		$this->defaults['debugger'] = interface_exists(Tracy\IBarPanel::class);
 		$this->debugMode = $debugMode;

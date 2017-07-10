@@ -20,7 +20,7 @@ $route = new Route('<param>', [
 ]);
 
 $url = $route->constructUrl(
-	new Request('Presenter', NULL, ['param' => 'any']),
+	new Request('Presenter', null, ['param' => 'any']),
 	new Url('https://example.org')
 );
 Assert::same('https://example.org/any', $url);
@@ -36,7 +36,7 @@ testRouteIn($route, '/any', 'Presenter', [
 ], 'https://example.com/any?test=testvalue');
 
 $url = $route->constructUrl(
-	new Request('Presenter', NULL, ['param' => 'any']),
+	new Request('Presenter', null, ['param' => 'any']),
 	new Url('http://example.org')
 );
 Assert::same('https://example.org/any', $url);

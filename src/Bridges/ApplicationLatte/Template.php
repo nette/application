@@ -47,7 +47,7 @@ class Template implements Nette\Application\UI\ITemplate
 	 * Renders template to output.
 	 * @return void
 	 */
-	public function render($file = NULL, array $params = [])
+	public function render($file = null, array $params = [])
 	{
 		$this->latte->render($file ?: $this->file, $params + $this->params);
 	}
@@ -79,7 +79,7 @@ class Template implements Nette\Application\UI\ITemplate
 
 	/**
 	 * Registers run-time filter.
-	 * @param  string|NULL
+	 * @param  string|null
 	 * @param  callable
 	 * @return static
 	 */
@@ -105,9 +105,9 @@ class Template implements Nette\Application\UI\ITemplate
 	 * Sets translate adapter.
 	 * @return static
 	 */
-	public function setTranslator(Nette\Localization\ITranslator $translator = NULL)
+	public function setTranslator(Nette\Localization\ITranslator $translator = null)
 	{
-		$this->latte->addFilter('translate', $translator === NULL ? NULL : function (Latte\Runtime\FilterInfo $fi, ...$args) use ($translator) {
+		$this->latte->addFilter('translate', $translator === null ? null : function (Latte\Runtime\FilterInfo $fi, ...$args) use ($translator) {
 			return $translator->translate(...$args);
 		});
 		return $this;
@@ -130,7 +130,7 @@ class Template implements Nette\Application\UI\ITemplate
 
 
 	/**
-	 * @return string|NULL
+	 * @return string|null
 	 */
 	public function getFile()
 	{

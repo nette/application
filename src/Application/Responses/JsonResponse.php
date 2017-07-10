@@ -28,7 +28,7 @@ class JsonResponse implements Nette\Application\IResponse
 	 * @param  mixed   payload
 	 * @param  string  MIME content type
 	 */
-	public function __construct($payload, $contentType = NULL)
+	public function __construct($payload, $contentType = null)
 	{
 		$this->payload = $payload;
 		$this->contentType = $contentType ? $contentType : 'application/json';

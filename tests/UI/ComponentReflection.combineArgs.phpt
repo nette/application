@@ -18,12 +18,12 @@ class MyPresenter
 	}
 
 
-	public function defaults($int = 0, $bool = FALSE, $str = '', $arr = [])
+	public function defaults($int = 0, $bool = false, $str = '', $arr = [])
 	{
 	}
 
 
-	public function objects(stdClass $req, stdClass $opt = NULL)
+	public function objects(stdClass $req, stdClass $opt = null)
 	{
 	}
 }
@@ -32,10 +32,10 @@ class MyPresenter
 test(function () {
 	$method = new ReflectionMethod('MyPresenter', 'params');
 
-	Assert::same([NULL, NULL, NULL, NULL], Reflection::combineArgs($method, []));
-	Assert::same([NULL, NULL, NULL, NULL], Reflection::combineArgs($method, ['int' => NULL, 'bool' => NULL, 'str' => NULL, 'arr' => NULL]));
-	Assert::same([1, TRUE, 'abc', '1'], Reflection::combineArgs($method, ['int' => 1, 'bool' => TRUE, 'str' => 'abc', 'arr' => '1']));
-	Assert::same([0, FALSE, '', ''], Reflection::combineArgs($method, ['int' => 0, 'bool' => FALSE, 'str' => '', 'arr' => '']));
+	Assert::same([null, null, null, null], Reflection::combineArgs($method, []));
+	Assert::same([null, null, null, null], Reflection::combineArgs($method, ['int' => null, 'bool' => null, 'str' => null, 'arr' => null]));
+	Assert::same([1, true, 'abc', '1'], Reflection::combineArgs($method, ['int' => 1, 'bool' => true, 'str' => 'abc', 'arr' => '1']));
+	Assert::same([0, false, '', ''], Reflection::combineArgs($method, ['int' => 0, 'bool' => false, 'str' => '', 'arr' => '']));
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['int' => []]);
@@ -46,10 +46,10 @@ test(function () {
 test(function () {
 	$method = new ReflectionMethod('MyPresenter', 'defaults');
 
-	Assert::same([0, FALSE, '', []], Reflection::combineArgs($method, []));
-	Assert::same([0, FALSE, '', []], Reflection::combineArgs($method, ['int' => NULL, 'bool' => NULL, 'str' => NULL, 'arr' => NULL]));
-	Assert::same([1, TRUE, 'abc', [1]], Reflection::combineArgs($method, ['int' => '1', 'bool' => '1', 'str' => 'abc', 'arr' => [1]]));
-	Assert::same([0, FALSE, '', []], Reflection::combineArgs($method, ['int' => 0, 'bool' => FALSE, 'str' => '', 'arr' => []]));
+	Assert::same([0, false, '', []], Reflection::combineArgs($method, []));
+	Assert::same([0, false, '', []], Reflection::combineArgs($method, ['int' => null, 'bool' => null, 'str' => null, 'arr' => null]));
+	Assert::same([1, true, 'abc', [1]], Reflection::combineArgs($method, ['int' => '1', 'bool' => '1', 'str' => 'abc', 'arr' => [1]]));
+	Assert::same([0, false, '', []], Reflection::combineArgs($method, ['int' => 0, 'bool' => false, 'str' => '', 'arr' => []]));
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['int' => '']);
@@ -75,10 +75,10 @@ test(function () {
 	}, BadRequestException::class, 'Missing parameter $req required by MyPresenter::objects()');
 
 	Assert::exception(function () use ($method) {
-		Reflection::combineArgs($method, ['req' => NULL, 'opt' => NULL]);
+		Reflection::combineArgs($method, ['req' => null, 'opt' => null]);
 	}, BadRequestException::class, 'Missing parameter $req required by MyPresenter::objects()');
 
 	Assert::exception(function () use ($method) {
-		Reflection::combineArgs($method, ['req' => $method, 'opt' => NULL]);
+		Reflection::combineArgs($method, ['req' => $method, 'opt' => null]);
 	}, BadRequestException::class, 'Argument $req passed to MyPresenter::objects() must be stdClass, ReflectionMethod given.');
 });

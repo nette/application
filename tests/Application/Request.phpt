@@ -12,17 +12,17 @@ require __DIR__ . '/../bootstrap.php';
 
 
 test(function () {
-	$request = new Request('Homepage', 'GET', ['a' => 1, 'b' => NULL]);
+	$request = new Request('Homepage', 'GET', ['a' => 1, 'b' => null]);
 
 	Assert::same(1, $request->getParameter('a'));
-	Assert::same(NULL, $request->getParameter('b'));
+	Assert::same(null, $request->getParameter('b'));
 });
 
 
 test(function () {
-	$request = new Request('Homepage', 'GET', [], ['a' => 1, 'b' => NULL]);
+	$request = new Request('Homepage', 'GET', [], ['a' => 1, 'b' => null]);
 
-	Assert::same(['a' => 1, 'b' => NULL], $request->getPost());
+	Assert::same(['a' => 1, 'b' => null], $request->getPost());
 	Assert::same(1, $request->getPost('a'));
-	Assert::same(NULL, $request->getPost('b'));
+	Assert::same(null, $request->getPost('b'));
 });

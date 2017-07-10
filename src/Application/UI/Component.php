@@ -32,9 +32,9 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	/**
 	 * Returns the presenter where this component belongs to.
 	 * @param  bool   throw exception if presenter doesn't exist?
-	 * @return Presenter|NULL
+	 * @return Presenter|null
 	 */
-	public function getPresenter($throw = TRUE)
+	public function getPresenter($throw = true)
 	{
 		return $this->lookup(Presenter::class, $throw);
 	}
@@ -47,7 +47,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	 */
 	public function getUniqueId()
 	{
-		return $this->lookupPath(Presenter::class, TRUE);
+		return $this->lookupPath(Presenter::class, true);
 	}
 
 
@@ -90,10 +90,10 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 			if ($rm->isPublic() && !$rm->isAbstract() && !$rm->isStatic()) {
 				$this->checkRequirements($rm);
 				$rm->invokeArgs($this, $rc->combineArgs($rm, $params));
-				return TRUE;
+				return true;
 			}
 		}
-		return FALSE;
+		return false;
 	}
 
 
@@ -128,7 +128,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	{
 		$reflection = $this->getReflection();
 		foreach ($reflection->getPersistentParams() as $name => $meta) {
-			if (isset($params[$name])) { // NULLs are ignored
+			if (isset($params[$name])) { // nulls are ignored
 				$type = gettype($meta['def']);
 				if (!$reflection->convertType($params[$name], $type)) {
 					throw new Nette\Application\BadRequestException(sprintf(
@@ -154,14 +154,14 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	 * @param  ComponentReflection (internal, used by Presenter)
 	 * @return void
 	 */
-	public function saveState(array &$params, $reflection = NULL)
+	public function saveState(array &$params, $reflection = null)
 	{
-		$reflection = $reflection === NULL ? $this->getReflection() : $reflection;
+		$reflection = $reflection === null ? $this->getReflection() : $reflection;
 		foreach ($reflection->getPersistentParams() as $name => $meta) {
 			if (isset($params[$name])) {
 				// injected value
 
-			} elseif (array_key_exists($name, $params)) { // NULLs are skipped
+			} elseif (array_key_exists($name, $params)) { // nulls are skipped
 				continue;
 
 			} elseif ((!isset($meta['since']) || $this instanceof $meta['since']) && isset($this->$name)) {
@@ -182,8 +182,8 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 				));
 			}
 
-			if ($params[$name] === $meta['def'] || ($meta['def'] === NULL && $params[$name] === '')) {
-				$params[$name] = NULL; // value transmit is unnecessary
+			if ($params[$name] === $meta['def'] || ($meta['def'] === null && $params[$name] === '')) {
+				$params[$name] = null; // value transmit is unnecessary
 			}
 		}
 	}
@@ -195,7 +195,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	 * @param  mixed  default value
 	 * @return mixed
 	 */
-	public function getParameter($name, $default = NULL)
+	public function getParameter($name, $default = null)
 	{
 		if (isset($this->params[$name])) {
 			return $this->params[$name];
@@ -229,7 +229,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 
 	/** @deprecated */
-	function getParam($name = NULL, $default = NULL)
+	function getParam($name = null, $default = null)
 	{
 		//trigger_error(__METHOD__ . '() is deprecated; use getParameter() instead.', E_USER_DEPRECATED);
 		return func_num_args() ? $this->getParameter($name, $default) : $this->getParameters();
@@ -279,7 +279,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	 */
 	public static function formatSignalMethod($signal)
 	{
-		return $signal == NULL ? NULL : 'handle' . $signal; // intentionally ==
+		return $signal == null ? null : 'handle' . $signal; // intentionally ==
 	}
 
 
@@ -325,9 +325,9 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	 * @return bool
 	 * @throws InvalidLinkException
 	 */
-	public function isLinkCurrent($destination = NULL, $args = [])
+	public function isLinkCurrent($destination = null, $args = [])
 	{
-		if ($destination !== NULL) {
+		if ($destination !== null) {
 			$args = func_num_args() < 3 && is_array($args) ? $args : array_slice(func_get_args(), 1);
 			$this->getPresenter()->createRequest($this, $destination, $args, 'test');
 		}
@@ -343,12 +343,12 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	 * @return void
 	 * @throws Nette\Application\AbortException
 	 */
-	public function redirect($code, $destination = NULL, $args = [])
+	public function redirect($code, $destination = null, $args = [])
 	{
 		if (!is_numeric($code)) { // first parameter is optional
 			$args = func_num_args() < 3 && is_array($destination) ? $destination : array_slice(func_get_args(), 1);
 			$destination = $code;
-			$code = NULL;
+			$code = null;
 
 		} elseif (func_num_args() > 3 || !is_array($args)) {
 			$args = array_slice(func_get_args(), 2);
@@ -366,7 +366,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	 * @return void
 	 * @throws Nette\Application\AbortException
 	 */
-	public function redirectPermanent($destination = NULL, $args = [])
+	public function redirectPermanent($destination = null, $args = [])
 	{
 		$args = func_num_args() < 3 && is_array($args) ? $args : array_slice(func_get_args(), 1);
 		$presenter = $this->getPresenter();
@@ -400,7 +400,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	 */
 	public function offsetGet($name)
 	{
-		return $this->getComponent($name, TRUE);
+		return $this->getComponent($name, true);
 	}
 
 
@@ -411,7 +411,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	 */
 	public function offsetExists($name)
 	{
-		return $this->getComponent($name, FALSE) !== NULL;
+		return $this->getComponent($name, false) !== null;
 	}
 
 
@@ -422,8 +422,8 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	 */
 	public function offsetUnset($name)
 	{
-		$component = $this->getComponent($name, FALSE);
-		if ($component !== NULL) {
+		$component = $this->getComponent($name, false);
+		if ($component !== null) {
 			$this->removeComponent($component);
 		}
 	}

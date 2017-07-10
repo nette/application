@@ -28,7 +28,7 @@ test(function () {
 });
 
 test(function () {
-	$data = TRUE;
+	$data = true;
 	$encoded = json_encode($data, JSON_UNESCAPED_UNICODE);
 	$jsonResponse = new JsonResponse($data, 'application/json');
 

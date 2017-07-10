@@ -15,7 +15,7 @@ require __DIR__ . '/Route.php';
 
 
 $route = new Route('<id=5>');
-$request = new Request('p', NULL, ['id' => 5]);
+$request = new Request('p', null, ['id' => 5]);
 
 Assert::same(
 	'http://example.com/?presenter=p',

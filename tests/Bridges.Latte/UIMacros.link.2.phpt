@@ -38,7 +38,7 @@ class MockPresenter extends MockControl
 
 	public function isAjax()
 	{
-		return FALSE;
+		return false;
 	}
 }
 

@@ -19,14 +19,14 @@ use Tracy;
 class ApplicationExtension extends Nette\DI\CompilerExtension
 {
 	public $defaults = [
-		'debugger' => NULL,
+		'debugger' => null,
 		'errorPresenter' => 'Nette:Error',
-		'catchExceptions' => NULL,
-		'mapping' => NULL,
+		'catchExceptions' => null,
+		'mapping' => null,
 		'scanDirs' => [],
-		'scanComposer' => NULL,
+		'scanComposer' => null,
 		'scanFilter' => 'Presenter',
-		'silentLinks' => FALSE,
+		'silentLinks' => false,
 	];
 
 	/** @var bool */
@@ -39,14 +39,14 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 	private $tempFile;
 
 
-	public function __construct($debugMode = FALSE, array $scanDirs = NULL, $tempDir = NULL)
+	public function __construct($debugMode = false, array $scanDirs = null, $tempDir = null)
 	{
 		$this->defaults['debugger'] = interface_exists(Tracy\IBarPanel::class);
 		$this->defaults['scanDirs'] = (array) $scanDirs;
 		$this->defaults['scanComposer'] = class_exists(ClassLoader::class);
 		$this->defaults['catchExceptions'] = !$debugMode;
 		$this->debugMode = $debugMode;
-		$this->tempFile = $tempDir ? $tempDir . '/' . urlencode(__CLASS__) : NULL;
+		$this->tempFile = $tempDir ? $tempDir . '/' . urlencode(__CLASS__) : null;
 	}
 
 
@@ -69,7 +69,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 			$application->addSetup('Nette\Bridges\ApplicationTracy\RoutingPanel::initializePanel');
 		}
 
-		$touch = $this->debugMode && $config['scanDirs'] ? $this->tempFile : NULL;
+		$touch = $this->debugMode && $config['scanDirs'] ? $this->tempFile : null;
 		$presenterFactory = $builder->addDefinition($this->prefix('presenterFactory'))
 			->setClass(Nette\Application\IPresenterFactory::class)
 			->setFactory(Nette\Application\PresenterFactory::class, [new Nette\DI\Statement(
@@ -150,7 +150,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 
 		$presenters = [];
 		foreach (array_unique($classes) as $class) {
-			if (strpos($class, $config['scanFilter']) !== FALSE && class_exists($class)
+			if (strpos($class, $config['scanFilter']) !== false && class_exists($class)
 				&& ($rc = new \ReflectionClass($class)) && $rc->implementsInterface(Nette\Application\IPresenter::class)
 				&& !$rc->isAbstract()
 			) {

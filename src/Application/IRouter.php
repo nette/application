@@ -23,13 +23,13 @@ interface IRouter
 
 	/**
 	 * Maps HTTP request to a Request object.
-	 * @return Request|NULL
+	 * @return Request|null
 	 */
 	function match(Nette\Http\IRequest $httpRequest);
 
 	/**
 	 * Constructs absolute URL from Request object.
-	 * @return string|NULL
+	 * @return string|null
 	 */
 	function constructUrl(Request $appRequest, Nette\Http\Url $refUrl);
 }

@@ -35,14 +35,14 @@ class TemplateFactory implements UI\ITemplateFactory
 	private $templateClass;
 
 
-	public function __construct(ILatteFactory $latteFactory, Nette\Http\IRequest $httpRequest = NULL,
-		Nette\Security\User $user = NULL, Nette\Caching\IStorage $cacheStorage = NULL, $templateClass = NULL)
+	public function __construct(ILatteFactory $latteFactory, Nette\Http\IRequest $httpRequest = null,
+		Nette\Security\User $user = null, Nette\Caching\IStorage $cacheStorage = null, $templateClass = null)
 	{
 		$this->latteFactory = $latteFactory;
 		$this->httpRequest = $httpRequest;
 		$this->user = $user;
 		$this->cacheStorage = $cacheStorage;
-		if ($templateClass && (!class_exists($templateClass) || !is_a($templateClass, Template::class, TRUE))) {
+		if ($templateClass && (!class_exists($templateClass) || !is_a($templateClass, Template::class, true))) {
 			throw new Nette\InvalidArgumentException("Class $templateClass does not extend " . Template::class . ' or it does not exist.');
 		}
 		$this->templateClass = $templateClass ?: Template::class;
@@ -52,11 +52,11 @@ class TemplateFactory implements UI\ITemplateFactory
 	/**
 	 * @return Template
 	 */
-	public function createTemplate(UI\Control $control = NULL)
+	public function createTemplate(UI\Control $control = null)
 	{
 		$latte = $this->latteFactory->create();
 		$template = new $this->templateClass($latte);
-		$presenter = $control ? $control->getPresenter(FALSE) : NULL;
+		$presenter = $control ? $control->getPresenter(false) : null;
 
 		if ($control instanceof UI\Presenter) {
 			$latte->setLoader(new Loader($control));
@@ -84,8 +84,8 @@ class TemplateFactory implements UI\ITemplateFactory
 			$latte->addFilter($name, 'Nette\Utils\Strings::' . $name);
 		}
 		$latte->addFilter('null', function () {});
-		$latte->addFilter('modifyDate', function ($time, $delta, $unit = NULL) {
-			return $time == NULL ? NULL : Nette\Utils\DateTime::from($time)->modify($delta . $unit); // intentionally ==
+		$latte->addFilter('modifyDate', function ($time, $delta, $unit = null) {
+			return $time == null ? null : Nette\Utils\DateTime::from($time)->modify($delta . $unit); // intentionally ==
 		});
 
 		if (!isset($latte->getFilters()['translate'])) {
@@ -96,7 +96,7 @@ class TemplateFactory implements UI\ITemplateFactory
 
 		// default parameters
 		$template->user = $this->user;
-		$template->baseUri = $template->baseUrl = $this->httpRequest ? rtrim($this->httpRequest->getUrl()->getBaseUrl(), '/') : NULL;
+		$template->baseUri = $template->baseUrl = $this->httpRequest ? rtrim($this->httpRequest->getUrl()->getBaseUrl(), '/') : null;
 		$template->basePath = preg_replace('#https?://[^/]+#A', '', $template->baseUrl);
 		$template->flashes = [];
 		if ($control) {
@@ -105,7 +105,7 @@ class TemplateFactory implements UI\ITemplateFactory
 			$latte->addProvider('uiControl', $control);
 			$latte->addProvider('uiPresenter', $presenter);
 			$latte->addProvider('snippetBridge', new Nette\Bridges\ApplicationLatte\SnippetBridge($control));
-			$nonce = $presenter && preg_match('#\s\'nonce-([\w+/]+=*)\'#', $presenter->getHttpResponse()->getHeader('Content-Security-Policy'), $m) ? $m[1] : NULL;
+			$nonce = $presenter && preg_match('#\s\'nonce-([\w+/]+=*)\'#', $presenter->getHttpResponse()->getHeader('Content-Security-Policy'), $m) ? $m[1] : null;
 			$latte->addProvider('uiNonce', $nonce);
 		}
 		$latte->addProvider('cacheStorage', $this->cacheStorage);

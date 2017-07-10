@@ -21,20 +21,20 @@ class MicroPresenter implements Application\IPresenter
 {
 	use Nette\SmartObject;
 
-	/** @var Nette\DI\Container|NULL */
+	/** @var Nette\DI\Container|null */
 	private $context;
 
-	/** @var Nette\Http\IRequest|NULL */
+	/** @var Nette\Http\IRequest|null */
 	private $httpRequest;
 
-	/** @var Application\IRouter|NULL */
+	/** @var Application\IRouter|null */
 	private $router;
 
-	/** @var Application\Request|NULL */
+	/** @var Application\Request|null */
 	private $request;
 
 
-	public function __construct(Nette\DI\Container $context = NULL, Http\IRequest $httpRequest = NULL, Application\IRouter $router = NULL)
+	public function __construct(Nette\DI\Container $context = null, Http\IRequest $httpRequest = null, Application\IRouter $router = null)
 	{
 		$this->context = $context;
 		$this->httpRequest = $httpRequest;
@@ -44,7 +44,7 @@ class MicroPresenter implements Application\IPresenter
 
 	/**
 	 * Gets the context.
-	 * @return Nette\DI\Container|NULL
+	 * @return Nette\DI\Container|null
 	 */
 	public function getContext()
 	{
@@ -62,7 +62,7 @@ class MicroPresenter implements Application\IPresenter
 		if ($this->httpRequest && $this->router && !$this->httpRequest->isAjax() && ($request->isMethod('get') || $request->isMethod('head'))) {
 			$refUrl = clone $this->httpRequest->getUrl();
 			$url = $this->router->constructUrl($request, $refUrl->setPath($refUrl->getScriptPath()));
-			if ($url !== NULL && !$this->httpRequest->getUrl()->isEqual($url)) {
+			if ($url !== null && !$this->httpRequest->getUrl()->isEqual($url)) {
 				return new Responses\RedirectResponse($url, Http\IResponse::S301_MOVED_PERMANENTLY);
 			}
 		}
@@ -77,7 +77,7 @@ class MicroPresenter implements Application\IPresenter
 		if ($this->context) {
 			foreach ($reflection->getParameters() as $param) {
 				if ($param->getClass()) {
-					$params[$param->getName()] = $this->context->getByType($param->getClass()->getName(), FALSE);
+					$params[$param->getName()] = $this->context->getByType($param->getClass()->getName(), false);
 				}
 			}
 		}
@@ -110,7 +110,7 @@ class MicroPresenter implements Application\IPresenter
 	 * @param  string
 	 * @return Application\UI\ITemplate
 	 */
-	public function createTemplate($class = NULL, callable $latteFactory = NULL)
+	public function createTemplate($class = null, callable $latteFactory = null)
 	{
 		$latte = $latteFactory ? $latteFactory() : $this->getContext()->getByType(Nette\Bridges\ApplicationLatte\ILatteFactory::class)->create();
 		$template = $class ? new $class : new Nette\Bridges\ApplicationLatte\Template($latte);
@@ -146,14 +146,14 @@ class MicroPresenter implements Application\IPresenter
 	 * @return void
 	 * @throws Nette\Application\BadRequestException
 	 */
-	public function error($message = NULL, $httpCode = Http\IResponse::S404_NOT_FOUND)
+	public function error($message = null, $httpCode = Http\IResponse::S404_NOT_FOUND)
 	{
 		throw new Application\BadRequestException($message, $httpCode);
 	}
 
 
 	/**
-	 * @return Nette\Application\Request|NULL
+	 * @return Nette\Application\Request|null
 	 */
 	public function getRequest()
 	{

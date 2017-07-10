@@ -14,7 +14,7 @@ require __DIR__ . '/../bootstrap.php';
 
 class TestPresenter extends Application\UI\Presenter
 {
-	protected function createTemplate($class = NULL)
+	protected function createTemplate($class = null)
 	{
 	}
 }
@@ -27,7 +27,7 @@ function testLink($domain)
 
 	$presenter = new TestPresenter;
 	$presenter->injectPrimary(
-		NULL,
+		null,
 		Mockery::mock(Nette\Application\IPresenterFactory::class),
 		new Application\Routers\SimpleRouter,
 		new Http\Request($url),

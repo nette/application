@@ -39,9 +39,9 @@ Assert::same([
 	'user' => 'john doe',
 	'action' => 'default',
 	0 => 'name',
-	'verbose' => TRUE,
+	'verbose' => true,
 	'pass' => 'se cret',
-	'wait' => TRUE,
+	'wait' => true,
 ], $req->getParameters());
 
 Assert::true($req->isMethod('cli'));

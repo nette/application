@@ -17,7 +17,7 @@ use Nette;
  * @property array $parameters
  * @property array $post
  * @property array $files
- * @property string|NULL $method
+ * @property string|null $method
  */
 class Request
 {
@@ -32,7 +32,7 @@ class Request
 	/** flag */
 	const RESTORED = 'restored';
 
-	/** @var string|NULL */
+	/** @var string|null */
 	private $method;
 
 	/** @var array */
@@ -59,7 +59,7 @@ class Request
 	 * @param  array   all uploaded files
 	 * @param  array   flags
 	 */
-	public function __construct($name, $method = NULL, array $params = [], array $post = [], array $files = [], array $flags = [])
+	public function __construct($name, $method = null, array $params = [], array $post = [], array $files = [], array $flags = [])
 	{
 		$this->name = $name;
 		$this->method = $method;
@@ -120,7 +120,7 @@ class Request
 	 */
 	public function getParameter($key)
 	{
-		return isset($this->params[$key]) ? $this->params[$key] : NULL;
+		return isset($this->params[$key]) ? $this->params[$key] : null;
 	}
 
 
@@ -141,7 +141,7 @@ class Request
 	 * @param  string
 	 * @return mixed
 	 */
-	public function getPost($key = NULL)
+	public function getPost($key = null)
 	{
 		if (func_num_args() === 0) {
 			return $this->post;
@@ -150,7 +150,7 @@ class Request
 			return $this->post[$key];
 
 		} else {
-			return NULL;
+			return null;
 		}
 	}
 
@@ -178,7 +178,7 @@ class Request
 
 	/**
 	 * Sets the method.
-	 * @param  string|NULL
+	 * @param  string|null
 	 * @return static
 	 */
 	public function setMethod($method)
@@ -190,7 +190,7 @@ class Request
 
 	/**
 	 * Returns the method.
-	 * @return string|NULL
+	 * @return string|null
 	 */
 	public function getMethod()
 	{
@@ -215,7 +215,7 @@ class Request
 	 * @param  bool
 	 * @return static
 	 */
-	public function setFlag($flag, $value = TRUE)
+	public function setFlag($flag, $value = true)
 	{
 		$this->flags[$flag] = (bool) $value;
 		return $this;

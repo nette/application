@@ -20,7 +20,7 @@ $route = new Route('<presenter>', [
 			'zakaznik' => 'Customer',
 			'kosik' => 'Basket',
 		],
-		Route::FILTER_STRICT => TRUE,
+		Route::FILTER_STRICT => true,
 	],
 ]);
 

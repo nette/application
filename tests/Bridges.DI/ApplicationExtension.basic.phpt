@@ -14,7 +14,7 @@ require __DIR__ . '/../bootstrap.php';
 
 test(function () {
 	$compiler = new DI\Compiler;
-	$compiler->addExtension('application', new ApplicationExtension(FALSE));
+	$compiler->addExtension('application', new ApplicationExtension(false));
 
 	$builder = $compiler->getContainerBuilder();
 	$builder->addDefinition('myRouter')->setClass(Nette\Application\Routers\SimpleRouter::class);

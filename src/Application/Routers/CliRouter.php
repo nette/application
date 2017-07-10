@@ -35,12 +35,12 @@ class CliRouter implements Application\IRouter
 
 	/**
 	 * Maps command line arguments to a Request object.
-	 * @return Nette\Application\Request|NULL
+	 * @return Nette\Application\Request|null
 	 */
 	public function match(Nette\Http\IRequest $httpRequest)
 	{
 		if (empty($_SERVER['argv']) || !is_array($_SERVER['argv'])) {
-			return NULL;
+			return null;
 		}
 
 		$names = [self::PRESENTER_KEY];
@@ -57,13 +57,13 @@ class CliRouter implements Application\IRouter
 				} else {
 					$params[] = $arg;
 				}
-				$flag = NULL;
+				$flag = null;
 				continue;
 			}
 
 			if (isset($flag)) {
-				$params[$flag] = TRUE;
-				$flag = NULL;
+				$params[$flag] = true;
+				$flag = null;
 			}
 
 			if ($opt !== '') {

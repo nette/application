@@ -46,14 +46,14 @@ test(function () {
 });
 
 Assert::exception(function () {
-	$factory = new TemplateFactory(Mockery::mock(ILatteFactory::class), NULL, NULL, NULL, stdClass::class);
+	$factory = new TemplateFactory(Mockery::mock(ILatteFactory::class), null, null, null, stdClass::class);
 }, \Nette\InvalidArgumentException::class, 'Class stdClass does not extend Nette\Bridges\ApplicationLatte\Template or it does not exist.');
 
 
 test(function () {
 	$latteFactory = Mockery::mock(ILatteFactory::class);
 	$latteFactory->shouldReceive('create')->andReturn(new Latte\Engine);
-	$factory = new TemplateFactory($latteFactory, NULL, NULL, NULL, TemplateMock::class);
+	$factory = new TemplateFactory($latteFactory, null, null, null, TemplateMock::class);
 	$template = $factory->createTemplate();
 	Assert::type(TemplateMock::class, $template);
 	Assert::type(UI\ITemplate::class, $template);
