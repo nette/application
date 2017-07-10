@@ -10,11 +10,13 @@ use Nette\Application;
 use Nette\Http;
 use Tester\Assert;
 
+
 function callIsLinkCurrent(Application\Request $request, $destination, array $args)
 {
 	$presenter = new TestPresenter;
 	return callIsComponentLinkCurrent($presenter, $presenter, $request, $destination, $args);
 }
+
 
 function callIsComponentLinkCurrent(
 	Application\UI\Presenter $presenter,
@@ -39,6 +41,7 @@ function callIsComponentLinkCurrent(
 
 	return $component->isLinkCurrent($destination, $args);
 }
+
 
 Assert::true(callIsLinkCurrent(
 	new Application\Request('Test', Http\Request::GET, ['int' => 1, 'bool' => TRUE]),

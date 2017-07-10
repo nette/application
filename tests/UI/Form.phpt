@@ -15,7 +15,6 @@ require __DIR__ . '/../bootstrap.php';
 
 class TestPresenter extends UI\Presenter
 {
-
 }
 
 

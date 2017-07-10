@@ -147,5 +147,4 @@ class PresenterFactory implements IPresenterFactory
 		}
 		return NULL;
 	}
-
 }

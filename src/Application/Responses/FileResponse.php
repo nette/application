@@ -122,5 +122,4 @@ class FileResponse implements Nette\Application\IResponse
 		}
 		fclose($handle);
 	}
-
 }

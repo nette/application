@@ -6,8 +6,8 @@
 
 declare(strict_types=1);
 
-use Nette\Bridges\ApplicationLatte\UIMacros;
 use Nette\Bridges\ApplicationLatte\SnippetBridge;
+use Nette\Bridges\ApplicationLatte\UIMacros;
 use Tester\Assert;
 
 
@@ -22,6 +22,7 @@ class InnerControl extends Nette\Application\UI\Control
 		$this->renderB();
 	}
 
+
 	public function renderA()
 	{
 		$latte = new Latte\Engine;
@@ -34,6 +35,7 @@ class InnerControl extends Nette\Application\UI\Control
 		$latte->render('{snippet testA}{$say}{/snippet}', $params);
 	}
 
+
 	public function renderB()
 	{
 		$latte = new Latte\Engine;
@@ -45,7 +47,6 @@ class InnerControl extends Nette\Application\UI\Control
 		$params['say'] = 'world';
 		$latte->render('{snippet testB}{$say}{/snippet}', $params);
 	}
-
 }
 
 class TestPresenter extends Nette\Application\UI\Presenter
@@ -56,6 +57,7 @@ class TestPresenter extends Nette\Application\UI\Presenter
 			return new InnerControl();
 		});
 	}
+
 
 	public function render()
 	{

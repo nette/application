@@ -31,5 +31,4 @@ interface ITemplate
 	 * Returns the path to the template file.
 	 */
 	function getFile(): ?string;
-
 }

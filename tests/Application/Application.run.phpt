@@ -9,9 +9,9 @@ declare(strict_types=1);
 use Nette\Application\Application;
 use Nette\Application\BadRequestException;
 use Nette\Application\IPresenterFactory;
+use Nette\Application\IResponse;
 use Nette\Application\IRouter;
 use Nette\Application\Request;
-use Nette\Application\IResponse;
 use Nette\Application\Responses\TextResponse;
 use Tester\Assert;
 
@@ -22,6 +22,7 @@ require __DIR__ . '/../bootstrap.php';
 class GoodPresenter implements Nette\Application\IPresenter
 {
 	public $request;
+
 
 	function run(Request $request): IResponse
 	{
@@ -48,6 +49,7 @@ class BadPresenter implements Nette\Application\IPresenter
 class ErrorPresenter implements Nette\Application\IPresenter
 {
 	public $request;
+
 
 	function run(Request $request): IResponse
 	{

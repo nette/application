@@ -20,6 +20,7 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 	/** @var callable[]  function (self $sender); Occurs when form is attached to presenter */
 	public $onAnchor;
 
+
 	/**
 	 * Application form constructor.
 	 */
@@ -138,5 +139,4 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 			throw new BadSignalException("Missing handler for signal '$signal' in $class.");
 		}
 	}
-
 }

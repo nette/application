@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace Nette\Bridges\ApplicationLatte;
 
-use Nette;
 use Latte;
+use Nette;
 
 
 /**
@@ -31,5 +31,4 @@ class UIRuntime
 			$parentName = $providers->uiControl->findLayoutTemplateFile();
 		}
 	}
-
 }

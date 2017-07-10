@@ -1,9 +1,8 @@
 <?php
-
 declare(strict_types=1);
 
-use Nette\Application\UI\Presenter;
 use Nette\Application\UI\InvalidLinkException;
+use Nette\Application\UI\Presenter;
 use Tester\Assert;
 
 

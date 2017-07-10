@@ -17,10 +17,12 @@ class LatteFactory implements Nette\Bridges\ApplicationLatte\ILatteFactory
 {
 	private $engine;
 
+
 	public function __construct(Latte\Engine $engine)
 	{
 		$this->engine = $engine;
 	}
+
 
 	public function create(): Latte\Engine
 	{

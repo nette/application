@@ -46,5 +46,4 @@ class ErrorPresenter implements Application\IPresenter
 			require __DIR__ . '/templates/error.phtml';
 		});
 	}
-
 }

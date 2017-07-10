@@ -9,11 +9,11 @@ declare(strict_types=1);
 
 namespace NetteModule;
 
+use Latte;
 use Nette;
 use Nette\Application;
 use Nette\Application\Responses;
 use Nette\Http;
-use Latte;
 
 
 /**
@@ -150,5 +150,4 @@ class MicroPresenter implements Application\IPresenter
 	{
 		return $this->request;
 	}
-
 }

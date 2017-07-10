@@ -25,8 +25,6 @@ class TestControl extends Nette\Application\UI\Control
 		$latte->addProvider('snippetBridge', new Nette\Bridges\ApplicationLatte\SnippetBridge($this));
 		$latte->render('{snippet foo}hello{/snippet}');
 	}
-
-
 }
 
 class TestPresenter extends Nette\Application\UI\Presenter
@@ -35,6 +33,7 @@ class TestPresenter extends Nette\Application\UI\Presenter
 	{
 		return new TestControl;
 	}
+
 
 	public function render()
 	{

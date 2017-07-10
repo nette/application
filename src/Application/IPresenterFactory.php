@@ -29,5 +29,4 @@ interface IPresenterFactory
 	 * @param  string  presenter name
 	 */
 	function createPresenter(string $name): IPresenter;
-
 }

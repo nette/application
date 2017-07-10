@@ -53,5 +53,4 @@ class RedirectResponse implements Nette\Application\IResponse
 	{
 		$httpResponse->redirect($this->url, $this->httpCode);
 	}
-
 }
