@@ -25,5 +25,4 @@ interface IRenderable
 	 * @return bool
 	 */
 	function isControlInvalid();
-
 }

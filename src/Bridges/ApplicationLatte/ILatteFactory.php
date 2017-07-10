@@ -17,5 +17,4 @@ interface ILatteFactory
 	 * @return Latte\Engine
 	 */
 	function create();
-
 }

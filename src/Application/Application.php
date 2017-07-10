@@ -222,5 +222,4 @@ class Application
 	{
 		return $this->presenterFactory;
 	}
-
 }

@@ -4,8 +4,8 @@
  * Test: TemplateFactory in Bridge properly handles Latte::onCompile
  */
 
-use Nette\Bridges\ApplicationLatte\TemplateFactory;
 use Nette\Bridges\ApplicationLatte\ILatteFactory;
+use Nette\Bridges\ApplicationLatte\TemplateFactory;
 use Nette\Http;
 use Tester\Assert;
 
@@ -48,10 +48,12 @@ test(function () {
 	{
 		public $events;
 
+
 		public function __construct($events)
 		{
 			$this->events = $events;
 		}
+
 
 		public function getIterator()
 		{

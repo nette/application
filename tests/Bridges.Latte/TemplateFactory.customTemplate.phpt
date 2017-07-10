@@ -5,9 +5,9 @@
  */
 
 use Nette\Application\UI;
+use Nette\Bridges\ApplicationLatte\ILatteFactory;
 use Nette\Bridges\ApplicationLatte\Template;
 use Nette\Bridges\ApplicationLatte\TemplateFactory;
-use Nette\Bridges\ApplicationLatte\ILatteFactory;
 use Tester\Assert;
 
 
@@ -18,15 +18,18 @@ class TemplateMock extends Template
 {
 	private $file = 'ko';
 
+
 	public function render()
 	{
 		return strrev($this->file);
 	}
 
+
 	public function setFile($file)
 	{
 		$this->file = $file;
 	}
+
 
 	public function getFile()
 	{

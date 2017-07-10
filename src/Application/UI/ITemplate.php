@@ -32,5 +32,4 @@ interface ITemplate
 	 * @return string|NULL
 	 */
 	function getFile();
-
 }

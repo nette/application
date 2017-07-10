@@ -11,14 +11,16 @@ namespace {
 	class HomepagePresenter extends Nette\Application\UI\Presenter
 	{
 		function actionDefault($a)
-		{}
+		{
+		}
+
 
 		function renderDetail($b)
-		{}
+		{
+		}
 	}
 
 }
-
 
 namespace ModuleModule {
 
@@ -27,18 +29,18 @@ namespace ModuleModule {
 	class MyPresenter implements Nette\Application\IPresenter
 	{
 		function run(Nette\Application\Request $request)
-		{}
+		{
+		}
 	}
 
 }
 
-
 namespace {
 
-	use Nette\Http;
 	use Nette\Application\LinkGenerator;
 	use Nette\Application\PresenterFactory;
 	use Nette\Application\Routers;
+	use Nette\Http;
 	use Tester\Assert;
 
 

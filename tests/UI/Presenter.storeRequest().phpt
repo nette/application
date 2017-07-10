@@ -4,9 +4,8 @@
  * Test: Nette\Application\UI\Presenter::storeRequest()
  */
 
-use Nette\Http;
 use Nette\Application;
-use Nette\DI;
+use Nette\Http;
 use Nette\Security;
 use Tester\Assert;
 
@@ -16,14 +15,20 @@ require __DIR__ . '/../bootstrap.php';
 
 class TestPresenter extends Application\UI\Presenter
 {
-	public function getTemplate() {}
+	public function getTemplate()
+	{
+	}
 }
 
 class MockSession extends Http\Session
 {
 	public $testSection;
 
-	public function __construct() {}
+
+	public function __construct()
+	{
+	}
+
 
 	public function getSection($section, $class = Nette\Http\SessionSection::class)
 	{
@@ -39,11 +44,13 @@ class MockSessionSection implements \ArrayAccess
 	public $testExpiration;
 	public $testExpirationVariables;
 
+
 	public function __isset($name)
 	{
 		$this->testedKeyExistence = $name;
 		return FALSE;
 	}
+
 
 	public function __set($name, $value)
 	{
@@ -51,29 +58,42 @@ class MockSessionSection implements \ArrayAccess
 		$this->storedValue = $value;
 	}
 
+
 	public function setExpiration($expiraton, $variables = NULL)
 	{
 		$this->testExpiration = $expiraton;
 		$this->testExpirationVariables = $variables;
 	}
 
+
 	public function offsetExists($name)
 	{
 		return $this->__isset($name);
 	}
+
 
 	public function offsetSet($name, $value)
 	{
 		$this->__set($name, $value);
 	}
 
-	public function offsetGet($name) {}
-	public function offsetUnset($name) {}
+
+	public function offsetGet($name)
+	{
+	}
+
+
+	public function offsetUnset($name)
+	{
+	}
 }
 
 class MockUser extends Security\User
 {
-	public function __construct() {}
+	public function __construct()
+	{
+	}
+
 
 	public function getId()
 	{

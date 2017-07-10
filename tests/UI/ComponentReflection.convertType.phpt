@@ -31,6 +31,7 @@ function testIt($type, $val, $res = NULL)
 	Assert::same($res, $val);
 }
 
+
 $obj = new stdClass;
 
 testIt('NULL', NULL, NULL);

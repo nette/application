@@ -7,8 +7,8 @@
 
 namespace Nette\Bridges\ApplicationLatte;
 
-use Nette;
 use Latte\Runtime\ISnippetBridge;
+use Nette;
 use Nette\Application\UI\Control;
 use Nette\Application\UI\IRenderable;
 
@@ -91,5 +91,4 @@ class SnippetBridge implements ISnippetBridge
 			}
 		} while ($queue);
 	}
-
 }

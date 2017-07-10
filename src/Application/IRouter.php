@@ -32,5 +32,4 @@ interface IRouter
 	 * @return string|NULL
 	 */
 	function constructUrl(Request $appRequest, Nette\Http\Url $refUrl);
-
 }

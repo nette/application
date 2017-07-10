@@ -7,9 +7,9 @@
 
 namespace Nette\Bridges\ApplicationLatte;
 
+use Latte;
 use Nette;
 use Nette\Application\UI;
-use Latte;
 
 
 /**
@@ -122,5 +122,4 @@ class TemplateFactory implements UI\ITemplateFactory
 
 		return $template;
 	}
-
 }

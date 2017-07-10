@@ -4,8 +4,8 @@
  * Test: ComponentReflection::combineArgs()
  */
 
-use Nette\Application\UI\ComponentReflection as Reflection;
 use Nette\Application\BadRequestException;
+use Nette\Application\UI\ComponentReflection as Reflection;
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
@@ -13,19 +13,19 @@ require __DIR__ . '/../bootstrap.php';
 
 class MyPresenter
 {
-
 	public function params($int, $bool, $str, $arr)
 	{
 	}
+
 
 	public function defaults($int = 0, $bool = FALSE, $str = '', $arr = [])
 	{
 	}
 
+
 	public function objects(stdClass $req, stdClass $opt = NULL)
 	{
 	}
-
 }
 
 

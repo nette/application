@@ -38,5 +38,4 @@ class CallbackResponse implements Nette\Application\IResponse
 	{
 		call_user_func($this->callback, $httpRequest, $httpResponse);
 	}
-
 }

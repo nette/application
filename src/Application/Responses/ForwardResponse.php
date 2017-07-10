@@ -43,5 +43,4 @@ class ForwardResponse implements Nette\Application\IResponse
 	public function send(Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse)
 	{
 	}
-
 }

@@ -7,11 +7,11 @@
 
 namespace Nette\Bridges\ApplicationLatte;
 
-use Nette;
 use Latte;
+use Latte\CompileException;
 use Latte\MacroNode;
 use Latte\PhpWriter;
-use Latte\CompileException;
+use Nette;
 use Nette\Utils\Strings;
 
 
@@ -155,5 +155,4 @@ class UIMacros extends Latte\Macros\MacroSet
 		trigger_error(__METHOD__ . '() is deprecated.', E_USER_DEPRECATED);
 		UIRuntime::renderSnippets($control, $local, $params);
 	}
-
 }

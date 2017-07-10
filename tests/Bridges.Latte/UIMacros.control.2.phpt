@@ -19,19 +19,16 @@ class MockComponent
 		Notes::add(func_get_args());
 		return new MockControl;
 	}
-
 }
 
 
 class MockControl
 {
-
 	function __call($name, $args)
 	{
 		Notes::add(__METHOD__);
 		Notes::add(func_get_args());
 	}
-
 }
 
 

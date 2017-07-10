@@ -25,5 +25,4 @@ interface IStatePersistent
 	 * @return void
 	 */
 	function saveState(array &$params);
-
 }

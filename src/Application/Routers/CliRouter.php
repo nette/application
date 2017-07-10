@@ -110,5 +110,4 @@ class CliRouter implements Application\IRouter
 	{
 		return $this->defaults;
 	}
-
 }

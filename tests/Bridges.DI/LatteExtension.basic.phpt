@@ -13,40 +13,34 @@ require __DIR__ . '/../bootstrap.php';
 
 class LoremIpsumMacros extends Latte\Macros\MacroSet
 {
-
 	public static function install(Latte\Compiler $compiler)
 	{
 		$me = new static($compiler);
 		$me->addMacro('lorem', 'lorem');
 		Notes::add(get_class($me));
 	}
-
 }
 
 
 class IpsumLoremMacros extends Latte\Macros\MacroSet
 {
-
 	public static function install(Latte\Compiler $compiler)
 	{
 		$me = new static($compiler);
 		$me->addMacro('ipsum', 'ipsum');
 		Notes::add(get_class($me));
 	}
-
 }
 
 
 class FooMacros extends Latte\Macros\MacroSet
 {
-
 	public static function install(Latte\Compiler $compiler)
 	{
 		$me = new static($compiler);
 		$me->addMacro('foo', 'foo');
 		Notes::add(get_class($me));
 	}
-
 }
 
 
@@ -82,14 +76,12 @@ class NonStaticMacrosFactory
 
 class AnotherExtension extends Nette\DI\CompilerExtension
 {
-
 	public function beforeCompile()
 	{
 		foreach ($this->compiler->getExtensions(Nette\Bridges\ApplicationDI\LatteExtension::class) as $extension) {
 			$extension->addMacro('FooMacros::install');
 		}
 	}
-
 }
 
 

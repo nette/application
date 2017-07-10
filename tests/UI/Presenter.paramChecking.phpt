@@ -4,8 +4,8 @@
  * Test: Nette\Application\UI\Presenter and checking params.
  */
 
-use Nette\Http;
 use Nette\Application;
+use Nette\Http;
 use Tester\Assert;
 
 
@@ -17,9 +17,10 @@ class TestPresenter extends Application\UI\Presenter
 	/** @persistent */
 	public $bool = TRUE;
 
-	function actionDefault($a, $b = NULL, array $c, array $d = NULL, $e = 1, $f = 1.0, $g = FALSE)
-	{}
 
+	function actionDefault($a, $b = NULL, array $c, array $d = NULL, $e = 1, $f = 1.0, $g = FALSE)
+	{
+	}
 }
 
 

@@ -28,5 +28,4 @@ interface IPresenterFactory
 	 * @return IPresenter
 	 */
 	function createPresenter($name);
-
 }

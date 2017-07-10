@@ -4,8 +4,8 @@
  * Test: Nette\Application\Routers\SimpleRouter invalid request.
  */
 
-use Nette\Http;
 use Nette\Application\Routers\SimpleRouter;
+use Nette\Http;
 use Tester\Assert;
 
 

@@ -52,5 +52,4 @@ class TextResponse implements Nette\Application\IResponse
 			echo $this->source;
 		}
 	}
-
 }

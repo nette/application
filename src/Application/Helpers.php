@@ -28,5 +28,4 @@ class Helpers
 			? ['', $name, '']
 			: [substr($name, 0, $pos), (string) substr($name, $pos + 1), ':'];
 	}
-
 }

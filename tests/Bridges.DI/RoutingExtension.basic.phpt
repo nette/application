@@ -4,8 +4,8 @@
  * Test: RoutingExtension.
  */
 
-use Nette\DI;
 use Nette\Bridges\ApplicationDI\RoutingExtension;
+use Nette\DI;
 use Tester\Assert;
 
 
@@ -13,7 +13,8 @@ require __DIR__ . '/../bootstrap.php';
 
 
 class Route extends Nette\Application\Routers\Route
-{}
+{
+}
 
 
 test(function () {

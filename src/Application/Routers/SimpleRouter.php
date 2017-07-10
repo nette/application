@@ -146,5 +146,4 @@ class SimpleRouter implements Application\IRouter
 	{
 		return $this->flags;
 	}
-
 }

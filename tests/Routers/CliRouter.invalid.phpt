@@ -4,8 +4,8 @@
  * Test: Nette\Application\Routers\CliRouter invalid argument
  */
 
-use Nette\Http;
 use Nette\Application\Routers\CliRouter;
+use Nette\Http;
 use Tester\Assert;
 
 

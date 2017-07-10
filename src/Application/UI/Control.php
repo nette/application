@@ -124,6 +124,7 @@ abstract class Control extends Component implements IRenderable
 		$this->redrawControl($snippet);
 	}
 
+
 	/** @deprecated */
 	function validateControl($snippet = NULL)
 	{
@@ -180,5 +181,4 @@ abstract class Control extends Component implements IRenderable
 		// HTML 4 ID & NAME: [A-Za-z][A-Za-z0-9:_.-]*
 		return 'snippet-' . $this->getUniqueId() . '-' . $name;
 	}
-
 }

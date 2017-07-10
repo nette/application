@@ -13,7 +13,6 @@ require __DIR__ . '/../bootstrap.php';
 
 class MockControl
 {
-
 	public function link($destination, $args = [])
 	{
 		if (!is_array($args)) {
@@ -22,13 +21,11 @@ class MockControl
 		array_unshift($args, $destination);
 		return 'link:' . strtr(json_encode($args), '"', "'");
 	}
-
 }
 
 
 class MockPresenter extends MockControl
 {
-
 	public function link($destination, $args = [])
 	{
 		if (!is_array($args)) {
@@ -38,11 +35,11 @@ class MockPresenter extends MockControl
 		return 'plink:' . strtr(json_encode($args), '"', "'");
 	}
 
+
 	public function isAjax()
 	{
 		return FALSE;
 	}
-
 }
 
 

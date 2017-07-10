@@ -5,8 +5,8 @@
  * @phpVersion 7.1
  */
 
-use Nette\Http;
 use Nette\Application;
+use Nette\Http;
 use Tester\Assert;
 
 
@@ -26,6 +26,7 @@ class TestControl extends Application\UI\Control
 	{
 	}
 
+
 	public function loadState(array $params)
 	{
 		if (isset($params['order'])) {
@@ -34,6 +35,7 @@ class TestControl extends Application\UI\Control
 		parent::loadState($params);
 	}
 
+
 	public function saveState(array &$params)
 	{
 		parent::saveState($params);
@@ -41,7 +43,6 @@ class TestControl extends Application\UI\Control
 			$params['order'] = implode('.', $params['order']);
 		}
 	}
-
 }
 
 
@@ -218,21 +219,26 @@ class TestPresenter extends Application\UI\Presenter
 	{
 	}
 
+
 	public function actionHints(int $int, bool $bool, string $str, array $arr)
 	{
 	}
+
 
 	public function actionHintsNulls(?int $int, ?bool $bool, ?string $str, ?array $arr)
 	{
 	}
 
+
 	public function actionHintsDefaults(int $int = 0, bool $bool = FALSE, string $str = '', array $arr = [])
 	{
 	}
 
+
 	public function actionDefaults($int = 1, $bool = TRUE, $str = 'a', $arr = [1])
 	{
 	}
+
 
 	public function actionObjects(stdClass $req, ?stdClass $opt)
 	{

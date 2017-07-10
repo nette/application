@@ -5,8 +5,8 @@
  * @phpVersion 7
  */
 
-use Nette\Application\UI\ComponentReflection as Reflection;
 use Nette\Application\BadRequestException;
+use Nette\Application\UI\ComponentReflection as Reflection;
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
@@ -14,31 +14,34 @@ require __DIR__ . '/../bootstrap.php';
 
 class MyPresenter
 {
-
 	public function params($int, $bool, $str, $arr)
 	{
 	}
+
 
 	public function hints(int $int, bool $bool, string $str, array $arr)
 	{
 	}
 
+
 	public function hintsNulls(int $int = NULL, bool $bool = NULL, string $str = NULL, array $arr = NULL)
 	{
 	}
+
 
 	public function hintsDefaults(int $int = 0, bool $bool = FALSE, string $str = '', array $arr = [])
 	{
 	}
 
+
 	public function defaults($int = 0, $bool = FALSE, $str = '', $arr = [])
 	{
 	}
 
+
 	public function objects(stdClass $req, stdClass $opt = NULL)
 	{
 	}
-
 }
 
 

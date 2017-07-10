@@ -19,6 +19,7 @@ class GoodPresenter implements Nette\Application\IPresenter
 {
 	public $request;
 
+
 	function run(Request $request)
 	{
 		$this->request = $request;
@@ -43,6 +44,7 @@ class BadPresenter implements Nette\Application\IPresenter
 class ErrorPresenter implements Nette\Application\IPresenter
 {
 	public $request;
+
 
 	function run(Request $request)
 	{

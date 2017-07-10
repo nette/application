@@ -4,9 +4,9 @@
  * Test: ApplicationExtension
  */
 
-use Nette\DI;
-use Nette\Bridges\ApplicationDI\ApplicationExtension;
 use Nette\Application\UI\Presenter;
+use Nette\Bridges\ApplicationDI\ApplicationExtension;
+use Nette\DI;
 use Tester\Assert;
 
 

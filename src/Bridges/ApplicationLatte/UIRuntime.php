@@ -7,8 +7,8 @@
 
 namespace Nette\Bridges\ApplicationLatte;
 
-use Nette;
 use Latte;
+use Nette;
 
 
 /**
@@ -43,5 +43,4 @@ class UIRuntime
 			$providers->uiPresenter = $params['_presenter'];
 		}
 	}
-
 }

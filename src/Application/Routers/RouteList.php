@@ -127,5 +127,4 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 	{
 		return $this->module;
 	}
-
 }

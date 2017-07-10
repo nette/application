@@ -231,5 +231,4 @@ class Request
 	{
 		return !empty($this->flags[$flag]);
 	}
-
 }

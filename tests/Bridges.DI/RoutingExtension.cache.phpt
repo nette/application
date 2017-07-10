@@ -4,9 +4,9 @@
  * Test: RoutingExtension caching.
  */
 
-use Nette\DI;
-use Nette\Bridges\ApplicationDI\RoutingExtension;
 use Nette\Application\Routers\Route;
+use Nette\Bridges\ApplicationDI\RoutingExtension;
+use Nette\DI;
 use Tester\Assert;
 
 
@@ -17,11 +17,16 @@ class MyRouter implements Nette\Application\IRouter
 {
 	public $woken;
 
+
 	function match(Nette\Http\IRequest $httpRequest)
-	{}
+	{
+	}
+
 
 	function constructUrl(Nette\Application\Request $appRequest, Nette\Http\Url $refUrl)
-	{}
+	{
+	}
+
 
 	function __wakeup()
 	{
@@ -76,6 +81,7 @@ Assert::exception(function () {
 	{
 		return new Route('path', function () {});
 	}
+
 
 	$loader = new DI\Config\Loader;
 	$config = $loader->load(Tester\FileMock::create('

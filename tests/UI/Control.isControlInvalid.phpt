@@ -13,7 +13,6 @@ require __DIR__ . '/../bootstrap.php';
 
 class TestControl extends UI\Control
 {
-
 }
 
 

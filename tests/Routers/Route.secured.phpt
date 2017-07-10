@@ -4,8 +4,8 @@
  * Test: Nette\Application\Routers\Route with Secured
  */
 
-use Nette\Application\Routers\Route;
 use Nette\Application\Request;
+use Nette\Application\Routers\Route;
 use Nette\Http\Url;
 use Tester\Assert;
 

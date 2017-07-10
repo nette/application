@@ -308,5 +308,4 @@ class ComponentReflection extends \ReflectionClass
 		}
 		Nette\Utils\ObjectMixin::strictCall(get_class($this), $name);
 	}
-
 }

@@ -57,7 +57,6 @@ class BadRequestException extends \Exception
 	{
 		return $this->code;
 	}
-
 }
 
 
@@ -68,5 +67,4 @@ class ForbiddenRequestException extends BadRequestException
 {
 	/** @var int */
 	protected $code = Http\IResponse::S403_FORBIDDEN;
-
 }

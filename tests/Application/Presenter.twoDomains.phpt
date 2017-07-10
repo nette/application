@@ -4,8 +4,8 @@
  * Test: Nette\Application\UI\Presenter::link()
  */
 
-use Nette\Http;
 use Nette\Application;
+use Nette\Http;
 use Tester\Assert;
 
 
@@ -14,11 +14,9 @@ require __DIR__ . '/../bootstrap.php';
 
 class TestPresenter extends Application\UI\Presenter
 {
-
 	protected function createTemplate($class = NULL)
 	{
 	}
-
 }
 
 
@@ -41,6 +39,7 @@ function testLink($domain)
 
 	Assert::same( 'http://' . $domain . '/index.php?action=default&presenter=Test', $presenter->link('//this') );
 }
+
 
 testLink('first.localhost');
 testLink('second.localhost');

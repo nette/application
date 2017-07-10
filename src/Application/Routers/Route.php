@@ -219,7 +219,7 @@ class Route implements Application\IRouter
 		foreach ($this->metadata as $name => $meta) {
 			if (isset($params[$name])) {
 				if (!is_scalar($params[$name])) {
-
+					// do nothing
 				} elseif (isset($meta[self::FILTER_TABLE][$params[$name]])) { // applies filterTable only to scalar parameters
 					$params[$name] = $meta[self::FILTER_TABLE][$params[$name]];
 
@@ -787,5 +787,4 @@ class Route implements Application\IRouter
 	{
 		return str_replace('%2F', '/', rawurlencode($s));
 	}
-
 }

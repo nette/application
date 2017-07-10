@@ -158,7 +158,6 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	{
 		$reflection = $reflection === NULL ? $this->getReflection() : $reflection;
 		foreach ($reflection->getPersistentParams() as $name => $meta) {
-
 			if (isset($params[$name])) {
 				// injected value
 
@@ -428,5 +427,4 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 			$this->removeComponent($component);
 		}
 	}
-
 }

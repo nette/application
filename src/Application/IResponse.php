@@ -21,5 +21,4 @@ interface IResponse
 	 * @return void
 	 */
 	function send(Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse);
-
 }
