@@ -17,12 +17,12 @@ class TestPresenter extends Application\UI\Presenter
 	public $response;
 
 
-	function actionFoo($val)
+	public function actionFoo($val)
 	{
 	}
 
 
-	function sendResponse(Application\IResponse $response)
+	public function sendResponse(Application\IResponse $response)
 	{
 		$this->response = $response;
 	}

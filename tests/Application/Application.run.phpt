@@ -20,7 +20,7 @@ class GoodPresenter implements Nette\Application\IPresenter
 	public $request;
 
 
-	function run(Request $request)
+	public function run(Request $request)
 	{
 		$this->request = $request;
 	}
@@ -34,7 +34,7 @@ class BadException extends Exception
 
 class BadPresenter implements Nette\Application\IPresenter
 {
-	function run(Request $request)
+	public function run(Request $request)
 	{
 		throw new BadException;
 	}
@@ -46,7 +46,7 @@ class ErrorPresenter implements Nette\Application\IPresenter
 	public $request;
 
 
-	function run(Request $request)
+	public function run(Request $request)
 	{
 		$this->request = $request;
 	}

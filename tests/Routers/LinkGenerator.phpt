@@ -10,12 +10,12 @@ namespace {
 
 	class HomepagePresenter extends Nette\Application\UI\Presenter
 	{
-		function actionDefault($a)
+		public function actionDefault($a)
 		{
 		}
 
 
-		function renderDetail($b)
+		public function renderDetail($b)
 		{
 		}
 	}
@@ -28,7 +28,7 @@ namespace ModuleModule {
 
 	class MyPresenter implements Nette\Application\IPresenter
 	{
-		function run(Nette\Application\Request $request)
+		public function run(Nette\Application\Request $request)
 		{
 		}
 	}
@@ -49,13 +49,13 @@ namespace {
 
 	test(function () use ($pf) {
 		$generator = new LinkGenerator(new Routers\SimpleRouter, new Http\Url('http://nette.org/en/'), $pf);
-		Assert::same('http://nette.org/en/?action=default&presenter=Homepage',  $generator->link('Homepage:default'));
-		Assert::same('http://nette.org/en/?action=default&presenter=Module%3AMy',  $generator->link('Module:My:default'));
-		Assert::same('http://nette.org/en/?presenter=Module%3AMy',  $generator->link('Module:My:'));
-		Assert::same('http://nette.org/en/?action=default&presenter=Homepage',  $generator->link('Homepage:'));
-		Assert::same('http://nette.org/en/?a=10&action=default&presenter=Homepage',  $generator->link('Homepage:', [10]));
-		Assert::same('http://nette.org/en/?id=20&b=10&action=detail&presenter=Homepage',  $generator->link('Homepage:detail', [10, 'id' => 20]));
-		Assert::same('http://nette.org/en/?action=default&presenter=Homepage#frag:ment',  $generator->link('Homepage:#frag:ment'));
+		Assert::same('http://nette.org/en/?action=default&presenter=Homepage', $generator->link('Homepage:default'));
+		Assert::same('http://nette.org/en/?action=default&presenter=Module%3AMy', $generator->link('Module:My:default'));
+		Assert::same('http://nette.org/en/?presenter=Module%3AMy', $generator->link('Module:My:'));
+		Assert::same('http://nette.org/en/?action=default&presenter=Homepage', $generator->link('Homepage:'));
+		Assert::same('http://nette.org/en/?a=10&action=default&presenter=Homepage', $generator->link('Homepage:', [10]));
+		Assert::same('http://nette.org/en/?id=20&b=10&action=detail&presenter=Homepage', $generator->link('Homepage:detail', [10, 'id' => 20]));
+		Assert::same('http://nette.org/en/?action=default&presenter=Homepage#frag:ment', $generator->link('Homepage:#frag:ment'));
 		Assert::same('http://nette.org/en/?id=10&action=missing&presenter=Homepage', $generator->link('Homepage:missing', ['id' => 10]));
 	});
 
@@ -80,13 +80,13 @@ namespace {
 
 	test(function () {
 		$generator = new LinkGenerator(new Routers\SimpleRouter, new Http\Url('http://nette.org/en/'));
-		Assert::same('http://nette.org/en/?action=default&presenter=Homepage',  $generator->link('Homepage:default'));
-		Assert::same('http://nette.org/en/?action=default&presenter=Module%3AMy',  $generator->link('Module:My:default'));
-		Assert::same('http://nette.org/en/?presenter=Module%3AMy',  $generator->link('Module:My:'));
-		Assert::same('http://nette.org/en/?presenter=Homepage',  $generator->link('Homepage:'));
-		Assert::same('http://nette.org/en/?0=10&presenter=Homepage',  $generator->link('Homepage:', [10]));
-		Assert::same('http://nette.org/en/?0=10&id=20&action=detail&presenter=Homepage',  $generator->link('Homepage:detail', [10, 'id' => 20]));
-		Assert::same('http://nette.org/en/?presenter=Homepage#frag:ment',  $generator->link('Homepage:#frag:ment'));
+		Assert::same('http://nette.org/en/?action=default&presenter=Homepage', $generator->link('Homepage:default'));
+		Assert::same('http://nette.org/en/?action=default&presenter=Module%3AMy', $generator->link('Module:My:default'));
+		Assert::same('http://nette.org/en/?presenter=Module%3AMy', $generator->link('Module:My:'));
+		Assert::same('http://nette.org/en/?presenter=Homepage', $generator->link('Homepage:'));
+		Assert::same('http://nette.org/en/?0=10&presenter=Homepage', $generator->link('Homepage:', [10]));
+		Assert::same('http://nette.org/en/?0=10&id=20&action=detail&presenter=Homepage', $generator->link('Homepage:detail', [10, 'id' => 20]));
+		Assert::same('http://nette.org/en/?presenter=Homepage#frag:ment', $generator->link('Homepage:#frag:ment'));
 	});
 
 }

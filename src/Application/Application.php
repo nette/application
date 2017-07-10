@@ -83,8 +83,8 @@ class Application
 			$this->processRequest($this->createInitialRequest());
 			$this->onShutdown($this);
 
-		} catch (\Throwable $e) {
 		} catch (\Exception $e) {
+		} catch (\Throwable $e) {
 		}
 		if (isset($e)) {
 			$this->onError($this, $e);
@@ -94,9 +94,9 @@ class Application
 					$this->onShutdown($this, $e);
 					return;
 
-				} catch (\Throwable $e) {
-					$this->onError($this, $e);
 				} catch (\Exception $e) {
+					$this->onError($this, $e);
+				} catch (\Throwable $e) {
 					$this->onError($this, $e);
 				}
 			}

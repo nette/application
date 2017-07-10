@@ -44,7 +44,7 @@ test(function () {
 	//signal in GET
 	$presenter = createPresenter();
 	$presenter->run(new Application\Request('Foo', 'GET', [
-		'do' => 'foo'
+		'do' => 'foo',
 	]));
 	Assert::same(['', 'foo'], $presenter->getSignal());
 });
@@ -53,7 +53,7 @@ test(function () {
 	//signal for subcomponent in GET
 	$presenter = createPresenter();
 	$presenter->run(new Application\Request('Foo', 'GET', [
-		'do' => 'foo-bar'
+		'do' => 'foo-bar',
 	]));
 	Assert::same(['foo', 'bar'], $presenter->getSignal());
 });
@@ -62,7 +62,7 @@ test(function () {
 	//signal in POST
 	$presenter = createPresenter();
 	$presenter->run(new Application\Request('Foo', 'POST', [], [
-		'do' => 'foo'
+		'do' => 'foo',
 	]));
 	Assert::null($presenter->getSignal());
 });
@@ -71,7 +71,7 @@ test(function () {
 	//_signal_ in POST
 	$presenter = createPresenter();
 	$presenter->run(new Application\Request('Foo', 'POST', [], [
-		'_do' => 'foo'
+		'_do' => 'foo',
 	]));
 	Assert::same(['', 'foo'], $presenter->getSignal());
 });
@@ -80,7 +80,7 @@ test(function () {
 	//signal in POST not overwriting GET
 	$presenter = createPresenter();
 	$presenter->run(new Application\Request('Foo', 'POST', ['do' => null], [
-		'do' => 'foo'
+		'do' => 'foo',
 	]));
 	Assert::null($presenter->getSignal());
 });
@@ -89,7 +89,7 @@ test(function () {
 	//_signal_ in POST overwriting GET
 	$presenter = createPresenter();
 	$presenter->run(new Application\Request('Foo', 'POST', ['do' => 'bar'], [
-		'_do' => 'foo'
+		'_do' => 'foo',
 	]));
 	Assert::same(['', 'foo'], $presenter->getSignal());
 });
@@ -99,7 +99,7 @@ test(function () {
 	$presenter = createPresenter();
 	$presenter->ajax = true;
 	$presenter->run(new Application\Request('Foo', 'POST', [], [
-		'do' => 'foo'
+		'do' => 'foo',
 	]));
 	Assert::same(['', 'foo'], $presenter->getSignal());
 });
@@ -109,7 +109,7 @@ test(function () {
 	$presenter = createPresenter();
 	$presenter->ajax = true;
 	$presenter->run(new Application\Request('Foo', 'POST', ['do' => 'bar'], [
-		'do' => 'foo'
+		'do' => 'foo',
 	]));
 	Assert::same(['', 'foo'], $presenter->getSignal());
 });
@@ -119,7 +119,7 @@ test(function () {
 	$presenter = createPresenter();
 	$presenter->ajax = true;
 	$presenter->run(new Application\Request('Foo', 'POST', ['do' => 'bar'], [
-		'_do' => 'foo'
+		'_do' => 'foo',
 	]));
 	Assert::same(['', 'foo'], $presenter->getSignal());
 });

@@ -18,17 +18,17 @@ class MyRouter implements Nette\Application\IRouter
 	public $woken;
 
 
-	function match(Nette\Http\IRequest $httpRequest)
+	public function match(Nette\Http\IRequest $httpRequest)
 	{
 	}
 
 
-	function constructUrl(Nette\Application\Request $appRequest, Nette\Http\Url $refUrl)
+	public function constructUrl(Nette\Application\Request $appRequest, Nette\Http\Url $refUrl)
 	{
 	}
 
 
-	function __wakeup()
+	public function __wakeup()
 	{
 		$this->woken = true;
 	}

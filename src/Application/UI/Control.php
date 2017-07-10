@@ -17,6 +17,9 @@ use Nette;
  */
 abstract class Control extends Component implements IRenderable
 {
+	/** @var bool */
+	public $snippetMode;
+
 	/** @var ITemplateFactory */
 	private $templateFactory;
 
@@ -25,9 +28,6 @@ abstract class Control extends Component implements IRenderable
 
 	/** @var array */
 	private $invalidSnippets = [];
-
-	/** @var bool */
-	public $snippetMode;
 
 
 	/********************* template factory ****************d*g**/
@@ -47,7 +47,8 @@ abstract class Control extends Component implements IRenderable
 		if ($this->template === null) {
 			$value = $this->createTemplate();
 			if (!$value instanceof ITemplate && $value !== null) {
-				$class2 = get_class($value); $class = get_class($this);
+				$class2 = get_class($value);
+				$class = get_class($this);
 				throw new Nette\UnexpectedValueException("Object returned by $class::createTemplate() must be instance of Nette\\Application\\UI\\ITemplate, '$class2' given.");
 			}
 			$this->template = $value;
@@ -118,7 +119,7 @@ abstract class Control extends Component implements IRenderable
 
 
 	/** @deprecated */
-	function invalidateControl($snippet = null)
+	public function invalidateControl($snippet = null)
 	{
 		trigger_error(__METHOD__ . '() is deprecated; use $this->redrawControl($snippet) instead.', E_USER_DEPRECATED);
 		$this->redrawControl($snippet);
@@ -126,7 +127,7 @@ abstract class Control extends Component implements IRenderable
 
 
 	/** @deprecated */
-	function validateControl($snippet = null)
+	public function validateControl($snippet = null)
 	{
 		trigger_error(__METHOD__ . '() is deprecated; use $this->redrawControl($snippet, false) instead.', E_USER_DEPRECATED);
 		$this->redrawControl($snippet, false);

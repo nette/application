@@ -229,7 +229,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 
 	/** @deprecated */
-	function getParam($name = null, $default = null)
+	public function getParam($name = null, $default = null)
 	{
 		//trigger_error(__METHOD__ . '() is deprecated; use getParameter() instead.', E_USER_DEPRECATED);
 		return func_num_args() ? $this->getParameter($name, $default) : $this->getParameters();

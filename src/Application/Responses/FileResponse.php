@@ -17,6 +17,9 @@ class FileResponse implements Nette\Application\IResponse
 {
 	use Nette\SmartObject;
 
+	/** @var bool */
+	public $resuming = true;
+
 	/** @var string */
 	private $file;
 
@@ -25,9 +28,6 @@ class FileResponse implements Nette\Application\IResponse
 
 	/** @var string */
 	private $name;
-
-	/** @var bool */
-	public $resuming = true;
 
 	/** @var bool */
 	private $forceDownload;

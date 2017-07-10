@@ -50,7 +50,7 @@ class Route implements Application\IRouter
 			self::PATTERN => '[^/]+',
 			self::FILTER_OUT => [__CLASS__, 'param2path'],
 		],
-		'?#' => [ // default style for query parameters
+		'?#' => [// default style for query parameters
 		],
 		'module' => [
 			self::PATTERN => '[a-z][a-z0-9.-]*',
@@ -357,7 +357,7 @@ class Route implements Application\IRouter
 			}
 			$i--;
 
-			$name = $sequence[$i]; $i--; // parameter name
+			$name = $sequence[$i--]; // parameter name
 
 			if ($name === ']') { // opening optional part
 				$brackets[] = $url;
@@ -543,9 +543,9 @@ class Route implements Application\IRouter
 				continue;
 			}
 
-			$pattern = trim($parts[$i]); $i--; // validation condition (as regexp)
-			$default = $parts[$i]; $i--; // default value
-			$name = $parts[$i]; $i--; // parameter name
+			$pattern = trim($parts[$i--]); // validation condition (as regexp)
+			$default = $parts[$i--]; // default value
+			$name = $parts[$i--]; // parameter name
 			array_unshift($sequence, $name);
 
 			if ($name[0] === '?') { // "foo" parameter
