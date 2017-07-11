@@ -25,7 +25,7 @@ class Helpers
 	public static function splitName(string $name): array
 	{
 		$pos = strrpos($name, ':');
-		return $pos === FALSE
+		return $pos === false
 			? ['', $name, '']
 			: [substr($name, 0, $pos), substr($name, $pos + 1), ':'];
 	}

@@ -11,49 +11,49 @@ require __DIR__ . '/../bootstrap.php';
 
 
 Assert::same([
-	'absolute' => FALSE,
+	'absolute' => false,
 	'path' => 'a:b',
-	'signal' => FALSE,
-	'args' => NULL,
+	'signal' => false,
+	'args' => null,
 	'fragment' => '',
 ], Presenter::parseDestination('a:b'));
 
 Assert::same([
-	'absolute' => FALSE,
+	'absolute' => false,
 	'path' => 'a:b',
-	'signal' => TRUE,
-	'args' => NULL,
+	'signal' => true,
+	'args' => null,
 	'fragment' => '',
 ], Presenter::parseDestination('a:b!'));
 
 Assert::same([
-	'absolute' => TRUE,
+	'absolute' => true,
 	'path' => 'a:b',
-	'signal' => FALSE,
-	'args' => NULL,
+	'signal' => false,
+	'args' => null,
 	'fragment' => '',
 ], Presenter::parseDestination('//a:b'));
 
 Assert::same([
-	'absolute' => FALSE,
+	'absolute' => false,
 	'path' => 'a:b',
-	'signal' => FALSE,
-	'args' => NULL,
+	'signal' => false,
+	'args' => null,
 	'fragment' => '#fragment',
 ], Presenter::parseDestination('a:b#fragment'));
 
 Assert::same([
-	'absolute' => FALSE,
+	'absolute' => false,
 	'path' => 'a:b',
-	'signal' => FALSE,
+	'signal' => false,
 	'args' => [],
 	'fragment' => '#fragment',
 ], Presenter::parseDestination('a:b?#fragment'));
 
 Assert::same([
-	'absolute' => FALSE,
+	'absolute' => false,
 	'path' => 'a:b',
-	'signal' => FALSE,
+	'signal' => false,
 	'args' => ['a' => 'b', 'c' => 'd'],
 	'fragment' => '#fragment',
 ], Presenter::parseDestination('a:b?a=b&c=d#fragment'));

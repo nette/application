@@ -32,7 +32,7 @@ class MyRouter implements Nette\Application\IRouter
 
 	function __wakeup()
 	{
-		$this->woken = TRUE;
+		$this->woken = true;
 	}
 }
 
@@ -45,7 +45,7 @@ test(function () {
 	', 'neon'));
 
 	$compiler = new DI\Compiler;
-	$compiler->addExtension('routing', new RoutingExtension(FALSE));
+	$compiler->addExtension('routing', new RoutingExtension(false));
 	$code = $compiler->addConfig($config)->setClassName('Container1')->compile();
 	eval($code);
 
@@ -66,7 +66,7 @@ test(function () {
 	', 'neon'));
 
 	$compiler = new DI\Compiler;
-	$compiler->addExtension('routing', new RoutingExtension(FALSE));
+	$compiler->addExtension('routing', new RoutingExtension(false));
 	$code = $compiler->addConfig($config)->setClassName('Container2')->compile();
 	eval($code);
 
@@ -95,6 +95,6 @@ Assert::exception(function () {
 	', 'neon'));
 
 	$compiler = new DI\Compiler;
-	$compiler->addExtension('routing', new RoutingExtension(FALSE));
+	$compiler->addExtension('routing', new RoutingExtension(false));
 	$code = $compiler->addConfig($config)->setClassName('Container3')->compile();
 }, Nette\DI\ServiceCreationException::class, 'Unable to cache router due to error: %a%');

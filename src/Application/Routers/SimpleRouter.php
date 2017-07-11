@@ -63,14 +63,14 @@ class SimpleRouter implements Application\IRouter
 	public function match(Nette\Http\IRequest $httpRequest): ?Application\Request
 	{
 		if ($httpRequest->getUrl()->getPathInfo() !== '') {
-			return NULL;
+			return null;
 		}
 		// combine with precedence: get, (post,) defaults
 		$params = $httpRequest->getQuery();
 		$params += $this->defaults;
 
 		if (!isset($params[self::PRESENTER_KEY]) || !is_string($params[self::PRESENTER_KEY])) {
-			return NULL;
+			return null;
 		}
 
 		$presenter = $this->module . $params[self::PRESENTER_KEY];
@@ -93,7 +93,7 @@ class SimpleRouter implements Application\IRouter
 	public function constructUrl(Application\Request $appRequest, Nette\Http\Url $refUrl): ?string
 	{
 		if ($this->flags & self::ONE_WAY) {
-			return NULL;
+			return null;
 		}
 		$params = $appRequest->getParameters();
 
@@ -102,10 +102,10 @@ class SimpleRouter implements Application\IRouter
 		if (strncmp($presenter, $this->module, strlen($this->module)) === 0) {
 			$params[self::PRESENTER_KEY] = substr($presenter, strlen($this->module));
 		} else {
-			return NULL;
+			return null;
 		}
 
-		// remove default values; NULL values are retain
+		// remove default values; null values are retain
 		foreach ($this->defaults as $key => $value) {
 			if (isset($params[$key]) && $params[$key] == $value) { // intentionally ==
 				unset($params[$key]);

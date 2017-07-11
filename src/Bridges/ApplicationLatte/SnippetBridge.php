@@ -56,7 +56,7 @@ class SnippetBridge implements ISnippetBridge
 	public function markRedrawn(string $name): void
 	{
 		if ($name !== '') {
-			$this->control->redrawControl($name, FALSE);
+			$this->control->redrawControl($name, false);
 		}
 	}
 
@@ -69,7 +69,7 @@ class SnippetBridge implements ISnippetBridge
 
 	public function addSnippet(string $name, string $content): void
 	{
-		if ($this->payload === NULL) {
+		if ($this->payload === null) {
 			$this->payload = $this->control->getPresenter()->getPayload();
 		}
 		$this->payload->snippets[$this->control->getSnippetId($name)] = $content;
@@ -83,9 +83,9 @@ class SnippetBridge implements ISnippetBridge
 			foreach (array_shift($queue)->getComponents() as $child) {
 				if ($child instanceof IRenderable) {
 					if ($child->isControlInvalid()) {
-						$child->snippetMode = TRUE;
+						$child->snippetMode = true;
 						$child->render();
-						$child->snippetMode = FALSE;
+						$child->snippetMode = false;
 					}
 				} elseif ($child instanceof Nette\ComponentModel\IContainer) {
 					$queue[] = $child;

@@ -32,11 +32,11 @@ class ComponentReflection extends \ReflectionClass
 	private static $mcCache = [];
 
 
-	public function getPersistentParams(string $class = NULL): array
+	public function getPersistentParams(string $class = null): array
 	{
-		$class = $class === NULL ? $this->getName() : $class;
+		$class = $class === null ? $this->getName() : $class;
 		$params = & self::$ppCache[$class];
-		if ($params !== NULL) {
+		if ($params !== null) {
 			return $params;
 		}
 		$params = [];
@@ -65,11 +65,11 @@ class ComponentReflection extends \ReflectionClass
 	}
 
 
-	public function getPersistentComponents(string $class = NULL): array
+	public function getPersistentComponents(string $class = null): array
 	{
-		$class = $class === NULL ? $this->getName() : $class;
+		$class = $class === null ? $this->getName() : $class;
 		$components = & self::$pcCache[$class];
-		if ($components !== NULL) {
+		if ($components !== null) {
 			return $components;
 		}
 		$components = [];
@@ -94,9 +94,9 @@ class ComponentReflection extends \ReflectionClass
 	{
 		$class = $this->getName();
 		$cache = & self::$mcCache[strtolower($class . ':' . $method)];
-		if ($cache === NULL) {
+		if ($cache === null) {
 			try {
-				$cache = FALSE;
+				$cache = false;
 				$rm = new \ReflectionMethod($class, $method);
 				$cache = $this->isInstantiable() && $rm->isPublic() && !$rm->isAbstract() && !$rm->isStatic();
 			} catch (\ReflectionException $e) {
@@ -126,7 +126,7 @@ class ComponentReflection extends \ReflectionClass
 			} elseif ($param->isDefaultValueAvailable()) {
 				$res[$i] = $param->getDefaultValue();
 			} elseif ($type === 'NULL' || $param->allowsNull()) {
-				$res[$i] = NULL;
+				$res[$i] = null;
 			} elseif ($type === 'array') {
 				$res[$i] = [];
 			} else {
@@ -144,13 +144,13 @@ class ComponentReflection extends \ReflectionClass
 	/**
 	 * Non data-loss type conversion.
 	 */
-	public static function convertType(&$val, string $type, bool $isClass = FALSE): bool
+	public static function convertType(&$val, string $type, bool $isClass = false): bool
 	{
 		if ($isClass) {
 			return $val instanceof $type;
 
 		} elseif ($type === 'callable') {
-			return FALSE;
+			return false;
 
 		} elseif ($type === 'NULL') { // means 'not array'
 			return !is_array($val);
@@ -158,18 +158,18 @@ class ComponentReflection extends \ReflectionClass
 		} elseif ($type === 'array') {
 			return is_array($val);
 
-		} elseif (!is_scalar($val)) { // array, resource, NULL, etc.
-			return FALSE;
+		} elseif (!is_scalar($val)) { // array, resource, null, etc.
+			return false;
 
 		} else {
-			$old = $tmp = ($val === FALSE ? '0' : (string) $val);
+			$old = $tmp = ($val === false ? '0' : (string) $val);
 			settype($tmp, $type);
-			if ($old !== ($tmp === FALSE ? '0' : (string) $tmp)) {
-				return FALSE; // data-loss occurs
+			if ($old !== ($tmp === false ? '0' : (string) $tmp)) {
+				return false; // data-loss occurs
 			}
 			$val = $tmp;
 		}
-		return TRUE;
+		return true;
 	}
 
 
@@ -179,9 +179,9 @@ class ComponentReflection extends \ReflectionClass
 	public static function parseAnnotation(\Reflector $ref, $name): ?array
 	{
 		if (!preg_match_all('#[\\s*]@' . preg_quote($name, '#') . '(?:\(\\s*([^)]*)\\s*\)|\\s|$)#', (string) $ref->getDocComment(), $m)) {
-			return NULL;
+			return null;
 		}
-		static $tokens = ['true' => TRUE, 'false' => FALSE, 'null' => NULL];
+		static $tokens = ['true' => true, 'false' => false, 'null' => null];
 		$res = [];
 		foreach ($m[1] as $s) {
 			foreach (preg_split('#\s*,\s*#', $s, -1, PREG_SPLIT_NO_EMPTY) ?: ['true'] as $item) {
@@ -199,7 +199,7 @@ class ComponentReflection extends \ReflectionClass
 	{
 		return $param->hasType()
 			? [(string) $param->getType(), !$param->getType()->isBuiltin()]
-			: [gettype($param->isDefaultValueAvailable() ? $param->getDefaultValue() : NULL), FALSE];
+			: [gettype($param->isDefaultValueAvailable() ? $param->getDefaultValue() : null), false];
 	}
 
 
@@ -219,7 +219,7 @@ class ComponentReflection extends \ReflectionClass
 	public function getAnnotation(string $name)
 	{
 		$res = self::parseAnnotation($this, $name);
-		return $res ? end($res) : NULL;
+		return $res ? end($res) : null;
 	}
 
 

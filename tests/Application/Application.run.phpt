@@ -68,7 +68,7 @@ $httpResponse->shouldIgnoreMissing();
 Assert::exception(function () use ($httpRequest, $httpResponse) {
 	$presenterFactory = Mockery::mock(IPresenterFactory::class);
 	$router = Mockery::mock(IRouter::class);
-	$router->shouldReceive('match')->andReturn(NULL);
+	$router->shouldReceive('match')->andReturn(null);
 
 	$app = new Application($presenterFactory, $router, $httpRequest, $httpResponse);
 	$app->run();
@@ -83,10 +83,10 @@ test(function () use ($httpRequest, $httpResponse) {
 	$presenterFactory->shouldReceive('createPresenter')->with('Error')->andReturn($errorPresenter);
 
 	$router = Mockery::mock(IRouter::class);
-	$router->shouldReceive('match')->andReturn(NULL);
+	$router->shouldReceive('match')->andReturn(null);
 
 	$app = new Application($presenterFactory, $router, $httpRequest, $httpResponse);
-	$app->catchExceptions = TRUE;
+	$app->catchExceptions = true;
 	$app->errorPresenter = 'Error';
 	$app->run();
 
@@ -112,7 +112,7 @@ test(function () use ($httpRequest, $httpResponse) {
 	$router->shouldReceive('match')->andReturn(new Request('Error', 'GET'));
 
 	$app = new Application($presenterFactory, $router, $httpRequest, $httpResponse);
-	$app->catchExceptions = TRUE;
+	$app->catchExceptions = true;
 	$app->errorPresenter = 'Error';
 	$app->run();
 
@@ -154,7 +154,7 @@ test(function () use ($httpRequest, $httpResponse) {
 	$router->shouldReceive('match')->andReturn(new Request('Missing', 'GET'));
 
 	$app = new Application($presenterFactory, $router, $httpRequest, $httpResponse);
-	$app->catchExceptions = TRUE;
+	$app->catchExceptions = true;
 	$app->errorPresenter = 'Error';
 	$app->run();
 
@@ -196,7 +196,7 @@ test(function () use ($httpRequest, $httpResponse) {
 	$router->shouldReceive('match')->andReturn(new Request('Bad', 'GET'));
 
 	$app = new Application($presenterFactory, $router, $httpRequest, $httpResponse);
-	$app->catchExceptions = TRUE;
+	$app->catchExceptions = true;
 	$app->errorPresenter = 'Error';
 	$app->run();
 
@@ -248,7 +248,7 @@ Assert::noError(function () use ($httpRequest, $httpResponse) {
 	$router->shouldReceive('match')->andReturn(new Request('Good', 'GET'));
 
 	$app = new Application($presenterFactory, $router, $httpRequest, $httpResponse);
-	$app->catchExceptions = TRUE;
+	$app->catchExceptions = true;
 	$app->errorPresenter = 'Error';
 	$app->run();
 

@@ -19,7 +19,7 @@ use Nette;
  * @property array $parameters
  * @property array $post
  * @property array $files
- * @property string|NULL $method
+ * @property string|null $method
  */
 class Request
 {
@@ -34,7 +34,7 @@ class Request
 	/** flag */
 	public const RESTORED = 'restored';
 
-	/** @var string|NULL */
+	/** @var string|null */
 	private $method;
 
 	/** @var array */
@@ -59,7 +59,7 @@ class Request
 	 * @param  array $post   variables provided to the presenter via POST
 	 * @param  array $files   all uploaded files
 	 */
-	public function __construct(string $name, string $method = NULL, array $params = [], array $post = [], array $files = [], array $flags = [])
+	public function __construct(string $name, string $method = null, array $params = [], array $post = [], array $files = [], array $flags = [])
 	{
 		$this->name = $name;
 		$this->method = $method;
@@ -116,7 +116,7 @@ class Request
 	 */
 	public function getParameter(string $key)
 	{
-		return $this->params[$key] ?? NULL;
+		return $this->params[$key] ?? null;
 	}
 
 
@@ -136,11 +136,11 @@ class Request
 	 * If no key is passed, returns the entire array.
 	 * @return mixed
 	 */
-	public function getPost(string $key = NULL)
+	public function getPost(string $key = null)
 	{
 		return func_num_args() === 0
 			? $this->post
-			: ($this->post[$key] ?? NULL);
+			: ($this->post[$key] ?? null);
 	}
 
 
@@ -197,7 +197,7 @@ class Request
 	 * Sets the flag.
 	 * @return static
 	 */
-	public function setFlag(string $flag, bool $value = TRUE)
+	public function setFlag(string $flag, bool $value = true)
 	{
 		$this->flags[$flag] = $value;
 		return $this;

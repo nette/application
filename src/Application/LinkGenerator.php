@@ -25,11 +25,11 @@ class LinkGenerator
 	/** @var Nette\Http\Url */
 	private $refUrl;
 
-	/** @var IPresenterFactory|NULL */
+	/** @var IPresenterFactory|null */
 	private $presenterFactory;
 
 
-	public function __construct(IRouter $router, Nette\Http\Url $refUrl, IPresenterFactory $presenterFactory = NULL)
+	public function __construct(IRouter $router, Nette\Http\Url $refUrl, IPresenterFactory $presenterFactory = null)
 	{
 		$this->router = $router;
 		$this->refUrl = $refUrl;
@@ -50,7 +50,7 @@ class LinkGenerator
 		[, $presenter, $action, $frag] = $m;
 
 		try {
-			$class = $this->presenterFactory ? $this->presenterFactory->getPresenterClass($presenter) : NULL;
+			$class = $this->presenterFactory ? $this->presenterFactory->getPresenterClass($presenter) : null;
 		} catch (InvalidPresenterException $e) {
 			throw new UI\InvalidLinkException($e->getMessage(), 0, $e);
 		}
@@ -77,8 +77,8 @@ class LinkGenerator
 			$params[UI\Presenter::ACTION_KEY] = $action;
 		}
 
-		$url = $this->router->constructUrl(new Request($presenter, NULL, $params), $this->refUrl);
-		if ($url === NULL) {
+		$url = $this->router->constructUrl(new Request($presenter, null, $params), $this->refUrl);
+		if ($url === null) {
 			unset($params[UI\Presenter::ACTION_KEY]);
 			$params = urldecode(http_build_query($params, '', ', '));
 			throw new UI\InvalidLinkException("No route for $dest($params)");

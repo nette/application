@@ -20,11 +20,11 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 	/** @var array */
 	private $cachedRoutes;
 
-	/** @var string|NULL */
+	/** @var string|null */
 	private $module;
 
 
-	public function __construct($module = NULL)
+	public function __construct($module = null)
 	{
 		$this->module = $module ? $module . ':' : '';
 	}
@@ -37,7 +37,7 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 	{
 		foreach ($this as $route) {
 			$appRequest = $route->match($httpRequest);
-			if ($appRequest !== NULL) {
+			if ($appRequest !== null) {
 				$name = $appRequest->getPresenterName();
 				if (strncmp($name, 'Nette:', 6)) {
 					$appRequest->setPresenterName($this->module . $name);
@@ -45,7 +45,7 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 				return $appRequest;
 			}
 		}
-		return NULL;
+		return null;
 	}
 
 
@@ -54,7 +54,7 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 	 */
 	public function constructUrl(Nette\Application\Request $appRequest, Nette\Http\Url $refUrl): ?string
 	{
-		if ($this->cachedRoutes === NULL) {
+		if ($this->cachedRoutes === null) {
 			$this->warmupCache();
 		}
 
@@ -63,7 +63,7 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 				$appRequest = clone $appRequest;
 				$appRequest->setPresenterName(substr($tmp, strlen($this->module)));
 			} else {
-				return NULL;
+				return null;
 			}
 		}
 
@@ -74,12 +74,12 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 
 		foreach ($this->cachedRoutes[$presenter] as $route) {
 			$url = $route->constructUrl($appRequest, $refUrl);
-			if ($url !== NULL) {
+			if ($url !== null) {
 				return $url;
 			}
 		}
 
-		return NULL;
+		return null;
 	}
 
 

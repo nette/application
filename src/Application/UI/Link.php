@@ -67,7 +67,7 @@ class Link
 	 */
 	public function getParameter(string $key)
 	{
-		return $this->params[$key] ?? NULL;
+		return $this->params[$key] ?? null;
 	}
 
 

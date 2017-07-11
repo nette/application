@@ -45,7 +45,7 @@ class Template implements Nette\Application\UI\ITemplate
 	/**
 	 * Renders template to output.
 	 */
-	public function render($file = NULL, array $params = []): void
+	public function render($file = null, array $params = []): void
 	{
 		$this->latte->render($file ?: $this->file, $params + $this->params);
 	}
@@ -88,7 +88,7 @@ class Template implements Nette\Application\UI\ITemplate
 	 */
 	public function setTranslator(?Nette\Localization\ITranslator $translator)
 	{
-		$this->latte->addFilter('translate', $translator === NULL ? NULL : function (Latte\Runtime\FilterInfo $fi, ...$args) use ($translator) {
+		$this->latte->addFilter('translate', $translator === null ? null : function (Latte\Runtime\FilterInfo $fi, ...$args) use ($translator) {
 			return $translator->translate(...$args);
 		});
 		return $this;

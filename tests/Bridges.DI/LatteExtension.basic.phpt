@@ -101,7 +101,7 @@ services:
 ', 'neon'));
 
 $compiler = new DI\Compiler;
-$compiler->addExtension('latte', new Nette\Bridges\ApplicationDI\LatteExtension(NULL, FALSE));
+$compiler->addExtension('latte', new Nette\Bridges\ApplicationDI\LatteExtension(null, false));
 $compiler->addExtension('another', new AnotherExtension);
 $code = $compiler->addConfig($config)->compile();
 eval($code);

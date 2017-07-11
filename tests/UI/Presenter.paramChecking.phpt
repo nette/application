@@ -17,10 +17,10 @@ require __DIR__ . '/../bootstrap.php';
 class TestPresenter extends Application\UI\Presenter
 {
 	/** @persistent */
-	public $bool = TRUE;
+	public $bool = true;
 
 
-	function actionDefault($a, $b = NULL, array $c, array $d = NULL, $e = 1, $f = 1.0, $g = FALSE)
+	function actionDefault($a, $b = null, array $c, array $d = null, $e = 1, $f = 1.0, $g = false)
 	{
 	}
 }
@@ -28,8 +28,8 @@ class TestPresenter extends Application\UI\Presenter
 
 $presenter = new TestPresenter;
 $presenter->injectPrimary(
-	NULL,
-	NULL,
+	null,
+	null,
 	new Application\Routers\SimpleRouter,
 	new Http\Request(new Http\UrlScript),
 	new Http\Response

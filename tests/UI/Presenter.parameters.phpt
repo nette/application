@@ -16,7 +16,7 @@ require __DIR__ . '/../bootstrap.php';
 
 class TestPresenter extends Application\UI\Presenter
 {
-	public $ajax = FALSE;
+	public $ajax = false;
 
 
 	public function isAjax(): bool
@@ -36,8 +36,8 @@ class TestPresenter extends Application\UI\Presenter
 function createPresenter()
 {
 	$presenter = new TestPresenter();
-	$presenter->injectPrimary(NULL, NULL, NULL, new Http\Request(new Http\UrlScript()), new Http\Response());
-	$presenter->autoCanonicalize = FALSE;
+	$presenter->injectPrimary(null, null, null, new Http\Request(new Http\UrlScript()), new Http\Response());
+	$presenter->autoCanonicalize = false;
 	return $presenter;
 }
 
@@ -81,7 +81,7 @@ test(function () {
 test(function () {
 	//signal in POST not overwriting GET
 	$presenter = createPresenter();
-	$presenter->run(new Application\Request('Foo', 'POST', ['do' => NULL], [
+	$presenter->run(new Application\Request('Foo', 'POST', ['do' => null], [
 		'do' => 'foo'
 	]));
 	Assert::null($presenter->getSignal());
@@ -99,7 +99,7 @@ test(function () {
 test(function () {
 	//AJAX: signal in POST
 	$presenter = createPresenter();
-	$presenter->ajax = TRUE;
+	$presenter->ajax = true;
 	$presenter->run(new Application\Request('Foo', 'POST', [], [
 		'do' => 'foo'
 	]));
@@ -109,7 +109,7 @@ test(function () {
 test(function () {
 	//AJAX: signal in POST overwriting GET
 	$presenter = createPresenter();
-	$presenter->ajax = TRUE;
+	$presenter->ajax = true;
 	$presenter->run(new Application\Request('Foo', 'POST', ['do' => 'bar'], [
 		'do' => 'foo'
 	]));
@@ -119,7 +119,7 @@ test(function () {
 test(function () {
 	//AJAX: _signal_ in POST overwriting GET
 	$presenter = createPresenter();
-	$presenter->ajax = TRUE;
+	$presenter->ajax = true;
 	$presenter->run(new Application\Request('Foo', 'POST', ['do' => 'bar'], [
 		'_do' => 'foo'
 	]));

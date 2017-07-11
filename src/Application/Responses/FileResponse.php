@@ -29,13 +29,13 @@ class FileResponse implements Nette\Application\IResponse
 	private $name;
 
 	/** @var bool */
-	public $resuming = TRUE;
+	public $resuming = true;
 
 	/** @var bool */
 	private $forceDownload;
 
 
-	public function __construct(string $file, string $name = NULL, string $contentType = NULL, bool $forceDownload = TRUE)
+	public function __construct(string $file, string $name = null, string $contentType = null, bool $forceDownload = true)
 	{
 		if (!is_file($file)) {
 			throw new Nette\Application\BadRequestException("File '$file' doesn't exist.");

@@ -22,7 +22,7 @@ $response = Mockery::mock(Nette\Http\IResponse::class);
 $response->shouldReceive('getHeader')->with('Content-Security-Policy')->andReturn("hello 'nonce-abcd123==' world");
 
 $control = Mockery::mock(UI\Control::class);
-$control->shouldReceive('getPresenter')->andReturn(NULL);
+$control->shouldReceive('getPresenter')->andReturn(null);
 $control->shouldIgnoreMissing();
 
 $factory = new ApplicationLatte\TemplateFactory($latteFactory);

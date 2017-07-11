@@ -50,7 +50,7 @@ class TestPresenter extends Nette\Application\UI\Presenter
 
 
 $presenter = new TestPresenter;
-$presenter->snippetMode = TRUE;
+$presenter->snippetMode = true;
 $presenter->redrawControl();
 $presenter['multi-1']->redrawControl();
 $presenter->render();
@@ -73,7 +73,7 @@ Assert::same([
 
 
 $presenter = new TestPresenter;
-$presenter->snippetMode = TRUE;
+$presenter->snippetMode = true;
 $presenter->redrawControl('hello');
 $presenter->redrawControl('array');
 $presenter->render();
