@@ -15,7 +15,7 @@ require __DIR__ . '/../bootstrap.php';
 
 class MockComponent
 {
-	function getComponent($name)
+	public function getComponent($name)
 	{
 		Notes::add(__METHOD__);
 		Notes::add(func_get_args());
@@ -26,7 +26,7 @@ class MockComponent
 
 class MockControl
 {
-	function __call($name, $args)
+	public function __call($name, $args)
 	{
 		Notes::add(__METHOD__);
 		Notes::add(func_get_args());

@@ -50,17 +50,17 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @var callable[]  function (Presenter $sender, IResponse $response = null); Occurs when the presenter is shutting down */
 	public $onShutdown;
 
-	/** @var Nette\Application\Request|null */
-	private $request;
-
-	/** @var Nette\Application\IResponse */
-	private $response;
-
 	/** @var bool  automatically call canonicalize() */
 	public $autoCanonicalize = true;
 
 	/** @var bool  use absolute Urls or paths? */
 	public $absoluteUrls = false;
+
+	/** @var Nette\Application\Request|null */
+	private $request;
+
+	/** @var Nette\Application\IResponse */
+	private $response;
 
 	/** @var array */
 	private $globalParams;

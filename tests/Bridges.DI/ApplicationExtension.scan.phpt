@@ -28,9 +28,9 @@ test(function () {
 
 	$container = new Container1;
 	$tags = $container->findByTag('nette.presenter');
-	Assert::count(1, array_keys($tags, NetteModule\ErrorPresenter::class));
-	Assert::count(1, array_keys($tags, NetteModule\MicroPresenter::class));
-	Assert::count(0, array_keys($tags, Nette\Application\UI\Presenter::class));
+	Assert::count(1, array_keys($tags, NetteModule\ErrorPresenter::class, true));
+	Assert::count(1, array_keys($tags, NetteModule\MicroPresenter::class, true));
+	Assert::count(0, array_keys($tags, Nette\Application\UI\Presenter::class, true));
 });
 
 
@@ -51,9 +51,9 @@ test(function () {
 
 	$container = new Container2;
 	$tags = $container->findByTag('nette.presenter');
-	Assert::count(1, array_keys($tags, 'BasePresenter'));
-	Assert::count(1, array_keys($tags, 'Presenter1'));
-	Assert::count(1, array_keys($tags, 'Presenter2'));
+	Assert::count(1, array_keys($tags, 'BasePresenter', true));
+	Assert::count(1, array_keys($tags, 'Presenter1', true));
+	Assert::count(1, array_keys($tags, 'Presenter2', true));
 });
 
 
@@ -78,10 +78,10 @@ test(function () {
 
 	$container = new Container3;
 	$tags = $container->findByTag('nette.presenter');
-	Assert::count(1, array_keys($tags, 'BasePresenter'));
-	Assert::count(1, array_keys($tags, 'Presenter1'));
-	Assert::count(1, array_keys($tags, 'Presenter2'));
+	Assert::count(1, array_keys($tags, 'BasePresenter', true));
+	Assert::count(1, array_keys($tags, 'Presenter1', true));
+	Assert::count(1, array_keys($tags, 'Presenter2', true));
 
-	$tmp = array_keys($tags, 'Presenter1');
+	$tmp = array_keys($tags, 'Presenter1', true);
 	Assert::same('test', $container->getService((string) $tmp[0])->getView());
 });

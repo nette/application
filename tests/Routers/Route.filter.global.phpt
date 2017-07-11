@@ -55,7 +55,7 @@ $route = new Route('<lang>/<presenter>/<action>', [
 			if ($arr['presenter'] !== 'AbcCs') {
 				return null;
 			}
-			$arr['presenter'] =  substr($arr['presenter'], 0, -2); // AbcCs -> Abc
+			$arr['presenter'] = substr($arr['presenter'], 0, -2); // AbcCs -> Abc
 			$arr['action'] = substr($arr['action'], 0, -2);
 			return $arr;
 		},
@@ -71,7 +71,7 @@ $route = new Route('<lang>/<presenter>/<action>', [
 			return $arr;
 		},
 	],
-	'module' => 'App'
+	'module' => 'App',
 ]);
 
 

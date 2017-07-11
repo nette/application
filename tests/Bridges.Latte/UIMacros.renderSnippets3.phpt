@@ -29,7 +29,7 @@ class TestControl extends Nette\Application\UI\Control
 
 class TestPresenter extends Nette\Application\UI\Presenter
 {
-	function createComponentTest()
+	public function createComponentTest()
 	{
 		return new TestControl;
 	}

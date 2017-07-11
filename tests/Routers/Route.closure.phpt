@@ -14,7 +14,7 @@ require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/Route.php';
 
 
-$closure = function() {};
+$closure = function () {};
 $route = new Route('<id>', $closure);
 
 testRouteIn($route, '/12', 'Nette:Micro', [

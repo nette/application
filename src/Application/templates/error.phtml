@@ -5,6 +5,8 @@
  * @param  int  $code
  */
 
+declare(strict_types=1);
+
 namespace NetteModule;
 
 $messages = [
@@ -15,7 +17,7 @@ $messages = [
 	410 => ['Page Not Found', 'The page you requested has been taken off the site. We apologize for the inconvenience.'],
 	500 => ['Server Error', 'We\'re sorry! The server encountered an internal error and was unable to complete your request. Please try again later.'],
 ];
-$message = isset($messages[$code]) ? $messages[$code] : $messages[0];
+$message = $messages[$code] ?? $messages[0];
 
 ?>
 <!DOCTYPE html><!-- "' --></textarea></script></style></pre></xmp></a></audio></button></canvas></datalist></details></dialog></iframe></listing></meter></noembed></noframes></noscript></optgroup></option></progress></rp></select></table></template></title></video>

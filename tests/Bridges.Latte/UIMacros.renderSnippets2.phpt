@@ -51,7 +51,7 @@ class InnerControl extends Nette\Application\UI\Control
 
 class TestPresenter extends Nette\Application\UI\Presenter
 {
-	function createComponentMulti()
+	public function createComponentMulti()
 	{
 		return new Nette\Application\UI\Multiplier(function () {
 			return new InnerControl();
