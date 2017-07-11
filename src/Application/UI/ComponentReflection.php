@@ -35,7 +35,7 @@ class ComponentReflection extends \ReflectionClass
 	public function getPersistentParams(string $class = null): array
 	{
 		$class = $class === null ? $this->getName() : $class;
-		$params = & self::$ppCache[$class];
+		$params = &self::$ppCache[$class];
 		if ($params !== null) {
 			return $params;
 		}
@@ -68,7 +68,7 @@ class ComponentReflection extends \ReflectionClass
 	public function getPersistentComponents(string $class = null): array
 	{
 		$class = $class === null ? $this->getName() : $class;
-		$components = & self::$pcCache[$class];
+		$components = &self::$pcCache[$class];
 		if ($components !== null) {
 			return $components;
 		}
@@ -93,7 +93,7 @@ class ComponentReflection extends \ReflectionClass
 	public function hasCallableMethod(string $method): bool
 	{
 		$class = $this->getName();
-		$cache = & self::$mcCache[strtolower($class . ':' . $method)];
+		$cache = &self::$mcCache[strtolower($class . ':' . $method)];
 		if ($cache === null) {
 			try {
 				$cache = false;

@@ -73,6 +73,6 @@ test(function () { // direct file
 	$presenter->setLayout(__DIR__ . '/file.latte');
 
 	Assert::same([
-		__DIR__ . '/file.latte'
+		__DIR__ . '/file.latte',
 	], $presenter->formatLayoutTemplateFiles());
 });

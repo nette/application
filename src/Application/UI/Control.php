@@ -19,6 +19,9 @@ use Nette;
  */
 abstract class Control extends Component implements IRenderable
 {
+	/** @var bool */
+	public $snippetMode;
+
 	/** @var ITemplateFactory */
 	private $templateFactory;
 
@@ -27,9 +30,6 @@ abstract class Control extends Component implements IRenderable
 
 	/** @var array */
 	private $invalidSnippets = [];
-
-	/** @var bool */
-	public $snippetMode;
 
 
 	/********************* template factory ****************d*g**/

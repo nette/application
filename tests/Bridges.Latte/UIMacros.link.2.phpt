@@ -54,7 +54,7 @@ $latte->addProvider('uiPresenter', new MockPresenter);
 $params['action'] = 'login';
 $params['arr'] = ['link' => 'login', 'param' => 123];
 
-Assert::match(<<<EOD
+Assert::match(<<<'EOD'
 plink:['Homepage:']
 
 plink:['Homepage:']
@@ -86,7 +86,7 @@ link:['login']
 <a href="link:['default!#hash',10,20]"></a>
 EOD
 
-, strtr($latte->renderToString(<<<EOD
+, strtr($latte->renderToString(<<<'EOD'
 {plink Homepage:}
 
 {plink  Homepage: }
@@ -105,9 +105,9 @@ EOD
 
 {plink default 10, 'a' => 20, 'b' => 30}
 
-{link  \$action}
+{link  $action}
 
-<a href="{plink \$arr['link'], \$arr['param']}"></a>
+<a href="{plink $arr['link'], $arr['param']}"></a>
 
 <a href="{link default! 10, 'a' => 20, 'b' => 30}"></a>
 

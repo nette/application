@@ -29,7 +29,7 @@ class InnerControl extends Nette\Application\UI\Control
 
 class TestPresenter extends Nette\Application\UI\Presenter
 {
-	function createComponentMulti()
+	public function createComponentMulti()
 	{
 		return new Nette\Application\UI\Multiplier(function () {
 			$control = new InnerControl();
@@ -91,4 +91,4 @@ $presenter = new TestPresenter;
 ob_start();
 $presenter->render();
 $content = ob_get_clean();
-Assert::matchFile(__DIR__ .'/expected/UIMacros.renderSnippets.html', $content);
+Assert::matchFile(__DIR__ . '/expected/UIMacros.renderSnippets.html', $content);
