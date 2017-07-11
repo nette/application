@@ -36,7 +36,7 @@ test(function () {
 
 test(function () {
 	$file = __FILE__;
-	$fileResponse = new FileResponse($file, NULL, NULL, FALSE);
+	$fileResponse = new FileResponse($file, null, null, false);
 	$origData = file_get_contents($file);
 
 	$fileInfo = pathinfo($file);

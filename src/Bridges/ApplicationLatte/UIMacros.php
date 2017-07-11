@@ -36,7 +36,7 @@ class UIMacros extends Latte\Macros\MacroSet
 		$me = new static($compiler);
 		$me->addMacro('control', [$me, 'macroControl']);
 
-		$me->addMacro('href', NULL, NULL, function (MacroNode $node, PhpWriter $writer) use ($me) {
+		$me->addMacro('href', null, null, function (MacroNode $node, PhpWriter $writer) use ($me) {
 			return ' ?> href="<?php ' . $me->macroLink($node, $writer) . ' ?>"<?php ';
 		});
 		$me->addMacro('plink', [$me, 'macroLink']);
@@ -44,7 +44,7 @@ class UIMacros extends Latte\Macros\MacroSet
 		$me->addMacro('ifCurrent', [$me, 'macroIfCurrent'], '}'); // deprecated; use n:class="$presenter->linkCurrent ? ..."
 		$me->addMacro('extends', [$me, 'macroExtends']);
 		$me->addMacro('layout', [$me, 'macroExtends']);
-		$me->addMacro('nonce', NULL, NULL, 'echo $this->global->uiNonce ? " nonce=\"{$this->global->uiNonce}\"" : "";');
+		$me->addMacro('nonce', null, null, 'echo $this->global->uiNonce ? " nonce=\"{$this->global->uiNonce}\"" : "";');
 	}
 
 
@@ -53,7 +53,7 @@ class UIMacros extends Latte\Macros\MacroSet
 	 */
 	public function initialize(): void
 	{
-		$this->extends = FALSE;
+		$this->extends = false;
 	}
 
 
@@ -89,7 +89,7 @@ class UIMacros extends Latte\Macros\MacroSet
 		$tokens->position = $pos;
 		while ($tokens->nextToken()) {
 			if ($tokens->isCurrent('=>') && !$tokens->depth) {
-				$wrap = TRUE;
+				$wrap = true;
 				break;
 			}
 		}
@@ -99,7 +99,7 @@ class UIMacros extends Latte\Macros\MacroSet
 		return "/* line $node->startLine */ "
 			. ($name[0] === '$' ? "if (is_object($name)) \$_tmp = $name; else " : '')
 			. '$_tmp = $this->global->uiControl->getComponent(' . $name . '); '
-			. 'if ($_tmp instanceof Nette\Application\UI\IRenderable) $_tmp->redrawControl(NULL, FALSE); '
+			. 'if ($_tmp instanceof Nette\Application\UI\IRenderable) $_tmp->redrawControl(null, false); '
 			. ($node->modifiers === ''
 				? "\$_tmp->$method($param);"
 				: $writer->write("ob_start(function () {}); \$_tmp->$method($param); echo %modify(ob_get_clean());")
@@ -144,7 +144,7 @@ class UIMacros extends Latte\Macros\MacroSet
 	public function macroExtends(MacroNode $node, PhpWriter $writer)
 	{
 		if ($node->modifiers || $node->parentNode || $node->args !== 'auto') {
-			return $this->extends = FALSE;
+			return $this->extends = false;
 		}
 		$this->extends = $writer->write('$this->parentName = $this->global->uiPresenter->findLayoutTemplateFile();');
 	}

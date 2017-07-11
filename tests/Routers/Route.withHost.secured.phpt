@@ -23,13 +23,13 @@ $route = new Route('//example.org/test', [
 ]);
 
 $url = $route->constructUrl(
-	new Request('Default', NULL, ['action' => 'default']),
+	new Request('Default', null, ['action' => 'default']),
 	new Url('https://example.org')
 );
 Assert::same('https://example.org/test', $url);
 
 $url = $route->constructUrl(
-	new Request('Default', NULL, ['action' => 'default']),
+	new Request('Default', null, ['action' => 'default']),
 	new Url('https://example.com')
 );
 Assert::same('https://example.org/test', $url);
@@ -42,13 +42,13 @@ $route = new Route('https://example.org/test', [
 ]);
 
 $url = $route->constructUrl(
-	new Request('Default', NULL, ['action' => 'default']),
+	new Request('Default', null, ['action' => 'default']),
 	new Url('https://example.org')
 );
 Assert::same('https://example.org/test', $url);
 
 $url = $route->constructUrl(
-	new Request('Default', NULL, ['action' => 'default']),
+	new Request('Default', null, ['action' => 'default']),
 	new Url('https://example.com')
 );
 Assert::same('https://example.org/test', $url);

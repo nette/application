@@ -44,7 +44,7 @@ abstract class Control extends Component implements IRenderable
 
 	public function getTemplate(): ITemplate
 	{
-		if ($this->template === NULL) {
+		if ($this->template === null) {
 			$this->template = $this->createTemplate();
 		}
 		return $this->template;
@@ -89,16 +89,16 @@ abstract class Control extends Component implements IRenderable
 	/**
 	 * Forces control or its snippet to repaint.
 	 */
-	public function redrawControl($snippet = NULL, bool $redraw = TRUE): void
+	public function redrawControl($snippet = null, bool $redraw = true): void
 	{
 		if ($redraw) {
-			$this->invalidSnippets[$snippet === NULL ? "\0" : $snippet] = TRUE;
+			$this->invalidSnippets[$snippet === null ? "\0" : $snippet] = true;
 
-		} elseif ($snippet === NULL) {
+		} elseif ($snippet === null) {
 			$this->invalidSnippets = [];
 
 		} else {
-			$this->invalidSnippets[$snippet] = FALSE;
+			$this->invalidSnippets[$snippet] = false;
 		}
 	}
 
@@ -106,11 +106,11 @@ abstract class Control extends Component implements IRenderable
 	/**
 	 * Is required to repaint the control or its snippet?
 	 */
-	public function isControlInvalid(string $snippet = NULL): bool
+	public function isControlInvalid(string $snippet = null): bool
 	{
-		if ($snippet === NULL) {
+		if ($snippet === null) {
 			if (count($this->invalidSnippets) > 0) {
-				return TRUE;
+				return true;
 
 			} else {
 				$queue = [$this];
@@ -118,8 +118,8 @@ abstract class Control extends Component implements IRenderable
 					foreach (array_shift($queue)->getComponents() as $component) {
 						if ($component instanceof IRenderable) {
 							if ($component->isControlInvalid()) {
-								// $this->invalidSnippets['__child'] = TRUE; // as cache
-								return TRUE;
+								// $this->invalidSnippets['__child'] = true; // as cache
+								return true;
 							}
 
 						} elseif ($component instanceof Nette\ComponentModel\IContainer) {
@@ -128,7 +128,7 @@ abstract class Control extends Component implements IRenderable
 					}
 				} while ($queue);
 
-				return FALSE;
+				return false;
 			}
 
 		} else {

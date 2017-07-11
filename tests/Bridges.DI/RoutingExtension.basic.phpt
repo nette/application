@@ -29,7 +29,7 @@ test(function () {
 	', 'neon'));
 
 	$compiler = new DI\Compiler;
-	$compiler->addExtension('routing', new RoutingExtension(FALSE));
+	$compiler->addExtension('routing', new RoutingExtension(false));
 	$code = $compiler->addConfig($config)->setClassName('Container1')->compile();
 	eval($code);
 
@@ -56,7 +56,7 @@ test(function () {
 	', 'neon'));
 
 	$compiler = new DI\Compiler;
-	$compiler->addExtension('routing', new RoutingExtension(FALSE));
+	$compiler->addExtension('routing', new RoutingExtension(false));
 	$code = $compiler->addConfig($config)->setClassName('Container2')->compile();
 	eval($code);
 

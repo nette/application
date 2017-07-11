@@ -41,7 +41,7 @@ class CliRouter implements Application\IRouter
 	public function match(Nette\Http\IRequest $httpRequest): ?Application\Request
 	{
 		if (empty($_SERVER['argv']) || !is_array($_SERVER['argv'])) {
-			return NULL;
+			return null;
 		}
 
 		$names = [self::PRESENTER_KEY];
@@ -58,13 +58,13 @@ class CliRouter implements Application\IRouter
 				} else {
 					$params[] = $arg;
 				}
-				$flag = NULL;
+				$flag = null;
 				continue;
 			}
 
 			if (isset($flag)) {
-				$params[$flag] = TRUE;
-				$flag = NULL;
+				$params[$flag] = true;
+				$flag = null;
 			}
 
 			if ($opt !== '') {
@@ -99,7 +99,7 @@ class CliRouter implements Application\IRouter
 	 */
 	public function constructUrl(Application\Request $appRequest, Nette\Http\Url $refUrl): ?string
 	{
-		return NULL;
+		return null;
 	}
 
 

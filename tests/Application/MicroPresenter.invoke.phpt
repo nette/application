@@ -56,7 +56,7 @@ test(function () {
 
 test(function () {
 	$container = Mockery::mock(Nette\DI\Container::class)
-		->shouldReceive('getByType')->with('stdClass', FALSE)->once()->andReturn(new stdClass)
+		->shouldReceive('getByType')->with('stdClass', false)->once()->andReturn(new stdClass)
 		->mock();
 
 	$presenter = new NetteModule\MicroPresenter($container);

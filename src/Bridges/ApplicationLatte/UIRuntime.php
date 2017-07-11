@@ -25,8 +25,8 @@ class UIRuntime
 	{
 		$providers = $template->global;
 		$blocks = array_filter(array_keys($blocks), function ($s) { return $s[0] !== '_'; });
-		if ($parentName === NULL && $blocks && !$template->getReferringTemplate()
-			&& ($providers->uiControl ?? NULL) instanceof Nette\Application\UI\Presenter
+		if ($parentName === null && $blocks && !$template->getReferringTemplate()
+			&& ($providers->uiControl ?? null) instanceof Nette\Application\UI\Presenter
 		) {
 			$parentName = $providers->uiControl->findLayoutTemplateFile();
 		}

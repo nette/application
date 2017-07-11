@@ -31,7 +31,7 @@ class Application
 	/** @var callable[]  function (Application $sender); Occurs before the application loads presenter */
 	public $onStartup;
 
-	/** @var callable[]  function (Application $sender, \Throwable $e = NULL); Occurs before the application shuts down */
+	/** @var callable[]  function (Application $sender, \Throwable $e = null); Occurs before the application shuts down */
 	public $onShutdown;
 
 	/** @var callable[]  function (Application $sender, Request $request); Occurs when a new request is received */
@@ -49,7 +49,7 @@ class Application
 	/** @var Request[] */
 	private $requests = [];
 
-	/** @var IPresenter|NULL */
+	/** @var IPresenter|null */
 	private $presenter;
 
 	/** @var Nette\Http\IRequest */
@@ -147,13 +147,13 @@ class Application
 	public function processException(\Throwable $e): void
 	{
 		if (!$e instanceof BadRequestException && $this->httpResponse instanceof Nette\Http\Response) {
-			$this->httpResponse->warnOnBuffer = FALSE;
+			$this->httpResponse->warnOnBuffer = false;
 		}
 		if (!$this->httpResponse->isSent()) {
 			$this->httpResponse->setCode($e instanceof BadRequestException ? ($e->getHttpCode() ?: 404) : 500);
 		}
 
-		$args = ['exception' => $e, 'request' => end($this->requests) ?: NULL];
+		$args = ['exception' => $e, 'request' => end($this->requests) ?: null];
 		if ($this->presenter instanceof UI\Presenter) {
 			try {
 				$this->presenter->forward(":$this->errorPresenter:", $args);

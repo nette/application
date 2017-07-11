@@ -62,7 +62,7 @@ use Tracy\Dumper;
 
 		<td><code>
 		<?php foreach ($router['defaults'] as $key => $value): ?>
-			<?= htmlSpecialChars($key, ENT_IGNORE, 'UTF-8'), "&nbsp;=&nbsp;", is_string($value) ? htmlSpecialChars($value, ENT_IGNORE, 'UTF-8') . '<br />' : Dumper::toHtml($value, [Dumper::COLLAPSE => TRUE, Dumper::LIVE => TRUE]) ?>
+			<?= htmlSpecialChars($key, ENT_IGNORE, 'UTF-8'), "&nbsp;=&nbsp;", is_string($value) ? htmlSpecialChars($value, ENT_IGNORE, 'UTF-8') . '<br />' : Dumper::toHtml($value, [Dumper::COLLAPSE => true, Dumper::LIVE => true]) ?>
 		<?php endforeach ?>
 		</code></td>
 
@@ -73,7 +73,7 @@ use Tracy\Dumper;
 		<strong><?= htmlSpecialChars($router['request']->getPresenterName() . ':' . (isset($params[Presenter::ACTION_KEY]) ? $params[Presenter::ACTION_KEY] : Presenter::DEFAULT_ACTION), ENT_NOQUOTES, 'UTF-8') ?></strong><br />
 		<?php unset($params[Presenter::ACTION_KEY]) ?>
 		<?php foreach ($params as $key => $value): ?>
-			<?= htmlSpecialChars($key, ENT_IGNORE, 'UTF-8'), "&nbsp;=&nbsp;", is_string($value) ? htmlSpecialChars($value, ENT_IGNORE, 'UTF-8') . '<br />' : Dumper::toHtml($value, [Dumper::COLLAPSE => TRUE, Dumper::LIVE => TRUE]) ?>
+			<?= htmlSpecialChars($key, ENT_IGNORE, 'UTF-8'), "&nbsp;=&nbsp;", is_string($value) ? htmlSpecialChars($value, ENT_IGNORE, 'UTF-8') . '<br />' : Dumper::toHtml($value, [Dumper::COLLAPSE => true, Dumper::LIVE => true]) ?>
 		<?php endforeach ?>
 		</code><?php endif ?></td>
 	</tr>

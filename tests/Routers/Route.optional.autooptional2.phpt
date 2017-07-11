@@ -36,25 +36,25 @@ testRouteIn($route, '/presenter/action/1234');
 
 testRouteIn($route, '/presenter/action/', 'Presenter', [
 	'action' => 'action',
-	'id' => NULL,
+	'id' => null,
 	'test' => 'testvalue',
 ], '/presenter/action?test=testvalue');
 
 testRouteIn($route, '/presenter/action', 'Presenter', [
 	'action' => 'action',
-	'id' => NULL,
+	'id' => null,
 	'test' => 'testvalue',
 ], '/presenter/action?test=testvalue');
 
 testRouteIn($route, '/presenter/', 'Presenter', [
 	'action' => 'default',
-	'id' => NULL,
+	'id' => null,
 	'test' => 'testvalue',
 ], '/presenter?test=testvalue');
 
 testRouteIn($route, '/presenter', 'Presenter', [
 	'action' => 'default',
-	'id' => NULL,
+	'id' => null,
 	'test' => 'testvalue',
 ], '/presenter?test=testvalue');
 

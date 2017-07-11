@@ -17,7 +17,7 @@ require __DIR__ . '/two/Presenter2.php';
 
 test(function () { // with subdir templates
 	$presenter = new Presenter1;
-	$presenter->setParent(NULL, 'One');
+	$presenter->setParent(null, 'One');
 	$presenter->setLayout('my');
 
 	Assert::same([
@@ -30,7 +30,7 @@ test(function () { // with subdir templates
 
 test(function () { // without subdir templates
 	$presenter = new Presenter2;
-	$presenter->setParent(NULL, 'Two');
+	$presenter->setParent(null, 'Two');
 
 	Assert::same([
 		__DIR__ . '/templates/Two/@layout.latte',
@@ -42,7 +42,7 @@ test(function () { // without subdir templates
 
 test(function () { // with module & subdir templates
 	$presenter = new Presenter1;
-	$presenter->setParent(NULL, 'Module:SubModule:One');
+	$presenter->setParent(null, 'Module:SubModule:One');
 
 	Assert::same([
 		__DIR__ . DIRECTORY_SEPARATOR . 'one/templates/One/@layout.latte',
@@ -56,7 +56,7 @@ test(function () { // with module & subdir templates
 
 test(function () { // with module & without subdir templates
 	$presenter = new Presenter2;
-	$presenter->setParent(NULL, 'Module:SubModule:Two');
+	$presenter->setParent(null, 'Module:SubModule:Two');
 
 	Assert::same([
 		__DIR__ . '/templates/Two/@layout.latte',

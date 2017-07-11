@@ -22,4 +22,4 @@ $route = new Route('<presenter>/<action>', [
 testRouteIn($route, '/presenter/action/', 'Presenter', [
 	'action' => 'action',
 	'test' => 'testvalue',
-], NULL);
+], null);

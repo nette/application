@@ -36,7 +36,7 @@ test(function () {
 	services:
 		presenter: Presenter1
 	');
-	$compiler->addExtension('application', new ApplicationExtension(TRUE));
+	$compiler->addExtension('application', new ApplicationExtension(true));
 	$code = $compiler->setClassName('Container4')->compile();
 	eval($code);
 
@@ -56,7 +56,7 @@ test(function () {
 	services:
 		presenter: Presenter1
 	');
-	$compiler->addExtension('application', new ApplicationExtension(TRUE));
+	$compiler->addExtension('application', new ApplicationExtension(true));
 	$code = $compiler->setClassName('Container5')->compile();
 	eval($code);
 
@@ -76,7 +76,7 @@ test(function () {
 	services:
 		presenter: Presenter1
 	');
-	$compiler->addExtension('application', new ApplicationExtension(FALSE));
+	$compiler->addExtension('application', new ApplicationExtension(false));
 	$code = $compiler->setClassName('Container6')->compile();
 	eval($code);
 
@@ -96,7 +96,7 @@ test(function () {
 	services:
 		presenter: Presenter1
 	');
-	$compiler->addExtension('application', new ApplicationExtension(FALSE));
+	$compiler->addExtension('application', new ApplicationExtension(false));
 	$code = $compiler->setClassName('Container7')->compile();
 	eval($code);
 

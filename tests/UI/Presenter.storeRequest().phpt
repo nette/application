@@ -56,7 +56,7 @@ class MockSessionSection extends Nette\Http\SessionSection
 	public function __isset(string $name): bool
 	{
 		$this->testedKeyExistence = $name;
-		return FALSE;
+		return false;
 	}
 
 
@@ -67,7 +67,7 @@ class MockSessionSection extends Nette\Http\SessionSection
 	}
 
 
-	public function setExpiration($expiraton, $variables = NULL)
+	public function setExpiration($expiraton, $variables = null)
 	{
 		$this->testExpiration = $expiraton;
 		$this->testExpirationVariables = $variables;
@@ -112,8 +112,8 @@ class MockUser extends Security\User
 test(function () {
 	$presenter = new TestPresenter();
 	$presenter->injectPrimary(
-		NULL,
-		NULL,
+		null,
+		null,
 		new Application\Routers\SimpleRouter,
 		new Http\Request(new Http\UrlScript),
 		new Http\Response,
@@ -139,8 +139,8 @@ test(function () {
 test(function () {
 	$presenter = new TestPresenter();
 	$presenter->injectPrimary(
-		NULL,
-		NULL,
+		null,
+		null,
 		new Application\Routers\SimpleRouter,
 		new Http\Request(new Http\UrlScript),
 		new Http\Response,

@@ -17,7 +17,7 @@ require __DIR__ . '/two/Presenter2.php';
 
 test(function () { // with subdir templates
 	$presenter = new Presenter1;
-	$presenter->setParent(NULL, 'One');
+	$presenter->setParent(null, 'One');
 	$presenter->setView('view');
 
 	Assert::same([
@@ -29,7 +29,7 @@ test(function () { // with subdir templates
 
 test(function () { // without subdir templates
 	$presenter = new Presenter2;
-	$presenter->setParent(NULL, 'Two');
+	$presenter->setParent(null, 'Two');
 	$presenter->setView('view');
 
 	Assert::same([
@@ -41,7 +41,7 @@ test(function () { // without subdir templates
 
 test(function () { // with module & subdir templates
 	$presenter = new Presenter1;
-	$presenter->setParent(NULL, 'Module:One');
+	$presenter->setParent(null, 'Module:One');
 	$presenter->setView('view');
 
 	Assert::same([
@@ -53,7 +53,7 @@ test(function () { // with module & subdir templates
 
 test(function () { // with module & without subdir templates
 	$presenter = new Presenter2;
-	$presenter->setParent(NULL, 'Module:Two');
+	$presenter->setParent(null, 'Module:Two');
 	$presenter->setView('view');
 
 	Assert::same([

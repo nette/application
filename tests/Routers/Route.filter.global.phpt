@@ -16,10 +16,10 @@ require __DIR__ . '/Route.php';
 
 
 $route = new Route('<presenter>', [
-	NULL => [
+	null => [
 		Route::FILTER_IN => function (array $arr) {
 			if (substr($arr['presenter'], 0, 3) !== 'Abc') {
-				return NULL;
+				return null;
 			}
 			$arr['presenter'] .= '.in';
 			$arr['param'] .= '.in';
@@ -27,7 +27,7 @@ $route = new Route('<presenter>', [
 		},
 		Route::FILTER_OUT => function (array $arr) {
 			if (substr($arr['presenter'], 0, 3) !== 'Abc') {
-				return NULL;
+				return null;
 			}
 			$arr['presenter'] .= '.out';
 			$arr['param'] .= '.out';
@@ -47,13 +47,13 @@ Assert::null(testRouteOut($route, 'Cde'));
 
 
 $route = new Route('<lang>/<presenter>/<action>', [
-	NULL => [
+	null => [
 		Route::FILTER_IN => function (array $arr) {
 			if ($arr['module'] !== 'App') {
-				return NULL;
+				return null;
 			}
 			if ($arr['presenter'] !== 'AbcCs') {
-				return NULL;
+				return null;
 			}
 			$arr['presenter'] =  substr($arr['presenter'], 0, -2); // AbcCs -> Abc
 			$arr['action'] = substr($arr['action'], 0, -2);
@@ -61,10 +61,10 @@ $route = new Route('<lang>/<presenter>/<action>', [
 		},
 		Route::FILTER_OUT => function (array $arr) {
 			if ($arr['module'] !== 'App') {
-				return NULL;
+				return null;
 			}
 			if ($arr['presenter'] !== 'Abc') {
-				return NULL;
+				return null;
 			}
 			$arr['presenter'] .= ucfirst($arr['lang']); // Abc -> AbcCs
 			$arr['action'] .= ucfirst($arr['lang']);

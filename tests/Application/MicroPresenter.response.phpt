@@ -18,7 +18,7 @@ function renderResponse(Nette\Application\Responses\TextResponse $response)
 {
 	ob_start();
 	try {
-		$response->send(new Http\Request(new Http\UrlScript()), new Http\Response(NULL));
+		$response->send(new Http\Request(new Http\UrlScript()), new Http\Response(null));
 		return ob_get_clean();
 	} catch (\Exception $e) {
 		ob_end_clean();
@@ -96,7 +96,7 @@ test(function () {
 
 	$response = $presenter->run(new Request('Nette:Micro', 'GET', [
 		'callback' => function ($presenter) {
-			$template = $presenter->createTemplate(NULL, function () {
+			$template = $presenter->createTemplate(null, function () {
 				return new Latte\Engine;
 			});
 			$template->getLatte()->setLoader(new Latte\Loaders\StringLoader);
@@ -116,7 +116,7 @@ test(function () {
 
 	$response = $presenter->run(new Request('Nette:Micro', 'GET', [
 		'callback' => function ($presenter) {
-			$template = $presenter->createTemplate(NULL, function () {
+			$template = $presenter->createTemplate(null, function () {
 				return new Latte\Engine;
 			});
 			$template->getLatte()->setLoader(new Latte\Loaders\FileLoader());
@@ -139,7 +139,7 @@ test(function () {
 
 		$response = $presenter->run(new Request('Nette:Micro', 'GET', [
 			'callback' => function ($presenter) use ($filename) {
-				$template = $presenter->createTemplate(NULL, function () {
+				$template = $presenter->createTemplate(null, function () {
 					return new Latte\Engine;
 				});
 				$template->getLatte()->setLoader(new Latte\Loaders\FileLoader());

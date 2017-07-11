@@ -19,10 +19,10 @@ use Nette;
 class LatteExtension extends Nette\DI\CompilerExtension
 {
 	public $defaults = [
-		'xhtml' => FALSE,
+		'xhtml' => false,
 		'macros' => [],
-		'templateClass' => NULL,
-		'strictTypes' => FALSE,
+		'templateClass' => null,
+		'strictTypes' => false,
 	];
 
 	/** @var bool */
@@ -32,7 +32,7 @@ class LatteExtension extends Nette\DI\CompilerExtension
 	private $tempDir;
 
 
-	public function __construct($tempDir, bool $debugMode = FALSE)
+	public function __construct($tempDir, bool $debugMode = false)
 	{
 		$this->tempDir = $tempDir;
 		$this->debugMode = $debugMode;
@@ -57,7 +57,7 @@ class LatteExtension extends Nette\DI\CompilerExtension
 			->setImplement(Nette\Bridges\ApplicationLatte\ILatteFactory::class);
 
 		if ($config['strictTypes']) {
-			$latteFactory->addSetup('setStrictTypes', [TRUE]);
+			$latteFactory->addSetup('setStrictTypes', [true]);
 		}
 
 		$builder->addDefinition($this->prefix('templateFactory'))
@@ -81,8 +81,8 @@ class LatteExtension extends Nette\DI\CompilerExtension
 		$builder = $this->getContainerBuilder();
 		$definition = $builder->getDefinition($this->prefix('latteFactory'));
 
-		if (($macro[0] ?? NULL) === '@') {
-			if (strpos($macro, '::') === FALSE) {
+		if (($macro[0] ?? null) === '@') {
+			if (strpos($macro, '::') === false) {
 				$method = 'install';
 			} else {
 				[$macro, $method] = explode('::', $macro);
@@ -90,7 +90,7 @@ class LatteExtension extends Nette\DI\CompilerExtension
 			$definition->addSetup('?->onCompile[] = function ($engine) { ?->' . $method . '($engine->getCompiler()); }', ['@self', $macro]);
 
 		} else {
-			if (strpos($macro, '::') === FALSE && class_exists($macro)) {
+			if (strpos($macro, '::') === false && class_exists($macro)) {
 				$macro .= '::install';
 			}
 			$definition->addSetup('?->onCompile[] = function ($engine) { ' . $macro . '($engine->getCompiler()); }', ['@self']);

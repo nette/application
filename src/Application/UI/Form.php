@@ -24,10 +24,10 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 	/**
 	 * Application form constructor.
 	 */
-	public function __construct(Nette\ComponentModel\IContainer $parent = NULL, $name = NULL)
+	public function __construct(Nette\ComponentModel\IContainer $parent = null, $name = null)
 	{
 		parent::__construct();
-		if ($parent !== NULL) {
+		if ($parent !== null) {
 			$parent->addComponent($this, $name);
 		}
 	}
@@ -44,7 +44,7 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 	 * Returns the presenter where this component belongs to.
 	 * @param  bool   throw exception if presenter doesn't exist?
 	 */
-	public function getPresenter(bool $throw = TRUE): ?Presenter
+	public function getPresenter(bool $throw = true): ?Presenter
 	{
 		return $this->lookup(Presenter::class, $throw);
 	}
@@ -84,23 +84,23 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 	 */
 	public function isAnchored(): bool
 	{
-		return (bool) $this->getPresenter(FALSE);
+		return (bool) $this->getPresenter(false);
 	}
 
 
 	/**
-	 * Internal: returns submitted HTTP data or NULL when form was not submitted.
+	 * Internal: returns submitted HTTP data or null when form was not submitted.
 	 */
 	protected function receiveHttpData(): ?array
 	{
 		$presenter = $this->getPresenter();
 		if (!$presenter->isSignalReceiver($this, 'submit')) {
-			return NULL;
+			return null;
 		}
 
 		$request = $presenter->getRequest();
 		if ($request->isMethod('forward') || $request->isMethod('post') !== $this->isMethod('post')) {
-			return NULL;
+			return null;
 		}
 
 		if ($this->isMethod('post')) {

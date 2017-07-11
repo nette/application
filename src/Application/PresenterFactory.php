@@ -35,7 +35,7 @@ class PresenterFactory implements IPresenterFactory
 	/**
 	 * @param  callable  function (string $class): IPresenter
 	 */
-	public function __construct(callable $factory = NULL)
+	public function __construct(callable $factory = null)
 	{
 		$this->factory = $factory ?: function ($class) { return new $class; };
 	}
@@ -145,6 +145,6 @@ class PresenterFactory implements IPresenterFactory
 					. preg_replace("#$mapping[1]#iA", '$1:', $matches[1]) . $matches[3];
 			}
 		}
-		return NULL;
+		return null;
 	}
 }
