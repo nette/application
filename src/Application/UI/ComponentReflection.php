@@ -87,6 +87,43 @@ class ComponentReflection extends \ReflectionClass
 
 
 	/**
+	 * Saves state informations for next request.
+	 */
+	public function saveState(Component $component, array &$params): void
+	{
+		foreach ($this->getPersistentParams() as $name => $meta) {
+			if (isset($params[$name])) {
+				// injected value
+
+			} elseif (array_key_exists($name, $params)) { // nulls are skipped
+				continue;
+
+			} elseif ((!isset($meta['since']) || $component instanceof $meta['since']) && isset($component->$name)) {
+				$params[$name] = $component->$name; // object property value
+
+			} else {
+				continue; // ignored parameter
+			}
+
+			$type = gettype($meta['def']);
+			if (!self::convertType($params[$name], $type)) {
+				throw new InvalidLinkException(sprintf(
+					"Value passed to persistent parameter '%s' in %s must be %s, %s given.",
+					$name,
+					$component instanceof Presenter ? 'presenter ' . $component->getName() : "component '{$component->getUniqueId()}'",
+					$type === 'NULL' ? 'scalar' : $type,
+					is_object($params[$name]) ? get_class($params[$name]) : gettype($params[$name])
+				));
+			}
+
+			if ($params[$name] === $meta['def'] || ($meta['def'] === null && $params[$name] === '')) {
+				$params[$name] = null; // value transmit is unnecessary
+			}
+		}
+	}
+
+
+	/**
 	 * Is a method callable? It means class is instantiable and method has
 	 * public visibility, is non-static and non-abstract.
 	 */
