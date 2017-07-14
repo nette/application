@@ -150,42 +150,11 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 	/**
 	 * Saves state informations for next request.
-	 * @param  array
-	 * @param  ComponentReflection (internal, used by Presenter)
 	 * @return void
 	 */
-	public function saveState(array &$params, $reflection = null)
+	public function saveState(array &$params)
 	{
-		$reflection = $reflection === null ? $this->getReflection() : $reflection;
-		foreach ($reflection->getPersistentParams() as $name => $meta) {
-			if (isset($params[$name])) {
-				// injected value
-
-			} elseif (array_key_exists($name, $params)) { // nulls are skipped
-				continue;
-
-			} elseif ((!isset($meta['since']) || $this instanceof $meta['since']) && isset($this->$name)) {
-				$params[$name] = $this->$name; // object property value
-
-			} else {
-				continue; // ignored parameter
-			}
-
-			$type = gettype($meta['def']);
-			if (!ComponentReflection::convertType($params[$name], $type)) {
-				throw new InvalidLinkException(sprintf(
-					"Value passed to persistent parameter '%s' in %s must be %s, %s given.",
-					$name,
-					$this instanceof Presenter ? 'presenter ' . $this->getName() : "component '{$this->getUniqueId()}'",
-					$type === 'NULL' ? 'scalar' : $type,
-					is_object($params[$name]) ? get_class($params[$name]) : gettype($params[$name])
-				));
-			}
-
-			if ($params[$name] === $meta['def'] || ($meta['def'] === null && $params[$name] === '')) {
-				$params[$name] = null; // value transmit is unnecessary
-			}
-		}
+		$this->getReflection()->saveState($this, $params);
 	}
 
 

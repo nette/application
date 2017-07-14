@@ -1211,6 +1211,16 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 
 	/**
+	 * Saves state informations for next request.
+	 */
+	public function saveState(array &$params, ComponentReflection $reflection = null)
+	{
+		$reflection = $reflection ?: $this->getReflection();
+		$reflection->saveState($this, $params);
+	}
+
+
+	/**
 	 * Permanently saves state information for all subcomponents to $this->globalState.
 	 * @return void
 	 */
