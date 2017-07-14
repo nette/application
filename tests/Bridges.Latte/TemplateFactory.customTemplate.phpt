@@ -21,7 +21,7 @@ class TemplateMock extends Template
 	private $file = 'ko';
 
 
-	public function render(): void
+	public function render($file = null, array $params = []): void
 	{
 		echo strrev($this->file);
 	}
