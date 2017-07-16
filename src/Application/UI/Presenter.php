@@ -875,7 +875,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 		return $mode === 'forward' || $mode === 'test'
 			? null
-			: $this->requestToUrl($this->lastCreatedRequest, $mode === 'link' && !$parts['absolute']) . $parts['fragment'];
+			: $this->requestToUrl($this->lastCreatedRequest, $mode === 'link' && !$parts['absolute'] && !$this->absoluteUrls) . $parts['fragment'];
 	}
 
 

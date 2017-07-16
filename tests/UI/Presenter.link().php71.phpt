@@ -87,7 +87,13 @@ class TestPresenter extends Application\UI\Presenter
 		// special url
 		Assert::same('/index.php?x=1&y=2&action=product&presenter=Test', $this->link('product?x=1&y=2'));
 		Assert::same('/index.php?x=1&y=2&action=product&presenter=Test#fragment', $this->link('product?x=1&y=2#fragment'));
+
+		// absolute
 		Assert::same('http://localhost/index.php?x=1&y=2&action=product&presenter=Test#fragment', $this->link('//product?x=1&y=2#fragment'));
+		$this->absoluteUrls = true;
+		Assert::same('http://localhost/index.php?x=1&y=2&action=product&presenter=Test#fragment', $this->link('product?x=1&y=2#fragment'));
+		Assert::same('http://localhost/index.php?x=1&y=2&action=product&presenter=Test#fragment', $this->link('//product?x=1&y=2#fragment'));
+		$this->absoluteUrls = false;
 
 		// persistent params
 		Assert::same('/index.php?action=params&presenter=Test', $this->link('params', ['pint' => $this->pint, 'p' => '']));
