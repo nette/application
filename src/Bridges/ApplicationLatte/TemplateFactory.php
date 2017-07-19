@@ -78,12 +78,11 @@ class TemplateFactory implements UI\ITemplateFactory
 			}
 		});
 
-		$latte->addFilter('webalize', 'Nette\Utils\Strings::webalize');
 		$latte->addFilter('url', function ($s) {
 			trigger_error('Filter |url is deprecated, use |escapeUrl.', E_USER_DEPRECATED);
 			return rawurlencode($s);
 		});
-		foreach (['normalize', 'toAscii', 'reverse'] as $name) {
+		foreach (['normalize', 'toAscii'] as $name) {
 			$latte->addFilter($name, function ($s) use ($name) {
 				trigger_error("Filter |$name is deprecated.", E_USER_DEPRECATED);
 				return [Nette\Utils\Strings::class, $name]($s);

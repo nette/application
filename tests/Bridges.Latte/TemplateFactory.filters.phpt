@@ -47,5 +47,3 @@ Assert::same('1978-01-22 11:40:00', (string) $latte->invokeFilter('modifyDate', 
 Assert::same('%25', @$latte->invokeFilter('url', ['%'])); // @ is deprecated
 Assert::null(@$latte->invokeFilter('null', ['x'])); // @ is deprecated
 Assert::same('', @$latte->invokeFilter('normalize', ['  '])); // @ is deprecated
-Assert::same('a-b', $latte->invokeFilter('webalize', ['a b']));
-Assert::same('cba', @$latte->invokeFilter('reverse', ['abc'])); // @ is deprecated
