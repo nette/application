@@ -634,7 +634,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function terminate()
 	{
-		throw new Application\AbortException();
+		throw new Application\AbortException;
 	}
 
 
