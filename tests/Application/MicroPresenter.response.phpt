@@ -18,7 +18,7 @@ function renderResponse(Nette\Application\Responses\TextResponse $response)
 {
 	ob_start();
 	try {
-		$response->send(new Http\Request(new Http\UrlScript()), new Http\Response(null));
+		$response->send(new Http\Request(new Http\UrlScript), new Http\Response(null));
 		return ob_get_clean();
 	} catch (\Exception $e) {
 		ob_end_clean();
@@ -119,7 +119,7 @@ test(function () {
 			$template = $presenter->createTemplate(null, function () {
 				return new Latte\Engine;
 			});
-			$template->getLatte()->setLoader(new Latte\Loaders\FileLoader());
+			$template->getLatte()->setLoader(new Latte\Loaders\FileLoader);
 			$template->setFile(Tester\FileMock::create('{$param}'));
 			$template->setParameters(['param' => 'test']);
 
@@ -142,7 +142,7 @@ test(function () {
 				$template = $presenter->createTemplate(null, function () {
 					return new Latte\Engine;
 				});
-				$template->getLatte()->setLoader(new Latte\Loaders\FileLoader());
+				$template->getLatte()->setLoader(new Latte\Loaders\FileLoader);
 				$template->setFile($filename);
 				$template->setParameters(['param' => 'test']);
 

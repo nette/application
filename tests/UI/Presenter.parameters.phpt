@@ -28,15 +28,15 @@ class TestPresenter extends Application\UI\Presenter
 	protected function startup()
 	{
 		parent::startup();
-		throw new Application\AbortException();
+		throw new Application\AbortException;
 	}
 }
 
 
 function createPresenter()
 {
-	$presenter = new TestPresenter();
-	$presenter->injectPrimary(null, null, null, new Http\Request(new Http\UrlScript()), new Http\Response());
+	$presenter = new TestPresenter;
+	$presenter->injectPrimary(null, null, null, new Http\Request(new Http\UrlScript), new Http\Response);
 	$presenter->autoCanonicalize = false;
 	return $presenter;
 }

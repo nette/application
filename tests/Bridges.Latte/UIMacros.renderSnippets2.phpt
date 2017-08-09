@@ -54,7 +54,7 @@ class TestPresenter extends Nette\Application\UI\Presenter
 	public function createComponentMulti()
 	{
 		return new Nette\Application\UI\Multiplier(function () {
-			return new InnerControl();
+			return new InnerControl;
 		});
 	}
 

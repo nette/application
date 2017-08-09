@@ -26,7 +26,7 @@ $_SERVER['argv'] = [
 	'/wait',
 ];
 
-$httpRequest = new Http\Request(new Http\UrlScript());
+$httpRequest = new Http\Request(new Http\UrlScript);
 
 $router = new CliRouter([
 	'id' => 12,

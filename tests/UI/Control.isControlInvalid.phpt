@@ -19,8 +19,8 @@ class TestControl extends UI\Control
 
 
 test(function () {
-	$control = new TestControl();
-	$child = new TestControl();
+	$control = new TestControl;
+	$child = new TestControl;
 	$control->addComponent($child, 'foo');
 
 	Assert::false($control->isControlInvalid());
@@ -30,9 +30,9 @@ test(function () {
 
 
 test(function () {
-	$control = new TestControl();
-	$child = new Nette\ComponentModel\Container();
-	$grandChild = new TestControl();
+	$control = new TestControl;
+	$child = new Nette\ComponentModel\Container;
+	$grandChild = new TestControl;
 	$control->addComponent($child, 'foo');
 	$child->addComponent($grandChild, 'bar');
 

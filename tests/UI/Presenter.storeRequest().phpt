@@ -110,7 +110,7 @@ class MockUser extends Security\User
 }
 
 test(function () {
-	$presenter = new TestPresenter();
+	$presenter = new TestPresenter;
 	$presenter->injectPrimary(
 		null,
 		null,
@@ -137,7 +137,7 @@ test(function () {
 });
 
 test(function () {
-	$presenter = new TestPresenter();
+	$presenter = new TestPresenter;
 	$presenter->injectPrimary(
 		null,
 		null,

@@ -16,7 +16,7 @@ require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/Route.php';
 
 
-$list = new RouteList();
+$list = new RouteList;
 $list[] = new Route('admin/<presenter>/<action=default>/<id= \d{1,3}>', ['module' => 'Admin']);
 $list[] = new Route('<presenter>/<action=default>/<id= \d{1,3}>', ['module' => 'Front']);
 

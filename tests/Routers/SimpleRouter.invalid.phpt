@@ -17,7 +17,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 test(function () {
-	$router = new SimpleRouter();
+	$router = new SimpleRouter;
 	$url = new Http\UrlScript('http://nette.org?presenter[]=foo');
 	$httpRequest = new Http\Request($url);
 	$req = $router->match($httpRequest);
@@ -26,7 +26,7 @@ test(function () {
 });
 
 test(function () {
-	$router = new SimpleRouter();
+	$router = new SimpleRouter;
 	$url = new Http\UrlScript('http://nette.org');
 	$httpRequest = new Http\Request($url);
 	$req = $router->match($httpRequest);
