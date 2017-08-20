@@ -45,6 +45,7 @@ class ComponentReflection extends \ReflectionClass
 		}
 		$params = [];
 		if (is_subclass_of($class, Component::class)) {
+			$isPresenter = is_subclass_of($class, Presenter::class);
 			$defaults = get_class_vars($class);
 			foreach ($class::getPersistentParams() as $name => $default) {
 				if (is_int($name)) {
@@ -53,7 +54,7 @@ class ComponentReflection extends \ReflectionClass
 				}
 				$params[$name] = [
 					'def' => $default,
-					'since' => $class,
+					'since' => $isPresenter ? $class : null,
 				];
 			}
 			foreach ($this->getPersistentParams(get_parent_class($class)) as $name => $param) {
@@ -103,14 +104,14 @@ class ComponentReflection extends \ReflectionClass
 			if (isset($params[$name])) {
 				// injected value
 
-			} elseif (array_key_exists($name, $params)) { // nulls are skipped
+			} elseif (array_key_exists($name, $params) // nulls are skipped
+				|| (isset($meta['since']) && !$component instanceof $meta['since']) // not related
+				|| !isset($component->$name)
+			) {
 				continue;
 
-			} elseif ((!isset($meta['since']) || $component instanceof $meta['since']) && isset($component->$name)) {
-				$params[$name] = $component->$name; // object property value
-
 			} else {
-				continue; // ignored parameter
+				$params[$name] = $component->$name; // object property value
 			}
 
 			$type = gettype($meta['def']);
