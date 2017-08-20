@@ -220,7 +220,10 @@ $url = new Http\UrlScript('http://localhost/index.php');
 $url->setScriptPath('/index.php');
 
 $presenterFactory = Mockery::mock(Nette\Application\IPresenterFactory::class);
-$presenterFactory->shouldReceive('getPresenterClass');
+$presenterFactory->shouldReceive('getPresenterClass')
+	->andReturnUsing(function ($presenter) {
+		return $presenter . 'Presenter';
+	});
 
 $presenter = new TestPresenter;
 $presenter->injectPrimary(
