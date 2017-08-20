@@ -64,7 +64,7 @@ class TestPresenter extends BasePresenter
 		$this->t2 = 4;
 		Assert::same('/index.php?p2=2&p1=1&t1=3&t2=4&action=default&presenter=Test', $this->link('this'));
 		Assert::same('/index.php?p1=1&t1=3&action=default&presenter=Second', $this->link('Second:'));
-		Assert::same('/index.php?p1=1&t1=3&action=default&presenter=Third', $this->link('Third:'));
+		Assert::same('/index.php?p1=1&t1=3&t2=4&action=default&presenter=Third', $this->link('Third:'));
 
 		$this->p1 = 20;
 		Assert::same('/index.php?t1=3&action=default&presenter=Second', $this->link('Second:'));
@@ -97,27 +97,27 @@ class ThirdPresenter extends BasePresenter
 
 Assert::same([
 	'p1' => ['def' => null, 'since' => 'BasePresenter'],
-	't1' => ['def' => null, 'since' => 'BasePresenter'],
+	't1' => ['def' => null, 'since' => 'PersistentParam1'],
 ], BasePresenter::getReflection()->getPersistentParams());
 
 Assert::same([
 	'p2' => ['def' => null, 'since' => 'TestPresenter'],
 	'p1' => ['def' => null, 'since' => 'BasePresenter'],
-	't1' => ['def' => null, 'since' => 'BasePresenter'],
-	't2' => ['def' => null, 'since' => 'TestPresenter'],
+	't1' => ['def' => null, 'since' => 'PersistentParam1'],
+	't2' => ['def' => null, 'since' => 'PersistentParam2A'],
 ], TestPresenter::getReflection()->getPersistentParams());
 
 Assert::same([
 	'p1' => ['def' => 20, 'since' => 'BasePresenter'],
 	'p3' => ['def' => null, 'since' => 'SecondPresenter'],
-	't1' => ['def' => null, 'since' => 'BasePresenter'],
-	't3' => ['def' => null, 'since' => 'SecondPresenter'],
+	't1' => ['def' => null, 'since' => 'PersistentParam1'],
+	't3' => ['def' => null, 'since' => 'PersistentParam3'],
 ], SecondPresenter::getReflection()->getPersistentParams());
 
 Assert::same([
 	'p1' => ['def' => null, 'since' => 'BasePresenter'],
-	't1' => ['def' => null, 'since' => 'BasePresenter'],
-	't2' => ['def' => null, 'since' => 'ThirdPresenter'],
+	't1' => ['def' => null, 'since' => 'PersistentParam1'],
+	't2' => ['def' => null, 'since' => 'PersistentParam2A'],
 ], ThirdPresenter::getReflection()->getPersistentParams());
 
 

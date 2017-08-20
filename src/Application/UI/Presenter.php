@@ -1100,6 +1100,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		}
 
 		if ($forClass !== null) {
+			$tree = ComponentReflection::getClassesAndTraits($forClass);
 			$since = null;
 			foreach ($state as $key => $foo) {
 				if (!isset($sinces[$key])) {
@@ -1109,7 +1110,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 				}
 				if ($since !== $sinces[$key]) {
 					$since = $sinces[$key];
-					$ok = $since && is_a($forClass, $since, true);
+					$ok = $since && isset($tree[$since]);
 				}
 				if (!$ok) {
 					unset($state[$key]);

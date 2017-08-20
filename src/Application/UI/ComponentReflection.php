@@ -52,7 +52,7 @@ final class ComponentReflection extends \ReflectionClass
 				if (!$rp->isStatic() && self::parseAnnotation($rp, 'persistent')) {
 					$params[$name] = [
 						'def' => $default,
-						'since' => $isPresenter ? $class : null,
+						'since' => $isPresenter ? Nette\Utils\Reflection::getPropertyDeclaringClass($rp)->getName() : null,
 					];
 				}
 			}
@@ -94,13 +94,15 @@ final class ComponentReflection extends \ReflectionClass
 	 */
 	public function saveState(Component $component, array &$params): void
 	{
+		$tree = self::getClassesAndTraits(get_class($component));
+
 		foreach ($this->getPersistentParams() as $name => $meta) {
 			if (isset($params[$name])) {
 				// injected value
 
 			} elseif (
 				array_key_exists($name, $params) // nulls are skipped
-				|| (isset($meta['since']) && !$component instanceof $meta['since']) // not related
+				|| (isset($meta['since']) && !isset($tree[$meta['since']])) // not related
 				|| !isset($component->$name)
 			) {
 				continue;
@@ -282,6 +284,25 @@ final class ComponentReflection extends \ReflectionClass
 	{
 		foreach ($res = parent::getMethods($filter) as $key => $val) {
 			$res[$key] = new MethodReflection($this->getName(), $val->getName());
+		}
+		return $res;
+	}
+
+
+	/**
+	 * return string[]
+	 */
+	public static function getClassesAndTraits(string $class): array
+	{
+		$res = [$class => $class] + class_parents($class);
+		$addTraits = function ($type) use (&$res, &$addTraits) {
+			$res += class_uses($type);
+			foreach (class_uses($type) as $trait) {
+				$addTraits($trait);
+			}
+		};
+		foreach ($res as $type) {
+			$addTraits($type);
 		}
 		return $res;
 	}
