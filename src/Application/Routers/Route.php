@@ -304,13 +304,11 @@ class Route implements Application\IRouter
 				continue; // retains null values
 			}
 
-			if (isset($meta['fixity'])) {
-				if ($params[$name] === false) {
-					$params[$name] = '0';
-				} elseif (is_scalar($params[$name])) {
-					$params[$name] = (string) $params[$name];
-				}
+			if (is_scalar($params[$name])) {
+				$params[$name] = $params[$name] === false ? '0' : (string) $params[$name];
+			}
 
+			if (isset($meta['fixity'])) {
 				if ($params[$name] === $meta[self::VALUE]) { // remove default values; null values are retain
 					unset($params[$name]);
 					continue;
@@ -450,7 +448,7 @@ class Route implements Application\IRouter
 
 			if (array_key_exists(self::VALUE, $meta)) {
 				if (is_scalar($meta[self::VALUE])) {
-					$metadata[$name][self::VALUE] = (string) $meta[self::VALUE];
+					$metadata[$name][self::VALUE] = $meta[self::VALUE] === false ? '0' : (string) $meta[self::VALUE];
 				}
 				$metadata[$name]['fixity'] = self::CONSTANT;
 			}
