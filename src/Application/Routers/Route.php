@@ -570,11 +570,10 @@ class Route implements Application\IRouter
 				}
 				$meta['fixity'] = self::PATH_OPTIONAL;
 
-			} elseif (!$autoOptional) {
-				unset($meta['fixity']);
-
-			} elseif (isset($meta['fixity'])) { // auto-optional
-				$re = '(?:' . $re . ')?';
+			} elseif (isset($meta['fixity'])) {
+				if ($autoOptional) {
+					$re = '(?:' . $re . ')?';
+				}
 				$meta['fixity'] = self::PATH_OPTIONAL;
 
 			} else {
