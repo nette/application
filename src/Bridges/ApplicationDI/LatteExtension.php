@@ -49,7 +49,7 @@ class LatteExtension extends Nette\DI\CompilerExtension
 		$builder = $this->getContainerBuilder();
 
 		$latteFactory = $builder->addDefinition($this->prefix('latteFactory'))
-			->setClass(Latte\Engine::class)
+			->setFactory(Latte\Engine::class)
 			->addSetup('setTempDirectory', [$this->tempDir])
 			->addSetup('setAutoRefresh', [$this->debugMode])
 			->addSetup('setContentType', [$config['xhtml'] ? Latte\Compiler::CONTENT_XHTML : Latte\Compiler::CONTENT_HTML])
