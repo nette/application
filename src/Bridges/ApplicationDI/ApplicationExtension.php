@@ -61,7 +61,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 			: UI\Presenter::INVALID_LINK_WARNING;
 
 		$application = $builder->addDefinition($this->prefix('application'))
-			->setClass(Nette\Application\Application::class)
+			->setFactory(Nette\Application\Application::class)
 			->addSetup('$catchExceptions', [$config['catchExceptions']])
 			->addSetup('$errorPresenter', [$config['errorPresenter']]);
 
