@@ -231,7 +231,7 @@ class ComponentReflection extends \ReflectionClass
 
 
 	/**
-	 * @return mixed[]
+	 * @return array [string|null, bool]
 	 */
 	public static function getParameterType(\ReflectionParameter $param): array
 	{
