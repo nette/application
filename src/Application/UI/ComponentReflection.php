@@ -248,7 +248,7 @@ class ComponentReflection extends \ReflectionClass
 
 
 	/**
-	 * @return [string, bool]
+	 * @return array [string|null, bool]
 	 */
 	public static function getParameterType(\ReflectionParameter $param)
 	{
