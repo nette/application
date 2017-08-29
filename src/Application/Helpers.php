@@ -15,7 +15,7 @@ use Nette;
 /**
  * Application helpers.
  */
-class Helpers
+final class Helpers
 {
 	use Nette\StaticClass;
 

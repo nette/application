@@ -16,7 +16,7 @@ use Tracy;
 /**
  * Routing extension for Nette DI.
  */
-class RoutingExtension extends Nette\DI\CompilerExtension
+final class RoutingExtension extends Nette\DI\CompilerExtension
 {
 	public $defaults = [
 		'debugger' => null,

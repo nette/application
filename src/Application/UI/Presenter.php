@@ -135,7 +135,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	}
 
 
-	public function getRequest(): ?Application\Request
+	final public function getRequest(): ?Application\Request
 	{
 		return $this->request;
 	}
@@ -144,7 +144,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/**
 	 * Returns self.
 	 */
-	public function getPresenter(bool $throw = true): self
+	final public function getPresenter(bool $throw = true): self
 	{
 		return $this;
 	}
@@ -323,7 +323,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/**
 	 * Returns pair signal receiver and name.
 	 */
-	public function getSignal(): ?array
+	final public function getSignal(): ?array
 	{
 		return $this->signal === null ? null : [$this->signalReceiver, $this->signal];
 	}
@@ -334,7 +334,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * @param  mixed  component or its id
 	 * @param  string signal name (optional)
 	 */
-	public function isSignalReceiver($component, string $signal = null): bool
+	final public function isSignalReceiver($component, string $signal = null): bool
 	{
 		if ($component instanceof Nette\ComponentModel\Component) {
 			$component = $component === $this ? '' : $component->lookupPath(__CLASS__, true);
@@ -362,7 +362,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/**
 	 * Returns current action name.
 	 */
-	public function getAction(bool $fullyQualified = false): string
+	final public function getAction(bool $fullyQualified = false): string
 	{
 		return $fullyQualified ? ':' . $this->getName() . ':' . $this->action : $this->action;
 	}
@@ -380,7 +380,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/**
 	 * Returns current view.
 	 */
-	public function getView(): string
+	final public function getView(): string
 	{
 		return $this->view;
 	}
@@ -401,7 +401,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * Returns current layout name.
 	 * @return string|false
 	 */
-	public function getLayout()
+	final public function getLayout()
 	{
 		return $this->layout;
 	}
@@ -537,7 +537,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/********************* partial AJAX rendering ****************d*g**/
 
 
-	public function getPayload(): \stdClass
+	final public function getPayload(): \stdClass
 	{
 		return $this->payload;
 	}
@@ -651,7 +651,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * Returns the last created Request.
 	 * @internal
 	 */
-	public function getLastCreatedRequest(): ?Application\Request
+	final public function getLastCreatedRequest(): ?Application\Request
 	{
 		return $this->lastCreatedRequest;
 	}
@@ -661,7 +661,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * Returns the last created Request flag.
 	 * @internal
 	 */
-	public function getLastCreatedRequestFlag(string $flag): bool
+	final public function getLastCreatedRequestFlag(string $flag): bool
 	{
 		return !empty($this->lastCreatedRequestFlag[$flag]);
 	}
@@ -719,7 +719,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * @throws InvalidLinkException
 	 * @internal
 	 */
-	protected function createRequest(Component $component, string $destination, array $args, string $mode): ?string
+	final protected function createRequest(Component $component, string $destination, array $args, string $mode): ?string
 	{
 		// note: createRequest supposes that saveState(), run() & tryCall() behaviour is final
 
@@ -1219,7 +1219,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * @param  string  component id
 	 * @internal
 	 */
-	public function popGlobalParameters(string $id): array
+	final public function popGlobalParameters(string $id): array
 	{
 		$res = $this->globalParams[$id] ?? [];
 		unset($this->globalParams[$id]);
@@ -1266,7 +1266,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/********************* services ****************d*g**/
 
 
-	public function injectPrimary(Nette\DI\Container $context = null, Application\IPresenterFactory $presenterFactory = null, Application\IRouter $router = null,
+	final public function injectPrimary(Nette\DI\Container $context = null, Application\IPresenterFactory $presenterFactory = null, Application\IRouter $router = null,
 		Http\IRequest $httpRequest, Http\IResponse $httpResponse, Http\Session $session = null, Nette\Security\User $user = null, ITemplateFactory $templateFactory = null)
 	{
 		if ($this->presenterFactory !== null) {
@@ -1288,7 +1288,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * Gets the context.
 	 * @deprecated
 	 */
-	public function getContext(): Nette\DI\Container
+	final public function getContext(): Nette\DI\Container
 	{
 		if (!$this->context) {
 			throw new Nette\InvalidStateException('Context has not been set.');
@@ -1297,13 +1297,13 @@ abstract class Presenter extends Control implements Application\IPresenter
 	}
 
 
-	public function getHttpRequest(): Http\IRequest
+	final public function getHttpRequest(): Http\IRequest
 	{
 		return $this->httpRequest;
 	}
 
 
-	public function getHttpResponse(): Http\IResponse
+	final public function getHttpResponse(): Http\IResponse
 	{
 		return $this->httpResponse;
 	}
@@ -1312,7 +1312,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/**
 	 * @return Http\Session|Http\SessionSection
 	 */
-	public function getSession(string $namespace = null)
+	final public function getSession(string $namespace = null)
 	{
 		if (!$this->session) {
 			throw new Nette\InvalidStateException('Service Session has not been set.');
@@ -1321,7 +1321,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	}
 
 
-	public function getUser(): Nette\Security\User
+	final public function getUser(): Nette\Security\User
 	{
 		if (!$this->user) {
 			throw new Nette\InvalidStateException('Service User has not been set.');
@@ -1330,7 +1330,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	}
 
 
-	public function getTemplateFactory(): ITemplateFactory
+	final public function getTemplateFactory(): ITemplateFactory
 	{
 		if (!$this->templateFactory) {
 			throw new Nette\InvalidStateException('Service TemplateFactory has not been set.');

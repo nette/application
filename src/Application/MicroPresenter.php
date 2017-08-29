@@ -19,7 +19,7 @@ use Nette\Http;
 /**
  * Micro presenter.
  */
-class MicroPresenter implements Application\IPresenter
+final class MicroPresenter implements Application\IPresenter
 {
 	use Nette\SmartObject;
 

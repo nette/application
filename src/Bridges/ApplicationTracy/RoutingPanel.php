@@ -19,7 +19,7 @@ use Tracy\Dumper;
 /**
  * Routing debugger for Debug Bar.
  */
-class RoutingPanel implements Tracy\IBarPanel
+final class RoutingPanel implements Tracy\IBarPanel
 {
 	use Nette\SmartObject;
 

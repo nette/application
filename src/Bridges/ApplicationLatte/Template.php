@@ -36,7 +36,7 @@ class Template implements Nette\Application\UI\ITemplate
 	}
 
 
-	public function getLatte(): Latte\Engine
+	final public function getLatte(): Latte\Engine
 	{
 		return $this->latte;
 	}
@@ -64,7 +64,7 @@ class Template implements Nette\Application\UI\ITemplate
 	 * Renders template to string.
 	 * @param  can throw exceptions? (hidden parameter)
 	 */
-	public function __toString(): string
+	final public function __toString(): string
 	{
 		try {
 			return $this->latte->renderToString($this->file, $this->params);
@@ -118,7 +118,7 @@ class Template implements Nette\Application\UI\ITemplate
 	}
 
 
-	public function getFile(): ?string
+	final public function getFile(): ?string
 	{
 		return $this->file;
 	}
@@ -152,7 +152,7 @@ class Template implements Nette\Application\UI\ITemplate
 	/**
 	 * Returns array of all parameters.
 	 */
-	public function getParameters(): array
+	final public function getParameters(): array
 	{
 		return $this->params;
 	}

@@ -17,7 +17,7 @@ use Tracy\ILogger;
 /**
  * Default Error Presenter.
  */
-class ErrorPresenter implements Application\IPresenter
+final class ErrorPresenter implements Application\IPresenter
 {
 	use Nette\SmartObject;
 

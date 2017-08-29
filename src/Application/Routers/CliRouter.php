@@ -16,7 +16,7 @@ use Nette\Application;
 /**
  * The unidirectional router for CLI. (experimental)
  */
-class CliRouter implements Application\IRouter
+final class CliRouter implements Application\IRouter
 {
 	use Nette\SmartObject;
 

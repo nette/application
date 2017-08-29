@@ -13,6 +13,8 @@ use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
 
+Tester\Environment::bypassFinals();
+
 $latte = new Latte\Engine;
 
 $latteFactory = Mockery::mock(ApplicationLatte\ILatteFactory::class);

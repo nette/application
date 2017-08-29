@@ -18,7 +18,7 @@ use Tracy;
 /**
  * Application extension for Nette DI.
  */
-class ApplicationExtension extends Nette\DI\CompilerExtension
+final class ApplicationExtension extends Nette\DI\CompilerExtension
 {
 	private $defaults = [
 		'debugger' => null,

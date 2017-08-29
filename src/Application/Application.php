@@ -170,7 +170,7 @@ class Application
 	 * Returns all processed requests.
 	 * @return Request[]
 	 */
-	public function getRequests(): array
+	final public function getRequests(): array
 	{
 		return $this->requests;
 	}
@@ -179,7 +179,7 @@ class Application
 	/**
 	 * Returns current presenter.
 	 */
-	public function getPresenter(): ?IPresenter
+	final public function getPresenter(): ?IPresenter
 	{
 		return $this->presenter;
 	}

@@ -17,7 +17,7 @@ use Nette;
  * Runtime helpers for UI macros.
  * @internal
  */
-class UIRuntime
+final class UIRuntime
 {
 	use Nette\StaticClass;
 

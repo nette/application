@@ -15,7 +15,7 @@ use Nette;
 /**
  * Callback response.
  */
-class CallbackResponse implements Nette\Application\IResponse
+final class CallbackResponse implements Nette\Application\IResponse
 {
 	use Nette\SmartObject;
 
