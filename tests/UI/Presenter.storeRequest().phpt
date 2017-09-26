@@ -39,9 +39,13 @@ class MockSession extends Http\Session
 class MockSessionSection implements \ArrayAccess
 {
 	public $testedKeyExistence;
+
 	public $storedKey;
+
 	public $storedValue;
+
 	public $testExpiration;
+
 	public $testExpirationVariables;
 
 
