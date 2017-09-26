@@ -42,9 +42,13 @@ class MockSession extends Http\Session
 class MockSessionSection extends Nette\Http\SessionSection
 {
 	public $testedKeyExistence;
+
 	public $storedKey;
+
 	public $storedValue;
+
 	public $testExpiration;
+
 	public $testExpirationVariables;
 
 
