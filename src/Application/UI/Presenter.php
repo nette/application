@@ -63,7 +63,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	private $response;
 
 	/** @var array */
-	private $globalParams;
+	private $globalParams = [];
 
 	/** @var array */
 	private $globalState;
