@@ -52,6 +52,15 @@ class Template implements Nette\Application\UI\ITemplate
 
 
 	/**
+	 * Renders template to output.
+	 */
+	public function renderToString($file = null, array $params = []): string
+	{
+		return $this->latte->renderToString($file ?: $this->file, $params + $this->params);
+	}
+
+
+	/**
 	 * Renders template to string.
 	 * @param  can throw exceptions? (hidden parameter)
 	 */
