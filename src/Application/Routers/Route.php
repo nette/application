@@ -21,6 +21,7 @@ class Route implements Application\IRouter
 	use Nette\SmartObject;
 
 	const PRESENTER_KEY = 'presenter';
+
 	const MODULE_KEY = 'module';
 
 	/** @internal url type */
@@ -30,10 +31,15 @@ class Route implements Application\IRouter
 
 	/** key used in {@link Route::$styles} or metadata {@link Route::__construct} */
 	const VALUE = 'value';
+
 	const PATTERN = 'pattern';
+
 	const FILTER_IN = 'filterIn';
+
 	const FILTER_OUT = 'filterOut';
+
 	const FILTER_TABLE = 'filterTable';
+
 	const FILTER_STRICT = 'filterStrict';
 
 	/** @internal fixity types - how to handle default value? {@link Route::$metadata} */
