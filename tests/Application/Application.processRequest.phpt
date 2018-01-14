@@ -198,12 +198,11 @@ Assert::noError(function () use ($httpRequest, $httpResponse) {
 
 	$app = new Application($presenterFactory, $router, $httpRequest, $httpResponse);
 
-	$app->onRequest[] = array($callableMock, 'onRequest');
-	$app->onPresenter[] = array($callableMock, 'onPresenter');
-	$app->onResponse[] = array($callableMock, 'onResponse');
+	$app->onRequest[] = [$callableMock, 'onRequest'];
+	$app->onPresenter[] = [$callableMock, 'onPresenter'];
+	$app->onResponse[] = [$callableMock, 'onResponse'];
 
 	$app->run();
-
 
 	Assert::true($callableMock->onRequestCalled);
 	Assert::equal($callableMock->onRequestParamApplication, $app);
@@ -216,7 +215,6 @@ Assert::noError(function () use ($httpRequest, $httpResponse) {
 	Assert::true($callableMock->onResponseCalled);
 	Assert::equal($callableMock->onResponseParamApplication, $app);
 	Assert::equal($callableMock->onResponseParamResponse, $presenter->response);
-
 
 });
 

@@ -124,7 +124,27 @@ class Application
 	 */
 	public function processRequest(Request $request)
 	{
-		$response = $this->getResponseFromRequest($request);
+		do{
+			if (count($this->requests) > self::$maxLoop) {
+				throw new ApplicationException('Too many loops detected in application life cycle.');
+			}
+
+			$this->requests[] = $request;
+			$this->onRequest($this, $request);
+
+			if (!$request->isMethod($request::FORWARD) && !strcasecmp($request->getPresenterName(), $this->errorPresenter)) {
+				throw new BadRequestException('Invalid request. Presenter is not achievable.');
+			}
+
+			try {
+				$this->presenter = $this->presenterFactory->createPresenter($request->getPresenterName());
+			} catch (InvalidPresenterException $e) {
+				throw count($this->requests) > 1 ? $e : new BadRequestException($e->getMessage(), 0, $e);
+			}
+			$this->onPresenter($this, $this->presenter);
+			$response = $this->presenter->run(clone $request);
+
+		}while($response instanceof Responses\ForwardResponse && $request = $response->getRequest());
 
 		if ($response) {
 			$this->onResponse($this, $response);
@@ -201,39 +221,4 @@ class Application
 		return $this->presenterFactory;
 	}
 
-	/**
-	 * @param Request $request
-	 *
-	 * @return IResponse
-	 * @throws ApplicationException
-	 * @throws BadRequestException
-	 * @throws InvalidPresenterException
-	 */
-	public function getResponseFromRequest( Request $request ) {
-		if (count($this->requests) > self::$maxLoop) {
-			throw new ApplicationException('Too many loops detected in application life cycle.');
-		}
-
-		$this->requests[] = $request;
-		$this->onRequest($this, $request);
-
-		if (!$request->isMethod($request::FORWARD) && !strcasecmp($request->getPresenterName(), $this->errorPresenter)) {
-			throw new BadRequestException('Invalid request. Presenter is not achievable.');
-		}
-
-		try {
-			$this->presenter = $this->presenterFactory->createPresenter($request->getPresenterName());
-		} catch (InvalidPresenterException $e) {
-			throw count($this->requests) > 1 ? $e : new BadRequestException($e->getMessage(), 0, $e);
-		}
-		$this->onPresenter($this, $this->presenter);
-		$response = $this->presenter->run(clone $request);
-
-		if ($response instanceof Responses\ForwardResponse) {
-			$request = $response->getRequest();
-			$response = $this->getResponseFromRequest($request);
-		}
-
-		return $response;
-	}
 }
