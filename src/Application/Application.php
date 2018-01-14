@@ -124,31 +124,29 @@ class Application
 	 */
 	public function processRequest(Request $request)
 	{
-		process:
-		if (count($this->requests) > self::$maxLoop) {
-			throw new ApplicationException('Too many loops detected in application life cycle.');
-		}
+		do{
+			if (count($this->requests) > self::$maxLoop) {
+				throw new ApplicationException('Too many loops detected in application life cycle.');
+			}
 
-		$this->requests[] = $request;
-		$this->onRequest($this, $request);
+			$this->requests[] = $request;
+			$this->onRequest($this, $request);
 
-		if (!$request->isMethod($request::FORWARD) && !strcasecmp($request->getPresenterName(), $this->errorPresenter)) {
-			throw new BadRequestException('Invalid request. Presenter is not achievable.');
-		}
+			if (!$request->isMethod($request::FORWARD) && !strcasecmp($request->getPresenterName(), $this->errorPresenter)) {
+				throw new BadRequestException('Invalid request. Presenter is not achievable.');
+			}
 
-		try {
-			$this->presenter = $this->presenterFactory->createPresenter($request->getPresenterName());
-		} catch (InvalidPresenterException $e) {
-			throw count($this->requests) > 1 ? $e : new BadRequestException($e->getMessage(), 0, $e);
-		}
-		$this->onPresenter($this, $this->presenter);
-		$response = $this->presenter->run(clone $request);
+			try {
+				$this->presenter = $this->presenterFactory->createPresenter($request->getPresenterName());
+			} catch (InvalidPresenterException $e) {
+				throw count($this->requests) > 1 ? $e : new BadRequestException($e->getMessage(), 0, $e);
+			}
+			$this->onPresenter($this, $this->presenter);
+			$response = $this->presenter->run(clone $request);
 
-		if ($response instanceof Responses\ForwardResponse) {
-			$request = $response->getRequest();
-			goto process;
+		}while($response instanceof Responses\ForwardResponse && $request = $response->getRequest());
 
-		} elseif ($response) {
+		if ($response) {
 			$this->onResponse($this, $response);
 			$response->send($this->httpRequest, $this->httpResponse);
 		}
@@ -222,4 +220,5 @@ class Application
 	{
 		return $this->presenterFactory;
 	}
+
 }
