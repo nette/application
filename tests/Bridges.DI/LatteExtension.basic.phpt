@@ -46,7 +46,6 @@ class FooMacros extends Latte\Macros\MacroSet
 
 class NonStaticMacrosFactory
 {
-
 	/** @var string */
 	private $parameter;
 
