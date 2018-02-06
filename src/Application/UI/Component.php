@@ -157,7 +157,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	 * @param  mixed  default value
 	 * @return mixed
 	 */
-	public function getParameter(string $name, $default = null)
+	final public function getParameter(string $name, $default = null)
 	{
 		return $this->params[$name] ?? $default;
 	}
@@ -166,7 +166,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	/**
 	 * Returns component parameters.
 	 */
-	public function getParameters(): array
+	final public function getParameters(): array
 	{
 		return $this->params;
 	}
@@ -175,7 +175,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	/**
 	 * Returns a fully-qualified name that uniquely identifies the parameter.
 	 */
-	public function getParameterId(string $name): string
+	final public function getParameterId(string $name): string
 	{
 		$uid = $this->getUniqueId();
 		return $uid === '' ? $name : $uid . self::NAME_SEPARATOR . $name;
@@ -183,7 +183,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 
 	/** @deprecated */
-	public function getParam($name = null, $default = null)
+	final public function getParam($name = null, $default = null)
 	{
 		trigger_error(__METHOD__ . '() is deprecated; use getParameter() or getParameters() instead.', E_USER_DEPRECATED);
 		return func_num_args() ? $this->getParameter($name, $default) : $this->getParameters();
@@ -329,7 +329,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	 * Adds the component to the container.
 	 * @param  Nette\ComponentModel\IComponent
 	 */
-	public function offsetSet($name, $component): void
+	final public function offsetSet($name, $component): void
 	{
 		$this->addComponent($component, $name);
 	}
@@ -339,7 +339,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	 * Returns component specified by name. Throws exception if component doesn't exist.
 	 * @throws Nette\InvalidArgumentException
 	 */
-	public function offsetGet($name): Nette\ComponentModel\IComponent
+	final public function offsetGet($name): Nette\ComponentModel\IComponent
 	{
 		return $this->getComponent($name, true);
 	}
@@ -348,7 +348,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	/**
 	 * Does component specified by name exists?
 	 */
-	public function offsetExists($name): bool
+	final public function offsetExists($name): bool
 	{
 		return $this->getComponent($name, false) !== null;
 	}
@@ -357,7 +357,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	/**
 	 * Removes component from the container.
 	 */
-	public function offsetUnset($name): void
+	final public function offsetUnset($name): void
 	{
 		$component = $this->getComponent($name, false);
 		if ($component !== null) {

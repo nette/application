@@ -15,7 +15,7 @@ use Nette;
 /**
  * String output response.
  */
-class TextResponse implements Nette\Application\IResponse
+final class TextResponse implements Nette\Application\IResponse
 {
 	use Nette\SmartObject;
 

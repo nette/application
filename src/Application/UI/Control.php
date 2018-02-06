@@ -35,14 +35,14 @@ abstract class Control extends Component implements IRenderable
 	/********************* template factory ****************d*g**/
 
 
-	public function setTemplateFactory(ITemplateFactory $templateFactory)
+	final public function setTemplateFactory(ITemplateFactory $templateFactory)
 	{
 		$this->templateFactory = $templateFactory;
 		return $this;
 	}
 
 
-	public function getTemplate(): ITemplate
+	final public function getTemplate(): ITemplate
 	{
 		if ($this->template === null) {
 			$this->template = $this->createTemplate();

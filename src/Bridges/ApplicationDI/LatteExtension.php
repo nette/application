@@ -16,7 +16,7 @@ use Nette;
 /**
  * Latte extension for Nette DI.
  */
-class LatteExtension extends Nette\DI\CompilerExtension
+final class LatteExtension extends Nette\DI\CompilerExtension
 {
 	public $defaults = [
 		'xhtml' => false,

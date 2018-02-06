@@ -15,7 +15,7 @@ use Nette;
 /**
  * Link generator.
  */
-class LinkGenerator
+final class LinkGenerator
 {
 	use Nette\SmartObject;
 

@@ -15,7 +15,7 @@ use Nette;
 /**
  * No response.
  */
-class VoidResponse implements Nette\Application\IResponse
+final class VoidResponse implements Nette\Application\IResponse
 {
 	use Nette\SmartObject;
 

@@ -25,7 +25,7 @@ use Nette\Utils\Strings;
  * - {snippet ?} ... {/snippet ?} control snippet
  * - n:nonce
  */
-class UIMacros extends Latte\Macros\MacroSet
+final class UIMacros extends Latte\Macros\MacroSet
 {
 	/** @var bool */
 	private $extends;

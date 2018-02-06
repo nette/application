@@ -15,6 +15,8 @@ use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
 
+Tester\Environment::bypassFinals();
+
 
 class TemplateMock extends Template
 {

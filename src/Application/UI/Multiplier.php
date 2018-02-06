@@ -15,7 +15,7 @@ use Nette;
 /**
  * Component multiplier.
  */
-class Multiplier extends Component
+final class Multiplier extends Component
 {
 	/** @var callable */
 	private $factory;

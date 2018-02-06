@@ -16,7 +16,7 @@ use Nette;
  * Lazy encapsulation of Component::link().
  * Do not instantiate directly, use Component::lazyLink()
  */
-class Link
+final class Link
 {
 	use Nette\SmartObject;
 

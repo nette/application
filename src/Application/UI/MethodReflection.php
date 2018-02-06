@@ -15,7 +15,7 @@ use Nette;
 /**
  * @internal
  */
-class MethodReflection extends \ReflectionMethod
+final class MethodReflection extends \ReflectionMethod
 {
 	use Nette\SmartObject;
 

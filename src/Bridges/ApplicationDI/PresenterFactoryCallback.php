@@ -16,7 +16,7 @@ use Nette;
  * PresenterFactory callback.
  * @internal
  */
-class PresenterFactoryCallback
+final class PresenterFactoryCallback
 {
 	/** @var Nette\DI\Container */
 	private $container;
