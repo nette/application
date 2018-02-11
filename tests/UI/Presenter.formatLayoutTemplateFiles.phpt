@@ -4,7 +4,6 @@
  * Test: Presenter::formatLayoutTemplateFiles.
  */
 
-use Nette\Application\UI\Presenter;
 use Tester\Assert;
 
 
