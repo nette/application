@@ -32,6 +32,9 @@ class Request
 	/** flag */
 	const RESTORED = 'restored';
 
+	/** flag */
+	const VARYING = 'varying';
+
 	/** @var string|null */
 	private $method;
 
