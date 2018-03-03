@@ -686,7 +686,7 @@ class Route implements Application\IRouter
 	/**
 	 * camelCaseAction name -> dash-separated.
 	 */
-	private static function action2path(string $s): string
+	public static function action2path(string $s): string
 	{
 		$s = preg_replace('#(.)(?=[A-Z])#', '$1-', $s);
 		$s = strtolower($s);
@@ -698,7 +698,7 @@ class Route implements Application\IRouter
 	/**
 	 * dash-separated -> camelCaseAction name.
 	 */
-	private static function path2action(string $s): string
+	public static function path2action(string $s): string
 	{
 		$s = preg_replace('#-(?=[a-z])#', ' ', $s);
 		$s = lcfirst(ucwords($s));
@@ -710,7 +710,7 @@ class Route implements Application\IRouter
 	/**
 	 * PascalCase:Presenter name -> dash-and-dot-separated.
 	 */
-	private static function presenter2path(string $s): string
+	public static function presenter2path(string $s): string
 	{
 		$s = strtr($s, ':', '.');
 		$s = preg_replace('#([^.])(?=[A-Z])#', '$1-', $s);
@@ -723,7 +723,7 @@ class Route implements Application\IRouter
 	/**
 	 * dash-and-dot-separated -> PascalCase:Presenter name.
 	 */
-	private static function path2presenter(string $s): string
+	public static function path2presenter(string $s): string
 	{
 		$s = preg_replace('#([.-])(?=[a-z])#', '$1 ', $s);
 		$s = ucwords($s);
@@ -736,7 +736,7 @@ class Route implements Application\IRouter
 	/**
 	 * Url encode.
 	 */
-	private static function param2path(string $s): string
+	public static function param2path(string $s): string
 	{
 		return str_replace('%2F', '/', rawurlencode($s));
 	}
