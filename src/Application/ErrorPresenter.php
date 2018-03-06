@@ -9,6 +9,7 @@ namespace NetteModule;
 
 use Nette;
 use Nette\Application;
+use Nette\Http;
 use Tracy\ILogger;
 
 
@@ -43,8 +44,10 @@ class ErrorPresenter implements Application\IPresenter
 				$this->logger->log($e, ILogger::EXCEPTION);
 			}
 		}
-		return new Application\Responses\CallbackResponse(function () use ($code) {
-			require __DIR__ . '/templates/error.phtml';
+		return new Application\Responses\CallbackResponse(function (Http\IRequest $httpRequest, Http\IResponse $httpResponse) use ($code) {
+			if (preg_match('#^text/html(?:;|$)#', $httpResponse->getHeader('Content-Type'))) {
+				require __DIR__ . '/templates/error.phtml';
+			}
 		});
 	}
 }
