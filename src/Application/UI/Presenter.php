@@ -27,6 +27,7 @@ use Nette\Http;
  * @property-read Nette\DI\Container $context
  * @property-read Nette\Http\Session $session
  * @property-read Nette\Security\User $user
+ * @property-read self $presenter
  */
 abstract class Presenter extends Control implements Application\IPresenter
 {
