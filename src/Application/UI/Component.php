@@ -24,6 +24,8 @@ use Nette;
  */
 abstract class Component extends Nette\ComponentModel\Container implements ISignalReceiver, IStatePersistent, \ArrayAccess
 {
+	use Nette\ComponentModel\ArrayAccess;
+
 	/** @var callable[]  function (self $sender); Occurs when component is attached to presenter */
 	public $onAnchor;
 
@@ -309,49 +311,5 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 			$presenter->createRequest($this, $destination, $args, 'redirect'),
 			Nette\Http\IResponse::S301_MOVED_PERMANENTLY
 		);
-	}
-
-
-	/********************* interface \ArrayAccess ****************d*g**/
-
-
-	/**
-	 * Adds the component to the container.
-	 * @param  Nette\ComponentModel\IComponent
-	 */
-	final public function offsetSet($name, $component): void
-	{
-		$this->addComponent($component, $name);
-	}
-
-
-	/**
-	 * Returns component specified by name. Throws exception if component doesn't exist.
-	 * @throws Nette\InvalidArgumentException
-	 */
-	final public function offsetGet($name): Nette\ComponentModel\IComponent
-	{
-		return $this->getComponent($name, true);
-	}
-
-
-	/**
-	 * Does component specified by name exists?
-	 */
-	final public function offsetExists($name): bool
-	{
-		return $this->getComponent($name, false) !== null;
-	}
-
-
-	/**
-	 * Removes component from the container.
-	 */
-	final public function offsetUnset($name): void
-	{
-		$component = $this->getComponent($name, false);
-		if ($component !== null) {
-			$this->removeComponent($component);
-		}
 	}
 }
