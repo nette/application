@@ -684,19 +684,6 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 
 	/**
-	 * Throws HTTP error.
-	 * @param  string
-	 * @param  int HTTP error code
-	 * @return void
-	 * @throws Nette\Application\BadRequestException
-	 */
-	public function error($message = null, $httpCode = Http\IResponse::S404_NOT_FOUND)
-	{
-		throw new Application\BadRequestException($message, $httpCode);
-	}
-
-
-	/**
 	 * Link to myself.
 	 * @return string
 	 * @deprecated
