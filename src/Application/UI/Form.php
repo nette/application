@@ -36,27 +36,8 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 	protected function validateParent(Nette\ComponentModel\IContainer $parent): void
 	{
 		parent::validateParent($parent);
-		$this->monitor(Presenter::class);
-	}
 
-
-	/**
-	 * Returns the presenter where this component belongs to.
-	 * @param  bool   throw exception if presenter doesn't exist?
-	 */
-	final public function getPresenter(bool $throw = true): ?Presenter
-	{
-		return $this->lookup(Presenter::class, $throw);
-	}
-
-
-	/**
-	 * This method will be called when the component (or component's parent)
-	 * becomes attached to a monitored object. Do not call this method yourself.
-	 */
-	protected function attached(Nette\ComponentModel\IComponent $presenter): void
-	{
-		if ($presenter instanceof Presenter) {
+		$this->monitor(Presenter::class, function (Presenter $presenter) {
 			if (!isset($this->getElementPrototype()->id)) {
 				$this->getElementPrototype()->id = 'frm-' . $this->lookupPath(Presenter::class);
 			}
@@ -74,8 +55,17 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 			}
 
 			$this->onAnchor($this);
-		}
-		parent::attached($presenter);
+		});
+	}
+
+
+	/**
+	 * Returns the presenter where this component belongs to.
+	 * @param  bool   throw exception if presenter doesn't exist?
+	 */
+	final public function getPresenter(bool $throw = true): ?Presenter
+	{
+		return $this->lookup(Presenter::class, $throw);
 	}
 
 
