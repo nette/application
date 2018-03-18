@@ -312,4 +312,14 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 			Nette\Http\IResponse::S301_MOVED_PERMANENTLY
 		);
 	}
+
+
+	/**
+	 * Throws HTTP error.
+	 * @throws Nette\Application\BadRequestException
+	 */
+	public function error(string $message = null, int $httpCode = Nette\Http\IResponse::S404_NOT_FOUND): void
+	{
+		throw new Nette\Application\BadRequestException((string) $message, (int) $httpCode);
+	}
 }
