@@ -131,7 +131,7 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 			}
 			$robot = new Nette\Loaders\RobotLoader;
 			$robot->addDirectory($config['scanDirs']);
-			$robot->acceptFiles = '*' . $config['scanFilter'] . '*.php';
+			$robot->acceptFiles = ['*' . $config['scanFilter'] . '*.php'];
 			$robot->rebuild();
 			$classes = array_keys($robot->getIndexedClasses());
 			$this->getContainerBuilder()->addDependency($this->tempFile);

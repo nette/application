@@ -90,7 +90,7 @@ class Link
 	public function __toString()
 	{
 		try {
-			return (string) $this->component->link($this->destination, $this->params);
+			return $this->component->link($this->destination, $this->params);
 
 		} catch (\Exception $e) {
 		} catch (\Throwable $e) {
