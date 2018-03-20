@@ -25,7 +25,7 @@ class Application
 	/** @var bool enable fault barrier? */
 	public $catchExceptions;
 
-	/** @var string */
+	/** @var string|null */
 	public $errorPresenter;
 
 	/** @var callable[]  function (Application $sender); Occurs before the application loads presenter */

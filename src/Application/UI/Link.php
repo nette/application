@@ -86,7 +86,7 @@ final class Link
 	public function __toString(): string
 	{
 		try {
-			return (string) $this->component->link($this->destination, $this->params);
+			return $this->component->link($this->destination, $this->params);
 
 		} catch (\Throwable $e) {
 			if (func_num_args()) {

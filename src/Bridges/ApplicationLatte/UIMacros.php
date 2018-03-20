@@ -26,7 +26,7 @@ use Nette\Utils\Strings;
  */
 final class UIMacros extends Latte\Macros\MacroSet
 {
-	/** @var bool */
+	/** @var bool|string */
 	private $extends;
 
 

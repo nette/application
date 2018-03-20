@@ -22,7 +22,7 @@ use Nette\Http;
  * @property-read Nette\Application\Request $request
  * @property-read string $action
  * @property      string $view
- * @property      string $layout
+ * @property      string|bool $layout
  * @property-read \stdClass $payload
  * @property-read Nette\DI\Container $context
  * @property-read Nette\Http\Session $session
@@ -71,7 +71,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @var array */
 	private $globalState;
 
-	/** @var array */
+	/** @var array|null */
 	private $globalStateSinces;
 
 	/** @var string */
@@ -80,7 +80,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @var string */
 	private $view;
 
-	/** @var string */
+	/** @var string|bool */
 	private $layout;
 
 	/** @var \stdClass */
@@ -89,7 +89,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @var string */
 	private $signalReceiver;
 
-	/** @var string */
+	/** @var string|null */
 	private $signal;
 
 	/** @var bool */
@@ -101,7 +101,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @var Nette\Application\Request|null */
 	private $lastCreatedRequest;
 
-	/** @var array */
+	/** @var array|null */
 	private $lastCreatedRequestFlag;
 
 	/** @var Nette\DI\Container */
@@ -337,7 +337,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * Checks if the signal receiver is the given one.
 	 * @param  Component|string  $component
 	 */
-	final public function isSignalReceiver($component, string $signal = null): bool
+	final public function isSignalReceiver($component, $signal = null): bool
 	{
 		if ($component instanceof Nette\ComponentModel\Component) {
 			$component = $component === $this ? '' : $component->lookupPath(__CLASS__, true);
@@ -402,7 +402,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Returns current layout name.
-	 * @return string|false
+	 * @return string|bool
 	 */
 	final public function getLayout()
 	{
@@ -412,7 +412,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Changes or disables layout.
-	 * @param  string|false  $layout
+	 * @param  string|bool  $layout
 	 * @return static
 	 */
 	public function setLayout($layout)
@@ -692,7 +692,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * @param  string  $expire  like '20 minutes'
 	 * @throws Nette\Application\AbortException
 	 */
-	public function lastModified($lastModified, string $etag = null, $expire = null): void
+	public function lastModified($lastModified, string $etag = null, string $expire = null): void
 	{
 		if ($expire !== null) {
 			$this->httpResponse->setExpiration($expire);

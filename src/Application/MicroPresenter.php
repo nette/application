@@ -142,7 +142,7 @@ final class MicroPresenter implements Application\IPresenter
 	 */
 	public function error(string $message = null, int $httpCode = Http\IResponse::S404_NOT_FOUND): void
 	{
-		throw new Application\BadRequestException((string) $message, (int) $httpCode);
+		throw new Application\BadRequestException($message, $httpCode);
 	}
 
 

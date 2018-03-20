@@ -318,6 +318,6 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	 */
 	public function error(string $message = null, int $httpCode = Nette\Http\IResponse::S404_NOT_FOUND): void
 	{
-		throw new Nette\Application\BadRequestException((string) $message, (int) $httpCode);
+		throw new Nette\Application\BadRequestException($message, $httpCode);
 	}
 }
