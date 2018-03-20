@@ -18,15 +18,12 @@ interface IPresenterFactory
 
 	/**
 	 * Generates and checks presenter class name.
-	 * @param  string  presenter name
-	 * @return string  class name
 	 * @throws InvalidPresenterException
 	 */
 	function getPresenterClass(string &$name): string;
 
 	/**
 	 * Creates new presenter instance.
-	 * @param  string  presenter name
 	 */
 	function createPresenter(string $name): IPresenter;
 }

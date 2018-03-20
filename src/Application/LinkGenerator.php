@@ -39,7 +39,7 @@ final class LinkGenerator
 
 	/**
 	 * Generates URL to presenter.
-	 * @param  string   destination in format "[[[module:]presenter:]action] [#fragment]"
+	 * @param  string   $dest in format "[[[module:]presenter:]action] [#fragment]"
 	 * @throws UI\InvalidLinkException
 	 */
 	public function link(string $dest, array $params = []): string

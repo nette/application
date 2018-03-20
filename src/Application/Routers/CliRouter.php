@@ -26,9 +26,6 @@ final class CliRouter implements Application\IRouter
 	private $defaults;
 
 
-	/**
-	 * @param  array   default values
-	 */
 	public function __construct(array $defaults = [])
 	{
 		$this->defaults = $defaults;

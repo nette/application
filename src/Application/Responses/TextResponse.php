@@ -24,7 +24,7 @@ final class TextResponse implements Nette\Application\IResponse
 
 
 	/**
-	 * @param  mixed  renderable variable
+	 * @param  mixed  $source
 	 */
 	public function __construct($source)
 	{

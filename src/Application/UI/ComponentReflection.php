@@ -213,8 +213,9 @@ final class ComponentReflection extends \ReflectionClass
 
 	/**
 	 * Returns an annotation value.
+	 * @param  \ReflectionClass|\ReflectionMethod  $ref
 	 */
-	public static function parseAnnotation(\Reflector $ref, $name): ?array
+	public static function parseAnnotation(\Reflector $ref, string $name): ?array
 	{
 		if (!preg_match_all('#[\\s*]@' . preg_quote($name, '#') . '(?:\(\\s*([^)]*)\\s*\)|\\s|$)#', (string) $ref->getDocComment(), $m)) {
 			return null;

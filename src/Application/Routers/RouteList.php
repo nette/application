@@ -107,8 +107,8 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 
 	/**
 	 * Adds the router.
-	 * @param  mixed
-	 * @param  Nette\Application\IRouter
+	 * @param  mixed  $index
+	 * @param  Nette\Application\IRouter  $route
 	 */
 	public function offsetSet($index, $route): void
 	{

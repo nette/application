@@ -113,8 +113,8 @@ class Route implements Application\IRouter
 
 
 	/**
-	 * @param  string  URL mask, e.g. '<presenter>/<action>/<id \d{1,3}>'
-	 * @param  array|string|\Closure  default values or metadata or callback for NetteModule\MicroPresenter
+	 * @param  string  $mask  e.g. '<presenter>/<action>/<id \d{1,3}>'
+	 * @param  array|string|\Closure  $metadata  default values or metadata or callback for NetteModule\MicroPresenter
 	 */
 	public function __construct(string $mask, $metadata = [], int $flags = 0)
 	{

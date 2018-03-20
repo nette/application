@@ -35,7 +35,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 	/**
 	 * Returns the presenter where this component belongs to.
-	 * @param  bool   throw exception if presenter doesn't exist?
+	 * @param  bool  $throw exception if presenter doesn't exist?
 	 */
 	public function getPresenter(bool $throw = true): ?Presenter
 	{
@@ -145,8 +145,6 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 	/**
 	 * Returns component param.
-	 * @param  string key
-	 * @param  mixed  default value
 	 * @return mixed
 	 */
 	final public function getParameter(string $name, $default = null)
@@ -229,8 +227,8 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 	/**
 	 * Generates URL to presenter, action or signal.
-	 * @param  string   destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
-	 * @param  array|mixed
+	 * @param  string   $destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
+	 * @param  array|mixed  $args
 	 * @throws InvalidLinkException
 	 */
 	public function link(string $destination, $args = []): string
@@ -247,8 +245,8 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 	/**
 	 * Returns destination as Link object.
-	 * @param  string   destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
-	 * @param  array|mixed
+	 * @param  string   $destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
+	 * @param  array|mixed  $args
 	 */
 	public function lazyLink(string $destination, $args = []): Link
 	{
@@ -259,8 +257,8 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 	/**
 	 * Determines whether it links to the current page.
-	 * @param  string   destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
-	 * @param  array|mixed
+	 * @param  string   $destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
+	 * @param  array|mixed  $args
 	 * @throws InvalidLinkException
 	 */
 	public function isLinkCurrent(string $destination = null, $args = []): bool
@@ -275,8 +273,8 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 	/**
 	 * Redirect to another presenter, action or signal.
-	 * @param  string   destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
-	 * @param  array|mixed
+	 * @param  string   $destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
+	 * @param  array|mixed  $args
 	 * @throws Nette\Application\AbortException
 	 */
 	public function redirect($code, $destination = null, $args = []): void
@@ -299,8 +297,8 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 	/**
 	 * Permanently redirects to presenter, action or signal.
-	 * @param  string   destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
-	 * @param  array|mixed
+	 * @param  string   $destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
+	 * @param  array|mixed  $args
 	 * @throws Nette\Application\AbortException
 	 */
 	public function redirectPermanent(string $destination, $args = []): void

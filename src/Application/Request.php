@@ -57,10 +57,7 @@ final class Request
 
 
 	/**
-	 * @param  string  fully qualified presenter name (module:module:presenter)
-	 * @param  array $params   variables provided to the presenter usually via URL
-	 * @param  array $post   variables provided to the presenter via POST
-	 * @param  array $files   all uploaded files
+	 * @param  string  $name  presenter name (module:module:presenter)
 	 */
 	public function __construct(string $name, string $method = null, array $params = [], array $post = [], array $files = [], array $flags = [])
 	{

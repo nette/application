@@ -335,8 +335,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Checks if the signal receiver is the given one.
-	 * @param  mixed  component or its id
-	 * @param  string signal name (optional)
+	 * @param  Component|string  $component
 	 */
 	final public function isSignalReceiver($component, string $signal = null): bool
 	{
@@ -413,7 +412,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Changes or disables layout.
-	 * @param  string|false
+	 * @param  string|false  $layout
 	 * @return static
 	 */
 	public function setLayout($layout)
@@ -571,7 +570,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Sends JSON data to the output.
-	 * @param  mixed
+	 * @param  mixed  $data
 	 * @throws Nette\Application\AbortException
 	 */
 	public function sendJson($data): void
@@ -606,8 +605,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Forward to another presenter or action.
-	 * @param  string|Nette\Application\Request
-	 * @param  array|mixed
+	 * @param  string|Nette\Application\Request  $destination
+	 * @param  array|mixed  $args
 	 * @throws Nette\Application\AbortException
 	 */
 	public function forward($destination, $args = []): void
@@ -688,9 +687,9 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Attempts to cache the sent entity by its last modification date.
-	 * @param  string|int|\DateTimeInterface  last modified time
-	 * @param  string strong entity tag validator
-	 * @param  string like '20 minutes'
+	 * @param  string|int|\DateTimeInterface  $lastModified
+	 * @param  string  $etag  strong entity tag validator
+	 * @param  string  $expire  like '20 minutes'
 	 * @throws Nette\Application\AbortException
 	 */
 	public function lastModified($lastModified, string $etag = null, $expire = null): void
@@ -707,10 +706,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Request/URL factory.
-	 * @param  Component  base
-	 * @param  string   destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
-	 * @param  array    array of arguments
-	 * @param  string   forward|redirect|link
+	 * @param  string   $destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
+	 * @param  string   $mode  forward|redirect|link
 	 * @return string|null   URL
 	 * @throws InvalidLinkException
 	 * @internal
@@ -933,11 +930,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Converts list of arguments to named parameters.
-	 * @param  string  class name
-	 * @param  string  method name
-	 * @param  array   arguments
-	 * @param  array   supplemental arguments
-	 * @param  ReflectionParameter[]  missing arguments
+	 * @param  \ReflectionParameter[]  $missing arguments
 	 * @throws InvalidLinkException
 	 * @internal
 	 */
@@ -1212,7 +1205,6 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Pops parameters for specified component.
-	 * @param  string  component id
 	 * @internal
 	 */
 	final public function popGlobalParameters(string $id): array
