@@ -899,7 +899,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * Converts Request to URL.
 	 * @internal
 	 */
-	protected function requestToUrl(Application\Request $request, $relative = null): string
+	protected function requestToUrl(Application\Request $request, bool $relative = null): string
 	{
 		if ($this->refUrlCache === null) {
 			$this->refUrlCache = new Http\Url($this->httpRequest->getUrl());
@@ -1056,7 +1056,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/**
 	 * Saves state information for all subcomponents to $this->globalState.
 	 */
-	protected function getGlobalState($forClass = null): array
+	protected function getGlobalState(string $forClass = null): array
 	{
 		$sinces = &$this->globalStateSinces;
 

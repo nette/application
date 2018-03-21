@@ -33,7 +33,7 @@ final class Link
 	/**
 	 * Link specification.
 	 */
-	public function __construct(Component $component, $destination, array $params = [])
+	public function __construct(Component $component, string $destination, array $params = [])
 	{
 		$this->component = $component;
 		$this->destination = $destination;

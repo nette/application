@@ -45,7 +45,7 @@ class Template implements Nette\Application\UI\ITemplate
 	/**
 	 * Renders template to output.
 	 */
-	public function render($file = null, array $params = []): void
+	public function render(string $file = null, array $params = []): void
 	{
 		$this->latte->render($file ?: $this->file, $params + $this->params);
 	}
@@ -54,7 +54,7 @@ class Template implements Nette\Application\UI\ITemplate
 	/**
 	 * Renders template to output.
 	 */
-	public function renderToString($file = null, array $params = []): string
+	public function renderToString(string $file = null, array $params = []): string
 	{
 		return $this->latte->renderToString($file ?: $this->file, $params + $this->params);
 	}
@@ -128,7 +128,7 @@ class Template implements Nette\Application\UI\ITemplate
 	 * Adds new template parameter.
 	 * @return static
 	 */
-	public function add($name, $value)
+	public function add(string $name, $value)
 	{
 		if (array_key_exists($name, $this->params)) {
 			throw new Nette\InvalidStateException("The variable '$name' already exists.");

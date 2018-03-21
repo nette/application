@@ -30,7 +30,7 @@ final class UIMacros extends Latte\Macros\MacroSet
 	private $extends;
 
 
-	public static function install(Latte\Compiler $compiler)
+	public static function install(Latte\Compiler $compiler): void
 	{
 		$me = new static($compiler);
 		$me->addMacro('control', [$me, 'macroControl']);

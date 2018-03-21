@@ -32,7 +32,7 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 	private $tempDir;
 
 
-	public function __construct($tempDir, bool $debugMode = false)
+	public function __construct(string $tempDir, bool $debugMode = false)
 	{
 		$this->tempDir = $tempDir;
 		$this->debugMode = $debugMode;

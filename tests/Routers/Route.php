@@ -9,7 +9,7 @@ declare(strict_types=1);
 use Tester\Assert;
 
 
-function testRouteIn(Nette\Application\IRouter $route, $url, $expectedPresenter = null, $expectedParams = [], $expectedUrl = null)
+function testRouteIn(Nette\Application\IRouter $route, string $url, string $expectedPresenter = null, array $expectedParams = [], string $expectedUrl = null): void
 {
 	$url = new Nette\Http\UrlScript("http://example.com$url");
 	$url->setScriptPath('/');
@@ -41,7 +41,7 @@ function testRouteIn(Nette\Application\IRouter $route, $url, $expectedPresenter 
 }
 
 
-function testRouteOut(Nette\Application\IRouter $route, $presenter, $params = [])
+function testRouteOut(Nette\Application\IRouter $route, string $presenter, array $params = []): ?string
 {
 	$url = new Nette\Http\Url('http://example.com');
 	$request = new Nette\Application\Request($presenter, 'GET', $params);

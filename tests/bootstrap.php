@@ -21,7 +21,7 @@ register_shutdown_function(function ($level) {
 }, ob_get_level());
 
 
-function test(\Closure $function)
+function test(\Closure $function): void
 {
 	$function();
 	Mockery::close();
@@ -33,13 +33,13 @@ class Notes
 	public static $notes = [];
 
 
-	public static function add($message)
+	public static function add($message): void
 	{
 		self::$notes[] = $message;
 	}
 
 
-	public static function fetch()
+	public static function fetch(): array
 	{
 		$res = self::$notes;
 		self::$notes = [];

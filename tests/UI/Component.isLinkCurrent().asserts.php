@@ -11,7 +11,7 @@ use Nette\Http;
 use Tester\Assert;
 
 
-function callIsLinkCurrent(Application\Request $request, $destination, array $args)
+function callIsLinkCurrent(Application\Request $request, string $destination, array $args): bool
 {
 	$presenter = new TestPresenter;
 	return callIsComponentLinkCurrent($presenter, $presenter, $request, $destination, $args);
@@ -24,7 +24,7 @@ function callIsComponentLinkCurrent(
 	Application\Request $request,
 	$destination,
 	array $args
-) {
+): bool {
 	$url = new Http\UrlScript('http://localhost/index.php');
 	$url->setScriptPath('/index.php');
 	$presenterFactory = Mockery::mock(Nette\Application\IPresenterFactory::class);

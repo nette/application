@@ -89,7 +89,7 @@ abstract class Control extends Component implements IRenderable
 	/**
 	 * Forces control or its snippet to repaint.
 	 */
-	public function redrawControl($snippet = null, bool $redraw = true): void
+	public function redrawControl(string $snippet = null, bool $redraw = true): void
 	{
 		if ($redraw) {
 			$this->invalidSnippets[$snippet === null ? "\0" : $snippet] = true;

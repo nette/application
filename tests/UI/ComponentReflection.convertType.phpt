@@ -21,7 +21,7 @@ require __DIR__ . '/../bootstrap.php';
 //   object               pass   deny       deny   pass/deny  deny
 
 
-function testIt($type, $val, $res = null)
+function testIt(string $type, $val, $res = null)
 {
 	$isClass = class_exists($type);
 	if (func_num_args() === 3) {

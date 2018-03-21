@@ -28,7 +28,7 @@ final class PresenterFactoryCallback
 	private $touchToRefresh;
 
 
-	public function __construct(Nette\DI\Container $container, $invalidLinkMode, $touchToRefresh)
+	public function __construct(Nette\DI\Container $container, int $invalidLinkMode, ?string $touchToRefresh)
 	{
 		$this->container = $container;
 		$this->invalidLinkMode = $invalidLinkMode;
@@ -36,7 +36,7 @@ final class PresenterFactoryCallback
 	}
 
 
-	public function __invoke($class): Nette\Application\IPresenter
+	public function __invoke(string $class): Nette\Application\IPresenter
 	{
 		$services = array_keys($this->container->findByTag('nette.presenter'), $class, true);
 		if (count($services) > 1) {

@@ -24,7 +24,7 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 	private $module;
 
 
-	public function __construct($module = null)
+	public function __construct(string $module = null)
 	{
 		$this->module = $module ? $module . ':' : '';
 	}

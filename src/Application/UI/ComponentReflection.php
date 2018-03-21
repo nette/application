@@ -144,7 +144,7 @@ final class ComponentReflection extends \ReflectionClass
 	}
 
 
-	public static function combineArgs(\ReflectionFunctionAbstract $method, $args): array
+	public static function combineArgs(\ReflectionFunctionAbstract $method, array $args): array
 	{
 		$res = [];
 		foreach ($method->getParameters() as $i => $param) {

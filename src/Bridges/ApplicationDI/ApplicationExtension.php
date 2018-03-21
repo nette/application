@@ -41,7 +41,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 	private $tempFile;
 
 
-	public function __construct(bool $debugMode = false, array $scanDirs = null, $tempDir = null)
+	public function __construct(bool $debugMode = false, array $scanDirs = null, string $tempDir = null)
 	{
 		$this->defaults['debugger'] = interface_exists(Tracy\IBarPanel::class);
 		$this->defaults['scanDirs'] = (array) $scanDirs;

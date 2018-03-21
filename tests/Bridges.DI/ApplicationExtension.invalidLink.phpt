@@ -16,7 +16,7 @@ require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/files/MyPresenter.php';
 
 
-function createCompiler($config)
+function createCompiler(string $config): DI\Compiler
 {
 	$compiler = new DI\Compiler;
 	$compiler->loadConfig(Tester\FileMock::create($config, 'neon'));
