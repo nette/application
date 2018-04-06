@@ -8,7 +8,6 @@ use Tracy\Dumper;
 
 ?>
 <style class="tracy-debug">
-
 	#tracy-debug .nette-RoutingPanel table {
 		font: 9pt/1.5 Consolas, monospace;
 	}
@@ -25,10 +24,8 @@ use Tracy\Dumper;
 		display: inline;
 		background: transparent;
 	}
-
 </style>
 
-<div class="nette-RoutingPanel">
 <h1>
 <?php if (empty($request)): ?>
 	no route
@@ -37,7 +34,8 @@ use Tracy\Dumper;
 <?php endif ?>
 </h1>
 
-<div class="tracy-inner">
+<div class="tracy-inner nette-RoutingPanel">
+<div class="tracy-inner-container">
 <?php if (empty($routers)): ?>
 	<p>No routers defined.</p>
 
