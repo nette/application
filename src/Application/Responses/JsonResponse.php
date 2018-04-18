@@ -29,7 +29,7 @@ final class JsonResponse implements Nette\Application\IResponse
 	public function __construct($payload, string $contentType = null)
 	{
 		$this->payload = $payload;
-		$this->contentType = $contentType ? $contentType : 'application/json';
+		$this->contentType = $contentType ?: 'application/json';
 	}
 
 
