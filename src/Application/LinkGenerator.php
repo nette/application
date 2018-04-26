@@ -59,7 +59,8 @@ final class LinkGenerator
 			if ($action === '') {
 				$action = UI\Presenter::DEFAULT_ACTION;
 			}
-			if (method_exists($class, $method = $class::formatActionMethod($action))
+			if (
+				method_exists($class, $method = $class::formatActionMethod($action))
 				|| method_exists($class, $method = $class::formatRenderMethod($action))
 			) {
 				UI\Presenter::argsToParams($class, $method, $params, [], $missing);

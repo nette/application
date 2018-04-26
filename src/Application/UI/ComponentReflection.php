@@ -96,7 +96,8 @@ final class ComponentReflection extends \ReflectionClass
 			if (isset($params[$name])) {
 				// injected value
 
-			} elseif (array_key_exists($name, $params) // nulls are skipped
+			} elseif (
+				array_key_exists($name, $params) // nulls are skipped
 				|| (isset($meta['since']) && !$component instanceof $meta['since']) // not related
 				|| !isset($component->$name)
 			) {
