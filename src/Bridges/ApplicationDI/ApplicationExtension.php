@@ -150,8 +150,11 @@ class ApplicationExtension extends Nette\DI\CompilerExtension
 
 		$presenters = [];
 		foreach (array_unique($classes) as $class) {
-			if (strpos($class, $config['scanFilter']) !== false && class_exists($class)
-				&& ($rc = new \ReflectionClass($class)) && $rc->implementsInterface(Nette\Application\IPresenter::class)
+			if (
+				strpos($class, $config['scanFilter']) !== false
+				&& class_exists($class)
+				&& ($rc = new \ReflectionClass($class))
+				&& $rc->implementsInterface(Nette\Application\IPresenter::class)
 				&& !$rc->isAbstract()
 			) {
 				$presenters[] = $rc->getName();
