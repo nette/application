@@ -439,8 +439,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			}
 
 			if (!$template->getFile()) {
-				$file = preg_replace('#^.*([/\\\\].{1,70})\z#U', "\u{2026}\$1", reset($files));
-				$file = strtr($file, '/', DIRECTORY_SEPARATOR);
+				$file = strtr(reset($files), '/', DIRECTORY_SEPARATOR);
 				$this->error("Page not found. Missing template '$file'.");
 			}
 		}
@@ -466,8 +465,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		}
 
 		if ($this->layout) {
-			$file = preg_replace('#^.*([/\\\\].{1,70})\z#U', "\u{2026}\$1", reset($files));
-			$file = strtr($file, '/', DIRECTORY_SEPARATOR);
+			$file = strtr(reset($files), '/', DIRECTORY_SEPARATOR);
 			throw new Nette\FileNotFoundException("Layout not found. Missing template '$file'.");
 		}
 		return null;
