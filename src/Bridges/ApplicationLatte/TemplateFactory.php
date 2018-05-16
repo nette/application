@@ -19,6 +19,9 @@ class TemplateFactory implements UI\ITemplateFactory
 {
 	use Nette\SmartObject;
 
+	/** @var callable[]  function (Template $template); Occurs when a new template is created */
+	public $onCreate;
+
 	/** @var ILatteFactory */
 	private $latteFactory;
 
@@ -123,6 +126,8 @@ class TemplateFactory implements UI\ITemplateFactory
 			$id = $control->getParameterId('flash');
 			$template->flashes = (array) $presenter->getFlashSession()->$id;
 		}
+
+		$this->onCreate($template);
 
 		return $template;
 	}
