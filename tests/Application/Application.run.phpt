@@ -7,11 +7,13 @@
 declare(strict_types=1);
 
 use Nette\Application\Application;
+use Nette\Application\ApplicationException;
 use Nette\Application\BadRequestException;
 use Nette\Application\IPresenterFactory;
 use Nette\Application\IResponse;
 use Nette\Application\IRouter;
 use Nette\Application\Request;
+use Nette\Application\Responses\ForwardResponse;
 use Nette\Application\Responses\TextResponse;
 use Tester\Assert;
 
@@ -28,6 +30,15 @@ class GoodPresenter implements Nette\Application\IPresenter
 	{
 		$this->request = $request;
 		return new TextResponse('');
+	}
+}
+
+
+class InfinityForwardingPresenter implements Nette\Application\IPresenter
+{
+	public function run(Request $request): IResponse
+	{
+		return new ForwardResponse($request);
 	}
 }
 
@@ -259,4 +270,71 @@ Assert::noError(function () use ($httpRequest, $httpResponse) {
 
 	Assert::equal($requests[0], $presenter->request);
 	Assert::null($errorPresenter->request);
+});
+
+
+// error during onShutdown with catchException + errorPresenter
+Assert::noError(function () use ($httpRequest, $httpResponse) {
+	$presenter = new ErrorPresenter;
+
+	$presenterFactory = Mockery::mock(IPresenterFactory::class);
+	$presenterFactory->shouldReceive('createPresenter')->with('Error')->andReturn($presenter);
+
+	$router = Mockery::mock(IRouter::class);
+
+	$errors = [];
+
+	$app = new Application($presenterFactory, $router, $httpRequest, $httpResponse);
+	$app->onStartup[] = function () {
+		throw new RuntimeException('Error at startup', 1);
+	};
+	$app->onShutdown[] = function () {
+		throw new RuntimeException('Error at shutdown', 2);
+	};
+	$app->onError[] = function ($app, $e) use (&$errors) {
+		$errors[] = $e;
+	};
+	$app->catchExceptions = true;
+	$app->errorPresenter = 'Error';
+
+	Assert::exception(function () use ($app) {
+		$app->run();
+	}, RuntimeException::class, 'Error at shutdown');
+
+	Assert::count(2, $errors);
+	Assert::equal('Error at startup', $errors[0]->getMessage());
+	Assert::equal('Error at shutdown', $errors[1]->getMessage());
+});
+
+
+// check maxLoop
+Assert::noError(function () use ($httpRequest, $httpResponse) {
+	$presenter = new InfinityForwardingPresenter;
+
+	$presenterFactory = Mockery::mock(IPresenterFactory::class);
+	$presenterFactory->shouldReceive('createPresenter')->with('Infinity')->andReturn($presenter);
+
+	$router = Mockery::mock(IRouter::class);
+	$router->shouldReceive('match')->andReturn(new Request('Infinity', 'GET'));
+
+	$app = new Application($presenterFactory, $router, $httpRequest, $httpResponse);
+	$app->catchExceptions = true;
+	$app->errorPresenter = 'Error';
+
+	// Use default maxLoop
+	$app1 = clone $app;
+	Assert::exception(function () use ($app1) {
+		$app1->run();
+	}, ApplicationException::class, 'Too many loops detected in application life cycle.');
+
+	Assert::count(21, $app1->getRequests());
+
+	// Redefine maxLoop
+	Application::$maxLoop = 2;
+	$app2 = clone $app;
+	Assert::exception(function () use ($app2) {
+		$app2->run();
+	}, ApplicationException::class, 'Too many loops detected in application life cycle.');
+
+	Assert::count(3, $app2->getRequests());
 });
