@@ -50,7 +50,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @var callable[]  function (Presenter $sender); Occurs when the presenter is starting */
 	public $onStartup;
 
-	/** @var callable[]  function (Presenter $sender, IResponse $response = null); Occurs when the presenter is shutting down */
+	/** @var callable[]  function (Presenter $sender, IResponse $response); Occurs when the presenter is shutting down */
 	public $onShutdown;
 
 	/** @var bool  automatically call canonicalize() */
