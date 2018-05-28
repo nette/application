@@ -45,8 +45,8 @@ class FileResponse implements Nette\Application\IResponse
 		}
 
 		$this->file = $file;
-		$this->name = $name ? $name : basename($file);
-		$this->contentType = $contentType ? $contentType : 'application/octet-stream';
+		$this->name = $name ?: basename($file);
+		$this->contentType = $contentType ?: 'application/octet-stream';
 		$this->forceDownload = $forceDownload;
 	}
 
