@@ -201,9 +201,13 @@ final class ComponentReflection extends \ReflectionClass
 			return false;
 
 		} else {
-			$old = $tmp = ($val === false ? '0' : (string) $val);
+			$tmp = ($val === false ? '0' : (string) $val);
+			if ($type === 'double' || $type === 'float') {
+				$tmp = preg_replace('#\.0*\z#', '', $tmp);
+			}
+			$orig = $tmp;
 			settype($tmp, $type);
-			if ($old !== ($tmp === false ? '0' : (string) $tmp)) {
+			if ($orig !== ($tmp === false ? '0' : (string) $tmp)) {
 				return false; // data-loss occurs
 			}
 			$val = $tmp;
