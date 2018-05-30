@@ -32,6 +32,10 @@ final class ComponentReflection extends \ReflectionClass
 	private static $mcCache = [];
 
 
+	/**
+	 * Returns array of classes persistent parameters. They have public visibility,
+	 * are non-static and have annotation @persistent.
+	 */
 	public function getPersistentParams(string $class = null): array
 	{
 		$class = $class === null ? $this->getName() : $class;
@@ -43,23 +47,21 @@ final class ComponentReflection extends \ReflectionClass
 		if (is_subclass_of($class, Component::class)) {
 			$isPresenter = is_subclass_of($class, Presenter::class);
 			$defaults = get_class_vars($class);
-			foreach ($class::getPersistentParams() as $name => $default) {
-				if (is_int($name)) {
-					$name = $default;
-					$default = $defaults[$name];
+			foreach ($defaults as $name => $default) {
+				$rp = new \ReflectionProperty($class, $name);
+				if (!$rp->isStatic() && self::parseAnnotation($rp, 'persistent')) {
+					$params[$name] = [
+						'def' => $default,
+						'since' => $isPresenter ? $class : null,
+					];
 				}
-				$params[$name] = [
-					'def' => $default,
-					'since' => $isPresenter ? $class : null,
-				];
 			}
 			foreach ($this->getPersistentParams(get_parent_class($class)) as $name => $param) {
 				if (isset($params[$name])) {
 					$params[$name]['since'] = $param['since'];
-					continue;
+				} else {
+					$params[$name] = $param;
 				}
-
-				$params[$name] = $param;
 			}
 		}
 		return $params;

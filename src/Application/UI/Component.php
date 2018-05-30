@@ -180,23 +180,6 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	}
 
 
-	/**
-	 * Returns array of classes persistent parameters. They have public visibility and are non-static.
-	 * This default implementation detects persistent parameters by annotation @persistent.
-	 */
-	public static function getPersistentParams(): array
-	{
-		$rc = new \ReflectionClass(get_called_class());
-		$params = [];
-		foreach ($rc->getProperties(\ReflectionProperty::IS_PUBLIC) as $rp) {
-			if (!$rp->isStatic() && ComponentReflection::parseAnnotation($rp, 'persistent')) {
-				$params[] = $rp->getName();
-			}
-		}
-		return $params;
-	}
-
-
 	/********************* interface ISignalReceiver ****************d*g**/
 
 
