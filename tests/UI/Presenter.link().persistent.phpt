@@ -95,6 +95,32 @@ class ThirdPresenter extends BasePresenter
 }
 
 
+Assert::same([
+	'p1' => ['def' => null, 'since' => 'BasePresenter'],
+	't1' => ['def' => null, 'since' => 'BasePresenter'],
+], BasePresenter::getReflection()->getPersistentParams());
+
+Assert::same([
+	'p2' => ['def' => null, 'since' => 'TestPresenter'],
+	'p1' => ['def' => null, 'since' => 'BasePresenter'],
+	't1' => ['def' => null, 'since' => 'BasePresenter'],
+	't2' => ['def' => null, 'since' => 'TestPresenter'],
+], TestPresenter::getReflection()->getPersistentParams());
+
+Assert::same([
+	'p1' => ['def' => 20, 'since' => 'BasePresenter'],
+	'p3' => ['def' => null, 'since' => 'SecondPresenter'],
+	't1' => ['def' => null, 'since' => 'BasePresenter'],
+	't3' => ['def' => null, 'since' => 'SecondPresenter'],
+], SecondPresenter::getReflection()->getPersistentParams());
+
+Assert::same([
+	'p1' => ['def' => null, 'since' => 'BasePresenter'],
+	't1' => ['def' => null, 'since' => 'BasePresenter'],
+	't2' => ['def' => null, 'since' => 'ThirdPresenter'],
+], ThirdPresenter::getReflection()->getPersistentParams());
+
+
 $url = new Http\UrlScript('http://localhost/index.php');
 $url->setScriptPath('/index.php');
 
