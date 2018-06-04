@@ -106,7 +106,7 @@ class TemplateFactory implements UI\ITemplateFactory
 
 		// default parameters
 		$template->user = $this->user;
-		$template->baseUri = $template->baseUrl = $this->httpRequest ? rtrim($this->httpRequest->getUrl()->getBaseUrl(), '/') : null;
+		$template->baseUrl = $this->httpRequest ? rtrim($this->httpRequest->getUrl()->getBaseUrl(), '/') : null;
 		$template->basePath = preg_replace('#https?://[^/]+#A', '', $template->baseUrl);
 		$template->flashes = [];
 		if ($control) {
