@@ -23,7 +23,6 @@ final class Multiplier extends Component
 
 	public function __construct(callable $factory)
 	{
-		parent::__construct();
 		$this->factory = $factory;
 	}
 
