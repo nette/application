@@ -27,7 +27,7 @@ test(function () { // with subdir templates
 });
 
 
-test(function () { // without subdir templates
+test(function () { // without subdir templates & parent presenter
 	$presenter = new Presenter2;
 	$presenter->setParent(null, 'Two');
 
@@ -35,6 +35,7 @@ test(function () { // without subdir templates
 		__DIR__ . '/templates/Two/@layout.latte',
 		__DIR__ . '/templates/Two.@layout.latte',
 		__DIR__ . '/templates/@layout.latte',
+		__DIR__ . DIRECTORY_SEPARATOR . 'one/templates/@layout.latte',
 	], $presenter->formatLayoutTemplateFiles());
 });
 
@@ -47,13 +48,11 @@ test(function () { // with module & subdir templates
 		__DIR__ . DIRECTORY_SEPARATOR . 'one/templates/One/@layout.latte',
 		__DIR__ . DIRECTORY_SEPARATOR . 'one/templates/One.@layout.latte',
 		__DIR__ . DIRECTORY_SEPARATOR . 'one/templates/@layout.latte',
-		__DIR__ . '/templates/@layout.latte',
-		dirname(__DIR__) . '/templates/@layout.latte',
 	], $presenter->formatLayoutTemplateFiles());
 });
 
 
-test(function () { // with module & without subdir templates
+test(function () { // with module & without subdir templates & parent presenter
 	$presenter = new Presenter2;
 	$presenter->setParent(null, 'Module:SubModule:Two');
 
@@ -63,6 +62,7 @@ test(function () { // with module & without subdir templates
 		__DIR__ . '/templates/@layout.latte',
 		dirname(__DIR__) . '/templates/@layout.latte',
 		dirname(dirname(__DIR__)) . '/templates/@layout.latte',
+		__DIR__ . DIRECTORY_SEPARATOR . 'one/templates/@layout.latte',
 	], $presenter->formatLayoutTemplateFiles());
 });
 
