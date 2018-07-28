@@ -1,9 +1,5 @@
 <?php
 
-/**
- * Test: Application
- */
-
 declare(strict_types=1);
 
 use Nette\Application\Application;

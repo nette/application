@@ -481,7 +481,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			return [$this->layout];
 		}
 		[$module, $presenter] = Helpers::splitName($this->getName());
-		$layout = $this->layout ? $this->layout : 'layout';
+		$layout = $this->layout ?: 'layout';
 		$dir = dirname($this->getReflection()->getFileName());
 		$dir = is_dir("$dir/templates") ? $dir : dirname($dir);
 		$list = [

@@ -1,9 +1,5 @@
 <?php
 
-/**
- * Test: ApplicationExtension
- */
-
 declare(strict_types=1);
 
 use Nette\Bridges\ApplicationDI\ApplicationExtension;
