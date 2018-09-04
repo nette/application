@@ -104,6 +104,14 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	 */
 	public function checkRequirements($element): void
 	{
+		if (
+			$element instanceof \ReflectionMethod
+			&& substr($element->getName(), 0, 6) === 'handle'
+			&& !ComponentReflection::parseAnnotation($element, 'crossOrigin')
+			&& !$this->getPresenter()->getHttpRequest()->isSameSite()
+		) {
+			$this->getPresenter()->detectedCsrf();
+		}
 	}
 
 
