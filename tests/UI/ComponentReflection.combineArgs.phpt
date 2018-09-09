@@ -2,7 +2,6 @@
 
 /**
  * Test: ComponentReflection::combineArgs()
- * @phpVersion 7.1
  */
 
 declare(strict_types=1);
@@ -25,7 +24,12 @@ class MyPresenter
 	}
 
 
-	public function hintsNulls(?int $int, ?bool $bool, ?string $str, ?array $arr)
+	public function hintsNulls(int $int = null, bool $bool = null, string $str = null, array $arr = null)
+	{
+	}
+
+
+	public function hintsNullable(?int $int, ?bool $bool, ?string $str, ?array $arr)
 	{
 	}
 
@@ -40,7 +44,7 @@ class MyPresenter
 	}
 
 
-	public function objects(stdClass $req, ?stdClass $opt)
+	public function objects(stdClass $req, ?stdClass $nullable, stdClass $opt = null)
 	{
 	}
 }
@@ -128,6 +132,36 @@ test(function () {
 
 
 test(function () {
+	$method = new ReflectionMethod('MyPresenter', 'hintsNullable');
+
+	Assert::same([null, null, null, null], Reflection::combineArgs($method, []));
+	Assert::same([null, null, null, null], Reflection::combineArgs($method, ['int' => null, 'bool' => null, 'str' => null, 'arr' => null]));
+	Assert::same([1, true, 'abc', [1]], Reflection::combineArgs($method, ['int' => '1', 'bool' => '1', 'str' => 'abc', 'arr' => [1]]));
+	Assert::same([0, false, '', []], Reflection::combineArgs($method, ['int' => 0, 'bool' => false, 'str' => '', 'arr' => []]));
+
+	Assert::exception(function () use ($method) {
+		Reflection::combineArgs($method, ['int' => '']);
+	}, Nette\InvalidArgumentException::class, 'Argument $int passed to MyPresenter::hintsNullable() must be int, string given.');
+
+	Assert::exception(function () use ($method) {
+		Reflection::combineArgs($method, ['int' => new stdClass]);
+	}, Nette\InvalidArgumentException::class, 'Argument $int passed to MyPresenter::hintsNullable() must be int, stdClass given.');
+
+	Assert::exception(function () use ($method) {
+		Reflection::combineArgs($method, ['int' => []]);
+	}, Nette\InvalidArgumentException::class, 'Argument $int passed to MyPresenter::hintsNullable() must be int, array given.');
+
+	Assert::exception(function () use ($method) {
+		Reflection::combineArgs($method, ['int' => '1', 'bool' => '']);
+	}, Nette\InvalidArgumentException::class, 'Argument $bool passed to MyPresenter::hintsNullable() must be bool, string given.');
+
+	Assert::exception(function () use ($method) {
+		Reflection::combineArgs($method, ['int' => '1', 'bool' => '1', 'str' => '', 'arr' => '']);
+	}, Nette\InvalidArgumentException::class, 'Argument $arr passed to MyPresenter::hintsNullable() must be array, string given.');
+});
+
+
+test(function () {
 	$method = new ReflectionMethod('MyPresenter', 'hintsDefaults');
 
 	Assert::same([0, false, '', []], Reflection::combineArgs($method, []));
@@ -190,14 +224,14 @@ test(function () {
 test(function () {
 	$method = new ReflectionMethod('MyPresenter', 'objects');
 
-	Assert::equal([new stdClass, new stdClass], Reflection::combineArgs($method, ['req' => new stdClass, 'opt' => new stdClass]));
+	Assert::equal([new stdClass, new stdClass, new stdClass], Reflection::combineArgs($method, ['req' => new stdClass, 'opt' => new stdClass, 'nullable' => new stdClass]));
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, []);
 	}, Nette\InvalidArgumentException::class, 'Missing parameter $req required by MyPresenter::objects()');
 
 	Assert::exception(function () use ($method) {
-		Reflection::combineArgs($method, ['req' => null, 'opt' => null]);
+		Reflection::combineArgs($method, ['req' => null, 'nullable' => null, 'opt' => null]);
 	}, Nette\InvalidArgumentException::class, 'Missing parameter $req required by MyPresenter::objects()');
 
 	Assert::exception(function () use ($method) {

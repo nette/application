@@ -2,7 +2,6 @@
 
 /**
  * Test: Nette\Application\UI\Component::isLinkCurrent()
- * @phpVersion 7
  */
 
 declare(strict_types=1);
