@@ -35,11 +35,23 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 	/**
 	 * Returns the presenter where this component belongs to.
-	 * @param  bool  $throw exception if presenter doesn't exist?
 	 */
-	public function getPresenter(bool $throw = true): ?Presenter
+	public function getPresenter(): ?Presenter
 	{
-		return $this->lookup(Presenter::class, $throw);
+		if (func_num_args()) {
+			trigger_error(__METHOD__ . '() parameter $throw is deprecated, use hasPresenter()', E_USER_DEPRECATED);
+			$throw = func_get_arg(0);
+		}
+		return $this->lookup(Presenter::class, $throw ?? true);
+	}
+
+
+	/**
+	 * Returns whether there is a presenter.
+	 */
+	public function hasPresenter(): bool
+	{
+		return (bool) $this->lookup(Presenter::class, false);
 	}
 
 

@@ -147,9 +147,15 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/**
 	 * Returns self.
 	 */
-	final public function getPresenter(bool $throw = true): self
+	final public function getPresenter(): self
 	{
 		return $this;
+	}
+
+
+	final public function hasPresenter(): bool
+	{
+		return true;
 	}
 
 

@@ -58,7 +58,7 @@ class TemplateFactory implements UI\ITemplateFactory
 	{
 		$latte = $this->latteFactory->create();
 		$template = new $this->templateClass($latte);
-		$presenter = $control ? $control->getPresenter(false) : null;
+		$presenter = ($control && $control->hasPresenter()) ? $control->getPresenter() : null;
 
 		if ($control instanceof UI\Presenter) {
 			$latte->setLoader(new Loader($control));
