@@ -66,11 +66,30 @@ class ErrorPresenter implements Nette\Application\IPresenter
 }
 
 
+class UIPresenter extends Nette\Application\UI\Presenter
+{
+	public function actionDefault()
+	{
+		$this->sendResponse(new TextResponse(''));
+	}
+}
+
+
+class UIErrorPresenter extends Nette\Application\UI\Presenter
+{
+	public function actionDefault()
+	{
+		$this->sendResponse(new TextResponse(''));
+	}
+}
+
+
 $httpRequest = Mockery::mock(Nette\Http\IRequest::class);
 $httpRequest->shouldReceive('getMethod')->andReturn('GET');
 $httpRequest->shouldReceive('getPost')->andReturn([]);
 $httpRequest->shouldReceive('getFiles')->andReturn([]);
 $httpRequest->shouldReceive('isSecured')->andReturn(false);
+$httpRequest->shouldReceive('isAjax')->andReturn(false);
 
 $httpResponse = Mockery::mock(Nette\Http\IResponse::class);
 $httpResponse->shouldIgnoreMissing();
@@ -305,6 +324,58 @@ Assert::noError(function () use ($httpRequest, $httpResponse) {
 	Assert::count(2, $errors);
 	Assert::equal('Error at startup', $errors[0]->getMessage());
 	Assert::equal('Error at shutdown', $errors[1]->getMessage());
+});
+
+
+// error during onPresenter with catchException + errorPresenter
+Assert::noError(function () use ($httpRequest, $httpResponse) {
+	$presenter = new UIPresenter;
+	$errorPresenter = new UIErrorPresenter;
+
+	$presenterFactory = Mockery::mock(IPresenterFactory::class);
+	$presenterFactory->shouldReceive('createPresenter')->with('UI')->andReturn($presenter);
+	$presenterFactory->shouldReceive('createPresenter')->with('UIError')->andReturn($errorPresenter);
+	$presenterFactory->shouldReceive('getPresenterClass')->with('UIError')->andReturn(UIErrorPresenter::class);
+
+	$router = Mockery::mock(Router::class);
+	$router->shouldReceive('match')->andReturn(['presenter' => 'UI']);
+
+	$errors = [];
+
+	$presenter->injectPrimary(null, $presenterFactory, $router, $httpRequest, $httpResponse);
+	$errorPresenter->injectPrimary(null, $presenterFactory, $router, $httpRequest, $httpResponse);
+
+	$app = new Application($presenterFactory, $router, $httpRequest, $httpResponse);
+	$app->catchExceptions = true;
+	$app->errorPresenter = 'UIError';
+
+	$app->onPresenter[] = function (Application $application, Nette\Application\IPresenter $presenter) use ($errorPresenter) {
+		if (!$presenter instanceof UIErrorPresenter) {
+			throw new RuntimeException('Error on presenter');
+		}
+	};
+
+	$app->onError[] = function ($app, $e) use (&$errors) {
+		$errors[] = $e;
+	};
+
+	Assert::noError(function () use ($app) {
+		$app->run();
+	});
+
+	Assert::count(1, $errors);
+	Assert::same('Error on presenter', $errors[0]->getMessage());
+
+	$requests = $app->getRequests();
+	Assert::count(2, $requests);
+
+	Assert::same('GET', $requests[0]->getMethod());
+	Assert::same('UI', $requests[0]->getPresenterName());
+	Assert::null($presenter->getRequest()); // Good presenter did not run
+
+	Assert::same('FORWARD', $requests[1]->getMethod());
+	Assert::same('UIError', $requests[1]->getPresenterName());
+	Assert::equal($requests[1], $errorPresenter->getRequest());
 });
 
 
