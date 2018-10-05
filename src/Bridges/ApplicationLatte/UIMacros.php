@@ -35,7 +35,7 @@ final class UIMacros extends Latte\Macros\MacroSet
 		$me = new static($compiler);
 		$me->addMacro('control', [$me, 'macroControl']);
 
-		$me->addMacro('href', null, null, function (MacroNode $node, PhpWriter $writer) use ($me) {
+		$me->addMacro('href', null, null, function (MacroNode $node, PhpWriter $writer) use ($me): string {
 			return ' ?> href="<?php ' . $me->macroLink($node, $writer) . ' ?>"<?php ';
 		});
 		$me->addMacro('plink', [$me, 'macroLink']);

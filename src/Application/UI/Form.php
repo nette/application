@@ -17,7 +17,7 @@ use Nette;
  */
 class Form extends Nette\Forms\Form implements ISignalReceiver
 {
-	/** @var callable[]  function (self $sender); Occurs when form is attached to presenter */
+	/** @var callable[]  function (Form $sender): void; Occurs when form is attached to presenter */
 	public $onAnchor;
 
 
@@ -37,7 +37,7 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 	{
 		parent::validateParent($parent);
 
-		$this->monitor(Presenter::class, function (Presenter $presenter) {
+		$this->monitor(Presenter::class, function (Presenter $presenter): void {
 			if (!isset($this->getElementPrototype()->id)) {
 				$this->getElementPrototype()->id = 'frm-' . $this->lookupPath(Presenter::class);
 			}

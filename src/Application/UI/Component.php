@@ -26,7 +26,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 {
 	use Nette\ComponentModel\ArrayAccess;
 
-	/** @var callable[]  function (self $sender); Occurs when component is attached to presenter */
+	/** @var callable[]  function (Component $sender): void; Occurs when component is attached to presenter */
 	public $onAnchor;
 
 	/** @var array */
@@ -68,7 +68,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	protected function validateParent(Nette\ComponentModel\IContainer $parent): void
 	{
 		parent::validateParent($parent);
-		$this->monitor(Presenter::class, function (Presenter $presenter) {
+		$this->monitor(Presenter::class, function (Presenter $presenter): void {
 			$this->loadState($presenter->popGlobalParameters($this->getUniqueId()));
 			$this->onAnchor($this);
 		});

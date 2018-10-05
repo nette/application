@@ -295,7 +295,7 @@ final class ComponentReflection extends \ReflectionClass
 	public static function getClassesAndTraits(string $class): array
 	{
 		$res = [$class => $class] + class_parents($class);
-		$addTraits = function ($type) use (&$res, &$addTraits) {
+		$addTraits = function (string $type) use (&$res, &$addTraits): void {
 			$res += class_uses($type);
 			foreach (class_uses($type) as $trait) {
 				$addTraits($trait);

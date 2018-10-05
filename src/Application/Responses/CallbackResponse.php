@@ -24,7 +24,7 @@ final class CallbackResponse implements Nette\Application\IResponse
 
 
 	/**
-	 * @param  callable  $callback  function (Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse)
+	 * @param  callable  $callback  function (Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse): void
 	 */
 	public function __construct(callable $callback)
 	{

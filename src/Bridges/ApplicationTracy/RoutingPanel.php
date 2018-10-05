@@ -44,7 +44,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 
 	public static function initializePanel(Nette\Application\Application $application): void
 	{
-		Tracy\Debugger::getBlueScreen()->addPanel(function ($e) use ($application) {
+		Tracy\Debugger::getBlueScreen()->addPanel(function (?\Throwable $e) use ($application): ?array {
 			return $e ? null : [
 				'tab' => 'Nette Application',
 				'panel' => '<h3>Requests</h3>' . Dumper::toHtml($application->getRequests(), [Dumper::LIVE => true])
@@ -84,7 +84,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 		$request = $this->request;
 		$routers = $this->routers;
 		$source = $this->source;
-		$hasModule = (bool) array_filter($routers, function ($rq) { return $rq['module']; });
+		$hasModule = (bool) array_filter($routers, function (array $rq): string { return $rq['module']; });
 		$url = $this->httpRequest->getUrl();
 		$method = $this->httpRequest->getMethod();
 		require __DIR__ . '/templates/RoutingPanel.panel.phtml';

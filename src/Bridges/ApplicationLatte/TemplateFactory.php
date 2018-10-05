@@ -21,7 +21,7 @@ class TemplateFactory implements UI\ITemplateFactory
 {
 	use Nette\SmartObject;
 
-	/** @var callable[]  function (Template $template); Occurs when a new template is created */
+	/** @var callable[]  function (Template $template): void; Occurs when a new template is created */
 	public $onCreate;
 
 	/** @var ILatteFactory */
@@ -68,7 +68,7 @@ class TemplateFactory implements UI\ITemplateFactory
 			$latte->onCompile = iterator_to_array($latte->onCompile);
 		}
 
-		array_unshift($latte->onCompile, function ($latte) use ($control, $template) {
+		array_unshift($latte->onCompile, function (Latte\Engine $latte) use ($control, $template): void {
 			if ($this->cacheStorage) {
 				$latte->getCompiler()->addMacro('cache', new Nette\Bridges\CacheLatte\CacheMacro);
 			}
@@ -81,17 +81,17 @@ class TemplateFactory implements UI\ITemplateFactory
 			}
 		});
 
-		$latte->addFilter('url', function ($s) {
+		$latte->addFilter('url', function (string $s): string {
 			trigger_error('Filter |url is deprecated, use |escapeUrl.', E_USER_DEPRECATED);
 			return rawurlencode($s);
 		});
 		foreach (['normalize', 'toAscii'] as $name) {
-			$latte->addFilter($name, function ($s) use ($name) {
+			$latte->addFilter($name, function (string $s) use ($name): string {
 				trigger_error("Filter |$name is deprecated.", E_USER_DEPRECATED);
 				return [Nette\Utils\Strings::class, $name]($s);
 			});
 		}
-		$latte->addFilter('null', function () {
+		$latte->addFilter('null', function (): void {
 			trigger_error('Filter |null is deprecated.', E_USER_DEPRECATED);
 		});
 		$latte->addFilter('modifyDate', function ($time, $delta, $unit = null) {
@@ -99,7 +99,7 @@ class TemplateFactory implements UI\ITemplateFactory
 		});
 
 		if (!isset($latte->getFilters()['translate'])) {
-			$latte->addFilter('translate', function (Latte\Runtime\FilterInfo $fi) {
+			$latte->addFilter('translate', function (Latte\Runtime\FilterInfo $fi): void {
 				throw new Nette\InvalidStateException('Translator has not been set. Set translator using $template->setTranslator().');
 			});
 		}
