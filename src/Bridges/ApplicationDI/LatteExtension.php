@@ -48,20 +48,22 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 		$config = $this->validateConfig($this->defaults);
 		$builder = $this->getContainerBuilder();
 
-		$latteFactory = $builder->addDefinition($this->prefix('latteFactory'))
-			->setFactory(Latte\Engine::class)
-			->addSetup('setTempDirectory', [$this->tempDir])
-			->addSetup('setAutoRefresh', [$this->debugMode])
-			->addSetup('setContentType', [$config['xhtml'] ? Latte\Compiler::CONTENT_XHTML : Latte\Compiler::CONTENT_HTML])
-			->addSetup('Nette\Utils\Html::$xhtml = ?', [(bool) $config['xhtml']])
-			->setImplement(Nette\Bridges\ApplicationLatte\ILatteFactory::class);
+		$latteFactory = $builder->addFactoryDefinition($this->prefix('latteFactory'))
+			->setImplement(Nette\Bridges\ApplicationLatte\ILatteFactory::class)
+			->setExported()
+			->getResultDefinition()
+				->setFactory(Latte\Engine::class)
+				->addSetup('setTempDirectory', [$this->tempDir])
+				->addSetup('setAutoRefresh', [$this->debugMode])
+				->addSetup('setContentType', [$config['xhtml'] ? Latte\Compiler::CONTENT_XHTML : Latte\Compiler::CONTENT_HTML])
+				->addSetup('Nette\Utils\Html::$xhtml = ?', [(bool) $config['xhtml']]);
 
 		if ($config['strictTypes']) {
 			$latteFactory->addSetup('setStrictTypes', [true]);
 		}
 
 		$builder->addDefinition($this->prefix('templateFactory'))
-			->setClass(Nette\Application\UI\ITemplateFactory::class)
+			->setType(Nette\Application\UI\ITemplateFactory::class)
 			->setFactory(Nette\Bridges\ApplicationLatte\TemplateFactory::class)
 			->setArguments(['templateClass' => $config['templateClass']]);
 
@@ -79,7 +81,7 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 	public function addMacro(string $macro): void
 	{
 		$builder = $this->getContainerBuilder();
-		$definition = $builder->getDefinition($this->prefix('latteFactory'));
+		$definition = $builder->getDefinition($this->prefix('latteFactory'))->getResultDefinition();
 
 		if (($macro[0] ?? null) === '@') {
 			if (strpos($macro, '::') === false) {
