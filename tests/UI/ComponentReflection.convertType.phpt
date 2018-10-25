@@ -159,6 +159,22 @@ testIt('array', 1);
 testIt('array', 1.0);
 testIt('array', 1.2);
 
+testIt('iterable', null);
+testIt('iterable', [], []);
+testIt('iterable', $obj);
+testIt('iterable', '');
+testIt('iterable', 'a');
+testIt('iterable', '1');
+testIt('iterable', '1.0');
+testIt('iterable', '1.1');
+testIt('iterable', '1a');
+testIt('iterable', true);
+testIt('iterable', false);
+testIt('iterable', 0);
+testIt('iterable', 1);
+testIt('iterable', 1.0);
+testIt('iterable', 1.2);
+
 testIt('callable', null);
 testIt('callable', []);
 testIt('callable', $obj);

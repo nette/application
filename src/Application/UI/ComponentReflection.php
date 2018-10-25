@@ -170,7 +170,7 @@ final class ComponentReflection extends \ReflectionClass
 				$res[$i] = $param->getDefaultValue();
 			} elseif ($type === 'NULL' || $param->allowsNull()) {
 				$res[$i] = null;
-			} elseif ($type === 'array') {
+			} elseif ($type === 'array' || $type === 'iterable') {
 				$res[$i] = [];
 			} else {
 				throw new Nette\InvalidArgumentException(sprintf(
@@ -198,7 +198,7 @@ final class ComponentReflection extends \ReflectionClass
 		} elseif ($type === 'NULL') { // means 'not array'
 			return !is_array($val);
 
-		} elseif ($type === 'array') {
+		} elseif ($type === 'array' || $type === 'iterable') {
 			return is_array($val);
 
 		} elseif (!is_scalar($val)) { // array, resource, null, etc.
