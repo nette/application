@@ -97,8 +97,8 @@ class Template implements Nette\Application\UI\ITemplate
 	 */
 	public function setTranslator(?Nette\Localization\ITranslator $translator)
 	{
-		$this->latte->addFilter('translate', $translator === null ? null : function (Latte\Runtime\FilterInfo $fi, ...$args) use ($translator): string {
-			return $translator->translate(...$args);
+		$this->latte->addFilter('translate', function (Latte\Runtime\FilterInfo $fi, ...$args) use ($translator): string {
+			return $translator === null ? $args[0] : $translator->translate(...$args);
 		});
 		return $this;
 	}
