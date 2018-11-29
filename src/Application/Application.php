@@ -198,6 +198,15 @@ class Application
 
 
 	/**
+	 * Returns HTTP request.
+	 */
+	public function getHttpRequest(): Nette\Http\IRequest
+	{
+		return $this->httpRequest;
+	}
+
+
+	/**
 	 * Returns presenter factory.
 	 */
 	public function getPresenterFactory(): IPresenterFactory
