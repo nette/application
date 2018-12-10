@@ -26,7 +26,7 @@ abstract class Control extends Component implements IRenderable
 	private $templateFactory;
 
 	/** @var string|null */
-	private $templateFile = null;
+	private $templateFile;
 
 	/** @var ITemplate */
 	private $template;
@@ -52,7 +52,6 @@ abstract class Control extends Component implements IRenderable
 		if ($this->template !== null) {
 			$this->template->setFile($templateFile);
 		}
-
 		return $this;
 	}
 
