@@ -79,7 +79,7 @@ use Tracy\Dumper;
 		<?php foreach ($params as $key => $value): ?>
 			<?= htmlspecialchars((string) $key, ENT_IGNORE, 'UTF-8'), '&nbsp;=&nbsp;', is_string($value) ? htmlspecialchars($value, ENT_IGNORE, 'UTF-8') . '<br />' : Dumper::toHtml($value, [Dumper::COLLAPSE => true, Dumper::LIVE => true]) ?>
 		<?php endforeach ?>
-		</code><?php endif ?></td>
+		</code><?php elseif ($router['error']): ?><strong><?= htmlspecialchars($router['error']->getMessage(), ENT_IGNORE, 'UTF-8') ?></strong><?php endif ?></td>
 	</tr>
 	<?php endforeach ?>
 	</tbody>

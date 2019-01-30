@@ -105,7 +105,11 @@ final class RoutingPanel implements Tracy\IBarPanel
 		}
 
 		$matched = 'no';
-		$request = $router->match($this->httpRequest);
+		$request = $e = null;
+		try {
+			$request = $router->match($this->httpRequest);
+		} catch (\Exception $e) {
+		}
 		if ($request) {
 			$request->setPresenterName($module . $request->getPresenterName());
 			$matched = 'may';
@@ -123,6 +127,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 			'mask' => $router instanceof Routers\Route ? $router->getMask() : null,
 			'request' => $request,
 			'module' => rtrim($module, ':'),
+			'error' => $e,
 		];
 	}
 
