@@ -67,3 +67,33 @@ class ForbiddenRequestException extends BadRequestException
 	/** @var int */
 	protected $code = Http\IResponse::S403_FORBIDDEN;
 }
+
+
+/**
+ * The exception that indicates request rejected by framework.
+ */
+class RejectRequestException extends UI\BadSignalException
+{
+	public const NO_ROUTE = 1;
+	public const WRONG_PRESENTER = 2;
+	public const WRONG_SIGNAL = 3;
+	public const WRONG_ARGUMENT = 4;
+
+	/** @var int */
+	private $reason;
+
+
+	public function __construct($message, $reason, \Exception $previous = null)
+	{
+		parent::__construct($message, Http\IResponse::S404_NOT_FOUND, $previous);
+	}
+
+
+	/**
+	 * @return int
+	 */
+	public function getReason()
+	{
+		return $this->reason;
+	}
+}

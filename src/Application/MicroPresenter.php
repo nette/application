@@ -83,7 +83,7 @@ final class MicroPresenter implements Application\IPresenter
 		try {
 			$params = Application\UI\ComponentReflection::combineArgs($reflection, $params);
 		} catch (Nette\InvalidArgumentException $e) {
-			$this->error($e->getMessage());
+			throw new Application\RejectRequestException($e->getMessage(), Application\RejectRequestException::WRONG_ARGUMENT);
 		}
 
 		$response = $callback(...array_values($params));

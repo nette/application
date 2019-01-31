@@ -12,6 +12,7 @@ namespace Nette\Application\UI;
 use Nette;
 use Nette\Application;
 use Nette\Application\Helpers;
+use Nette\Application\RejectRequestException;
 use Nette\Application\Responses;
 use Nette\Http;
 
@@ -312,7 +313,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 
 	/**
-	 * @throws BadSignalException
+	 * @throws RejectRequestException
 	 */
 	public function processSignal(): void
 	{
@@ -322,10 +323,10 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 		$component = $this->signalReceiver === '' ? $this : $this->getComponent($this->signalReceiver, false);
 		if ($component === null) {
-			throw new BadSignalException("The signal receiver component '$this->signalReceiver' is not found.");
+			throw new RejectRequestException("The signal receiver component '$this->signalReceiver' is not found.", RejectRequestException::WRONG_SIGNAL);
 
 		} elseif (!$component instanceof ISignalReceiver) {
-			throw new BadSignalException("The signal receiver component '$this->signalReceiver' is not ISignalReceiver implementor.");
+			throw new RejectRequestException("The signal receiver component '$this->signalReceiver' is not ISignalReceiver implementor.", RejectRequestException::WRONG_SIGNAL);
 		}
 
 		$component->signalReceived($this->signal);
@@ -1152,7 +1153,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Initializes $this->globalParams, $this->signal & $this->signalReceiver, $this->action, $this->view. Called by run().
-	 * @throws Nette\Application\BadRequestException if action name is not valid
+	 * @throws RejectRequestException if action name is not valid
 	 */
 	private function initGlobalParameters(): void
 	{
@@ -1183,7 +1184,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		// init & validate $this->action & $this->view
 		$action = $selfParams[self::ACTION_KEY] ?? self::DEFAULT_ACTION;
 		if (!is_string($action) || !Nette\Utils\Strings::match($action, '#^[a-zA-Z0-9][a-zA-Z0-9_\x7f-\xff]*\z#')) {
-			$this->error('Action name is not valid.');
+			throw new RejectRequestException('Action name is not valid.', RejectRequestException::WRONG_ARGUMENT);
 		}
 		$this->changeAction($action);
 
@@ -1192,7 +1193,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		if (isset($selfParams[self::SIGNAL_KEY])) {
 			$param = $selfParams[self::SIGNAL_KEY];
 			if (!is_string($param)) {
-				$this->error('Signal name is not string.');
+				throw new RejectRequestException('Signal name is not string.', RejectRequestException::WRONG_ARGUMENT);
 			}
 			$pos = strrpos($param, '-');
 			if ($pos) {

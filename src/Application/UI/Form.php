@@ -138,7 +138,7 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 			}
 		} else {
 			$class = get_class($this);
-			throw new BadSignalException("Missing handler for signal '$signal' in $class.");
+			throw new Nette\Application\RejectRequestException("Missing handler for signal '$signal' in $class.", Nette\Application\RejectRequestException::WRONG_SIGNAL);
 		}
 	}
 }

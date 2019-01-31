@@ -106,7 +106,7 @@ class Application
 	{
 		$request = $this->router->match($this->httpRequest);
 		if (!$request) {
-			throw new BadRequestException('No route for HTTP request.');
+			throw new RejectRequestException('No route for HTTP request.', RejectRequestException::NO_ROUTE);
 		}
 		return $request;
 	}
@@ -123,13 +123,13 @@ class Application
 		$this->onRequest($this, $request);
 
 		if (!$request->isMethod($request::FORWARD) && !strcasecmp($request->getPresenterName(), (string) $this->errorPresenter)) {
-			throw new BadRequestException('Invalid request. Presenter is not achievable.');
+			throw new RejectRequestException('Invalid request. Presenter is not achievable.', RejectRequestException::WRONG_PRESENTER);
 		}
 
 		try {
 			$this->presenter = $this->presenterFactory->createPresenter($request->getPresenterName());
 		} catch (InvalidPresenterException $e) {
-			throw count($this->requests) > 1 ? $e : new BadRequestException($e->getMessage(), 0, $e);
+			throw count($this->requests) > 1 ? $e : new RejectRequestException($e->getMessage(), RejectRequestException::WRONG_PRESENTER, $e);
 		}
 		$this->onPresenter($this, $this->presenter);
 		$response = $this->presenter->run(clone $request);
