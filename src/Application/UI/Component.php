@@ -112,7 +112,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	 */
 	public static function getReflection(): ComponentReflection
 	{
-		return new ComponentReflection(get_called_class());
+		return new ComponentReflection(static::class);
 	}
 
 
