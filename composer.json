@@ -18,6 +18,7 @@
 		"php": ">=7.1",
 		"nette/component-model": "^3.0.0-RC1",
 		"nette/http": "^3.0",
+		"nette/routing": "~3.0.0",
 		"nette/utils": "^3.0"
 	},
 	"suggest": {
