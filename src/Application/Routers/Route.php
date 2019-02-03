@@ -31,9 +31,11 @@ class Route implements Application\IRouter
 		FILTER_TABLE = 'filterTable',
 		FILTER_STRICT = 'filterStrict';
 
+	/** key used in metadata */
 	private const
-		PRESENTER_KEY = 'presenter',
-		MODULE_KEY = 'module';
+		DEFAULT = 'defOut',
+		FIXITY = 'fixity',
+		FILTER_TABLE_OUT = 'filterTO';
 
 	/** url type */
 	private const
@@ -46,6 +48,10 @@ class Route implements Application\IRouter
 		OPTIONAL = 0,
 		PATH_OPTIONAL = 1,
 		CONSTANT = 2;
+
+	private const
+		PRESENTER_KEY = 'presenter',
+		MODULE_KEY = 'module';
 
 	/** @var array */
 	public static $styles = [
@@ -193,7 +199,7 @@ class Route implements Application\IRouter
 
 		// 2) CONSTANT FIXITY
 		foreach ($this->metadata as $name => $meta) {
-			if (!isset($params[$name]) && isset($meta['fixity']) && $meta['fixity'] !== self::OPTIONAL) {
+			if (!isset($params[$name]) && isset($meta[self::FIXITY]) && $meta[self::FIXITY] !== self::OPTIONAL) {
 				$params[$name] = null; // cannot be overwriten in 3) and detected by isset() in 4)
 			}
 		}
@@ -220,12 +226,12 @@ class Route implements Application\IRouter
 
 				} elseif (isset($meta[self::FILTER_IN])) { // applies filterIn only to scalar parameters
 					$params[$name] = $meta[self::FILTER_IN]((string) $params[$name]);
-					if ($params[$name] === null && !isset($meta['fixity'])) {
+					if ($params[$name] === null && !isset($meta[self::FIXITY])) {
 						return null; // rejected by filter
 					}
 				}
 
-			} elseif (isset($meta['fixity'])) {
+			} elseif (isset($meta[self::FIXITY])) {
 				$params[$name] = $meta[self::VALUE];
 			}
 		}
@@ -279,7 +285,7 @@ class Route implements Application\IRouter
 
 		if (isset($metadata[self::MODULE_KEY])) { // try split into module and [submodule:]presenter parts
 			$module = $metadata[self::MODULE_KEY];
-			if (isset($module['fixity'], $module[self::VALUE]) && strncmp($presenter, $module[self::VALUE] . ':', strlen($module[self::VALUE]) + 1) === 0) {
+			if (isset($module[self::FIXITY], $module[self::VALUE]) && strncmp($presenter, $module[self::VALUE] . ':', strlen($module[self::VALUE]) + 1) === 0) {
 				$a = strlen($module[self::VALUE]);
 			} else {
 				$a = strrpos($presenter, ':');
@@ -308,20 +314,20 @@ class Route implements Application\IRouter
 				$params[$name] = $params[$name] === false ? '0' : (string) $params[$name];
 			}
 
-			if (isset($meta['fixity'])) {
+			if (isset($meta[self::FIXITY])) {
 				if ($params[$name] === $meta[self::VALUE]) { // remove default values; null values are retain
 					unset($params[$name]);
 					continue;
 
-				} elseif ($meta['fixity'] === self::CONSTANT) {
+				} elseif ($meta[self::FIXITY] === self::CONSTANT) {
 					return null; // missing or wrong parameter '$name'
 				}
 			}
 
-			if (is_scalar($params[$name]) && isset($meta['filterTable2'][$params[$name]])) {
-				$params[$name] = $meta['filterTable2'][$params[$name]];
+			if (is_scalar($params[$name]) && isset($meta[self::FILTER_TABLE_OUT][$params[$name]])) {
+				$params[$name] = $meta[self::FILTER_TABLE_OUT][$params[$name]];
 
-			} elseif (isset($meta['filterTable2']) && !empty($meta[self::FILTER_STRICT])) {
+			} elseif (isset($meta[self::FILTER_TABLE_OUT]) && !empty($meta[self::FILTER_STRICT])) {
 				return null;
 
 			} elseif (isset($meta[self::FILTER_OUT])) {
@@ -369,11 +375,11 @@ class Route implements Application\IRouter
 				$url = $params[$name] . $url;
 				unset($params[$name]);
 
-			} elseif (isset($metadata[$name]['fixity'])) { // has default value?
+			} elseif (isset($metadata[$name][self::FIXITY])) { // has default value?
 				if ($required === null && !$brackets) { // auto-optional
 					$url = '';
 				} else {
-					$url = $metadata[$name]['defOut'] . $url;
+					$url = $metadata[$name][self::DEFAULT] . $url;
 				}
 
 			} else {
@@ -477,11 +483,11 @@ class Route implements Application\IRouter
 				$meta = ($metadata[$name] ?? []) + (static::$styles['?' . $name] ?? static::$styles['?#']);
 
 				if (array_key_exists(self::VALUE, $meta)) {
-					$meta['fixity'] = self::OPTIONAL;
+					$meta[self::FIXITY] = self::OPTIONAL;
 				}
 
-				unset($meta['pattern']);
-				$meta['filterTable2'] = empty($meta[self::FILTER_TABLE]) ? null : array_flip($meta[self::FILTER_TABLE]);
+				unset($meta[self::PATTERN]);
+				$meta[self::FILTER_TABLE_OUT] = empty($meta[self::FILTER_TABLE]) ? null : array_flip($meta[self::FILTER_TABLE]);
 
 				$metadata[$name] = $meta;
 				if ($param !== '') {
@@ -542,19 +548,19 @@ class Route implements Application\IRouter
 
 			if ($default !== '') {
 				$meta[self::VALUE] = substr($default, 1);
-				$meta['fixity'] = self::PATH_OPTIONAL;
+				$meta[self::FIXITY] = self::PATH_OPTIONAL;
 			}
 
-			$meta['filterTable2'] = empty($meta[self::FILTER_TABLE]) ? null : array_flip($meta[self::FILTER_TABLE]);
+			$meta[self::FILTER_TABLE_OUT] = empty($meta[self::FILTER_TABLE]) ? null : array_flip($meta[self::FILTER_TABLE]);
 			if (array_key_exists(self::VALUE, $meta)) {
-				if (isset($meta['filterTable2'][$meta[self::VALUE]])) {
-					$meta['defOut'] = $meta['filterTable2'][$meta[self::VALUE]];
+				if (isset($meta[self::FILTER_TABLE_OUT][$meta[self::VALUE]])) {
+					$meta[self::DEFAULT] = $meta[self::FILTER_TABLE_OUT][$meta[self::VALUE]];
 
 				} elseif (isset($meta[self::VALUE], $meta[self::FILTER_OUT])) {
-					$meta['defOut'] = $meta[self::FILTER_OUT]($meta[self::VALUE]);
+					$meta[self::DEFAULT] = $meta[self::FILTER_OUT]($meta[self::VALUE]);
 
 				} else {
-					$meta['defOut'] = $meta[self::VALUE];
+					$meta[self::DEFAULT] = $meta[self::VALUE];
 				}
 			}
 			$meta[self::PATTERN] = "#(?:$pattern)\\z#A";
@@ -564,15 +570,15 @@ class Route implements Application\IRouter
 			$re = '(?P<p' . $i . '>(?U)' . $pattern . ')' . $re;
 			if ($brackets) { // is in brackets?
 				if (!isset($meta[self::VALUE])) {
-					$meta[self::VALUE] = $meta['defOut'] = null;
+					$meta[self::VALUE] = $meta[self::DEFAULT] = null;
 				}
-				$meta['fixity'] = self::PATH_OPTIONAL;
+				$meta[self::FIXITY] = self::PATH_OPTIONAL;
 
-			} elseif (isset($meta['fixity'])) {
+			} elseif (isset($meta[self::FIXITY])) {
 				if ($autoOptional) {
 					$re = '(?:' . $re . ')?';
 				}
-				$meta['fixity'] = self::PATH_OPTIONAL;
+				$meta[self::FIXITY] = self::PATH_OPTIONAL;
 
 			} else {
 				$autoOptional = false;
@@ -608,7 +614,7 @@ class Route implements Application\IRouter
 	{
 		$defaults = [];
 		foreach ($this->metadata as $name => $meta) {
-			if (isset($meta['fixity'])) {
+			if (isset($meta[self::FIXITY])) {
 				$defaults[$name] = $meta[self::VALUE];
 			}
 		}
@@ -643,14 +649,14 @@ class Route implements Application\IRouter
 		$module = '';
 
 		if (isset($m[self::MODULE_KEY])) {
-			if (($m[self::MODULE_KEY]['fixity'] ?? null) === self::CONSTANT) {
+			if (($m[self::MODULE_KEY][self::FIXITY] ?? null) === self::CONSTANT) {
 				$module = $m[self::MODULE_KEY][self::VALUE] . ':';
 			} else {
 				return null;
 			}
 		}
 
-		if (($m[self::PRESENTER_KEY]['fixity'] ?? null) === self::CONSTANT) {
+		if (($m[self::PRESENTER_KEY][self::FIXITY] ?? null) === self::CONSTANT) {
 			return [$module . $m[self::PRESENTER_KEY][self::VALUE]];
 		}
 		return null;
