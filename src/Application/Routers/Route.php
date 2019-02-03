@@ -334,7 +334,7 @@ class Route implements Application\IRouter
 				$params[$name] = $meta[self::FILTER_OUT]($params[$name]);
 			}
 
-			if (isset($meta[self::PATTERN]) && !preg_match($meta[self::PATTERN], rawurldecode((string) $params[$name]))) {
+			if (isset($meta[self::PATTERN]) && !preg_match("#(?:{$meta[self::PATTERN]})\\z#A", rawurldecode((string) $params[$name]))) {
 				return null; // pattern not match
 			}
 		}
@@ -563,7 +563,7 @@ class Route implements Application\IRouter
 					$meta[self::DEFAULT] = $meta[self::VALUE];
 				}
 			}
-			$meta[self::PATTERN] = "#(?:$pattern)\\z#A";
+			$meta[self::PATTERN] = $pattern;
 
 			// include in expression
 			$aliases['p' . $i] = $name;
