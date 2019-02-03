@@ -120,7 +120,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @var Nette\Application\IPresenterFactory */
 	private $presenterFactory;
 
-	/** @var Nette\Application\IRouter */
+	/** @var Nette\Routing\Router */
 	private $router;
 
 	/** @var Nette\Security\User */
@@ -1264,7 +1264,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/********************* services ****************d*g**/
 
 
-	final public function injectPrimary(Nette\DI\Container $context = null, Application\IPresenterFactory $presenterFactory = null, Application\IRouter $router = null,
+	final public function injectPrimary(Nette\DI\Container $context = null, Application\IPresenterFactory $presenterFactory = null, Nette\Routing\Router $router = null,
 		Http\IRequest $httpRequest, Http\IResponse $httpResponse, Http\Session $session = null, Nette\Security\User $user = null, ITemplateFactory $templateFactory = null)
 	{
 		if ($this->presenterFactory !== null) {

@@ -14,6 +14,7 @@ use Nette;
 use Nette\Application;
 use Nette\Application\Responses;
 use Nette\Http;
+use Nette\Routing\Router;
 
 
 /**
@@ -29,14 +30,14 @@ final class MicroPresenter implements Application\IPresenter
 	/** @var Nette\Http\IRequest|null */
 	private $httpRequest;
 
-	/** @var Application\IRouter|null */
+	/** @var Router|null */
 	private $router;
 
 	/** @var Application\Request|null */
 	private $request;
 
 
-	public function __construct(Nette\DI\Container $context = null, Http\IRequest $httpRequest = null, Application\IRouter $router = null)
+	public function __construct(Nette\DI\Container $context = null, Http\IRequest $httpRequest = null, Router $router = null)
 	{
 		$this->context = $context;
 		$this->httpRequest = $httpRequest;
