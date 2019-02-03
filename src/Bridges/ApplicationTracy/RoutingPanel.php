@@ -23,7 +23,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 {
 	use Nette\SmartObject;
 
-	/** @var Nette\Application\IRouter */
+	/** @var Nette\Routing\Router */
 	private $router;
 
 	/** @var Nette\Http\IRequest */
@@ -54,7 +54,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 	}
 
 
-	public function __construct(Nette\Application\IRouter $router, Nette\Http\IRequest $httpRequest, Nette\Application\IPresenterFactory $presenterFactory)
+	public function __construct(Nette\Routing\Router $router, Nette\Http\IRequest $httpRequest, Nette\Application\IPresenterFactory $presenterFactory)
 	{
 		$this->router = $router;
 		$this->httpRequest = $httpRequest;
@@ -95,7 +95,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 	/**
 	 * Analyses simple route.
 	 */
-	private function analyse(Nette\Application\IRouter $router, string $module = ''): void
+	private function analyse(Nette\Routing\Router $router, string $module = ''): void
 	{
 		if ($router instanceof Routers\RouteList) {
 			foreach ($router as $subRouter) {
