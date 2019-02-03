@@ -15,12 +15,9 @@ use Nette;
 /**
  * The router broker.
  */
-class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRouter
+class RouteList extends Nette\Routing\RouteList implements Nette\Application\IRouter, \ArrayAccess, \Countable, \IteratorAggregate
 {
 	private const PRESENTER_KEY = 'presenter';
-
-	/** @var array */
-	private $cachedRoutes;
 
 	/** @var string|null */
 	private $module;
@@ -28,6 +25,7 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 
 	public function __construct(string $module = null)
 	{
+		parent::__construct();
 		$this->module = $module ? $module . ':' : null;
 	}
 
@@ -37,17 +35,13 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 	 */
 	public function match(Nette\Http\IRequest $httpRequest): ?array
 	{
-		foreach ($this as $route) {
-			$params = $route->match($httpRequest);
-			if ($params !== null) {
-				$presenter = $params[self::PRESENTER_KEY] ?? null;
-				if (is_string($presenter) && strncmp($presenter, 'Nette:', 6)) {
-					$params[self::PRESENTER_KEY] = $this->module . $presenter;
-				}
-				return $params;
-			}
+		$params = parent::match($httpRequest);
+
+		$presenter = $params[self::PRESENTER_KEY] ?? null;
+		if (is_string($presenter) && strncmp($presenter, 'Nette:', 6)) {
+			$params[self::PRESENTER_KEY] = $this->module . $presenter;
 		}
-		return null;
+		return $params;
 	}
 
 
@@ -56,10 +50,6 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 	 */
 	public function constructUrl(array $params, Nette\Http\UrlScript $refUrl): ?string
 	{
-		if ($this->cachedRoutes === null) {
-			$this->warmupCache();
-		}
-
 		if ($this->module) {
 			if (strncmp($params[self::PRESENTER_KEY], $this->module, strlen($this->module)) === 0) {
 				$params[self::PRESENTER_KEY] = substr($params[self::PRESENTER_KEY], strlen($this->module));
@@ -68,60 +58,74 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 			}
 		}
 
-		$presenter = $params[self::PRESENTER_KEY];
-		if (!isset($this->cachedRoutes[$presenter])) {
-			$presenter = '*';
-		}
-
-		foreach ($this->cachedRoutes[$presenter] as $route) {
-			$url = $route->constructUrl($params, $refUrl);
-			if ($url !== null) {
-				return $url;
-			}
-		}
-
-		return null;
-	}
-
-
-	public function warmupCache(): void
-	{
-		$routes = [];
-		$routes['*'] = [];
-
-		foreach ($this as $route) {
-			$presenters = $route instanceof Route && is_array($tmp = $route->getTargetPresenters())
-				? $tmp
-				: array_keys($routes);
-
-			foreach ($presenters as $presenter) {
-				if (!isset($routes[$presenter])) {
-					$routes[$presenter] = $routes['*'];
-				}
-				$routes[$presenter][] = $route;
-			}
-		}
-
-		$this->cachedRoutes = $routes;
-	}
-
-
-	/**
-	 * Adds the router.
-	 * @param  mixed  $index
-	 * @param  Nette\Application\IRouter  $route
-	 */
-	public function offsetSet($index, $route): void
-	{
-		if (!$route instanceof Nette\Application\IRouter) {
-			throw new Nette\InvalidArgumentException('Argument must be IRouter descendant.');
-		}
-		parent::offsetSet($index, $route);
+		return parent::constructUrl($params, $refUrl);
 	}
 
 
 	public function getModule(): ?string
 	{
 		return $this->module;
+	}
+
+
+	public function count(): int
+	{
+		return count($this->getRouters());
+	}
+
+
+	/**
+	 * @param  mixed  $index
+	 * @param  Nette\Routing\Router  $router
+	 */
+	public function offsetSet($index, $router): void
+	{
+		if ($index === null) {
+			$this->add($router);
+		} else {
+			$this->modify($index, $router);
+		}
+	}
+
+
+	/**
+	 * @param  int  $index
+	 * @return mixed
+	 * @throws Nette\OutOfRangeException
+	 */
+	public function offsetGet($index)
+	{
+		if (!$this->offsetExists($index)) {
+			throw new Nette\OutOfRangeException('Offset invalid or out of range');
+		}
+		return $this->getRouters()[$index];
+	}
+
+
+	/**
+	 * @param  int  $index
+	 */
+	public function offsetExists($index): bool
+	{
+		return is_int($index) && $index >= 0 && $index < $this->count();
+	}
+
+
+	/**
+	 * @param  int  $index
+	 * @throws Nette\OutOfRangeException
+	 */
+	public function offsetUnset($index): void
+	{
+		if (!$this->offsetExists($index)) {
+			throw new Nette\OutOfRangeException('Offset invalid or out of range');
+		}
+		$this->modify($index, null);
+	}
+
+
+	public function getIterator(): \ArrayIterator
+	{
+		return new \ArrayIterator($this->getRouters());
 	}
 }
