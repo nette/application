@@ -20,7 +20,7 @@ final class CliRouter implements Application\IRouter
 {
 	use Nette\SmartObject;
 
-	public const PRESENTER_KEY = 'action';
+	private const PRESENTER_KEY = 'action';
 
 	/** @var array */
 	private $defaults;

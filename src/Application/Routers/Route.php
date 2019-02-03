@@ -22,10 +22,6 @@ class Route implements Application\IRouter
 {
 	use Nette\SmartObject;
 
-	public const
-		PRESENTER_KEY = 'presenter',
-		MODULE_KEY = 'module';
-
 	/** key used in {@link Route::$styles} or metadata {@link Route::__construct} */
 	public const
 		VALUE = 'value',
@@ -34,6 +30,10 @@ class Route implements Application\IRouter
 		FILTER_OUT = 'filterOut',
 		FILTER_TABLE = 'filterTable',
 		FILTER_STRICT = 'filterStrict';
+
+	private const
+		PRESENTER_KEY = 'presenter',
+		MODULE_KEY = 'module';
 
 	/** url type */
 	private const
