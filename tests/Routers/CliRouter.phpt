@@ -32,9 +32,7 @@ $router = new CliRouter([
 	'id' => 12,
 	'user' => 'anyvalue',
 ]);
-$req = $router->match($httpRequest);
-
-Assert::same('homepage', $req->getPresenterName());
+$params = $router->match($httpRequest);
 
 Assert::same([
 	'id' => 12,
@@ -44,9 +42,8 @@ Assert::same([
 	'verbose' => true,
 	'pass' => 'se cret',
 	'wait' => true,
-], $req->getParameters());
+	'presenter' => 'homepage',
+], $params);
 
-Assert::true($req->isMethod('cli'));
 
-
-Assert::null($router->constructUrl($req, $httpRequest->getUrl()));
+Assert::null($router->constructUrl($params, $httpRequest->getUrl()));

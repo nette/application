@@ -18,7 +18,8 @@ $route = new Route('<param .+>', [
 	'presenter' => 'Default',
 ]);
 
-testRouteIn($route, '/one', 'Default', [
+testRouteIn($route, '/one', [
+	'presenter' => 'Default',
 	'param' => 'one',
 	'test' => 'testvalue',
 ], '/one?test=testvalue');

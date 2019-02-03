@@ -19,7 +19,8 @@ $route = new Route('http://<host>.<domain>/<path>', [
 	'action' => 'default',
 ]);
 
-testRouteIn($route, '/abc', 'Default', [
+testRouteIn($route, '/abc', [
+	'presenter' => 'Default',
 	'host' => 'example',
 	'domain' => 'com',
 	'path' => 'abc',
@@ -33,7 +34,8 @@ $route = new Route('https://<host>.<domain>/<path>', [
 	'action' => 'default',
 ]);
 
-testRouteIn($route, '/abc', 'Default', [
+testRouteIn($route, '/abc', [
+	'presenter' => 'Default',
 	'host' => 'example',
 	'domain' => 'com',
 	'path' => 'abc',

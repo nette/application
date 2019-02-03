@@ -17,6 +17,8 @@ use Nette;
  */
 class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRouter
 {
+	private const PRESENTER_KEY = 'presenter';
+
 	/** @var array */
 	private $cachedRoutes;
 
@@ -31,18 +33,18 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 
 
 	/**
-	 * Maps HTTP request to a Request object.
+	 * Maps HTTP request to an array.
 	 */
-	public function match(Nette\Http\IRequest $httpRequest): ?Nette\Application\Request
+	public function match(Nette\Http\IRequest $httpRequest): ?array
 	{
 		foreach ($this as $route) {
-			$appRequest = $route->match($httpRequest);
-			if ($appRequest !== null) {
-				$name = $appRequest->getPresenterName();
-				if (strncmp($name, 'Nette:', 6)) {
-					$appRequest->setPresenterName($this->module . $name);
+			$params = $route->match($httpRequest);
+			if ($params !== null) {
+				$presenter = $params[self::PRESENTER_KEY] ?? null;
+				if (strncmp($presenter, 'Nette:', 6)) {
+					$params[self::PRESENTER_KEY] = $this->module . $presenter;
 				}
-				return $appRequest;
+				return $params;
 			}
 		}
 		return null;
@@ -50,30 +52,29 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 
 
 	/**
-	 * Constructs absolute URL from Request object.
+	 * Constructs absolute URL from array.
 	 */
-	public function constructUrl(Nette\Application\Request $appRequest, Nette\Http\Url $refUrl): ?string
+	public function constructUrl(array $params, Nette\Http\Url $refUrl): ?string
 	{
 		if ($this->cachedRoutes === null) {
 			$this->warmupCache();
 		}
 
 		if ($this->module) {
-			if (strncmp($tmp = $appRequest->getPresenterName(), $this->module, strlen($this->module)) === 0) {
-				$appRequest = clone $appRequest;
-				$appRequest->setPresenterName(substr($tmp, strlen($this->module)));
+			if (strncmp($params[self::PRESENTER_KEY], $this->module, strlen($this->module)) === 0) {
+				$params[self::PRESENTER_KEY] = substr($params[self::PRESENTER_KEY], strlen($this->module));
 			} else {
 				return null;
 			}
 		}
 
-		$presenter = $appRequest->getPresenterName();
+		$presenter = $params[self::PRESENTER_KEY];
 		if (!isset($this->cachedRoutes[$presenter])) {
 			$presenter = '*';
 		}
 
 		foreach ($this->cachedRoutes[$presenter] as $route) {
-			$url = $route->constructUrl($appRequest, $refUrl);
+			$url = $route->constructUrl($params, $refUrl);
 			if ($url !== null) {
 				return $url;
 			}

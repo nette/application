@@ -20,12 +20,12 @@ class MyRouter implements Nette\Application\IRouter
 	public $woken;
 
 
-	public function match(Nette\Http\IRequest $httpRequest): ?Nette\Application\Request
+	public function match(Nette\Http\IRequest $httpRequest): ?array
 	{
 	}
 
 
-	public function constructUrl(Nette\Application\Request $appRequest, Nette\Http\Url $refUrl): ?string
+	public function constructUrl(array $params, Nette\Http\Url $refUrl): ?string
 	{
 	}
 

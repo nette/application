@@ -33,10 +33,10 @@ use Tracy\Dumper;
 </style>
 
 <h1>
-<?php if (empty($request)): ?>
+<?php if ($matched === null): ?>
 	no route
-<?php else: ?>
-	<?= htmlspecialchars($request->getPresenterName() . ':' . (isset($request->parameters[Presenter::ACTION_KEY]) ? $request->parameters[Presenter::ACTION_KEY] : Presenter::DEFAULT_ACTION) . (isset($request->parameters[Presenter::SIGNAL_KEY]) ? " {$request->parameters[Presenter::SIGNAL_KEY]}!" : ''), ENT_NOQUOTES, 'UTF-8') ?>
+<?php elseif (isset($matched[Presenter::PRESENTER_KEY])): ?>
+	<?= htmlspecialchars($matched[Presenter::PRESENTER_KEY] . ':' . (isset($matched[Presenter::ACTION_KEY]) ? $matched[Presenter::ACTION_KEY] : Presenter::DEFAULT_ACTION) . (isset($matched[Presenter::SIGNAL_KEY]) ? " {$matched[Presenter::SIGNAL_KEY]}!" : ''), ENT_NOQUOTES, 'UTF-8') ?>
 <?php endif ?>
 </h1>
 
@@ -72,10 +72,12 @@ use Tracy\Dumper;
 
 		<?php if ($hasModule): ?><td><code><?= htmlspecialchars($router['module'], ENT_NOQUOTES, 'UTF-8') ?></code></td><?php endif ?>
 
-		<td><?php if ($router['request']): ?><code>
-		<?php $params = $router['request']->getParameters(); ?>
-		<strong><?= htmlspecialchars($router['request']->getPresenterName() . ':' . (isset($params[Presenter::ACTION_KEY]) ? $params[Presenter::ACTION_KEY] : Presenter::DEFAULT_ACTION), ENT_NOQUOTES, 'UTF-8') ?></strong><br />
-		<?php unset($params[Presenter::ACTION_KEY]) ?>
+		<td><?php if ($router['params']): ?><code>
+		<?php $params = $router['params']; ?>
+		<?php if (isset($params[Presenter::PRESENTER_KEY])): ?>
+		<strong><?= htmlspecialchars($params['presenter'] . ':' . (isset($params[Presenter::ACTION_KEY]) ? $params[Presenter::ACTION_KEY] : Presenter::DEFAULT_ACTION), ENT_NOQUOTES, 'UTF-8') ?></strong><br />
+		<?php unset($params[Presenter::PRESENTER_KEY], $params[Presenter::ACTION_KEY]) ?>
+		<?php endif ?>
 		<?php foreach ($params as $key => $value): ?>
 			<?= htmlspecialchars((string) $key, ENT_IGNORE, 'UTF-8'), '&nbsp;=&nbsp;', is_string($value) ? htmlspecialchars($value, ENT_IGNORE, 'UTF-8') . '<br />' : Dumper::toHtml($value, [Dumper::COLLAPSE => true, Dumper::LIVE => true]) ?>
 		<?php endforeach ?>

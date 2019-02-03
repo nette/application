@@ -77,10 +77,11 @@ final class LinkGenerator
 		if ($action !== '') {
 			$params[UI\Presenter::ACTION_KEY] = $action;
 		}
+		$params[UI\Presenter::PRESENTER_KEY] = $presenter;
 
-		$url = $this->router->constructUrl(new Request($presenter, null, $params), $this->refUrl);
+		$url = $this->router->constructUrl($params, $this->refUrl);
 		if ($url === null) {
-			unset($params[UI\Presenter::ACTION_KEY]);
+			unset($params[UI\Presenter::ACTION_KEY], $params[UI\Presenter::PRESENTER_KEY]);
 			$params = urldecode(http_build_query($params, '', ', '));
 			throw new UI\InvalidLinkException("No route for $dest($params)");
 		}

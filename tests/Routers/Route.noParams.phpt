@@ -18,9 +18,10 @@ $route = new Route('index.php', [
 	'action' => 'default',
 ]);
 
-testRouteIn($route, '/index.php', 'querypresenter', [
+testRouteIn($route, '/index.php', [
+	'presenter' => 'querypresenter',
 	'action' => 'default',
 	'test' => 'testvalue',
-], '/index.php?test=testvalue&presenter=querypresenter');
+], '/index.php?presenter=querypresenter&test=testvalue');
 
 testRouteIn($route, '/');

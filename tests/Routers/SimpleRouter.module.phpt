@@ -26,15 +26,10 @@ $url->setQuery([
 $httpRequest = new Http\Request($url);
 
 $req = $router->match($httpRequest);
-Assert::same('main:sub:myPresenter', $req->getPresenterName());
+Assert::same('main:sub:myPresenter', $req['presenter']);
 
 $url = $router->constructUrl($req, $httpRequest->getUrl());
 Assert::same('http://nette.org/file.php?presenter=myPresenter', $url);
 
-$req = new Application\Request(
-	'othermodule:presenter',
-	Http\Request::GET,
-	[]
-);
-$url = $router->constructUrl($req, $httpRequest->getUrl());
+$url = $router->constructUrl(['presenter' => 'othermodule:presenter'], $httpRequest->getUrl());
 Assert::null($url);

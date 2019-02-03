@@ -18,11 +18,13 @@ $route = new Route('<presenter>', [
 	'presenter' => 'DefaultPresenter',
 ]);
 
-testRouteIn($route, '/abc-x-y-z', 'AbcXYZ', [
+testRouteIn($route, '/abc-x-y-z', [
+	'presenter' => 'AbcXYZ',
 	'test' => 'testvalue',
 ], '/abc-x-y-z?test=testvalue');
 
-testRouteIn($route, '/', 'DefaultPresenter', [
+testRouteIn($route, '/', [
+	'presenter' => 'DefaultPresenter',
 	'test' => 'testvalue',
 ], '/?test=testvalue');
 

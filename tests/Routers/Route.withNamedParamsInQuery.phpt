@@ -19,14 +19,14 @@ $route = new Route('?action=<presenter> & act=<action [a-z]+>', [
 	'action' => 'default',
 ]);
 
-testRouteIn($route, '/?act=action', 'Default', [
+testRouteIn($route, '/?act=action', [
+	'presenter' => 'Default',
 	'action' => 'action',
 	'test' => 'testvalue',
 ], '/?act=action&test=testvalue');
 
-testRouteIn($route, '/?act=default', 'Default', [
+testRouteIn($route, '/?act=default', [
+	'presenter' => 'Default',
 	'action' => 'default',
 	'test' => 'testvalue',
 ], '/?test=testvalue');
-
-testRouteIn($route, '/?action[]=invalid&act=default', null);

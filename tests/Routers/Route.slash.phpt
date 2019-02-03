@@ -20,14 +20,15 @@ $route = new Route('<param>', [
 ]);
 
 testRouteIn($route, '/a/b');
-Assert::null(testRouteOut($route, 'Presenter', ['param' => 'a/b']));
+Assert::null(testRouteOut($route, ['presenter' => 'Presenter', 'param' => 'a/b']));
 
 
 $route = new Route('<param .+>', [
 	'presenter' => 'Presenter',
 ]);
 
-testRouteIn($route, '/a/b', 'Presenter', [
+testRouteIn($route, '/a/b', [
+	'presenter' => 'Presenter',
 	'param' => 'a/b',
 	'test' => 'testvalue',
 ], '/a/b?test=testvalue');

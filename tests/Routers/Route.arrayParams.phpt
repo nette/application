@@ -19,7 +19,8 @@ $route = new Route(' ? arr=<arr>', [
 	'arr' => '',
 ]);
 
-testRouteIn($route, '/?arr[1]=1&arr[2]=2', 'Default', [
+testRouteIn($route, '/?arr[1]=1&arr[2]=2', [
+	'presenter' => 'Default',
 	'arr' => [
 		1 => '1',
 		2 => '2',

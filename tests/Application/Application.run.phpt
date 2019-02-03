@@ -67,6 +67,11 @@ class ErrorPresenter implements Nette\Application\IPresenter
 
 
 $httpRequest = Mockery::mock(Nette\Http\IRequest::class);
+$httpRequest->shouldReceive('getMethod')->andReturn('GET');
+$httpRequest->shouldReceive('getPost')->andReturn([]);
+$httpRequest->shouldReceive('getFiles')->andReturn([]);
+$httpRequest->shouldReceive('isSecured')->andReturn(false);
+
 $httpResponse = Mockery::mock(Nette\Http\IResponse::class);
 $httpResponse->shouldIgnoreMissing();
 
@@ -116,7 +121,7 @@ test(function () use ($httpRequest, $httpResponse) {
 	$presenterFactory->shouldReceive('createPresenter')->with('Error')->andReturn($errorPresenter);
 
 	$router = Mockery::mock(IRouter::class);
-	$router->shouldReceive('match')->andReturn(new Request('Error', 'GET'));
+	$router->shouldReceive('match')->andReturn(['presenter' => 'Error']);
 
 	$app = new Application($presenterFactory, $router, $httpRequest, $httpResponse);
 	$app->catchExceptions = true;
@@ -142,7 +147,7 @@ Assert::exception(function () use ($httpRequest, $httpResponse) {
 	$presenterFactory->shouldReceive('createPresenter')->with('Missing')->andThrow(Nette\Application\InvalidPresenterException::class);
 
 	$router = Mockery::mock(IRouter::class);
-	$router->shouldReceive('match')->andReturn(new Request('Missing', 'GET'));
+	$router->shouldReceive('match')->andReturn(['presenter' => 'Missing']);
 
 	$app = new Application($presenterFactory, $router, $httpRequest, $httpResponse);
 	$app->run();
@@ -158,7 +163,7 @@ test(function () use ($httpRequest, $httpResponse) {
 	$presenterFactory->shouldReceive('createPresenter')->with('Error')->andReturn($errorPresenter);
 
 	$router = Mockery::mock(IRouter::class);
-	$router->shouldReceive('match')->andReturn(new Request('Missing', 'GET'));
+	$router->shouldReceive('match')->andReturn(['presenter' => 'Missing']);
 
 	$app = new Application($presenterFactory, $router, $httpRequest, $httpResponse);
 	$app->catchExceptions = true;
@@ -184,7 +189,7 @@ Assert::exception(function () use ($httpRequest, $httpResponse) {
 	$presenterFactory->shouldReceive('createPresenter')->with('Bad')->andReturn(new BadPresenter);
 
 	$router = Mockery::mock(IRouter::class);
-	$router->shouldReceive('match')->andReturn(new Request('Bad', 'GET'));
+	$router->shouldReceive('match')->andReturn(['presenter' => 'Bad']);
 
 	$app = new Application($presenterFactory, $router, $httpRequest, $httpResponse);
 	$app->run();
@@ -200,7 +205,7 @@ test(function () use ($httpRequest, $httpResponse) {
 	$presenterFactory->shouldReceive('createPresenter')->with('Error')->andReturn($errorPresenter);
 
 	$router = Mockery::mock(IRouter::class);
-	$router->shouldReceive('match')->andReturn(new Request('Bad', 'GET'));
+	$router->shouldReceive('match')->andReturn(['presenter' => 'Bad']);
 
 	$app = new Application($presenterFactory, $router, $httpRequest, $httpResponse);
 	$app->catchExceptions = true;
@@ -228,7 +233,7 @@ Assert::noError(function () use ($httpRequest, $httpResponse) {
 	$presenterFactory->shouldReceive('createPresenter')->with('Good')->andReturn($presenter);
 
 	$router = Mockery::mock(IRouter::class);
-	$router->shouldReceive('match')->andReturn(new Request('Good', 'GET'));
+	$router->shouldReceive('match')->andReturn(['presenter' => 'Good']);
 
 	$app = new Application($presenterFactory, $router, $httpRequest, $httpResponse);
 	$app->run();
@@ -252,7 +257,7 @@ Assert::noError(function () use ($httpRequest, $httpResponse) {
 	$presenterFactory->shouldReceive('createPresenter')->with('Error')->andReturn($errorPresenter);
 
 	$router = Mockery::mock(IRouter::class);
-	$router->shouldReceive('match')->andReturn(new Request('Good', 'GET'));
+	$router->shouldReceive('match')->andReturn(['presenter' => 'Good']);
 
 	$app = new Application($presenterFactory, $router, $httpRequest, $httpResponse);
 	$app->catchExceptions = true;
@@ -311,7 +316,7 @@ Assert::noError(function () use ($httpRequest, $httpResponse) {
 	$presenterFactory->shouldReceive('createPresenter')->with('Infinity')->andReturn($presenter);
 
 	$router = Mockery::mock(IRouter::class);
-	$router->shouldReceive('match')->andReturn(new Request('Infinity', 'GET'));
+	$router->shouldReceive('match')->andReturn(['presenter' => 'Infinity']);
 
 	$app = new Application($presenterFactory, $router, $httpRequest, $httpResponse);
 	$app->catchExceptions = true;

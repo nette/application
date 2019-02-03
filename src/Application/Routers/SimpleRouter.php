@@ -58,9 +58,9 @@ final class SimpleRouter implements Application\IRouter
 
 
 	/**
-	 * Maps HTTP request to a Request object.
+	 * Maps HTTP request to an array.
 	 */
-	public function match(Nette\Http\IRequest $httpRequest): ?Application\Request
+	public function match(Nette\Http\IRequest $httpRequest): ?array
 	{
 		if ($httpRequest->getUrl()->getPathInfo() !== '') {
 			return null;
@@ -69,38 +69,28 @@ final class SimpleRouter implements Application\IRouter
 		$params = $httpRequest->getQuery();
 		$params += $this->defaults;
 
-		if (!isset($params[self::PRESENTER_KEY]) || !is_string($params[self::PRESENTER_KEY])) {
+		$presenter = $params[self::PRESENTER_KEY] ?? null;
+		if (!is_string($presenter)) {
 			return null;
 		}
 
-		$presenter = $this->module . $params[self::PRESENTER_KEY];
-		unset($params[self::PRESENTER_KEY]);
-
-		return new Application\Request(
-			$presenter,
-			$httpRequest->getMethod(),
-			$params,
-			$httpRequest->getPost(),
-			$httpRequest->getFiles(),
-			[Application\Request::SECURED => $httpRequest->isSecured()]
-		);
+		$params[self::PRESENTER_KEY] = $this->module . $presenter;
+		return $params;
 	}
 
 
 	/**
-	 * Constructs absolute URL from Request object.
+	 * Constructs absolute URL from array.
 	 */
-	public function constructUrl(Application\Request $appRequest, Nette\Http\Url $refUrl): ?string
+	public function constructUrl(array $params, Nette\Http\Url $refUrl): ?string
 	{
 		if ($this->flags & self::ONE_WAY) {
 			return null;
 		}
-		$params = $appRequest->getParameters();
 
 		// presenter name
-		$presenter = $appRequest->getPresenterName();
-		if (strncmp($presenter, $this->module, strlen($this->module)) === 0) {
-			$params[self::PRESENTER_KEY] = substr($presenter, strlen($this->module));
+		if (strncmp($params[self::PRESENTER_KEY], $this->module, strlen($this->module)) === 0) {
+			$params[self::PRESENTER_KEY] = substr($params[self::PRESENTER_KEY], strlen($this->module));
 		} else {
 			return null;
 		}

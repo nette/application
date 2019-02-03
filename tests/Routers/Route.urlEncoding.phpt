@@ -18,7 +18,8 @@ $route = new Route('<param .*>', [
 	'presenter' => 'Presenter',
 ]);
 
-testRouteIn($route, '/a%3A%25%2Fb', 'Presenter', [
+testRouteIn($route, '/a%3A%25%2Fb', [
+	'presenter' => 'Presenter',
 	'param' => 'a:%/b',
 	'test' => 'testvalue',
 ], '/a%3A%25/b?test=testvalue');
@@ -31,7 +32,8 @@ $route = new Route('<param .*>', [
 	],
 ]);
 
-testRouteIn($route, '/a%3A%25%2Fb', 'Presenter', [
+testRouteIn($route, '/a%3A%25%2Fb', [
+	'presenter' => 'Presenter',
 	'param' => 'a:%/b',
 	'test' => 'testvalue',
 ], '/a%3A%25%2Fb?test=testvalue');

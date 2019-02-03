@@ -104,11 +104,20 @@ class Application
 
 	public function createInitialRequest(): Request
 	{
-		$request = $this->router->match($this->httpRequest);
-		if (!$request) {
+		$params = $this->router->match($this->httpRequest);
+		$presenter = $params[UI\Presenter::PRESENTER_KEY] ?? null;
+		if ($params === null || $presenter === null) {
 			throw new BadRequestException('No route for HTTP request.');
 		}
-		return $request;
+		unset($params[UI\Presenter::PRESENTER_KEY]);
+		return new Request(
+			$presenter,
+			$this->httpRequest->getMethod(),
+			$params,
+			$this->httpRequest->getPost(),
+			$this->httpRequest->getFiles(),
+			[Request::SECURED => $this->httpRequest->isSecured()]
+		);
 	}
 
 

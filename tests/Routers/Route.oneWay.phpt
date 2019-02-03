@@ -19,7 +19,8 @@ $route = new Route('<presenter>/<action>', [
 	'action' => 'default',
 ], Route::ONE_WAY);
 
-testRouteIn($route, '/presenter/action/', 'Presenter', [
+testRouteIn($route, '/presenter/action/', [
+	'presenter' => 'Presenter',
 	'action' => 'action',
 	'test' => 'testvalue',
 ], null);

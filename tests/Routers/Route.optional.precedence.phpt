@@ -17,18 +17,20 @@ require __DIR__ . '/Route.php';
 $route = new Route('[<one>/][<two>]', [
 ]);
 
-testRouteIn($route, '/one', 'querypresenter', [
+testRouteIn($route, '/one', [
+	'presenter' => 'querypresenter',
 	'one' => 'one',
 	'two' => null,
 	'test' => 'testvalue',
-], '/one/?test=testvalue&presenter=querypresenter');
+], '/one/?presenter=querypresenter&test=testvalue');
 
 $route = new Route('[<one>/]<two>', [
 	'two' => null,
 ]);
 
-testRouteIn($route, '/one', 'querypresenter', [
+testRouteIn($route, '/one', [
+	'presenter' => 'querypresenter',
 	'one' => 'one',
 	'two' => null,
 	'test' => 'testvalue',
-], '/one/?test=testvalue&presenter=querypresenter');
+], '/one/?presenter=querypresenter&test=testvalue');

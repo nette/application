@@ -20,7 +20,8 @@ testRouteIn($route, '/presenter/action/12/any');
 
 testRouteIn($route, '/presenter/action/12');
 
-testRouteIn($route, '/presenter/action/static', 'Presenter', [
+testRouteIn($route, '/presenter/action/static', [
+	'presenter' => 'Presenter',
 	'action' => 'action',
 	'test' => 'testvalue',
 ], '/presenter/action/static?test=testvalue');
@@ -29,12 +30,14 @@ testRouteIn($route, '/presenter/action/');
 
 testRouteIn($route, '/presenter/action');
 
-testRouteIn($route, '/presenter/', 'Presenter', [
+testRouteIn($route, '/presenter/', [
+	'presenter' => 'Presenter',
 	'action' => 'default',
 	'test' => 'testvalue',
 ], '/presenter/?test=testvalue');
 
-testRouteIn($route, '/presenter', 'Presenter', [
+testRouteIn($route, '/presenter', [
+	'presenter' => 'Presenter',
 	'action' => 'default',
 	'test' => 'testvalue',
 ], '/presenter/?test=testvalue');

@@ -19,7 +19,8 @@ $route = new Route('/<abspath>/', [
 	'action' => 'default',
 ]);
 
-testRouteIn($route, '/abc', 'Default', [
+testRouteIn($route, '/abc', [
+	'presenter' => 'Default',
 	'abspath' => 'abc',
 	'action' => 'default',
 	'test' => 'testvalue',

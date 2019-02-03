@@ -35,8 +35,8 @@ final class RoutingPanel implements Tracy\IBarPanel
 	/** @var array */
 	private $routers = [];
 
-	/** @var Nette\Application\Request */
-	private $request;
+	/** @var array|null */
+	private $matched;
 
 	/** @var \ReflectionClass|\ReflectionMethod */
 	private $source;
@@ -69,7 +69,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 	{
 		$this->analyse($this->router);
 		ob_start(function () {});
-		$request = $this->request;
+		$matched = $this->matched;
 		require __DIR__ . '/templates/RoutingPanel.tab.phtml';
 		return ob_get_clean();
 	}
@@ -81,7 +81,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 	public function getPanel(): string
 	{
 		ob_start(function () {});
-		$request = $this->request;
+		$matched = $this->matched;
 		$routers = $this->routers;
 		$source = $this->source;
 		$hasModule = (bool) array_filter($routers, function (array $rq): string { return $rq['module']; });
@@ -105,16 +105,16 @@ final class RoutingPanel implements Tracy\IBarPanel
 		}
 
 		$matched = 'no';
-		$request = $e = null;
+		$params = $e = null;
 		try {
-			$request = $router->match($this->httpRequest);
+			$params = $router->match($this->httpRequest);
 		} catch (\Exception $e) {
 		}
-		if ($request) {
-			$request->setPresenterName($module . $request->getPresenterName());
+		if ($params !== null) {
+			$params['presenter'] = $module . ($params['presenter'] ?? '');
 			$matched = 'may';
-			if (empty($this->request)) {
-				$this->request = $request;
+			if ($this->matched === null) {
+				$this->matched = $params;
 				$this->findSource();
 				$matched = 'yes';
 			}
@@ -125,7 +125,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 			'class' => get_class($router),
 			'defaults' => $router instanceof Routers\Route || $router instanceof Routers\SimpleRouter ? $router->getDefaults() : [],
 			'mask' => $router instanceof Routers\Route ? $router->getMask() : null,
-			'request' => $request,
+			'params' => $params,
 			'module' => rtrim($module, ':'),
 			'error' => $e,
 		];
@@ -134,8 +134,8 @@ final class RoutingPanel implements Tracy\IBarPanel
 
 	private function findSource(): void
 	{
-		$request = $this->request;
-		$presenter = $request->getPresenterName();
+		$params = $this->matched;
+		$presenter = $params['presenter'] ?? '';
 		try {
 			$class = $this->presenterFactory->getPresenterClass($presenter);
 		} catch (Nette\Application\InvalidPresenterException $e) {
@@ -144,11 +144,11 @@ final class RoutingPanel implements Tracy\IBarPanel
 		$rc = new \ReflectionClass($class);
 
 		if ($rc->isSubclassOf(Nette\Application\UI\Presenter::class)) {
-			if ($request->getParameter(Presenter::SIGNAL_KEY)) {
-				$method = $class::formatSignalMethod($request->getParameter(Presenter::SIGNAL_KEY));
+			if (isset($params[Presenter::SIGNAL_KEY])) {
+				$method = $class::formatSignalMethod($params[Presenter::SIGNAL_KEY]);
 
-			} elseif ($request->getParameter(Presenter::ACTION_KEY)) {
-				$action = $request->getParameter(Presenter::ACTION_KEY);
+			} elseif (isset($params[Presenter::ACTION_KEY])) {
+				$action = $params[Presenter::ACTION_KEY];
 				$method = $class::formatActionMethod($action);
 				if (!$rc->hasMethod($method)) {
 					$method = $class::formatRenderMethod($action);

@@ -17,7 +17,8 @@ require __DIR__ . '/Route.php';
 $route = new Route('<presenter>/<action>/<extra>', [
 ]);
 
-testRouteIn($route, '/presenter/action/12', 'Presenter', [
+testRouteIn($route, '/presenter/action/12', [
+	'presenter' => 'Presenter',
 	'action' => 'action',
 	'extra' => '12',
 	'test' => 'testvalue',

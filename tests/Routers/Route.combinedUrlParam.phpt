@@ -22,17 +22,20 @@ $route = new Route('extra<presenter>/<action>', [
 
 testRouteIn($route, '/presenter/action/');
 
-testRouteIn($route, '/extrapresenter/action/', 'Presenter', [
+testRouteIn($route, '/extrapresenter/action/', [
+	'presenter' => 'Presenter',
 	'action' => 'action',
 	'test' => 'testvalue',
 ], '/extrapresenter/action?test=testvalue');
 
-testRouteIn($route, '/extradefault/default/', 'Default', [
+testRouteIn($route, '/extradefault/default/', [
+	'presenter' => 'Default',
 	'action' => 'default',
 	'test' => 'testvalue',
 ], '/extra?test=testvalue');
 
-testRouteIn($route, '/extra', 'Default', [
+testRouteIn($route, '/extra', [
+	'presenter' => 'Default',
 	'action' => 'default',
 	'test' => 'testvalue',
 ], '/extra?test=testvalue');

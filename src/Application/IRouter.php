@@ -21,12 +21,12 @@ interface IRouter
 	public const ONE_WAY = 0b0001;
 
 	/**
-	 * Maps HTTP request to a Request object.
+	 * Maps HTTP request to an array.
 	 */
-	function match(Nette\Http\IRequest $httpRequest): ?Request;
+	function match(Nette\Http\IRequest $httpRequest): ?array;
 
 	/**
-	 * Constructs absolute URL from Request object.
+	 * Constructs absolute URL from array.
 	 */
-	function constructUrl(Request $appRequest, Nette\Http\Url $refUrl): ?string;
+	function constructUrl(array $params, Nette\Http\Url $refUrl): ?string;
 }

@@ -16,7 +16,7 @@ use Nette\Utils\Strings;
 
 /**
  * The bidirectional route is responsible for mapping
- * HTTP request to a Request object for dispatch and vice-versa.
+ * HTTP request to an array for dispatch and vice-versa.
  */
 class Route implements Application\IRouter
 {
@@ -146,9 +146,9 @@ class Route implements Application\IRouter
 
 
 	/**
-	 * Maps HTTP request to a Request object.
+	 * Maps HTTP request to an array.
 	 */
-	public function match(Nette\Http\IRequest $httpRequest): ?Application\Request
+	public function match(Nette\Http\IRequest $httpRequest): ?array
 	{
 		// combine with precedence: mask (params in URL-path), fixity, query, (post,) defaults
 
@@ -249,39 +249,27 @@ class Route implements Application\IRouter
 		} elseif (!is_string($params[self::PRESENTER_KEY])) {
 			return null;
 		}
-		$presenter = $params[self::PRESENTER_KEY];
-		unset($params[self::PRESENTER_KEY]);
 
-		if (isset($this->metadata[self::MODULE_KEY])) {
-			$presenter = (isset($params[self::MODULE_KEY]) ? $params[self::MODULE_KEY] . ':' : '') . $presenter;
-			unset($params[self::MODULE_KEY]);
+		if (isset($this->metadata[self::MODULE_KEY], $params[self::MODULE_KEY])) {
+			$params[self::PRESENTER_KEY] = $params[self::MODULE_KEY] . ':' . $params[self::PRESENTER_KEY];
 		}
+		unset($params[self::MODULE_KEY]);
 
-		return new Application\Request(
-			$presenter,
-			$httpRequest->getMethod(),
-			$params,
-			$httpRequest->getPost(),
-			$httpRequest->getFiles(),
-			[Application\Request::SECURED => $httpRequest->isSecured()]
-		);
+		return $params;
 	}
 
 
 	/**
-	 * Constructs absolute URL from Request object.
+	 * Constructs absolute URL from array.
 	 */
-	public function constructUrl(Application\Request $appRequest, Nette\Http\Url $refUrl): ?string
+	public function constructUrl(array $params, Nette\Http\Url $refUrl): ?string
 	{
 		if ($this->flags & self::ONE_WAY) {
 			return null;
 		}
 
-		$params = $appRequest->getParameters();
 		$metadata = $this->metadata;
-
-		$presenter = $appRequest->getPresenterName();
-		$params[self::PRESENTER_KEY] = $presenter;
+		$presenter = $params[self::PRESENTER_KEY];
 
 		if (isset($metadata[self::MODULE_KEY])) { // try split into module and [submodule:]presenter parts
 			$module = $metadata[self::MODULE_KEY];

@@ -39,6 +39,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/** @internal special parameter key */
 	public const
+		PRESENTER_KEY = 'presenter',
 		SIGNAL_KEY = 'do',
 		ACTION_KEY = 'action',
 		FLASH_KEY = '_fid',
@@ -916,10 +917,10 @@ abstract class Presenter extends Control implements Application\IPresenter
 			throw new Nette\InvalidStateException('Unable to generate URL, service Router has not been set.');
 		}
 
-		$url = $this->router->constructUrl($request, $this->refUrlCache);
+		$url = $this->router->constructUrl($request->toArray(), $this->refUrlCache);
 		if ($url === null) {
 			$params = $request->getParameters();
-			unset($params[self::ACTION_KEY]);
+			unset($params[self::ACTION_KEY], $params[self::PRESENTER_KEY]);
 			$params = urldecode(http_build_query($params, '', ', '));
 			throw new InvalidLinkException("No route for {$request->getPresenterName()}:{$request->getParameter('action')}($params)");
 		}
