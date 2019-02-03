@@ -22,7 +22,7 @@ class Route implements Application\IRouter
 {
 	use Nette\SmartObject;
 
-	/** key used in {@link Route::$styles} or metadata {@link Route::__construct} */
+	/** key used in metadata {@link Route::__construct} */
 	public const
 		VALUE = 'value',
 		PATTERN = 'pattern',
@@ -53,13 +53,14 @@ class Route implements Application\IRouter
 		PRESENTER_KEY = 'presenter',
 		MODULE_KEY = 'module';
 
+	/** @deprecated */
+	public static $styles = [];
+
 	/** @var array */
-	public static $styles = [
+	protected $defaultMeta = [
 		'#' => [ // default style for path parameters
 			self::PATTERN => '[^/]+',
 			self::FILTER_OUT => [__CLASS__, 'param2path'],
-		],
-		'?#' => [// default style for query parameters
 		],
 		'module' => [
 			self::PATTERN => '[a-z][a-z0-9.-]*',
@@ -75,12 +76,6 @@ class Route implements Application\IRouter
 			self::PATTERN => '[a-z][a-z0-9-]*',
 			self::FILTER_IN => [__CLASS__, 'path2action'],
 			self::FILTER_OUT => [__CLASS__, 'action2path'],
-		],
-		'?module' => [
-		],
-		'?presenter' => [
-		],
-		'?action' => [
 		],
 	];
 
@@ -138,6 +133,11 @@ class Route implements Application\IRouter
 				self::PRESENTER_KEY => 'Nette:Micro',
 				'callback' => $metadata,
 			];
+		}
+
+		if (self::$styles) {
+			trigger_error('Route::$styles is deprecated.', E_USER_DEPRECATED);
+			array_replace_recursive($this->defaultMeta, self::$styles);
 		}
 
 		$this->flags = $flags;
@@ -480,7 +480,7 @@ class Route implements Application\IRouter
 			$matches = Strings::matchAll($parts[$i - 1], '/(?:([a-zA-Z0-9_.-]+)=)?<([^> ]+) *([^>]*)>/');
 
 			foreach ($matches as [, $param, $name, $pattern]) { // $pattern is not used
-				$meta = ($metadata[$name] ?? []) + (static::$styles['?' . $name] ?? static::$styles['?#']);
+				$meta = ($metadata[$name] ?? []) + ($this->defaultMeta['?' . $name] ?? []);
 
 				if (array_key_exists(self::VALUE, $meta)) {
 					$meta[self::FIXITY] = self::OPTIONAL;
@@ -540,7 +540,7 @@ class Route implements Application\IRouter
 			}
 
 			// pattern, condition & metadata
-			$meta = ($metadata[$name] ?? []) + (static::$styles[$name] ?? static::$styles['#']);
+			$meta = ($metadata[$name] ?? []) + ($this->defaultMeta[$name] ?? $this->defaultMeta['#']);
 
 			if ($pattern == '' && isset($meta[self::PATTERN])) {
 				$pattern = $meta[self::PATTERN];
