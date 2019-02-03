@@ -15,7 +15,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-class MyRouter implements Nette\Application\IRouter
+class MyRouter implements Nette\Routing\Router
 {
 	public $woken;
 
@@ -78,7 +78,7 @@ test(function () {
 
 Assert::exception(function () {
 
-	/** @return Nette\Application\IRouter */
+	/** @return Nette\Routing\Router */
 	function myRouterFactory()
 	{
 		return new Route('path', function () {});

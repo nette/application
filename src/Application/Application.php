@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Nette\Application;
 
 use Nette;
+use Nette\Routing\Router;
 
 
 /**
@@ -61,11 +62,11 @@ class Application
 	/** @var IPresenterFactory */
 	private $presenterFactory;
 
-	/** @var IRouter */
+	/** @var Router */
 	private $router;
 
 
-	public function __construct(IPresenterFactory $presenterFactory, IRouter $router, Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse)
+	public function __construct(IPresenterFactory $presenterFactory, Router $router, Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse)
 	{
 		$this->httpRequest = $httpRequest;
 		$this->httpResponse = $httpResponse;
@@ -204,7 +205,7 @@ class Application
 	/**
 	 * Returns router.
 	 */
-	public function getRouter(): IRouter
+	public function getRouter(): Router
 	{
 		return $this->router;
 	}
