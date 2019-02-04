@@ -38,7 +38,7 @@ final class PresenterFactoryCallback
 
 	public function __invoke(string $class): Nette\Application\IPresenter
 	{
-		$services = array_keys($this->container->findByTag('nette.presenter'), $class, true);
+		$services = $this->container->findByType($class);
 		if (count($services) > 1) {
 			throw new Nette\Application\InvalidPresenterException("Multiple services of type $class found: " . implode(', ', $services) . '.');
 
