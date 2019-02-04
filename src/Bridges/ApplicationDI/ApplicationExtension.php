@@ -115,8 +115,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 		}
 
 		foreach ($all as $def) {
-			$def->addTag(Nette\DI\Extensions\InjectExtension::TAG_INJECT)
-				->addTag('nette.presenter', $def->getType());
+			$def->addTag(Nette\DI\Extensions\InjectExtension::TAG_INJECT);
 
 			if (is_subclass_of($def->getType(), UI\Presenter::class)) {
 				$def->addSetup('$invalidLinkMode', [$this->invalidLinkMode]);

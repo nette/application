@@ -23,10 +23,9 @@ test(function () {
 	eval($code);
 
 	$container = new Container1;
-	$tags = $container->findByTag('nette.presenter');
-	Assert::count(1, array_keys($tags, NetteModule\ErrorPresenter::class, true));
-	Assert::count(1, array_keys($tags, NetteModule\MicroPresenter::class, true));
-	Assert::count(0, array_keys($tags, Nette\Application\UI\Presenter::class, true));
+	Assert::count(1, $container->findByType(NetteModule\ErrorPresenter::class));
+	Assert::count(1, $container->findByType(NetteModule\MicroPresenter::class));
+	Assert::count(0, $container->findByType(Nette\Application\UI\Presenter::class));
 });
 
 
@@ -46,10 +45,9 @@ test(function () {
 	eval($code);
 
 	$container = new Container2;
-	$tags = $container->findByTag('nette.presenter');
-	Assert::count(1, array_keys($tags, 'BasePresenter', true));
-	Assert::count(1, array_keys($tags, 'Presenter1', true));
-	Assert::count(1, array_keys($tags, 'Presenter2', true));
+	Assert::count(3, $container->findByType(BasePresenter::class));
+	Assert::count(1, $container->findByType(Presenter1::class));
+	Assert::count(1, $container->findByType(Presenter2::class));
 });
 
 
@@ -73,11 +71,9 @@ test(function () {
 	eval($code);
 
 	$container = new Container3;
-	$tags = $container->findByTag('nette.presenter');
-	Assert::count(1, array_keys($tags, 'BasePresenter', true));
-	Assert::count(1, array_keys($tags, 'Presenter1', true));
-	Assert::count(1, array_keys($tags, 'Presenter2', true));
+	Assert::count(3, $container->findByType(BasePresenter::class));
+	Assert::count(1, $container->findByType(Presenter1::class));
+	Assert::count(1, $container->findByType(Presenter2::class));
 
-	$tmp = array_keys($tags, 'Presenter1', true);
-	Assert::same('test', $container->getService((string) $tmp[0])->getView());
+	Assert::same('test', $container->getByType(Presenter1::class)->getView());
 });
