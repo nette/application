@@ -27,13 +27,13 @@ class TemplateFactory implements UI\ITemplateFactory
 	/** @var ILatteFactory */
 	private $latteFactory;
 
-	/** @var Nette\Http\IRequest */
+	/** @var Nette\Http\IRequest|null */
 	private $httpRequest;
 
-	/** @var Nette\Security\User */
+	/** @var Nette\Security\User|null */
 	private $user;
 
-	/** @var Nette\Caching\IStorage */
+	/** @var Nette\Caching\IStorage|null */
 	private $cacheStorage;
 
 	/** @var string */
