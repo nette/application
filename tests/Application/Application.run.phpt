@@ -331,8 +331,8 @@ Assert::noError(function () use ($httpRequest, $httpResponse) {
 	Assert::count(21, $app1->getRequests());
 
 	// Redefine maxLoop
-	Application::$maxLoop = 2;
 	$app2 = clone $app;
+	$app2->maxLoop = 2;
 	Assert::exception(function () use ($app2) {
 		$app2->run();
 	}, ApplicationException::class, 'Too many loops detected in application life cycle.');

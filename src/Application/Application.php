@@ -20,7 +20,7 @@ class Application
 	use Nette\SmartObject;
 
 	/** @var int */
-	public static $maxLoop = 20;
+	public $maxLoop = 20;
 
 	/** @var bool enable fault barrier? */
 	public $catchExceptions;
@@ -128,7 +128,7 @@ class Application
 	public function processRequest(Request $request): void
 	{
 		process:
-		if (count($this->requests) > self::$maxLoop) {
+		if (count($this->requests) > $this->maxLoop) {
 			throw new ApplicationException('Too many loops detected in application life cycle.');
 		}
 
