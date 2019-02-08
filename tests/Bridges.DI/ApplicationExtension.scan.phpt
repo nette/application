@@ -75,5 +75,6 @@ test(function () {
 	Assert::count(1, $container->findByType(Presenter1::class));
 	Assert::count(1, $container->findByType(Presenter2::class));
 
-	Assert::same('test', $container->getByType(Presenter1::class)->getView());
+	$name = $container->findByType(Presenter1::class)[0];
+	Assert::same('test', $container->createService($name)->getView());
 });
