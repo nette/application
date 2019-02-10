@@ -62,6 +62,31 @@ class RouteList extends Nette\Routing\RouteList implements Nette\Application\IRo
 	}
 
 
+	/**
+	 * @param  string  $mask  e.g. '<presenter>/<action>/<id \d{1,3}>'
+	 * @param  array|string|\Closure  $metadata  default values or metadata or callback for NetteModule\MicroPresenter
+	 * @return static
+	 */
+	public function addRoute(string $mask, $metadata = [], int $flags = 0)
+	{
+		$this->add(new Route($mask, $metadata), $flags);
+		return $this;
+	}
+
+
+	/**
+	 * @return static
+	 */
+	public function withModule(string $module)
+	{
+		$router = new static;
+		$router->module = $module . ':';
+		$router->parent = $this;
+		$this->add($router);
+		return $router;
+	}
+
+
 	public function getModule(): ?string
 	{
 		return $this->module;
