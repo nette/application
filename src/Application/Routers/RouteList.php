@@ -41,7 +41,7 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 			$params = $route->match($httpRequest);
 			if ($params !== null) {
 				$presenter = $params[self::PRESENTER_KEY] ?? null;
-				if (strncmp($presenter, 'Nette:', 6)) {
+				if (is_string($presenter) && strncmp($presenter, 'Nette:', 6)) {
 					$params[self::PRESENTER_KEY] = $this->module . $presenter;
 				}
 				return $params;

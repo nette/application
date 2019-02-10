@@ -70,11 +70,10 @@ final class SimpleRouter implements Application\IRouter
 		$params += $this->defaults;
 
 		$presenter = $params[self::PRESENTER_KEY] ?? null;
-		if (!is_string($presenter)) {
-			return null;
+		if (is_string($presenter)) {
+			$params[self::PRESENTER_KEY] = $this->module . $presenter;
 		}
 
-		$params[self::PRESENTER_KEY] = $this->module . $presenter;
 		return $params;
 	}
 

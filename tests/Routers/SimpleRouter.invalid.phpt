@@ -22,7 +22,7 @@ test(function () {
 	$httpRequest = new Http\Request($url);
 	$req = $router->match($httpRequest);
 
-	Assert::null($req);
+	Assert::same(['presenter' => ['foo']], $req);
 });
 
 test(function () {
@@ -31,5 +31,5 @@ test(function () {
 	$httpRequest = new Http\Request($url);
 	$req = $router->match($httpRequest);
 
-	Assert::null($req);
+	Assert::same([], $req);
 });

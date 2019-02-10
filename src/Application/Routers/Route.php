@@ -243,15 +243,10 @@ class Route implements Application\IRouter
 			}
 		}
 
-		// 5) BUILD Request
-		if (!isset($params[self::PRESENTER_KEY])) {
-			throw new Nette\InvalidStateException('Missing presenter in route definition.');
-		} elseif (!is_string($params[self::PRESENTER_KEY])) {
-			return null;
-		}
-
-		if (isset($this->metadata[self::MODULE_KEY], $params[self::MODULE_KEY])) {
-			$params[self::PRESENTER_KEY] = $params[self::MODULE_KEY] . ':' . $params[self::PRESENTER_KEY];
+		// 5) PARAMETER MODULE
+		$presenter = $params[self::PRESENTER_KEY] ?? null;
+		if (isset($this->metadata[self::MODULE_KEY], $params[self::MODULE_KEY]) && is_string($presenter)) {
+			$params[self::PRESENTER_KEY] = $params[self::MODULE_KEY] . ':' . $presenter;
 		}
 		unset($params[self::MODULE_KEY]);
 

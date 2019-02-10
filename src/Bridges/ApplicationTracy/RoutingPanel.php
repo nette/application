@@ -111,7 +111,9 @@ final class RoutingPanel implements Tracy\IBarPanel
 		} catch (\Exception $e) {
 		}
 		if ($params !== null) {
-			$params['presenter'] = $module . ($params['presenter'] ?? '');
+			if ($module) {
+				$params['presenter'] = $module . ($params['presenter'] ?? '');
+			}
 			$matched = 'may';
 			if ($this->matched === null) {
 				$this->matched = $params;
