@@ -22,14 +22,14 @@ final class LinkGenerator
 	/** @var IRouter */
 	private $router;
 
-	/** @var Nette\Http\Url */
+	/** @var Nette\Http\UrlScript */
 	private $refUrl;
 
 	/** @var IPresenterFactory|null */
 	private $presenterFactory;
 
 
-	public function __construct(IRouter $router, Nette\Http\Url $refUrl, IPresenterFactory $presenterFactory = null)
+	public function __construct(IRouter $router, Nette\Http\UrlScript $refUrl, IPresenterFactory $presenterFactory = null)
 	{
 		$this->router = $router;
 		$this->refUrl = $refUrl;

@@ -11,12 +11,12 @@ use Tester\Assert;
 
 function testRouteIn(Nette\Application\IRouter $route, string $url, array $expectedParams = null, string $expectedUrl = null): void
 {
-	$url = new Nette\Http\UrlScript("http://example.com$url");
-	$url->setScriptPath('/');
-	$url->appendQuery([
+	$urlBuilder = new Nette\Http\Url("http://example.com$url");
+	$urlBuilder->appendQuery([
 		'test' => 'testvalue',
 		'presenter' => 'querypresenter',
 	]);
+	$url = new Nette\Http\UrlScript($urlBuilder, '/');
 
 	$httpRequest = new Nette\Http\Request($url);
 
@@ -40,6 +40,6 @@ function testRouteIn(Nette\Application\IRouter $route, string $url, array $expec
 
 function testRouteOut(Nette\Application\IRouter $route, array $params = []): ?string
 {
-	$url = new Nette\Http\Url('http://example.com');
+	$url = new Nette\Http\UrlScript('http://example.com');
 	return $route->constructUrl($params, $url);
 }

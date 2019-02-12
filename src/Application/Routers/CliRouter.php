@@ -91,7 +91,7 @@ final class CliRouter implements Application\IRouter
 	/**
 	 * This router is only unidirectional.
 	 */
-	public function constructUrl(array $params, Nette\Http\Url $refUrl): ?string
+	public function constructUrl(array $params, Nette\Http\UrlScript $refUrl): ?string
 	{
 		return null;
 	}

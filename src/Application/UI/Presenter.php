@@ -129,7 +129,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @var ITemplateFactory */
 	private $templateFactory;
 
-	/** @var Nette\Http\Url */
+	/** @var Nette\Http\UrlScript */
 	private $refUrlCache;
 
 
@@ -911,8 +911,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 	protected function requestToUrl(Application\Request $request, bool $relative = null): string
 	{
 		if ($this->refUrlCache === null) {
-			$this->refUrlCache = new Http\Url($this->httpRequest->getUrl());
-			$this->refUrlCache->setPath($this->httpRequest->getUrl()->getScriptPath());
+			$url = $this->httpRequest->getUrl();
+			$this->refUrlCache = new Http\UrlScript($url->getHostUrl() . $url->getScriptPath());
 		}
 		if (!$this->router) {
 			throw new Nette\InvalidStateException('Unable to generate URL, service Router has not been set.');
