@@ -25,7 +25,7 @@ class MyRouter implements Nette\Application\IRouter
 	}
 
 
-	public function constructUrl(array $params, Nette\Http\Url $refUrl): ?string
+	public function constructUrl(array $params, Nette\Http\UrlScript $refUrl): ?string
 	{
 	}
 

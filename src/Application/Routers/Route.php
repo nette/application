@@ -257,7 +257,7 @@ class Route implements Application\IRouter
 	/**
 	 * Constructs absolute URL from array.
 	 */
-	public function constructUrl(array $params, Nette\Http\Url $refUrl): ?string
+	public function constructUrl(array $params, Nette\Http\UrlScript $refUrl): ?string
 	{
 		if ($this->flags & self::ONE_WAY) {
 			return null;

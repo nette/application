@@ -24,8 +24,7 @@ class TestPresenter extends Application\UI\Presenter
 
 function testLink($domain)
 {
-	$url = new Http\UrlScript('http://' . $domain . '/index.php');
-	$url->setScriptPath('/index.php');
+	$url = new Http\UrlScript('http://' . $domain . '/index.php', '/index.php');
 
 	$presenter = new TestPresenter;
 	$presenter->injectPrimary(

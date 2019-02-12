@@ -121,8 +121,7 @@ Assert::same([
 ], ThirdPresenter::getReflection()->getPersistentParams());
 
 
-$url = new Http\UrlScript('http://localhost/index.php');
-$url->setScriptPath('/index.php');
+$url = new Http\UrlScript('http://localhost/index.php', '/index.php');
 
 $presenterFactory = Mockery::mock(Nette\Application\IPresenterFactory::class);
 $presenterFactory->shouldReceive('getPresenterClass')

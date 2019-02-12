@@ -19,15 +19,14 @@ $router = new SimpleRouter([
 	'any' => 'anyvalue',
 ]);
 
-$url = new Http\UrlScript('http://nette.org/file.php');
-$url->setScriptPath('/file.php');
+$url = new Http\Url('http://nette.org/file.php');
 $url->setQuery([
 	'presenter' => 'myPresenter',
 	'action' => 'action',
 	'id' => '12',
 	'test' => 'testvalue',
 ]);
-$httpRequest = new Http\Request($url);
+$httpRequest = new Http\Request(new Http\UrlScript($url, '/file.php'));
 
 $params = $router->match($httpRequest);
 Assert::same([
