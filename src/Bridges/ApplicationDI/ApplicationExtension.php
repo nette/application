@@ -65,7 +65,8 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 		$application = $builder->addDefinition($this->prefix('application'))
 			->setFactory(Nette\Application\Application::class)
 			->addSetup('$catchExceptions', [$config['catchExceptions']])
-			->addSetup('$errorPresenter', [$config['errorPresenter']]);
+			->addSetup('$errorPresenter', [$config['errorPresenter']])
+			->setExported();
 
 		if ($config['debugger']) {
 			$application->addSetup('Nette\Bridges\ApplicationTracy\RoutingPanel::initializePanel');
@@ -73,8 +74,8 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 
 		$touch = $this->debugMode && $config['scanDirs'] ? $this->tempFile : null;
 		$presenterFactory = $builder->addDefinition($this->prefix('presenterFactory'))
-			->setClass(Nette\Application\IPresenterFactory::class)
-			->setFactory(Nette\Application\PresenterFactory::class, [new Nette\DI\Statement(
+			->setType(Nette\Application\IPresenterFactory::class)
+			->setFactory(Nette\Application\PresenterFactory::class, [new Nette\DI\Definitions\Statement(
 				Nette\Bridges\ApplicationDI\PresenterFactoryCallback::class, [1 => $this->invalidLinkMode, $touch]
 			)]);
 
@@ -84,8 +85,9 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 
 		$builder->addDefinition($this->prefix('linkGenerator'))
 			->setFactory(Nette\Application\LinkGenerator::class, [
-				1 => new Nette\DI\Statement('@Nette\Http\IRequest::getUrl'),
-			]);
+				1 => new Nette\DI\Definitions\Statement('@Nette\Http\IRequest::getUrl'),
+			])
+			->setExported();
 
 		if ($this->name === 'application') {
 			$builder->addAlias('application', $this->prefix('application'));
@@ -100,21 +102,23 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 		$all = [];
 
 		foreach ($builder->findByType(Nette\Application\IPresenter::class) as $def) {
-			$all[$def->getClass()] = $def;
+			$all[$def->getType()] = $def;
 		}
 
 		$counter = 0;
 		foreach ($this->findPresenters() as $class) {
 			if (empty($all[$class])) {
-				$all[$class] = $builder->addDefinition($this->prefix((string) ++$counter))->setClass($class);
+				$all[$class] = $builder->addDefinition($this->prefix((string) ++$counter))
+					->setType($class)
+					->setExported();
 			}
 		}
 
 		foreach ($all as $def) {
 			$def->addTag(Nette\DI\Extensions\InjectExtension::TAG_INJECT)
-				->addTag('nette.presenter', $def->getClass());
+				->setAutowired(false);
 
-			if (is_subclass_of($def->getClass(), UI\Presenter::class)) {
+			if (is_subclass_of($def->getType(), UI\Presenter::class)) {
 				$def->addSetup('$invalidLinkMode', [$this->invalidLinkMode]);
 			}
 		}

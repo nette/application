@@ -19,22 +19,22 @@ class MyPresenter
 	}
 
 
-	public function hints(int $int, bool $bool, string $str, array $arr)
+	public function hints(int $int, bool $bool, string $str, array $arr, iterable $iter)
 	{
 	}
 
 
-	public function hintsNulls(int $int = null, bool $bool = null, string $str = null, array $arr = null)
+	public function hintsNulls(int $int = null, bool $bool = null, string $str = null, array $arr = null, iterable $iter = null)
 	{
 	}
 
 
-	public function hintsNullable(?int $int, ?bool $bool, ?string $str, ?array $arr)
+	public function hintsNullable(?int $int, ?bool $bool, ?string $str, ?array $arr, ?iterable $iter)
 	{
 	}
 
 
-	public function hintsDefaults(int $int = 0, bool $bool = false, string $str = '', array $arr = [])
+	public function hintsDefaults(int $int = 0, bool $bool = false, string $str = '', array $arr = [], iterable $iter = [])
 	{
 	}
 
@@ -68,8 +68,8 @@ test(function () {
 test(function () {
 	$method = new ReflectionMethod('MyPresenter', 'hints');
 
-	Assert::same([1, true, 'abc', [1]], Reflection::combineArgs($method, ['int' => '1', 'bool' => '1', 'str' => 'abc', 'arr' => [1]]));
-	Assert::same([0, false, '', []], Reflection::combineArgs($method, ['int' => 0, 'bool' => false, 'str' => ''])); // missing 'arr'
+	Assert::same([1, true, 'abc', [1], [2]], Reflection::combineArgs($method, ['int' => '1', 'bool' => '1', 'str' => 'abc', 'arr' => [1], 'iter' => [2]]));
+	Assert::same([0, false, '', [], []], Reflection::combineArgs($method, ['int' => 0, 'bool' => false, 'str' => ''])); // missing 'arr', 'iter'
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, []);
@@ -104,10 +104,10 @@ test(function () {
 test(function () {
 	$method = new ReflectionMethod('MyPresenter', 'hintsNulls');
 
-	Assert::same([null, null, null, null], Reflection::combineArgs($method, []));
-	Assert::same([null, null, null, null], Reflection::combineArgs($method, ['int' => null, 'bool' => null, 'str' => null, 'arr' => null]));
-	Assert::same([1, true, 'abc', [1]], Reflection::combineArgs($method, ['int' => '1', 'bool' => '1', 'str' => 'abc', 'arr' => [1]]));
-	Assert::same([0, false, '', []], Reflection::combineArgs($method, ['int' => 0, 'bool' => false, 'str' => '', 'arr' => []]));
+	Assert::same([null, null, null, null, null], Reflection::combineArgs($method, []));
+	Assert::same([null, null, null, null, null], Reflection::combineArgs($method, ['int' => null, 'bool' => null, 'str' => null, 'arr' => null, 'iter' => null]));
+	Assert::same([1, true, 'abc', [1], [1]], Reflection::combineArgs($method, ['int' => '1', 'bool' => '1', 'str' => 'abc', 'arr' => [1], 'iter' => [1]]));
+	Assert::same([0, false, '', [], []], Reflection::combineArgs($method, ['int' => 0, 'bool' => false, 'str' => '', 'arr' => [], 'iter' => []]));
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['int' => '']);
@@ -134,10 +134,10 @@ test(function () {
 test(function () {
 	$method = new ReflectionMethod('MyPresenter', 'hintsNullable');
 
-	Assert::same([null, null, null, null], Reflection::combineArgs($method, []));
-	Assert::same([null, null, null, null], Reflection::combineArgs($method, ['int' => null, 'bool' => null, 'str' => null, 'arr' => null]));
-	Assert::same([1, true, 'abc', [1]], Reflection::combineArgs($method, ['int' => '1', 'bool' => '1', 'str' => 'abc', 'arr' => [1]]));
-	Assert::same([0, false, '', []], Reflection::combineArgs($method, ['int' => 0, 'bool' => false, 'str' => '', 'arr' => []]));
+	Assert::same([null, null, null, null, null], Reflection::combineArgs($method, []));
+	Assert::same([null, null, null, null, null], Reflection::combineArgs($method, ['int' => null, 'bool' => null, 'str' => null, 'arr' => null, 'iter' => null]));
+	Assert::same([1, true, 'abc', [1], [1]], Reflection::combineArgs($method, ['int' => '1', 'bool' => '1', 'str' => 'abc', 'arr' => [1], 'iter' => [1]]));
+	Assert::same([0, false, '', [], []], Reflection::combineArgs($method, ['int' => 0, 'bool' => false, 'str' => '', 'arr' => [], 'iter' => []]));
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['int' => '']);
@@ -164,10 +164,10 @@ test(function () {
 test(function () {
 	$method = new ReflectionMethod('MyPresenter', 'hintsDefaults');
 
-	Assert::same([0, false, '', []], Reflection::combineArgs($method, []));
-	Assert::same([0, false, '', []], Reflection::combineArgs($method, ['int' => null, 'bool' => null, 'str' => null, 'arr' => null]));
-	Assert::same([1, true, 'abc', [1]], Reflection::combineArgs($method, ['int' => '1', 'bool' => '1', 'str' => 'abc', 'arr' => [1]]));
-	Assert::same([0, false, '', []], Reflection::combineArgs($method, ['int' => 0, 'bool' => false, 'str' => '', 'arr' => []]));
+	Assert::same([0, false, '', [], []], Reflection::combineArgs($method, []));
+	Assert::same([0, false, '', [], []], Reflection::combineArgs($method, ['int' => null, 'bool' => null, 'str' => null, 'arr' => null, 'iter' => null]));
+	Assert::same([1, true, 'abc', [1], [1]], Reflection::combineArgs($method, ['int' => '1', 'bool' => '1', 'str' => 'abc', 'arr' => [1], 'iter' => [1]]));
+	Assert::same([0, false, '', [], []], Reflection::combineArgs($method, ['int' => 0, 'bool' => false, 'str' => '', 'arr' => [], 'iter' => []]));
 
 	Assert::exception(function () use ($method) {
 		Reflection::combineArgs($method, ['int' => '']);

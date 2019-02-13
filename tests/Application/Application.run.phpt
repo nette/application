@@ -7,10 +7,10 @@ use Nette\Application\ApplicationException;
 use Nette\Application\BadRequestException;
 use Nette\Application\IPresenterFactory;
 use Nette\Application\IResponse;
-use Nette\Application\IRouter;
 use Nette\Application\Request;
 use Nette\Application\Responses\ForwardResponse;
 use Nette\Application\Responses\TextResponse;
+use Nette\Routing\Router;
 use Tester\Assert;
 
 
@@ -60,6 +60,11 @@ class ErrorPresenter extends Nette\Application\UI\Presenter
 
 $httpRequest = Mockery::mock(Nette\Http\IRequest::class);
 $httpRequest->shouldReceive('isAjax')->andReturn(false);
+$httpRequest->shouldReceive('getMethod')->andReturn('GET');
+$httpRequest->shouldReceive('getPost')->andReturn([]);
+$httpRequest->shouldReceive('getFiles')->andReturn([]);
+$httpRequest->shouldReceive('isSecured')->andReturn(false);
+
 $httpResponse = Mockery::mock(Nette\Http\IResponse::class);
 $httpResponse->shouldIgnoreMissing();
 
@@ -67,7 +72,7 @@ $httpResponse->shouldIgnoreMissing();
 // no route without error presenter
 Assert::exception(function () use ($httpRequest, $httpResponse) {
 	$presenterFactory = Mockery::mock(IPresenterFactory::class);
-	$router = Mockery::mock(IRouter::class);
+	$router = Mockery::mock(Router::class);
 	$router->shouldReceive('match')->andReturn(null);
 
 	$app = new Application($presenterFactory, $router, $httpRequest, $httpResponse);
@@ -82,7 +87,7 @@ test(function () use ($httpRequest, $httpResponse) {
 	$presenterFactory = Mockery::mock(IPresenterFactory::class);
 	$presenterFactory->shouldReceive('createPresenter')->with('Error')->andReturn($errorPresenter);
 
-	$router = Mockery::mock(IRouter::class);
+	$router = Mockery::mock(Router::class);
 	$router->shouldReceive('match')->andReturn(null);
 
 	$errorPresenter->injectPrimary(null, $presenterFactory, $router, $httpRequest, $httpResponse);
@@ -110,8 +115,8 @@ test(function () use ($httpRequest, $httpResponse) {
 	$presenterFactory = Mockery::mock(IPresenterFactory::class);
 	$presenterFactory->shouldReceive('createPresenter')->with('Error')->andReturn($errorPresenter);
 
-	$router = Mockery::mock(IRouter::class);
-	$router->shouldReceive('match')->andReturn(new Request('Error', 'GET'));
+	$router = Mockery::mock(Router::class);
+	$router->shouldReceive('match')->andReturn(['presenter' => 'Error']);
 
 	$errorPresenter->injectPrimary(null, $presenterFactory, $router, $httpRequest, $httpResponse);
 
@@ -138,8 +143,8 @@ Assert::exception(function () use ($httpRequest, $httpResponse) {
 	$presenterFactory = Mockery::mock(IPresenterFactory::class);
 	$presenterFactory->shouldReceive('createPresenter')->with('Missing')->andThrow(Nette\Application\InvalidPresenterException::class);
 
-	$router = Mockery::mock(IRouter::class);
-	$router->shouldReceive('match')->andReturn(new Request('Missing', 'GET'));
+	$router = Mockery::mock(Router::class);
+	$router->shouldReceive('match')->andReturn(['presenter' => 'Missing']);
 
 	$app = new Application($presenterFactory, $router, $httpRequest, $httpResponse);
 	$app->run();
@@ -154,8 +159,8 @@ test(function () use ($httpRequest, $httpResponse) {
 	$presenterFactory->shouldReceive('createPresenter')->with('Missing')->andThrow(Nette\Application\InvalidPresenterException::class);
 	$presenterFactory->shouldReceive('createPresenter')->with('Error')->andReturn($errorPresenter);
 
-	$router = Mockery::mock(IRouter::class);
-	$router->shouldReceive('match')->andReturn(new Request('Missing', 'GET'));
+	$router = Mockery::mock(Router::class);
+	$router->shouldReceive('match')->andReturn(['presenter' => 'Missing']);
 
 	$errorPresenter->injectPrimary(null, $presenterFactory, $router, $httpRequest, $httpResponse);
 
@@ -182,8 +187,8 @@ Assert::exception(function () use ($httpRequest, $httpResponse) {
 	$presenterFactory = Mockery::mock(IPresenterFactory::class);
 	$presenterFactory->shouldReceive('createPresenter')->with('Bad')->andReturn(new BadPresenter);
 
-	$router = Mockery::mock(IRouter::class);
-	$router->shouldReceive('match')->andReturn(new Request('Bad', 'GET'));
+	$router = Mockery::mock(Router::class);
+	$router->shouldReceive('match')->andReturn(['presenter' => 'Bad']);
 
 	$app = new Application($presenterFactory, $router, $httpRequest, $httpResponse);
 	$app->run();
@@ -198,8 +203,8 @@ test(function () use ($httpRequest, $httpResponse) {
 	$presenterFactory->shouldReceive('createPresenter')->with('Bad')->andReturn(new BadPresenter);
 	$presenterFactory->shouldReceive('createPresenter')->with('Error')->andReturn($errorPresenter);
 
-	$router = Mockery::mock(IRouter::class);
-	$router->shouldReceive('match')->andReturn(new Request('Bad', 'GET'));
+	$router = Mockery::mock(Router::class);
+	$router->shouldReceive('match')->andReturn(['presenter' => 'Bad']);
 
 	$errorPresenter->injectPrimary(null, $presenterFactory, $router, $httpRequest, $httpResponse);
 
@@ -228,8 +233,8 @@ Assert::noError(function () use ($httpRequest, $httpResponse) {
 	$presenterFactory = Mockery::mock(IPresenterFactory::class);
 	$presenterFactory->shouldReceive('createPresenter')->with('Good')->andReturn($presenter);
 
-	$router = Mockery::mock(IRouter::class);
-	$router->shouldReceive('match')->andReturn(new Request('Good', 'GET'));
+	$router = Mockery::mock(Router::class);
+	$router->shouldReceive('match')->andReturn(['presenter' => 'Good']);
 
 	$presenter->injectPrimary(null, $presenterFactory, $router, $httpRequest, $httpResponse);
 
@@ -254,8 +259,8 @@ Assert::noError(function () use ($httpRequest, $httpResponse) {
 	$presenterFactory->shouldReceive('createPresenter')->with('Good')->andReturn($presenter);
 	$presenterFactory->shouldReceive('createPresenter')->with('Error')->andReturn($errorPresenter);
 
-	$router = Mockery::mock(IRouter::class);
-	$router->shouldReceive('match')->andReturn(new Request('Good', 'GET'));
+	$router = Mockery::mock(Router::class);
+	$router->shouldReceive('match')->andReturn(['presenter' => 'Good']);
 
 	$presenter->injectPrimary(null, $presenterFactory, $router, $httpRequest, $httpResponse);
 	$errorPresenter->injectPrimary(null, $presenterFactory, $router, $httpRequest, $httpResponse);
@@ -282,7 +287,7 @@ Assert::noError(function () use ($httpRequest, $httpResponse) {
 	$presenterFactory = Mockery::mock(IPresenterFactory::class);
 	$presenterFactory->shouldReceive('createPresenter')->with('Error')->andReturn($presenter);
 
-	$router = Mockery::mock(IRouter::class);
+	$router = Mockery::mock(Router::class);
 
 	$errors = [];
 
@@ -370,8 +375,8 @@ Assert::noError(function () use ($httpRequest, $httpResponse) {
 	$presenterFactory = Mockery::mock(IPresenterFactory::class);
 	$presenterFactory->shouldReceive('createPresenter')->with('Infinity')->andReturn($presenter);
 
-	$router = Mockery::mock(IRouter::class);
-	$router->shouldReceive('match')->andReturn(new Request('Infinity', 'GET'));
+	$router = Mockery::mock(Router::class);
+	$router->shouldReceive('match')->andReturn(['presenter' => 'Infinity']);
 
 	$app = new Application($presenterFactory, $router, $httpRequest, $httpResponse);
 	$app->catchExceptions = true;
@@ -386,8 +391,8 @@ Assert::noError(function () use ($httpRequest, $httpResponse) {
 	Assert::count(21, $app1->getRequests());
 
 	// Redefine maxLoop
-	Application::$maxLoop = 2;
 	$app2 = clone $app;
+	$app2->maxLoop = 2;
 	Assert::exception(function () use ($app2) {
 		$app2->run();
 	}, ApplicationException::class, 'Too many loops detected in application life cycle.');

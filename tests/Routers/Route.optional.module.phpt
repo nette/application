@@ -20,17 +20,20 @@ $route = new Route('[<module admin|image>/]<presenter>/<action>', [
 	'action' => 'default',
 ]);
 
-testRouteIn($route, '/one', 'Front:One', [
+testRouteIn($route, '/one', [
+	'presenter' => 'Front:One',
 	'action' => 'default',
 	'test' => 'testvalue',
 ], '/one/?test=testvalue');
 
-testRouteIn($route, '/admin/one', 'Admin:One', [
+testRouteIn($route, '/admin/one', [
+	'presenter' => 'Admin:One',
 	'action' => 'default',
 	'test' => 'testvalue',
 ], '/admin/one/?test=testvalue');
 
-testRouteIn($route, '/one/admin', 'Front:One', [
+testRouteIn($route, '/one/admin', [
+	'presenter' => 'Front:One',
 	'action' => 'admin',
 	'test' => 'testvalue',
 ], '/one/admin?test=testvalue');

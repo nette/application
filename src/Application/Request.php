@@ -211,4 +211,12 @@ final class Request
 	{
 		return !empty($this->flags[$flag]);
 	}
+
+
+	public function toArray(): array
+	{
+		$params = $this->params;
+		$params['presenter'] = $this->name;
+		return $params;
+	}
 }

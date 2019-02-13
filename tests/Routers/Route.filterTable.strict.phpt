@@ -26,7 +26,8 @@ $route = new Route('<presenter>', [
 	],
 ]);
 
-testRouteIn($route, '/kategorie/', 'Category', [
+testRouteIn($route, '/kategorie/', [
+	'presenter' => 'Category',
 	'test' => 'testvalue',
 ], '/kategorie?test=testvalue');
 

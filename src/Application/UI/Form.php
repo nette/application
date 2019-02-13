@@ -17,7 +17,7 @@ use Nette;
  */
 class Form extends Nette\Forms\Form implements ISignalReceiver
 {
-	/** @var callable[]  function (self $sender); Occurs when form is attached to presenter */
+	/** @var callable[]  function (Form $sender): void; Occurs when form is attached to presenter */
 	public $onAnchor;
 
 
@@ -37,7 +37,7 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 	{
 		parent::validateParent($parent);
 
-		$this->monitor(Presenter::class, function (Presenter $presenter) {
+		$this->monitor(Presenter::class, function (Presenter $presenter): void {
 			if (!isset($this->getElementPrototype()->id)) {
 				$this->getElementPrototype()->id = 'frm-' . $this->lookupPath(Presenter::class);
 			}
@@ -61,11 +61,23 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 
 	/**
 	 * Returns the presenter where this component belongs to.
-	 * @param  bool  $throw exception if presenter doesn't exist?
 	 */
-	final public function getPresenter(bool $throw = true): ?Presenter
+	final public function getPresenter(): ?Presenter
 	{
-		return $this->lookup(Presenter::class, $throw);
+		if (func_num_args()) {
+			trigger_error(__METHOD__ . '() parameter $throw is deprecated, use hasPresenter()', E_USER_DEPRECATED);
+			$throw = func_get_arg(0);
+		}
+		return $this->lookup(Presenter::class, $throw ?? true);
+	}
+
+
+	/**
+	 * Returns whether there is a presenter.
+	 */
+	public function hasPresenter(): bool
+	{
+		return (bool) $this->lookup(Presenter::class, false);
 	}
 
 
@@ -74,7 +86,7 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 	 */
 	public function isAnchored(): bool
 	{
-		return (bool) $this->getPresenter(false);
+		return $this->hasPresenter();
 	}
 
 

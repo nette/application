@@ -18,7 +18,8 @@ $route = new Route('<parameter-longer-than-32-characters>', [
 	'presenter' => 'Presenter',
 ]);
 
-testRouteIn($route, '/any', 'Presenter', [
+testRouteIn($route, '/any', [
+	'presenter' => 'Presenter',
 	'parameter-longer-than-32-characters' => 'any',
 	'test' => 'testvalue',
 ], '/any?test=testvalue');

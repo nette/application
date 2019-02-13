@@ -17,10 +17,12 @@ require __DIR__ . '/Route.php';
 $route = new Route('index[!.html]', [
 ]);
 
-testRouteIn($route, '/index.html', 'querypresenter', [
+testRouteIn($route, '/index.html', [
+	'presenter' => 'querypresenter',
 	'test' => 'testvalue',
-], '/index.html?test=testvalue&presenter=querypresenter');
+], '/index.html?presenter=querypresenter&test=testvalue');
 
-testRouteIn($route, '/index', 'querypresenter', [
+testRouteIn($route, '/index', [
+	'presenter' => 'querypresenter',
 	'test' => 'testvalue',
-], '/index.html?test=testvalue&presenter=querypresenter');
+], '/index.html?presenter=querypresenter&test=testvalue');

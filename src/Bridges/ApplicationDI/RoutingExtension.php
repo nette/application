@@ -42,8 +42,9 @@ final class RoutingExtension extends Nette\DI\CompilerExtension
 		$builder = $this->getContainerBuilder();
 
 		$router = $builder->addDefinition($this->prefix('router'))
-			->setClass(Nette\Application\IRouter::class)
-			->setFactory(Nette\Application\Routers\RouteList::class);
+			->setType(Nette\Routing\Router::class)
+			->setFactory(Nette\Application\Routers\RouteList::class)
+			->setExported();
 
 		$routeClass = $config['routeClass'] ?: 'Nette\Application\Routers\Route';
 		foreach ($config['routes'] as $mask => $action) {
@@ -62,7 +63,7 @@ final class RoutingExtension extends Nette\DI\CompilerExtension
 
 		if ($this->debugMode && $this->config['debugger'] && $application = $builder->getByType(Nette\Application\Application::class)) {
 			$builder->getDefinition($application)->addSetup('@Tracy\Bar::addPanel', [
-				new Nette\DI\Statement(Nette\Bridges\ApplicationTracy\RoutingPanel::class),
+				new Nette\DI\Definitions\Statement(Nette\Bridges\ApplicationTracy\RoutingPanel::class),
 			]);
 		}
 	}

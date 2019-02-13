@@ -25,6 +25,7 @@ $route = new Route(' ? action=<presenter>', [
 	],
 ]);
 
-testRouteIn($route, '/?action=abc', 'cba', [
+testRouteIn($route, '/?action=abc', [
+	'presenter' => 'cba',
 	'test' => 'testvalue',
-], '/?test=testvalue&action=ABC');
+], '/?action=ABC&test=testvalue');

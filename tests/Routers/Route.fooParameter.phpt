@@ -21,7 +21,8 @@ $route = new Route('index<?.xml>/', [
 
 testRouteIn($route, '/index.');
 
-testRouteIn($route, '/index.xml', 'DefaultPresenter', [
+testRouteIn($route, '/index.xml', [
+	'presenter' => 'DefaultPresenter',
 	'test' => 'testvalue',
 ], '/index.xml/?test=testvalue');
 

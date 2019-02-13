@@ -15,49 +15,56 @@ require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/Route.php';
 
 
-testRouteIn(new Route('//<?%domain%>/<path>', 'Default:default'), '/abc', 'Default', [
+testRouteIn(new Route('//<?%domain%>/<path>', 'Default:default'), '/abc', [
+	'presenter' => 'Default',
 	'path' => 'abc',
 	'action' => 'default',
 	'test' => 'testvalue',
 ], '/abc?test=testvalue');
 
 
-testRouteIn(new Route('//example.<?%tld%>/<path>', 'Default:default'), '/abc', 'Default', [
+testRouteIn(new Route('//example.<?%tld%>/<path>', 'Default:default'), '/abc', [
+	'presenter' => 'Default',
 	'path' => 'abc',
 	'action' => 'default',
 	'test' => 'testvalue',
 ], '/abc?test=testvalue');
 
 
-testRouteIn(new Route('//example.com/<?%basePath%>/<path>', 'Default:default'), '/abc', 'Default', [
+testRouteIn(new Route('//example.com/<?%basePath%>/<path>', 'Default:default'), '/abc', [
+	'presenter' => 'Default',
 	'path' => 'abc',
 	'action' => 'default',
 	'test' => 'testvalue',
 ], '/abc?test=testvalue');
 
 
-testRouteIn(new Route('//%domain%/<path>', 'Default:default'), '/abc', 'Default', [
+testRouteIn(new Route('//%domain%/<path>', 'Default:default'), '/abc', [
+	'presenter' => 'Default',
 	'path' => 'abc',
 	'action' => 'default',
 	'test' => 'testvalue',
 ], '/abc?test=testvalue');
 
 
-testRouteIn(new Route('//%sld%.com/<path>', 'Default:default'), '/abc', 'Default', [
+testRouteIn(new Route('//%sld%.com/<path>', 'Default:default'), '/abc', [
+	'presenter' => 'Default',
 	'path' => 'abc',
 	'action' => 'default',
 	'test' => 'testvalue',
 ], '/abc?test=testvalue');
 
 
-testRouteIn(new Route('//%sld%.%tld%/<path>', 'Default:default'), '/abc', 'Default', [
+testRouteIn(new Route('//%sld%.%tld%/<path>', 'Default:default'), '/abc', [
+	'presenter' => 'Default',
 	'path' => 'abc',
 	'action' => 'default',
 	'test' => 'testvalue',
 ], '/abc?test=testvalue');
 
 
-testRouteIn(new Route('//%host%/<path>', 'Default:default'), '/abc', 'Default', [
+testRouteIn(new Route('//%host%/<path>', 'Default:default'), '/abc', [
+	'presenter' => 'Default',
 	'path' => 'abc',
 	'action' => 'default',
 	'test' => 'testvalue',
@@ -65,14 +72,16 @@ testRouteIn(new Route('//%host%/<path>', 'Default:default'), '/abc', 'Default', 
 
 
 // alternative
-testRouteIn(new Route('//example.%tld%/<path>', 'Default:default'), '/abc', 'Default', [
+testRouteIn(new Route('//example.%tld%/<path>', 'Default:default'), '/abc', [
+	'presenter' => 'Default',
 	'path' => 'abc',
 	'action' => 'default',
 	'test' => 'testvalue',
 ], '/abc?test=testvalue');
 
 
-testRouteIn(new Route('//example.com/%basePath%/<path>', 'Default:default'), '/abc', 'Default', [
+testRouteIn(new Route('//example.com/%basePath%/<path>', 'Default:default'), '/abc', [
+	'presenter' => 'Default',
 	'path' => 'abc',
 	'action' => 'default',
 	'test' => 'testvalue',

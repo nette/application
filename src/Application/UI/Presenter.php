@@ -39,6 +39,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/** @internal special parameter key */
 	public const
+		PRESENTER_KEY = 'presenter',
 		SIGNAL_KEY = 'do',
 		ACTION_KEY = 'action',
 		FLASH_KEY = '_fid',
@@ -47,10 +48,10 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @var int */
 	public $invalidLinkMode;
 
-	/** @var callable[]  function (Presenter $sender); Occurs when the presenter is starting */
+	/** @var callable[]  function (Presenter $sender): void; Occurs when the presenter is starting */
 	public $onStartup;
 
-	/** @var callable[]  function (Presenter $sender, IResponse $response); Occurs when the presenter is shutting down */
+	/** @var callable[]  function (Presenter $sender, IResponse $response): void; Occurs when the presenter is shutting down */
 	public $onShutdown;
 
 	/** @var bool  automatically call canonicalize() */
@@ -119,7 +120,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @var Nette\Application\IPresenterFactory */
 	private $presenterFactory;
 
-	/** @var Nette\Application\IRouter */
+	/** @var Nette\Routing\Router */
 	private $router;
 
 	/** @var Nette\Security\User */
@@ -128,7 +129,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @var ITemplateFactory */
 	private $templateFactory;
 
-	/** @var Nette\Http\Url */
+	/** @var Nette\Http\UrlScript */
 	private $refUrlCache;
 
 
@@ -147,9 +148,15 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/**
 	 * Returns self.
 	 */
-	final public function getPresenter(bool $throw = true): self
+	final public function getPresenter(): self
 	{
 		return $this;
+	}
+
+
+	final public function hasPresenter(): bool
+	{
+		return true;
 	}
 
 
@@ -292,9 +299,13 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function checkRequirements($element): void
 	{
+		parent::checkRequirements($element);
 		$user = (array) ComponentReflection::parseAnnotation($element, 'User');
-		if (in_array('loggedIn', $user, true) && !$this->getUser()->isLoggedIn()) {
-			throw new Application\ForbiddenRequestException;
+		if (in_array('loggedIn', $user, true)) {
+			trigger_error(__METHOD__ . '() annotation @User is deprecated', E_USER_DEPRECATED);
+			if (!$this->getUser()->isLoggedIn()) {
+				throw new Application\ForbiddenRequestException;
+			}
 		}
 	}
 
@@ -900,17 +911,17 @@ abstract class Presenter extends Control implements Application\IPresenter
 	protected function requestToUrl(Application\Request $request, bool $relative = null): string
 	{
 		if ($this->refUrlCache === null) {
-			$this->refUrlCache = new Http\Url($this->httpRequest->getUrl());
-			$this->refUrlCache->setPath($this->httpRequest->getUrl()->getScriptPath());
+			$url = $this->httpRequest->getUrl();
+			$this->refUrlCache = new Http\UrlScript($url->getHostUrl() . $url->getScriptPath());
 		}
 		if (!$this->router) {
 			throw new Nette\InvalidStateException('Unable to generate URL, service Router has not been set.');
 		}
 
-		$url = $this->router->constructUrl($request, $this->refUrlCache);
+		$url = $this->router->constructUrl($request->toArray(), $this->refUrlCache);
 		if ($url === null) {
 			$params = $request->getParameters();
-			unset($params[self::ACTION_KEY]);
+			unset($params[self::ACTION_KEY], $params[self::PRESENTER_KEY]);
 			$params = urldecode(http_build_query($params, '', ', '));
 			throw new InvalidLinkException("No route for {$request->getPresenterName()}:{$request->getParameter('action')}($params)");
 		}
@@ -953,7 +964,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			}
 
 			if (!isset($args[$name])) {
-				if (!$param->isDefaultValueAvailable() && !$param->allowsNull() && $type !== 'NULL' && $type !== 'array') {
+				if (!$param->isDefaultValueAvailable() && !$param->allowsNull() && $type !== 'NULL' && $type !== 'array' && $type !== 'iterable') {
 					$missing[] = $param;
 					unset($args[$name]);
 				}
@@ -1047,7 +1058,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public static function getPersistentComponents(): array
 	{
-		return (array) ComponentReflection::parseAnnotation(new \ReflectionClass(get_called_class()), 'persistent');
+		return (array) ComponentReflection::parseAnnotation(new \ReflectionClass(static::class), 'persistent');
 	}
 
 
@@ -1253,7 +1264,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/********************* services ****************d*g**/
 
 
-	final public function injectPrimary(Nette\DI\Container $context = null, Application\IPresenterFactory $presenterFactory = null, Application\IRouter $router = null,
+	final public function injectPrimary(Nette\DI\Container $context = null, Application\IPresenterFactory $presenterFactory = null, Nette\Routing\Router $router = null,
 		Http\IRequest $httpRequest, Http\IResponse $httpResponse, Http\Session $session = null, Nette\Security\User $user = null, ITemplateFactory $templateFactory = null)
 	{
 		if ($this->presenterFactory !== null) {

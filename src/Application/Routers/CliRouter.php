@@ -20,7 +20,7 @@ final class CliRouter implements Application\IRouter
 {
 	use Nette\SmartObject;
 
-	public const PRESENTER_KEY = 'action';
+	private const PRESENTER_KEY = 'action';
 
 	/** @var array */
 	private $defaults;
@@ -33,9 +33,9 @@ final class CliRouter implements Application\IRouter
 
 
 	/**
-	 * Maps command line arguments to a Request object.
+	 * Maps command line arguments to an array.
 	 */
-	public function match(Nette\Http\IRequest $httpRequest): ?Application\Request
+	public function match(Nette\Http\IRequest $httpRequest): ?array
 	{
 		if (empty($_SERVER['argv']) || !is_array($_SERVER['argv'])) {
 			return null;
@@ -82,19 +82,16 @@ final class CliRouter implements Application\IRouter
 			$params[self::PRESENTER_KEY] = $presenter;
 			$presenter = $module;
 		}
+		$params['presenter'] = $presenter;
 
-		return new Application\Request(
-			$presenter,
-			'CLI',
-			$params
-		);
+		return $params;
 	}
 
 
 	/**
 	 * This router is only unidirectional.
 	 */
-	public function constructUrl(Application\Request $appRequest, Nette\Http\Url $refUrl): ?string
+	public function constructUrl(array $params, Nette\Http\UrlScript $refUrl): ?string
 	{
 		return null;
 	}

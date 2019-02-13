@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Nette\Application;
 
 use Nette;
+use Nette\Routing\Router;
 
 
 /**
@@ -19,17 +20,17 @@ final class LinkGenerator
 {
 	use Nette\SmartObject;
 
-	/** @var IRouter */
+	/** @var Router */
 	private $router;
 
-	/** @var Nette\Http\Url */
+	/** @var Nette\Http\UrlScript */
 	private $refUrl;
 
 	/** @var IPresenterFactory|null */
 	private $presenterFactory;
 
 
-	public function __construct(IRouter $router, Nette\Http\Url $refUrl, IPresenterFactory $presenterFactory = null)
+	public function __construct(Router $router, Nette\Http\UrlScript $refUrl, IPresenterFactory $presenterFactory = null)
 	{
 		$this->router = $router;
 		$this->refUrl = $refUrl;
@@ -77,10 +78,11 @@ final class LinkGenerator
 		if ($action !== '') {
 			$params[UI\Presenter::ACTION_KEY] = $action;
 		}
+		$params[UI\Presenter::PRESENTER_KEY] = $presenter;
 
-		$url = $this->router->constructUrl(new Request($presenter, null, $params), $this->refUrl);
+		$url = $this->router->constructUrl($params, $this->refUrl);
 		if ($url === null) {
-			unset($params[UI\Presenter::ACTION_KEY]);
+			unset($params[UI\Presenter::ACTION_KEY], $params[UI\Presenter::PRESENTER_KEY]);
 			$params = urldecode(http_build_query($params, '', ', '));
 			throw new UI\InvalidLinkException("No route for $dest($params)");
 		}

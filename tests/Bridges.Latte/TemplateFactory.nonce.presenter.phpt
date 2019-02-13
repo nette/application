@@ -24,6 +24,7 @@ $response = Mockery::mock(Nette\Http\IResponse::class);
 $response->shouldReceive('getHeader')->with('Content-Security-Policy')->andReturn("hello 'nonce-abcd123==' world");
 
 $presenter = Mockery::mock(UI\Presenter::class);
+$presenter->shouldReceive('hasPresenter')->andReturn(true);
 $presenter->shouldReceive('getPresenter')->andReturn($presenter);
 $presenter->shouldReceive('getHttpResponse')->andReturn($response);
 $presenter->shouldIgnoreMissing();

@@ -15,10 +15,9 @@ use Nette;
 /**
  * The router broker.
  */
-class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRouter
+class RouteList extends Nette\Routing\RouteList implements Nette\Application\IRouter, \ArrayAccess, \Countable, \IteratorAggregate
 {
-	/** @var array */
-	private $cachedRoutes;
+	private const PRESENTER_KEY = 'presenter';
 
 	/** @var string|null */
 	private $module;
@@ -26,101 +25,132 @@ class RouteList extends Nette\Utils\ArrayList implements Nette\Application\IRout
 
 	public function __construct(string $module = null)
 	{
-		$this->module = $module ? $module . ':' : '';
+		parent::__construct();
+		$this->module = $module ? $module . ':' : null;
 	}
 
 
 	/**
-	 * Maps HTTP request to a Request object.
+	 * Maps HTTP request to an array.
 	 */
-	public function match(Nette\Http\IRequest $httpRequest): ?Nette\Application\Request
+	public function match(Nette\Http\IRequest $httpRequest): ?array
 	{
-		foreach ($this as $route) {
-			$appRequest = $route->match($httpRequest);
-			if ($appRequest !== null) {
-				$name = $appRequest->getPresenterName();
-				if (strncmp($name, 'Nette:', 6)) {
-					$appRequest->setPresenterName($this->module . $name);
-				}
-				return $appRequest;
-			}
+		$params = parent::match($httpRequest);
+
+		$presenter = $params[self::PRESENTER_KEY] ?? null;
+		if (is_string($presenter) && strncmp($presenter, 'Nette:', 6)) {
+			$params[self::PRESENTER_KEY] = $this->module . $presenter;
 		}
-		return null;
+		return $params;
 	}
 
 
 	/**
-	 * Constructs absolute URL from Request object.
+	 * Constructs absolute URL from array.
 	 */
-	public function constructUrl(Nette\Application\Request $appRequest, Nette\Http\Url $refUrl): ?string
+	public function constructUrl(array $params, Nette\Http\UrlScript $refUrl): ?string
 	{
-		if ($this->cachedRoutes === null) {
-			$this->warmupCache();
-		}
-
 		if ($this->module) {
-			if (strncmp($tmp = $appRequest->getPresenterName(), $this->module, strlen($this->module)) === 0) {
-				$appRequest = clone $appRequest;
-				$appRequest->setPresenterName(substr($tmp, strlen($this->module)));
+			if (strncmp($params[self::PRESENTER_KEY], $this->module, strlen($this->module)) === 0) {
+				$params[self::PRESENTER_KEY] = substr($params[self::PRESENTER_KEY], strlen($this->module));
 			} else {
 				return null;
 			}
 		}
 
-		$presenter = $appRequest->getPresenterName();
-		if (!isset($this->cachedRoutes[$presenter])) {
-			$presenter = '*';
-		}
-
-		foreach ($this->cachedRoutes[$presenter] as $route) {
-			$url = $route->constructUrl($appRequest, $refUrl);
-			if ($url !== null) {
-				return $url;
-			}
-		}
-
-		return null;
-	}
-
-
-	public function warmupCache(): void
-	{
-		$routes = [];
-		$routes['*'] = [];
-
-		foreach ($this as $route) {
-			$presenters = $route instanceof Route && is_array($tmp = $route->getTargetPresenters())
-				? $tmp
-				: array_keys($routes);
-
-			foreach ($presenters as $presenter) {
-				if (!isset($routes[$presenter])) {
-					$routes[$presenter] = $routes['*'];
-				}
-				$routes[$presenter][] = $route;
-			}
-		}
-
-		$this->cachedRoutes = $routes;
+		return parent::constructUrl($params, $refUrl);
 	}
 
 
 	/**
-	 * Adds the router.
-	 * @param  mixed  $index
-	 * @param  Nette\Application\IRouter  $route
+	 * @param  string  $mask  e.g. '<presenter>/<action>/<id \d{1,3}>'
+	 * @param  array|string|\Closure  $metadata  default values or metadata or callback for NetteModule\MicroPresenter
+	 * @return static
 	 */
-	public function offsetSet($index, $route): void
+	public function addRoute(string $mask, $metadata = [], int $flags = 0)
 	{
-		if (!$route instanceof Nette\Application\IRouter) {
-			throw new Nette\InvalidArgumentException('Argument must be IRouter descendant.');
-		}
-		parent::offsetSet($index, $route);
+		$this->add(new Route($mask, $metadata), $flags);
+		return $this;
+	}
+
+
+	/**
+	 * @return static
+	 */
+	public function withModule(string $module)
+	{
+		$router = new static;
+		$router->module = $module . ':';
+		$router->parent = $this;
+		$this->add($router);
+		return $router;
 	}
 
 
 	public function getModule(): ?string
 	{
 		return $this->module;
+	}
+
+
+	public function count(): int
+	{
+		return count($this->getRouters());
+	}
+
+
+	/**
+	 * @param  mixed  $index
+	 * @param  Nette\Routing\Router  $router
+	 */
+	public function offsetSet($index, $router): void
+	{
+		if ($index === null) {
+			$this->add($router);
+		} else {
+			$this->modify($index, $router);
+		}
+	}
+
+
+	/**
+	 * @param  int  $index
+	 * @return mixed
+	 * @throws Nette\OutOfRangeException
+	 */
+	public function offsetGet($index)
+	{
+		if (!$this->offsetExists($index)) {
+			throw new Nette\OutOfRangeException('Offset invalid or out of range');
+		}
+		return $this->getRouters()[$index];
+	}
+
+
+	/**
+	 * @param  int  $index
+	 */
+	public function offsetExists($index): bool
+	{
+		return is_int($index) && $index >= 0 && $index < $this->count();
+	}
+
+
+	/**
+	 * @param  int  $index
+	 * @throws Nette\OutOfRangeException
+	 */
+	public function offsetUnset($index): void
+	{
+		if (!$this->offsetExists($index)) {
+			throw new Nette\OutOfRangeException('Offset invalid or out of range');
+		}
+		$this->modify($index, null);
+	}
+
+
+	public function getIterator(): \ArrayIterator
+	{
+		return new \ArrayIterator($this->getRouters());
 	}
 }

@@ -16,9 +16,10 @@
 	],
 	"require": {
 		"php": ">=7.1",
-		"nette/component-model": "^3.0-beta2",
+		"nette/component-model": "^3.0.0-RC1",
 		"nette/http": "^3.0",
-		"nette/utils": "^2.4 || ^3.0"
+		"nette/routing": "~3.0.0",
+		"nette/utils": "^3.0"
 	},
 	"suggest": {
 		"nette/forms": "Allows to use Nette\\Application\\UI\\Form",
@@ -26,8 +27,8 @@
 	},
 	"require-dev": {
 		"nette/tester": "^2.0.1",
-		"nette/di": "^2.4 || ~3.0.0",
-		"nette/forms": "^3.0.0-beta",
+		"nette/di": "^v3.0.0-beta2",
+		"nette/forms": "^3.0.0-RC1",
 		"nette/robot-loader": "^2.4.2 || ^3.0",
 		"nette/security": "^3.0",
 		"latte/latte": "^3.0",

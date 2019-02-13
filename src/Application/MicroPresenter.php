@@ -14,6 +14,7 @@ use Nette;
 use Nette\Application;
 use Nette\Application\Responses;
 use Nette\Http;
+use Nette\Routing\Router;
 
 
 /**
@@ -29,14 +30,14 @@ final class MicroPresenter implements Application\IPresenter
 	/** @var Nette\Http\IRequest|null */
 	private $httpRequest;
 
-	/** @var Application\IRouter|null */
+	/** @var Router|null */
 	private $router;
 
 	/** @var Application\Request|null */
 	private $request;
 
 
-	public function __construct(Nette\DI\Container $context = null, Http\IRequest $httpRequest = null, Application\IRouter $router = null)
+	public function __construct(Nette\DI\Container $context = null, Http\IRequest $httpRequest = null, Router $router = null)
 	{
 		$this->context = $context;
 		$this->httpRequest = $httpRequest;
@@ -58,8 +59,8 @@ final class MicroPresenter implements Application\IPresenter
 		$this->request = $request;
 
 		if ($this->httpRequest && $this->router && !$this->httpRequest->isAjax() && ($request->isMethod('get') || $request->isMethod('head'))) {
-			$refUrl = clone $this->httpRequest->getUrl();
-			$url = $this->router->constructUrl($request, $refUrl->setPath($refUrl->getScriptPath()));
+			$refUrl = $this->httpRequest->getUrl();
+			$url = $this->router->constructUrl($request->toArray(), $refUrl);
 			if ($url !== null && !$this->httpRequest->getUrl()->isEqual($url)) {
 				return new Responses\RedirectResponse($url, Http\IResponse::S301_MOVED_PERMANENTLY);
 			}

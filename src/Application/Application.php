@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Nette\Application;
 
 use Nette;
+use Nette\Routing\Router;
 
 
 /**
@@ -20,7 +21,7 @@ class Application
 	use Nette\SmartObject;
 
 	/** @var int */
-	public static $maxLoop = 20;
+	public $maxLoop = 20;
 
 	/** @var bool enable fault barrier? */
 	public $catchExceptions;
@@ -28,22 +29,22 @@ class Application
 	/** @var string|null */
 	public $errorPresenter;
 
-	/** @var callable[]  function (Application $sender); Occurs before the application loads presenter */
+	/** @var callable[]  function (Application $sender): void; Occurs before the application loads presenter */
 	public $onStartup;
 
-	/** @var callable[]  function (Application $sender, \Throwable $e = null); Occurs before the application shuts down */
+	/** @var callable[]  function (Application $sender, \Throwable $e = null): void; Occurs before the application shuts down */
 	public $onShutdown;
 
-	/** @var callable[]  function (Application $sender, Request $request); Occurs when a new request is received */
+	/** @var callable[]  function (Application $sender, Request $request): void; Occurs when a new request is received */
 	public $onRequest;
 
-	/** @var callable[]  function (Application $sender, IPresenter $presenter); Occurs when a presenter is created */
+	/** @var callable[]  function (Application $sender, IPresenter $presenter): void; Occurs when a presenter is created */
 	public $onPresenter;
 
-	/** @var callable[]  function (Application $sender, IResponse $response); Occurs when a new response is ready for dispatch */
+	/** @var callable[]  function (Application $sender, IResponse $response): void; Occurs when a new response is ready for dispatch */
 	public $onResponse;
 
-	/** @var callable[]  function (Application $sender, \Throwable $e); Occurs when an unhandled exception occurs in the application */
+	/** @var callable[]  function (Application $sender, \Throwable $e): void; Occurs when an unhandled exception occurs in the application */
 	public $onError;
 
 	/** @var Request[] */
@@ -61,11 +62,11 @@ class Application
 	/** @var IPresenterFactory */
 	private $presenterFactory;
 
-	/** @var IRouter */
+	/** @var Router */
 	private $router;
 
 
-	public function __construct(IPresenterFactory $presenterFactory, IRouter $router, Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse)
+	public function __construct(IPresenterFactory $presenterFactory, Router $router, Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse)
 	{
 		$this->httpRequest = $httpRequest;
 		$this->httpResponse = $httpResponse;
@@ -104,18 +105,31 @@ class Application
 
 	public function createInitialRequest(): Request
 	{
-		$request = $this->router->match($this->httpRequest);
-		if (!$request) {
+		$params = $this->router->match($this->httpRequest);
+		$presenter = $params[UI\Presenter::PRESENTER_KEY] ?? null;
+
+		if ($params === null || !is_string($presenter)) {
 			throw new BadRequestException('No route for HTTP request.');
+		} elseif ($presenter === null) {
+			throw new Nette\InvalidStateException('Missing presenter in route definition.');
 		}
-		return $request;
+
+		unset($params[UI\Presenter::PRESENTER_KEY]);
+		return new Request(
+			$presenter,
+			$this->httpRequest->getMethod(),
+			$params,
+			$this->httpRequest->getPost(),
+			$this->httpRequest->getFiles(),
+			[Request::SECURED => $this->httpRequest->isSecured()]
+		);
 	}
 
 
 	public function processRequest(Request $request): void
 	{
 		process:
-		if (count($this->requests) > self::$maxLoop) {
+		if (count($this->requests) > $this->maxLoop) {
 			throw new ApplicationException('Too many loops detected in application life cycle.');
 		}
 
@@ -191,7 +205,7 @@ class Application
 	/**
 	 * Returns router.
 	 */
-	public function getRouter(): IRouter
+	public function getRouter(): Router
 	{
 		return $this->router;
 	}

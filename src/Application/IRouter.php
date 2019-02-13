@@ -13,20 +13,8 @@ use Nette;
 
 
 /**
- * The bi-directional router.
+ * @deprecated use Nette\Routing\Router
  */
-interface IRouter
+interface IRouter extends Nette\Routing\Router
 {
-	/** only matching route */
-	public const ONE_WAY = 0b0001;
-
-	/**
-	 * Maps HTTP request to a Request object.
-	 */
-	function match(Nette\Http\IRequest $httpRequest): ?Request;
-
-	/**
-	 * Constructs absolute URL from Request object.
-	 */
-	function constructUrl(Request $appRequest, Nette\Http\Url $refUrl): ?string;
 }

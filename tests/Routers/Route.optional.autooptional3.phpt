@@ -23,7 +23,8 @@ testRouteIn($route, '/presenter/');
 testRouteIn($route, '/presenter/abc');
 testRouteIn($route, '/presenter/abc/');
 
-testRouteIn($route, '/presenter/abc/xyy', 'Presenter', [
+testRouteIn($route, '/presenter/abc/xyy', [
+	'presenter' => 'Presenter',
 	'default' => 'abc',
 	'action' => 'default',
 	'test' => 'testvalue',
@@ -31,15 +32,15 @@ testRouteIn($route, '/presenter/abc/xyy', 'Presenter', [
 ], '/presenter/abc/xyy?test=testvalue');
 
 
-Assert::null(testRouteOut($route, 'Homepage'));
-Assert::null(testRouteOut($route, 'Homepage', ['default' => 'abc']));
+Assert::null(testRouteOut($route, ['presenter' => 'Homepage']));
+Assert::null(testRouteOut($route, ['presenter' => 'Homepage', 'default' => 'abc']));
 
 Assert::same(
 	'http://example.com/homepage/123/xyz',
-	testRouteOut($route, 'Homepage', ['required' => 'xyz'])
+	testRouteOut($route, ['presenter' => 'Homepage', 'required' => 'xyz'])
 );
 
 Assert::same(
 	'http://example.com/homepage/abc/xyz',
-	testRouteOut($route, 'Homepage', ['required' => 'xyz', 'default' => 'abc'])
+	testRouteOut($route, ['presenter' => 'Homepage', 'required' => 'xyz', 'default' => 'abc'])
 );

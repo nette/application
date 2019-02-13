@@ -24,7 +24,7 @@ final class UIRuntime
 	public static function initialize(Latte\Runtime\Template $template, &$parentName, array $blocks): void
 	{
 		$providers = $template->global;
-		$blocks = array_filter(array_keys($blocks), function ($s) { return $s[0] !== '_'; });
+		$blocks = array_filter(array_keys($blocks), function (string $s): bool { return $s[0] !== '_'; });
 		if (
 			$parentName === null
 			&& $blocks

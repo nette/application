@@ -21,26 +21,26 @@ test(function () {
 
 	Assert::same(
 		'http://example.com/homepage/12',
-		testRouteOut($route, 'Homepage', ['param' => 12])
+		testRouteOut($route, ['presenter' => 'Homepage', 'param' => 12])
 	);
 
 	Assert::same(
 		'http://example.com/homepage/12.1',
-		testRouteOut($route, 'Homepage', ['param' => 12.1])
+		testRouteOut($route, ['presenter' => 'Homepage', 'param' => 12.1])
 	);
 
 	Assert::same(
 		'http://example.com/homepage/0',
-		testRouteOut($route, 'Homepage', ['param' => false])
+		testRouteOut($route, ['presenter' => 'Homepage', 'param' => false])
 	);
 
 	Assert::same(
 		'http://example.com/homepage/1',
-		testRouteOut($route, 'Homepage', ['param' => true])
+		testRouteOut($route, ['presenter' => 'Homepage', 'param' => true])
 	);
 
-	Assert::null(testRouteOut($route, 'Homepage', ['param' => null]));
-	Assert::null(testRouteOut($route, 'Homepage', ['param' => '']));
+	Assert::null(testRouteOut($route, ['presenter' => 'Homepage', 'param' => null]));
+	Assert::null(testRouteOut($route, ['presenter' => 'Homepage', 'param' => '']));
 });
 
 
@@ -51,30 +51,30 @@ test(function () {
 
 	Assert::same(
 		'http://example.com/homepage/',
-		testRouteOut($route, 'Homepage', ['param' => 12])
+		testRouteOut($route, ['presenter' => 'Homepage', 'param' => 12])
 	);
 
 	Assert::same(
 		'http://example.com/homepage/12.1',
-		testRouteOut($route, 'Homepage', ['param' => 12.1])
+		testRouteOut($route, ['presenter' => 'Homepage', 'param' => 12.1])
 	);
 
 	Assert::same(
 		'http://example.com/homepage/0',
-		testRouteOut($route, 'Homepage', ['param' => false])
+		testRouteOut($route, ['presenter' => 'Homepage', 'param' => false])
 	);
 
 	Assert::same(
 		'http://example.com/homepage/1',
-		testRouteOut($route, 'Homepage', ['param' => true])
+		testRouteOut($route, ['presenter' => 'Homepage', 'param' => true])
 	);
 
 	Assert::same(
 		'http://example.com/homepage/',
-		testRouteOut($route, 'Homepage', ['param' => null])
+		testRouteOut($route, ['presenter' => 'Homepage', 'param' => null])
 	);
 
-	Assert::null(testRouteOut($route, 'Homepage', ['param' => '']));
+	Assert::null(testRouteOut($route, ['presenter' => 'Homepage', 'param' => '']));
 });
 
 
@@ -85,30 +85,30 @@ test(function () {
 
 	Assert::same(
 		'http://example.com/homepage/12',
-		testRouteOut($route, 'Homepage', ['param' => 12])
+		testRouteOut($route, ['presenter' => 'Homepage', 'param' => 12])
 	);
 
 	Assert::same(
 		'http://example.com/homepage/',
-		testRouteOut($route, 'Homepage', ['param' => 12.1])
+		testRouteOut($route, ['presenter' => 'Homepage', 'param' => 12.1])
 	);
 
 	Assert::same(
 		'http://example.com/homepage/0',
-		testRouteOut($route, 'Homepage', ['param' => false])
+		testRouteOut($route, ['presenter' => 'Homepage', 'param' => false])
 	);
 
 	Assert::same(
 		'http://example.com/homepage/1',
-		testRouteOut($route, 'Homepage', ['param' => true])
+		testRouteOut($route, ['presenter' => 'Homepage', 'param' => true])
 	);
 
 	Assert::same(
 		'http://example.com/homepage/',
-		testRouteOut($route, 'Homepage', ['param' => null])
+		testRouteOut($route, ['presenter' => 'Homepage', 'param' => null])
 	);
 
-	Assert::null(testRouteOut($route, 'Homepage', ['param' => '']));
+	Assert::null(testRouteOut($route, ['presenter' => 'Homepage', 'param' => '']));
 });
 
 
@@ -119,30 +119,30 @@ test(function () {
 
 	Assert::same(
 		'http://example.com/homepage/12',
-		testRouteOut($route, 'Homepage', ['param' => 12])
+		testRouteOut($route, ['presenter' => 'Homepage', 'param' => 12])
 	);
 
 	Assert::same(
 		'http://example.com/homepage/12.1',
-		testRouteOut($route, 'Homepage', ['param' => 12.1])
+		testRouteOut($route, ['presenter' => 'Homepage', 'param' => 12.1])
 	);
 
 	Assert::same(
 		'http://example.com/homepage/0',
-		testRouteOut($route, 'Homepage', ['param' => false])
+		testRouteOut($route, ['presenter' => 'Homepage', 'param' => false])
 	);
 
 	Assert::same(
 		'http://example.com/homepage/',
-		testRouteOut($route, 'Homepage', ['param' => true])
+		testRouteOut($route, ['presenter' => 'Homepage', 'param' => true])
 	);
 
 	Assert::same(
 		'http://example.com/homepage/',
-		testRouteOut($route, 'Homepage', ['param' => null])
+		testRouteOut($route, ['presenter' => 'Homepage', 'param' => null])
 	);
 
-	Assert::null(testRouteOut($route, 'Homepage', ['param' => '']));
+	Assert::null(testRouteOut($route, ['presenter' => 'Homepage', 'param' => '']));
 });
 
 
@@ -153,30 +153,30 @@ test(function () {
 
 	Assert::same(
 		'http://example.com/homepage/12',
-		testRouteOut($route, 'Homepage', ['param' => 12])
+		testRouteOut($route, ['presenter' => 'Homepage', 'param' => 12])
 	);
 
 	Assert::same(
 		'http://example.com/homepage/12.1',
-		testRouteOut($route, 'Homepage', ['param' => 12.1])
+		testRouteOut($route, ['presenter' => 'Homepage', 'param' => 12.1])
 	);
 
 	Assert::same(
 		'http://example.com/homepage/',
-		testRouteOut($route, 'Homepage', ['param' => false])
+		testRouteOut($route, ['presenter' => 'Homepage', 'param' => false])
 	);
 
 	Assert::same(
 		'http://example.com/homepage/1',
-		testRouteOut($route, 'Homepage', ['param' => true])
+		testRouteOut($route, ['presenter' => 'Homepage', 'param' => true])
 	);
 
 	Assert::same(
 		'http://example.com/homepage/',
-		testRouteOut($route, 'Homepage', ['param' => null])
+		testRouteOut($route, ['presenter' => 'Homepage', 'param' => null])
 	);
 
-	Assert::null(testRouteOut($route, 'Homepage', ['param' => '']));
+	Assert::null(testRouteOut($route, ['presenter' => 'Homepage', 'param' => '']));
 });
 
 
@@ -187,28 +187,28 @@ test(function () {
 
 	Assert::same(
 		'http://example.com/homepage/12',
-		testRouteOut($route, 'Homepage', ['param' => 12])
+		testRouteOut($route, ['presenter' => 'Homepage', 'param' => 12])
 	);
 
 	Assert::same(
 		'http://example.com/homepage/12.1',
-		testRouteOut($route, 'Homepage', ['param' => 12.1])
+		testRouteOut($route, ['presenter' => 'Homepage', 'param' => 12.1])
 	);
 
 	Assert::same(
 		'http://example.com/homepage/0',
-		testRouteOut($route, 'Homepage', ['param' => false])
+		testRouteOut($route, ['presenter' => 'Homepage', 'param' => false])
 	);
 
 	Assert::same(
 		'http://example.com/homepage/1',
-		testRouteOut($route, 'Homepage', ['param' => true])
+		testRouteOut($route, ['presenter' => 'Homepage', 'param' => true])
 	);
 
 	Assert::same(
 		'http://example.com/homepage/',
-		testRouteOut($route, 'Homepage', ['param' => null])
+		testRouteOut($route, ['presenter' => 'Homepage', 'param' => null])
 	);
 
-	Assert::null(testRouteOut($route, 'Homepage', ['param' => '']));
+	Assert::null(testRouteOut($route, ['presenter' => 'Homepage', 'param' => '']));
 });

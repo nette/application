@@ -16,7 +16,8 @@ require __DIR__ . '/Route.php';
 
 $route = new Route('<action>', 'Default:');
 
-testRouteIn($route, '/default', 'Default', [
+testRouteIn($route, '/default', [
+	'presenter' => 'Default',
 	'action' => 'default',
 	'test' => 'testvalue',
 ], '/default?test=testvalue');
@@ -26,7 +27,8 @@ testRouteIn($route, '/', null);
 
 $route = new Route('<action>', 'Front:Default:');
 
-testRouteIn($route, '/default', 'Front:Default', [
+testRouteIn($route, '/default', [
+	'presenter' => 'Front:Default',
 	'action' => 'default',
 	'test' => 'testvalue',
 ], '/default?test=testvalue');

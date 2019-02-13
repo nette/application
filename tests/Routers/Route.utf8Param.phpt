@@ -18,12 +18,14 @@ $route = new Route('<param č>', [
 	'presenter' => 'Default',
 ]);
 
-testRouteIn($route, '/č', 'Default', [
+testRouteIn($route, '/č', [
+	'presenter' => 'Default',
 	'param' => 'č',
 	'test' => 'testvalue',
 ], '/%C4%8D?test=testvalue');
 
-testRouteIn($route, '/%C4%8D', 'Default', [
+testRouteIn($route, '/%C4%8D', [
+	'presenter' => 'Default',
 	'param' => 'č',
 	'test' => 'testvalue',
 ], '/%C4%8D?test=testvalue');

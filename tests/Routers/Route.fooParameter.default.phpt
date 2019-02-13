@@ -20,18 +20,22 @@ $route = new Route('index<?.xml \.html?|\.php|>/', [
 
 testRouteIn($route, '/index.');
 
-testRouteIn($route, '/index.xml', 'DefaultPresenter', [
+testRouteIn($route, '/index.xml', [
+	'presenter' => 'DefaultPresenter',
 	'test' => 'testvalue',
 ], '/index.xml/?test=testvalue');
 
-testRouteIn($route, '/index.php', 'DefaultPresenter', [
+testRouteIn($route, '/index.php', [
+	'presenter' => 'DefaultPresenter',
 	'test' => 'testvalue',
 ], '/index.xml/?test=testvalue');
 
-testRouteIn($route, '/index.htm', 'DefaultPresenter', [
+testRouteIn($route, '/index.htm', [
+	'presenter' => 'DefaultPresenter',
 	'test' => 'testvalue',
 ], '/index.xml/?test=testvalue');
 
-testRouteIn($route, '/index', 'DefaultPresenter', [
+testRouteIn($route, '/index', [
+	'presenter' => 'DefaultPresenter',
 	'test' => 'testvalue',
 ], '/index.xml/?test=testvalue');

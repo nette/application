@@ -15,17 +15,17 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-class MyRouter implements Nette\Application\IRouter
+class MyRouter implements Nette\Routing\Router
 {
 	public $woken;
 
 
-	public function match(Nette\Http\IRequest $httpRequest): ?Nette\Application\Request
+	public function match(Nette\Http\IRequest $httpRequest): ?array
 	{
 	}
 
 
-	public function constructUrl(Nette\Application\Request $appRequest, Nette\Http\Url $refUrl): ?string
+	public function constructUrl(array $params, Nette\Http\UrlScript $refUrl): ?string
 	{
 	}
 
@@ -78,7 +78,7 @@ test(function () {
 
 Assert::exception(function () {
 
-	/** @return Nette\Application\IRouter */
+	/** @return Nette\Routing\Router */
 	function myRouterFactory()
 	{
 		return new Route('path', function () {});

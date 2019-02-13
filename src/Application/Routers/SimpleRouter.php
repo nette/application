@@ -16,19 +16,14 @@ use Nette\Application;
 /**
  * The bidirectional route for trivial routing via query parameters.
  */
-final class SimpleRouter implements Application\IRouter
+final class SimpleRouter extends Nette\Routing\SimpleRouter implements Nette\Application\IRouter
 {
-	use Nette\SmartObject;
-
-	public const
+	private const
 		PRESENTER_KEY = 'presenter',
 		MODULE_KEY = 'module';
 
 	/** @var string */
 	private $module = '';
-
-	/** @var array */
-	private $defaults;
 
 	/** @var int */
 	private $flags;
@@ -52,82 +47,40 @@ final class SimpleRouter implements Application\IRouter
 			unset($defaults[self::MODULE_KEY]);
 		}
 
-		$this->defaults = $defaults;
 		$this->flags = $flags;
+		parent::__construct($defaults);
 	}
 
 
 	/**
-	 * Maps HTTP request to a Request object.
+	 * Maps HTTP request to an array.
 	 */
-	public function match(Nette\Http\IRequest $httpRequest): ?Application\Request
+	public function match(Nette\Http\IRequest $httpRequest): ?array
 	{
-		if ($httpRequest->getUrl()->getPathInfo() !== '') {
-			return null;
-		}
-		// combine with precedence: get, (post,) defaults
-		$params = $httpRequest->getQuery();
-		$params += $this->defaults;
-
-		if (!isset($params[self::PRESENTER_KEY]) || !is_string($params[self::PRESENTER_KEY])) {
-			return null;
+		$params = parent::match($httpRequest);
+		$presenter = $params[self::PRESENTER_KEY] ?? null;
+		if (is_string($presenter)) {
+			$params[self::PRESENTER_KEY] = $this->module . $presenter;
 		}
 
-		$presenter = $this->module . $params[self::PRESENTER_KEY];
-		unset($params[self::PRESENTER_KEY]);
-
-		return new Application\Request(
-			$presenter,
-			$httpRequest->getMethod(),
-			$params,
-			$httpRequest->getPost(),
-			$httpRequest->getFiles(),
-			[Application\Request::SECURED => $httpRequest->isSecured()]
-		);
+		return $params;
 	}
 
 
 	/**
-	 * Constructs absolute URL from Request object.
+	 * Constructs absolute URL from array.
 	 */
-	public function constructUrl(Application\Request $appRequest, Nette\Http\Url $refUrl): ?string
+	public function constructUrl(array $params, Nette\Http\UrlScript $refUrl): ?string
 	{
 		if ($this->flags & self::ONE_WAY) {
 			return null;
 		}
-		$params = $appRequest->getParameters();
 
-		// presenter name
-		$presenter = $appRequest->getPresenterName();
-		if (strncmp($presenter, $this->module, strlen($this->module)) === 0) {
-			$params[self::PRESENTER_KEY] = substr($presenter, strlen($this->module));
-		} else {
+		if (strncmp($params[self::PRESENTER_KEY], $this->module, strlen($this->module)) !== 0) {
 			return null;
 		}
-
-		// remove default values; null values are retain
-		foreach ($this->defaults as $key => $value) {
-			if (isset($params[$key]) && $params[$key] == $value) { // intentionally ==
-				unset($params[$key]);
-			}
-		}
-
-		$url = $refUrl->getScheme() . '://' . $refUrl->getAuthority() . $refUrl->getPath();
-		$sep = ini_get('arg_separator.input');
-		$query = http_build_query($params, '', $sep ? $sep[0] : '&');
-		if ($query != '') { // intentionally ==
-			$url .= '?' . $query;
-		}
-		return $url;
-	}
-
-
-	/**
-	 * Returns default values.
-	 */
-	public function getDefaults(): array
-	{
-		return $this->defaults;
+		$params[self::PRESENTER_KEY] = substr($params[self::PRESENTER_KEY], strlen($this->module));
+		return parent::constructUrl($params, $refUrl);
 	}
 
 

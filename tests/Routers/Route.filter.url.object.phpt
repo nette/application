@@ -35,12 +35,14 @@ $route = new Route('<parameter>', [
 
 
 // Match
-testRouteIn($route, '/1/', 'presenter', [
+testRouteIn($route, '/1/', [
+	'presenter' => 'presenter',
 	'parameter' => $identityMap[1],
 	'test' => 'testvalue',
 ], '/1?test=testvalue');
 
-Assert::same('http://example.com/1', testRouteOut($route, 'presenter', [
+Assert::same('http://example.com/1', testRouteOut($route, [
+	'presenter' => 'presenter',
 	'parameter' => $identityMap[1],
 ]));
 
@@ -48,7 +50,8 @@ Assert::same('http://example.com/1', testRouteOut($route, 'presenter', [
 // Doesn't match
 testRouteIn($route, '/3/');
 
-Assert::null(testRouteOut($route, 'presenter', [
+Assert::null(testRouteOut($route, [
+	'presenter' => 'presenter',
 	'parameter' => null,
 ]));
 

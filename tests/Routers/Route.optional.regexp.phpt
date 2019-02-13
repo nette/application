@@ -19,26 +19,30 @@ $route = new Route('[<one [a-z]+><two [0-9]+>]', [
 	'two' => '1',
 ]);
 
-testRouteIn($route, '/a1', 'querypresenter', [
+testRouteIn($route, '/a1', [
+	'presenter' => 'querypresenter',
 	'one' => 'a',
 	'two' => '1',
 	'test' => 'testvalue',
-], '/?test=testvalue&presenter=querypresenter');
+], '/?presenter=querypresenter&test=testvalue');
 
-testRouteIn($route, '/x1', 'querypresenter', [
+testRouteIn($route, '/x1', [
+	'presenter' => 'querypresenter',
 	'one' => 'x',
 	'two' => '1',
 	'test' => 'testvalue',
-], '/x1?test=testvalue&presenter=querypresenter');
+], '/x1?presenter=querypresenter&test=testvalue');
 
-testRouteIn($route, '/a2', 'querypresenter', [
+testRouteIn($route, '/a2', [
+	'presenter' => 'querypresenter',
 	'one' => 'a',
 	'two' => '2',
 	'test' => 'testvalue',
-], '/a2?test=testvalue&presenter=querypresenter');
+], '/a2?presenter=querypresenter&test=testvalue');
 
-testRouteIn($route, '/x2', 'querypresenter', [
+testRouteIn($route, '/x2', [
+	'presenter' => 'querypresenter',
 	'one' => 'x',
 	'two' => '2',
 	'test' => 'testvalue',
-], '/x2?test=testvalue&presenter=querypresenter');
+], '/x2?presenter=querypresenter&test=testvalue');
