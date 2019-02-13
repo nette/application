@@ -44,7 +44,7 @@ final class ErrorPresenter implements Application\IPresenter
 			}
 		}
 		return new Application\Responses\CallbackResponse(function (Http\IRequest $httpRequest, Http\IResponse $httpResponse) use ($code): void {
-			if (preg_match('#^text/html(?:;|$)#', $httpResponse->getHeader('Content-Type'))) {
+			if (preg_match('#^text/html(?:;|$)#', (string) $httpResponse->getHeader('Content-Type'))) {
 				require __DIR__ . '/templates/error.phtml';
 			}
 		});
