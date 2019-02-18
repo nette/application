@@ -65,8 +65,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 		$application = $builder->addDefinition($this->prefix('application'))
 			->setFactory(Nette\Application\Application::class)
 			->addSetup('$catchExceptions', [$config['catchExceptions']])
-			->addSetup('$errorPresenter', [$config['errorPresenter']])
-			->setExported();
+			->addSetup('$errorPresenter', [$config['errorPresenter']]);
 
 		if ($config['debugger']) {
 			$application->addSetup('Nette\Bridges\ApplicationTracy\RoutingPanel::initializePanel');
@@ -86,8 +85,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 		$builder->addDefinition($this->prefix('linkGenerator'))
 			->setFactory(Nette\Application\LinkGenerator::class, [
 				1 => new Nette\DI\Definitions\Statement('@Nette\Http\IRequest::getUrl'),
-			])
-			->setExported();
+			]);
 
 		if ($this->name === 'application') {
 			$builder->addAlias('application', $this->prefix('application'));
@@ -109,8 +107,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 		foreach ($this->findPresenters() as $class) {
 			if (empty($all[$class])) {
 				$all[$class] = $builder->addDefinition($this->prefix((string) ++$counter))
-					->setType($class)
-					->setExported();
+					->setType($class);
 			}
 		}
 
