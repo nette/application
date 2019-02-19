@@ -43,6 +43,7 @@ final class SimpleRouter extends Nette\Routing\SimpleRouter implements Nette\App
 		}
 
 		if (isset($defaults[self::MODULE_KEY])) {
+			trigger_error(__METHOD__ . '() parameter module is deprecated, use RouteList::withModule() instead.', E_USER_DEPRECATED);
 			$this->module = $defaults[self::MODULE_KEY] . ':';
 			unset($defaults[self::MODULE_KEY]);
 		}

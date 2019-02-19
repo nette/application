@@ -14,7 +14,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-$router = new Application\Routers\SimpleRouter([
+$router = @new Application\Routers\SimpleRouter([ // @ is deprecated
 	'module' => 'main:sub',
 ]);
 
