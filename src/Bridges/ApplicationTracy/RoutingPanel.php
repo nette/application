@@ -13,7 +13,6 @@ use Nette;
 use Nette\Application\Routers;
 use Nette\Application\UI\Presenter;
 use Tracy;
-use Tracy\Dumper;
 
 
 /**
@@ -44,11 +43,13 @@ final class RoutingPanel implements Tracy\IBarPanel
 
 	public static function initializePanel(Nette\Application\Application $application): void
 	{
-		Tracy\Debugger::getBlueScreen()->addPanel(function (?\Throwable $e) use ($application): ?array {
+		$blueScreen = Tracy\Debugger::getBlueScreen();
+		$blueScreen->addPanel(function (?\Throwable $e) use ($application, $blueScreen): ?array {
+			$dumper = $blueScreen->getDumper();
 			return $e ? null : [
 				'tab' => 'Nette Application',
-				'panel' => '<h3>Requests</h3>' . Dumper::toHtml($application->getRequests(), [Dumper::LIVE => true])
-					. '<h3>Presenter</h3>' . Dumper::toHtml($application->getPresenter(), [Dumper::LIVE => true]),
+				'panel' => '<h3>Requests</h3>' . $dumper($application->getRequests())
+					. '<h3>Presenter</h3>' . $dumper($application->getPresenter()),
 			];
 		});
 	}
