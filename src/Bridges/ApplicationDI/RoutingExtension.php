@@ -45,7 +45,7 @@ final class RoutingExtension extends Nette\DI\CompilerExtension
 			->setType(Nette\Routing\Router::class)
 			->setFactory(Nette\Application\Routers\RouteList::class);
 
-		$routeClass = $config['routeClass'] ?: 'Nette\Application\Routers\Route';
+		$routeClass = $config['routeClass'] ?: Nette\Application\Routers\Route::class;
 		foreach ($config['routes'] as $mask => $action) {
 			$router->addSetup('$service[] = new ' . $routeClass . '(?, ?)', [$mask, $action]);
 		}
