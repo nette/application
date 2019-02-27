@@ -68,7 +68,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 			->addSetup('$errorPresenter', [$config['errorPresenter']]);
 
 		if ($config['debugger']) {
-			$application->addSetup('Nette\Bridges\ApplicationTracy\RoutingPanel::initializePanel');
+			$application->addSetup([Nette\Bridges\ApplicationTracy\RoutingPanel::class, 'initializePanel']);
 		}
 
 		$touch = $this->debugMode && $config['scanDirs'] ? $this->tempFile : null;
