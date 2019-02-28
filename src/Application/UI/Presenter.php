@@ -579,7 +579,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Sends JSON data to the output.
-	 * @param  mixed  $data
+	 * @param  bool|float|int|string|array|\JsonSerializable $data
 	 * @throws Nette\Application\AbortException
 	 */
 	public function sendJson($data): void
