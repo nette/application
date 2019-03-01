@@ -135,6 +135,15 @@ class Route extends Nette\Routing\Route implements Nette\Application\IRouter
 	}
 
 
+	/** @internal */
+	public function getConstantParameters(): array
+	{
+		$res = parent::getConstantParameters();
+		unset($res['module']);
+		return $res;
+	}
+
+
 	/**
 	 * Returns flags.
 	 */
