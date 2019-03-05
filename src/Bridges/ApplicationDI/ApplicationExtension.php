@@ -37,8 +37,8 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 	/** @var int */
 	private $invalidLinkMode;
 
-	/** @var string */
-	private $tempFile;
+	/** @var string|null */
+	private $tempDir;
 
 
 	public function __construct(bool $debugMode = false, array $scanDirs = null, string $tempDir = null)
@@ -48,7 +48,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 		$this->defaults['scanComposer'] = class_exists(ClassLoader::class);
 		$this->defaults['catchExceptions'] = !$debugMode;
 		$this->debugMode = $debugMode;
-		$this->tempFile = $tempDir ? $tempDir . '/' . urlencode(__CLASS__) : null;
+		$this->tempDir = $tempDir;
 	}
 
 
@@ -71,7 +71,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 			$application->addSetup([Nette\Bridges\ApplicationTracy\RoutingPanel::class, 'initializePanel']);
 		}
 
-		$touch = $this->debugMode && $config['scanDirs'] ? $this->tempFile : null;
+		$touch = $this->debugMode && $config['scanDirs'] && $this->tempDir ? $this->tempDir . '/touch' : null;
 		$presenterFactory = $builder->addDefinition($this->prefix('presenterFactory'))
 			->setType(Nette\Application\IPresenterFactory::class)
 			->setFactory(Nette\Application\PresenterFactory::class, [new Nette\DI\Definitions\Statement(
@@ -132,11 +132,16 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 				throw new Nette\NotSupportedException("RobotLoader is required to find presenters, install package `nette/robot-loader` or disable option {$this->prefix('scanDirs')}: false");
 			}
 			$robot = new Nette\Loaders\RobotLoader;
-			$robot->addDirectory($config['scanDirs']);
+			$robot->addDirectory(...$config['scanDirs']);
 			$robot->acceptFiles = ['*' . $config['scanFilter'] . '*.php'];
-			$robot->rebuild();
+			if ($this->tempDir) {
+				$robot->setTempDirectory($this->tempDir);
+				$robot->refresh();
+			} else {
+				$robot->rebuild();
+			}
 			$classes = array_keys($robot->getIndexedClasses());
-			$this->getContainerBuilder()->addDependency($this->tempFile);
+			$this->getContainerBuilder()->addDependency($this->tempDir . '/touch');
 		}
 
 		if ($config['scanComposer']) {

@@ -29,7 +29,7 @@
 		"nette/tester": "^2.0.1",
 		"nette/di": "^v3.0",
 		"nette/forms": "^3.0",
-		"nette/robot-loader": "^3.0",
+		"nette/robot-loader": "^3.2",
 		"nette/security": "^3.0",
 		"latte/latte": "^2.5.1",
 		"tracy/tracy": "^2.6",
