@@ -18,13 +18,6 @@ use Nette;
  */
 final class LatteExtension extends Nette\DI\CompilerExtension
 {
-	public $defaults = [
-		'xhtml' => false,
-		'macros' => [],
-		'templateClass' => null,
-		'strictTypes' => false,
-	];
-
 	/** @var bool */
 	private $debugMode;
 
@@ -36,6 +29,17 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 	{
 		$this->tempDir = $tempDir;
 		$this->debugMode = $debugMode;
+
+		$this->config = new class {
+			/** @var bool */
+			public $xhtml = false;
+			/** @var string[] */
+			public $macros = [];
+			/** @var ?string */
+			public $templateClass;
+			/** @var bool */
+			public $strictTypes = false;
+		};
 	}
 
 
@@ -45,7 +49,7 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 			return;
 		}
 
-		$config = $this->validateConfig($this->defaults);
+		$config = $this->config;
 		$builder = $this->getContainerBuilder();
 
 		$latteFactory = $builder->addFactoryDefinition($this->prefix('latteFactory'))
@@ -54,19 +58,19 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 				->setFactory(Latte\Engine::class)
 				->addSetup('setTempDirectory', [$this->tempDir])
 				->addSetup('setAutoRefresh', [$this->debugMode])
-				->addSetup('setContentType', [$config['xhtml'] ? Latte\Compiler::CONTENT_XHTML : Latte\Compiler::CONTENT_HTML])
-				->addSetup('Nette\Utils\Html::$xhtml = ?', [(bool) $config['xhtml']]);
+				->addSetup('setContentType', [$config->xhtml ? Latte\Compiler::CONTENT_XHTML : Latte\Compiler::CONTENT_HTML])
+				->addSetup('Nette\Utils\Html::$xhtml = ?', [$config->xhtml]);
 
-		if ($config['strictTypes']) {
+		if ($config->strictTypes) {
 			$latteFactory->addSetup('setStrictTypes', [true]);
 		}
 
 		$builder->addDefinition($this->prefix('templateFactory'))
 			->setType(Nette\Application\UI\ITemplateFactory::class)
 			->setFactory(Nette\Bridges\ApplicationLatte\TemplateFactory::class)
-			->setArguments(['templateClass' => $config['templateClass']]);
+			->setArguments(['templateClass' => $config->templateClass]);
 
-		foreach ($config['macros'] as $macro) {
+		foreach ($config->macros as $macro) {
 			$this->addMacro($macro);
 		}
 
