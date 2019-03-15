@@ -246,7 +246,7 @@ final class ComponentReflection extends \ReflectionClass
 	public static function getParameterType(\ReflectionParameter $param): array
 	{
 		return $param->hasType()
-			? [(string) $param->getType(), !$param->getType()->isBuiltin()]
+			? [$param->getType()->getName(), !$param->getType()->isBuiltin()]
 			: [gettype($param->isDefaultValueAvailable() ? $param->getDefaultValue() : null), false];
 	}
 
