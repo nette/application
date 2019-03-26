@@ -76,6 +76,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 		if ($config->debugger) {
 			$application->addSetup([Nette\Bridges\ApplicationTracy\RoutingPanel::class, 'initializePanel']);
 		}
+		$this->compiler->addExportedType(Nette\Application\Application::class);
 
 		$touch = $this->debugMode && $config->scanDirs && $this->tempDir ? $this->tempDir . '/touch' : null;
 		$presenterFactory = $builder->addDefinition($this->prefix('presenterFactory'))
@@ -124,6 +125,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 			if (is_subclass_of($def->getType(), UI\Presenter::class) && $def instanceof Definitions\ServiceDefinition) {
 				$def->addSetup('$invalidLinkMode', [$this->invalidLinkMode]);
 			}
+			$this->compiler->addExportedType($def->getType());
 		}
 	}
 
