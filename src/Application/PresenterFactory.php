@@ -33,7 +33,7 @@ class PresenterFactory implements IPresenterFactory
 
 
 	/**
-	 * @param  callable  $factory  function (string $class): IPresenter
+	 * @param  callable&callable(string): IPresenter  $factory  function (string $class): IPresenter
 	 */
 	public function __construct(callable $factory = null)
 	{

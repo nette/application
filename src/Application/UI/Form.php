@@ -17,7 +17,7 @@ use Nette;
  */
 class Form extends Nette\Forms\Form implements ISignalReceiver
 {
-	/** @var callable[]  function (Form $sender): void; Occurs when form is attached to presenter */
+	/** @var callable[]&(callable(Form $sender): void)[]; Occurs when form is attached to presenter */
 	public $onAnchor;
 
 

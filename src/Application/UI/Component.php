@@ -26,7 +26,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 {
 	use Nette\ComponentModel\ArrayAccess;
 
-	/** @var callable[]  function (Component $sender): void; Occurs when component is attached to presenter */
+	/** @var callable[]&(callable(Component $sender): void)[]; Occurs when component is attached to presenter */
 	public $onAnchor;
 
 	/** @var array */
