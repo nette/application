@@ -21,7 +21,7 @@ class TemplateFactory implements UI\ITemplateFactory
 {
 	use Nette\SmartObject;
 
-	/** @var callable[]  function (Template $template): void; Occurs when a new template is created */
+	/** @var callable[]&(callable(Template $template): void)[]; Occurs when a new template is created */
 	public $onCreate;
 
 	/** @var ILatteFactory */

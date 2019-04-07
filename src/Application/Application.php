@@ -29,22 +29,22 @@ class Application
 	/** @var string|null */
 	public $errorPresenter;
 
-	/** @var callable[]  function (Application $sender): void; Occurs before the application loads presenter */
+	/** @var callable[]&(callable(Application $sender): void)[]; Occurs before the application loads presenter */
 	public $onStartup;
 
-	/** @var callable[]  function (Application $sender, \Throwable $e = null): void; Occurs before the application shuts down */
+	/** @var callable[]&(callable(Application $sender, \Throwable $e = null): void)[]; Occurs before the application shuts down */
 	public $onShutdown;
 
-	/** @var callable[]  function (Application $sender, Request $request): void; Occurs when a new request is received */
+	/** @var callable[]&(callable(Application $sender, Request $request): void)[]; Occurs when a new request is received */
 	public $onRequest;
 
-	/** @var callable[]  function (Application $sender, IPresenter $presenter): void; Occurs when a presenter is created */
+	/** @var callable[]&(callable(Application $sender, IPresenter $presenter): void)[]; Occurs when a presenter is created */
 	public $onPresenter;
 
-	/** @var callable[]  function (Application $sender, IResponse $response): void; Occurs when a new response is ready for dispatch */
+	/** @var callable[]&(callable(Application $sender, IResponse $response): void)[]; Occurs when a new response is ready for dispatch */
 	public $onResponse;
 
-	/** @var callable[]  function (Application $sender, \Throwable $e): void; Occurs when an unhandled exception occurs in the application */
+	/** @var callable[]&(callable(Application $sender, \Throwable $e): void)[]; Occurs when an unhandled exception occurs in the application */
 	public $onError;
 
 	/** @var Request[] */
