@@ -51,6 +51,9 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @var callable[]&(callable(Presenter $sender): void)[]; Occurs when the presenter is starting */
 	public $onStartup;
 
+	/** @var callable[]&(callable(Presenter $sender): void)[]; Occurs when the presenter is rendering after beforeRender */
+	public $onRender;
+
 	/** @var callable[]&(callable(Presenter $sender, IResponse $response): void)[]; Occurs when the presenter is shutting down */
 	public $onShutdown;
 
@@ -213,6 +216,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 			// RENDERING VIEW
 			$this->beforeRender();
+			$this->onRender($this);
 			// calls $this->render<View>()
 			$this->tryCall($this->formatRenderMethod($this->view), $this->params);
 			$this->afterRender();
