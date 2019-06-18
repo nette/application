@@ -276,12 +276,13 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 	/**
 	 * Redirect to another presenter, action or signal.
-	 * @param  string   $destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
-	 * @param  array  $args
+	 * @param  string   	$destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
+	 * @param  array|mixed  $args
 	 * @throws Nette\Application\AbortException
 	 */
-	public function redirect(string $destination, array $args = []): void
+	public function redirect(string $destination, $args = []): void
 	{
+		$args = is_array($args) ? $args : array_slice(func_get_args(), 1);
 		$presenter = $this->getPresenter();
 		$presenter->redirectUrl($presenter->createRequest($this, $destination, $args, 'redirect'), null);
 	}
