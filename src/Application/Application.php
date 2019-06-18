@@ -108,10 +108,10 @@ class Application
 		$params = $this->router->match($this->httpRequest);
 		$presenter = $params[UI\Presenter::PRESENTER_KEY] ?? null;
 
-		if ($params === null || !is_string($presenter)) {
-			throw new BadRequestException('No route for HTTP request.');
-		} elseif ($presenter === null) {
+		if ($presenter === null) {
 			throw new Nette\InvalidStateException('Missing presenter in route definition.');
+		} elseif ($params === null || !is_string($presenter)) {
+			throw new BadRequestException('No route for HTTP request.');
 		}
 
 		unset($params[UI\Presenter::PRESENTER_KEY]);
