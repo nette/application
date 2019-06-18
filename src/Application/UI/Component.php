@@ -277,24 +277,13 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	/**
 	 * Redirect to another presenter, action or signal.
 	 * @param  string   $destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
-	 * @param  array|mixed  $args
+	 * @param  array  $args
 	 * @throws Nette\Application\AbortException
 	 */
-	public function redirect($code, $destination = null, $args = []): void
+	public function redirect(string $destination, array $args = []): void
 	{
-		if (is_numeric($code)) {
-			trigger_error(__METHOD__ . '() first parameter $code is deprecated; use redirectPermanent() for 301 redirect.', E_USER_DEPRECATED);
-			if (func_num_args() > 3 || !is_array($args)) {
-				$args = array_slice(func_get_args(), 2);
-			}
-		} elseif (!is_numeric($code)) { // first parameter is optional
-			$args = func_num_args() < 3 && is_array($destination) ? $destination : array_slice(func_get_args(), 1);
-			$destination = $code;
-			$code = null;
-		}
-
 		$presenter = $this->getPresenter();
-		$presenter->redirectUrl($presenter->createRequest($this, $destination, $args, 'redirect'), $code);
+		$presenter->redirectUrl($presenter->createRequest($this, $destination, $args, 'redirect'), null);
 	}
 
 
