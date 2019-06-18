@@ -276,7 +276,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 	/**
 	 * Redirect to another presenter, action or signal.
-	 * @param  string   	$destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
+	 * @param  string   $destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
 	 * @param  array|mixed  $args
 	 * @throws Nette\Application\AbortException
 	 */
