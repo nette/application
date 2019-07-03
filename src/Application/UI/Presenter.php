@@ -695,7 +695,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 				);
 			} catch (InvalidLinkException $e) {
 			}
-			if (isset($url) && !$this->httpRequest->getUrl()->isEqual($url)) {
+			if (isset($url) && !$this->httpRequest->getUrl()->withoutUserInfo()->isEqual($url)) {
 				$code = $request->hasFlag($request::VARYING) ? Http\IResponse::S302_FOUND : Http\IResponse::S301_MOVED_PERMANENTLY;
 				$this->sendResponse(new Responses\RedirectResponse($url, $code));
 			}
@@ -921,7 +921,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	{
 		if ($this->refUrlCache === null) {
 			$url = $this->httpRequest->getUrl();
-			$this->refUrlCache = new Http\UrlScript($url->getHostUrl() . $url->getScriptPath());
+			$this->refUrlCache = new Http\UrlScript($url->withoutUserInfo()->getHostUrl() . $url->getScriptPath());
 		}
 		if (!$this->router) {
 			throw new Nette\InvalidStateException('Unable to generate URL, service Router has not been set.');
