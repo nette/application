@@ -280,17 +280,17 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	 * @param  array|mixed  $args
 	 * @throws Nette\Application\AbortException
 	 */
-	public function redirect($code, $destination = null, $args = []): void
+	public function redirect(/*int $code, string */$destination, $args = []): void
 	{
-		if (is_numeric($code)) {
+		if (is_numeric($destination)) {
 			trigger_error(__METHOD__ . '() first parameter $code is deprecated; use redirectPermanent() for 301 redirect.', E_USER_DEPRECATED);
+			[$code, $destination, $args] = func_get_args() + [null, null, []];
 			if (func_num_args() > 3 || !is_array($args)) {
 				$args = array_slice(func_get_args(), 2);
 			}
-		} elseif (!is_numeric($code)) { // first parameter is optional
-			$args = func_num_args() < 3 && is_array($destination) ? $destination : array_slice(func_get_args(), 1);
-			$destination = $code;
+		} else {
 			$code = null;
+			$args = func_num_args() < 3 && is_array($args) ? $args : array_slice(func_get_args(), 1);
 		}
 
 		$presenter = $this->getPresenter();
