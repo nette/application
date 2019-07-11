@@ -45,7 +45,7 @@ final class LinkGenerator
 	 */
 	public function link(string $dest, array $params = []): string
 	{
-		if (!preg_match('~^([\w:]+):(\w*+)(#.*)?()\z~', $dest, $m)) {
+		if (!preg_match('~^([\w:]+):(\w*+)(#.*)?()$~D', $dest, $m)) {
 			throw new UI\InvalidLinkException("Invalid link destination '$dest'.");
 		}
 		[, $presenter, $action, $frag] = $m;
