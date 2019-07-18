@@ -188,15 +188,15 @@ abstract class Presenter extends Control implements Application\IPresenter
 			}
 
 			$this->initGlobalParameters();
-			$this->checkRequirements($this->getReflection());
+			$this->checkRequirements(self::getReflection());
 			$this->onStartup($this);
 			$this->startup();
 			if (!$this->startupCheck) {
-				$class = $this->getReflection()->getMethod('startup')->getDeclaringClass()->getName();
+				$class = self::getReflection()->getMethod('startup')->getDeclaringClass()->getName();
 				throw new Nette\InvalidStateException("Method $class::startup() or its descendant doesn't call parent::startup().");
 			}
 			// calls $this->action<Action>()
-			$this->tryCall($this->formatActionMethod($this->action), $this->params);
+			$this->tryCall(self::formatActionMethod($this->action), $this->params);
 
 			// autoload components
 			foreach ($this->globalParams as $id => $foo) {
@@ -218,7 +218,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			$this->beforeRender();
 			$this->onRender($this);
 			// calls $this->render<View>()
-			$this->tryCall($this->formatRenderMethod($this->view), $this->params);
+			$this->tryCall(self::formatRenderMethod($this->view), $this->params);
 			$this->afterRender();
 
 			// save component tree persistent state
@@ -1151,7 +1151,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function saveState(array &$params, ComponentReflection $reflection = null): void
 	{
-		($reflection ?: $this->getReflection())->saveState($this, $params);
+		($reflection ?: self::getReflection())->saveState($this, $params);
 	}
 
 
