@@ -188,15 +188,15 @@ abstract class Presenter extends Control implements Application\IPresenter
 			}
 
 			$this->initGlobalParameters();
-			$this->checkRequirements($this->getReflection());
+			$this->checkRequirements(static::getReflection());
 			$this->onStartup($this);
 			$this->startup();
 			if (!$this->startupCheck) {
-				$class = $this->getReflection()->getMethod('startup')->getDeclaringClass()->getName();
+				$class = static::getReflection()->getMethod('startup')->getDeclaringClass()->getName();
 				throw new Nette\InvalidStateException("Method $class::startup() or its descendant doesn't call parent::startup().");
 			}
 			// calls $this->action<Action>()
-			$this->tryCall($this->formatActionMethod($this->action), $this->params);
+			$this->tryCall(static::formatActionMethod($this->action), $this->params);
 
 			// autoload components
 			foreach ($this->globalParams as $id => $foo) {
@@ -218,7 +218,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			$this->beforeRender();
 			$this->onRender($this);
 			// calls $this->render<View>()
-			$this->tryCall($this->formatRenderMethod($this->view), $this->params);
+			$this->tryCall(static::formatRenderMethod($this->view), $this->params);
 			$this->afterRender();
 
 			// save component tree persistent state
@@ -506,7 +506,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		}
 		[$module, $presenter] = Helpers::splitName($this->getName());
 		$layout = $this->layout ?: 'layout';
-		$dir = dirname($this->getReflection()->getFileName());
+		$dir = dirname(static::getReflection()->getFileName());
 		$dir = is_dir("$dir/templates") ? $dir : dirname($dir);
 		$list = [
 			"$dir/templates/$presenter/@$layout.latte",
@@ -526,7 +526,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	public function formatTemplateFiles(): array
 	{
 		[, $presenter] = Helpers::splitName($this->getName());
-		$dir = dirname($this->getReflection()->getFileName());
+		$dir = dirname(static::getReflection()->getFileName());
 		$dir = is_dir("$dir/templates") ? $dir : dirname($dir);
 		return [
 			"$dir/templates/$presenter/$this->view.latte",
@@ -740,7 +740,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 		$this->lastCreatedRequest = $this->lastCreatedRequestFlag = null;
 
-		$parts = $this->parseDestination($destination);
+		$parts = static::parseDestination($destination);
 		$path = $parts['path'];
 		$args = $parts['args'] ?? $args;
 
@@ -1151,7 +1151,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function saveState(array &$params, ComponentReflection $reflection = null): void
 	{
-		($reflection ?: $this->getReflection())->saveState($this, $params);
+		($reflection ?: static::getReflection())->saveState($this, $params);
 	}
 
 
