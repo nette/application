@@ -47,7 +47,7 @@ use Tracy\Helpers;
 	<p>No routers defined.</p>
 
 <?php else: ?>
-	<table>
+	<table style="width: 100%">
 	<thead>
 	<tr>
 		<th></th>
@@ -61,9 +61,9 @@ use Tracy\Helpers;
 	<tbody>
 	<?php foreach ($routers as $router): ?>
 	<tr class="<?= $router['matched'] ?>">
-		<td><?= $router['matched'] === 'yes' ? '✓' : ($router['matched'] === 'may' ? '≈' : '') ?></td>
+		<td style="width:20px"><?= $router['matched'] === 'yes' ? '✓' : ($router['matched'] === 'may' ? '≈' : '') ?></td>
 
-		<td><code title="<?= Helpers::escapeHtml($router['class']) ?>"><?= Helpers::escapeHtml($router['mask'] ?? $router['class']) ?></code></td>
+		<td><code title="<?= Helpers::escapeHtml($router['class']) ?>"><?= str_replace(['\\', '/'], ['<wbr>\\', '<wbr>/'], Helpers::escapeHtml($router['mask'] ?? $router['class'])) ?></code></td>
 
 		<td><code>
 		<?php foreach ($router['defaults'] as $key => $value): ?>
@@ -88,9 +88,10 @@ use Tracy\Helpers;
 	</tbody>
 	</table>
 <?php endif ?>
-
+</div>
+<div class="tracy-inner-container">
 	<p><code><?= Helpers::escapeHtml($method) ?></code>
-	<code><?= Helpers::escapeHtml($url->getBaseUrl()) ?><span class="nette-RoutingPanel-rel"><?= Helpers::escapeHtml($url->getRelativeUrl()) ?></span></code></p>
+	<code><?= Helpers::escapeHtml($url->getBaseUrl()) ?><wbr><span class="nette-RoutingPanel-rel"><?= str_replace(['&amp;', '?'], ['<wbr>&amp;', '<wbr>?'], Helpers::escapeHtml($url->getRelativeUrl())) ?></span></code></p>
 
 	<?php if ($source): ?>
 	<p><a href="<?= Helpers::escapeHtml(Tracy\Helpers::editorUri($source->getFileName(), $source->getStartLine())) ?>"><?= $source instanceof \ReflectionClass ? $source->getName() : $source->getDeclaringClass()->getName() . '::' . $source->getName() . '()' ?></a></p>
