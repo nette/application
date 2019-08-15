@@ -25,8 +25,8 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 	/** @var bool */
 	private $debugMode;
 
-	/** @var array */
-	private $scanDirs;
+	/** @var Nette\Loaders\RobotLoader|null */
+	private $robotLoader;
 
 	/** @var int */
 	private $invalidLinkMode;
@@ -35,10 +35,10 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 	private $tempDir;
 
 
-	public function __construct(bool $debugMode = false, array $scanDirs = null, string $tempDir = null)
+	public function __construct(bool $debugMode = false, Nette\Loaders\RobotLoader $robotLoader = null, string $tempDir = null)
 	{
 		$this->debugMode = $debugMode;
-		$this->scanDirs = (array) $scanDirs;
+		$this->robotLoader = $robotLoader;
 		$this->tempDir = $tempDir;
 	}
 
@@ -50,7 +50,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 			'errorPresenter' => Expect::string('Nette:Error')->dynamic(),
 			'catchExceptions' => Expect::bool(!$this->debugMode)->dynamic(),
 			'mapping' => Expect::arrayOf('string|array'),
-			'scanDirs' => Expect::anyOf(Expect::arrayOf('string'), false)->default($this->scanDirs),
+			'scanDirs' => Expect::anyOf(Expect::arrayOf('string'), false), // deprecated
 			'scanComposer' => Expect::bool(class_exists(ClassLoader::class)),
 			'scanFilter' => Expect::string('Presenter'),
 			'silentLinks' => Expect::bool(),
@@ -78,7 +78,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 		}
 		$this->compiler->addExportedType(Nette\Application\Application::class);
 
-		$touch = $this->debugMode && $config->scanDirs && $this->tempDir ? $this->tempDir . '/touch' : null;
+		$touch = $this->debugMode && $this->robotLoader && $this->tempDir ? $this->tempDir . '/touch' : null;
 		$presenterFactory = $builder->addDefinition($this->prefix('presenterFactory'))
 			->setType(Nette\Application\IPresenterFactory::class)
 			->setFactory(Nette\Application\PresenterFactory::class, [new Definitions\Statement(
@@ -136,19 +136,11 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 		$classes = [];
 
 		if ($config->scanDirs) {
-			if (!class_exists(Nette\Loaders\RobotLoader::class)) {
-				throw new Nette\NotSupportedException("RobotLoader is required to find presenters, install package `nette/robot-loader` or disable option {$this->prefix('scanDirs')}: false");
-			}
-			$robot = new Nette\Loaders\RobotLoader;
-			$robot->addDirectory(...$config->scanDirs);
-			$robot->acceptFiles = ['*' . $config->scanFilter . '*.php'];
-			if ($this->tempDir) {
-				$robot->setTempDirectory($this->tempDir);
-				$robot->refresh();
-			} else {
-				$robot->rebuild();
-			}
-			$classes = array_keys($robot->getIndexedClasses());
+			trigger_error("Option 'scanDir' has no effect and is deprecated.", E_USER_DEPRECATED);
+		}
+
+		if ($this->robotLoader) {
+			$classes = array_keys($this->robotLoader->getIndexedClasses());
 			$this->getContainerBuilder()->addDependency($this->tempDir . '/touch');
 		}
 
