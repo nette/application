@@ -78,3 +78,25 @@ test(function () {
 	$name = $container->findByType(Presenter1::class)[0];
 	Assert::same('test', $container->createService($name)->getView());
 });
+
+
+test(function () {
+	$robot = new Nette\Loaders\RobotLoader;
+	$robot->addDirectory(__DIR__ . '/files');
+	$robot->setTempDirectory(getTempDir());
+
+	$compiler = new DI\Compiler;
+	$compiler->addExtension('application', new ApplicationExtension(false, null, null, $robot));
+
+	$builder = $compiler->getContainerBuilder();
+	$builder->addDefinition('myRouter')->setFactory(Nette\Application\Routers\SimpleRouter::class);
+	$builder->addDefinition('myHttpRequest')->setFactory(Nette\Http\Request::class, [new DI\Statement(Nette\Http\UrlScript::class)]);
+	$builder->addDefinition('myHttpResponse')->setFactory(Nette\Http\Response::class);
+	$code = $compiler->setClassName('Container4')->compile();
+	eval($code);
+
+	$container = new Container2;
+	Assert::count(3, $container->findByType(BasePresenter::class));
+	Assert::count(1, $container->findByType(Presenter1::class));
+	Assert::count(1, $container->findByType(Presenter2::class));
+});

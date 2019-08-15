@@ -22,6 +22,27 @@ register_shutdown_function(function ($level): void {
 }, ob_get_level());
 
 
+function getTempDir(): string
+{
+	$dir = __DIR__ . '/tmp/' . getmypid();
+
+	if (empty($GLOBALS['\\lock'])) {
+		// garbage collector
+		$GLOBALS['\\lock'] = $lock = fopen(__DIR__ . '/lock', 'w');
+		if (rand(0, 100)) {
+			flock($lock, LOCK_SH);
+			@mkdir(dirname($dir));
+		} elseif (flock($lock, LOCK_EX)) {
+			Tester\Helpers::purge(dirname($dir));
+		}
+
+		@mkdir($dir);
+	}
+
+	return $dir;
+}
+
+
 function test(\Closure $function): void
 {
 	$function();
