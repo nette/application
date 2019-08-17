@@ -196,7 +196,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 				throw new Nette\InvalidStateException("Method $class::startup() or its descendant doesn't call parent::startup().");
 			}
 			// calls $this->action<Action>()
-			$this->tryCall(static::formatActionMethod($this->action), $this->params);
+			$this->handleActionResult($this->tryCall(static::formatActionMethod($this->action), $this->params));
 
 			// autoload components
 			foreach ($this->globalParams as $id => $foo) {
@@ -212,7 +212,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 			// SIGNAL HANDLING
 			// calls $this->handle<Signal>()
-			$this->processSignal();
+			$this->handleActionResult($this->processSignal());
 
 			// RENDERING VIEW
 			$this->beforeRender();
@@ -269,6 +269,34 @@ abstract class Presenter extends Control implements Application\IPresenter
 	protected function startup()
 	{
 		$this->startupCheck = true;
+	}
+
+	/**
+	 * @param HandleResult $result - result of action or signal
+	 * @throws Application\AbortException
+	 */
+	protected function handleActionResult(HandleResult $result = null): void
+	{
+		if (!$result) {
+			return;
+		}
+
+		$response = null;
+
+		$value = $result->getValue();
+
+		if ($value instanceof Application\IResponse) {
+			$response = $value;
+		} elseif (is_array($value) || is_scalar($value)) {
+			$response = new Responses\JsonResponse($value);
+		} else {
+			$origin = $result->getOrigin();
+			$type = is_object($value) ? get_class($value) : gettype($value);
+			throw new Nette\InvalidArgumentException("Result of $origin must be application response" .
+				", array or scalar. Got $type.");
+		}
+
+		$this->sendResponse($response);
 	}
 
 
@@ -329,10 +357,10 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/**
 	 * @throws BadSignalException
 	 */
-	public function processSignal(): void
+	public function processSignal(): ?HandleResult
 	{
 		if ($this->signal === null) {
-			return;
+			return null;
 		}
 
 		$component = $this->signalReceiver === '' ? $this : $this->getComponent($this->signalReceiver, false);
@@ -345,6 +373,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 		$component->signalReceived($this->signal);
 		$this->signal = null;
+
+        return $component->getSignalResult();
 	}
 
 

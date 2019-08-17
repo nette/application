@@ -32,6 +32,9 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	/** @var array */
 	protected $params = [];
 
+	/** @var HandleResult */
+	private $signalResult;
+
 
 	/**
 	 * Returns the presenter where this component belongs to.
@@ -77,25 +80,37 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 	/**
 	 * Calls public method if exists.
-	 * @return bool  does method exist?
+	 *
+	 * @param string $method name of the method to be called
+	 * @param array $params parameters for the method
+	 *
+	 * @return HandleResult result of the method if it exists
 	 */
-	protected function tryCall(string $method, array $params): bool
+	protected function tryCall(string $method, array $params): ?HandleResult
 	{
 		$rc = $this->getReflection();
-		if ($rc->hasMethod($method)) {
-			$rm = $rc->getMethod($method);
-			if ($rm->isPublic() && !$rm->isAbstract() && !$rm->isStatic()) {
-				$this->checkRequirements($rm);
-				try {
-					$args = $rc->combineArgs($rm, $params);
-				} catch (Nette\InvalidArgumentException $e) {
-					throw new Nette\Application\BadRequestException($e->getMessage());
-				}
-				$rm->invokeArgs($this, $args);
-				return true;
-			}
+		if (!$rc->hasMethod($method)) {
+			return null;
 		}
-		return false;
+
+		$rm = $rc->getMethod($method);
+		if (!$rm->isPublic() || $rm->isAbstract() || $rm->isStatic()) {
+			return null;
+		}
+
+		$this->checkRequirements($rm);
+		try {
+			$args = $rc->combineArgs($rm, $params);
+		} catch (Nette\InvalidArgumentException $e) {
+			throw new Nette\Application\BadRequestException($e->getMessage());
+		}
+
+		$result = $rm->invokeArgs($this, $args);
+		if ($result) {
+			return new HandleResult($result, get_class($this) . '::' . $method);
+		}
+
+		return null;
 	}
 
 
@@ -205,14 +220,39 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 	/**
 	 * Calls signal handler method.
+	 *
+	 * @return HandleResult - result of the signal handler
+	 *
 	 * @throws BadSignalException if there is not handler method
 	 */
 	public function signalReceived(string $signal): void
 	{
-		if (!$this->tryCall($this->formatSignalMethod($signal), $this->params)) {
+		$signalMethod = $this->formatSignalMethod($signal);
+		if (!method_exists($this, $signalMethod)) {
 			$class = get_class($this);
 			throw new BadSignalException("There is no handler for signal '$signal' in class $class.");
 		}
+
+		$result = $this->tryCall($signalMethod, $this->params);
+		$this->setSignalResult($result, get_class($this) . "::$signalMethod");
+	}
+
+	private function setSignalResult($value, $origin)
+	{
+		if ($value instanceof HandleResult) {
+			$result = $value;
+		} elseif ($value) {
+			$result = new HandleResult($value, $origin);
+		} else {
+			$result = null;
+		}
+
+		$this->signalResult = $result;
+	}
+
+	protected function getSignalResult(): ?HandleResult
+	{
+		return $this->signalResult;
 	}
 
 
