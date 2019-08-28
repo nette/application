@@ -374,7 +374,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		$component->signalReceived($this->signal);
 		$this->signal = null;
 
-        return $component->getSignalResult();
+        return $component instanceof ISignalReceiverWithResult ? $component->getSignalResult() : null;
 	}
 
 
