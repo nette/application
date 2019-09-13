@@ -96,28 +96,28 @@ class ThirdPresenter extends BasePresenter
 
 
 Assert::same([
-	'p1' => ['def' => null, 'since' => 'BasePresenter'],
-	't1' => ['def' => null, 'since' => 'PersistentParam1'],
+	'p1' => ['def' => null, 'type' => 'NULL', 'since' => 'BasePresenter'],
+	't1' => ['def' => null, 'type' => 'NULL', 'since' => 'PersistentParam1'],
 ], BasePresenter::getReflection()->getPersistentParams());
 
 Assert::same([
-	'p2' => ['def' => null, 'since' => 'TestPresenter'],
-	'p1' => ['def' => null, 'since' => 'BasePresenter'],
-	't1' => ['def' => null, 'since' => 'PersistentParam1'],
-	't2' => ['def' => null, 'since' => 'PersistentParam2A'],
+	'p2' => ['def' => null, 'type' => 'NULL', 'since' => 'TestPresenter'],
+	'p1' => ['def' => null, 'type' => 'NULL', 'since' => 'BasePresenter'],
+	't1' => ['def' => null, 'type' => 'NULL', 'since' => 'PersistentParam1'],
+	't2' => ['def' => null, 'type' => 'NULL', 'since' => 'PersistentParam2A'],
 ], TestPresenter::getReflection()->getPersistentParams());
 
 Assert::same([
-	'p1' => ['def' => 20, 'since' => 'BasePresenter'],
-	'p3' => ['def' => null, 'since' => 'SecondPresenter'],
-	't1' => ['def' => null, 'since' => 'PersistentParam1'],
-	't3' => ['def' => null, 'since' => 'PersistentParam3'],
+	'p1' => ['def' => 20, 'type' => 'integer', 'since' => 'BasePresenter'],
+	'p3' => ['def' => null, 'type' => 'NULL', 'since' => 'SecondPresenter'],
+	't1' => ['def' => null, 'type' => 'NULL', 'since' => 'PersistentParam1'],
+	't3' => ['def' => null, 'type' => 'NULL', 'since' => 'PersistentParam3'],
 ], SecondPresenter::getReflection()->getPersistentParams());
 
 Assert::same([
-	'p1' => ['def' => null, 'since' => 'BasePresenter'],
-	't1' => ['def' => null, 'since' => 'PersistentParam1'],
-	't2' => ['def' => null, 'since' => 'PersistentParam2A'],
+	'p1' => ['def' => null, 'type' => 'NULL', 'since' => 'BasePresenter'],
+	't1' => ['def' => null, 'type' => 'NULL', 'since' => 'PersistentParam1'],
+	't2' => ['def' => null, 'type' => 'NULL', 'since' => 'PersistentParam2A'],
 ], ThirdPresenter::getReflection()->getPersistentParams());
 
 

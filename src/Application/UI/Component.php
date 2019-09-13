@@ -135,13 +135,12 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 		$reflection = $this->getReflection();
 		foreach ($reflection->getPersistentParams() as $name => $meta) {
 			if (isset($params[$name])) { // nulls are ignored
-				$type = gettype($meta['def']);
-				if (!$reflection->convertType($params[$name], $type)) {
+				if (!$reflection->convertType($params[$name], $meta['type'])) {
 					throw new Nette\Application\BadRequestException(sprintf(
 						"Value passed to persistent parameter '%s' in %s must be %s, %s given.",
 						$name,
 						$this instanceof Presenter ? 'presenter ' . $this->getName() : "component '{$this->getUniqueId()}'",
-						$type === 'NULL' ? 'scalar' : $type,
+						$meta['type'] === 'NULL' ? 'scalar' : $meta['type'],
 						is_object($params[$name]) ? get_class($params[$name]) : gettype($params[$name])
 					));
 				}
