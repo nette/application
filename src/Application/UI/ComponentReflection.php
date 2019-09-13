@@ -52,6 +52,7 @@ final class ComponentReflection extends \ReflectionClass
 				if (!$rp->isStatic() && self::parseAnnotation($rp, 'persistent')) {
 					$params[$name] = [
 						'def' => $default,
+						'type' => Nette\Utils\Reflection::getPropertyType($rp) ?: gettype($default),
 						'since' => $isPresenter ? Nette\Utils\Reflection::getPropertyDeclaringClass($rp)->getName() : null,
 					];
 				}
@@ -111,13 +112,12 @@ final class ComponentReflection extends \ReflectionClass
 				$params[$name] = $component->$name; // object property value
 			}
 
-			$type = gettype($meta['def']);
-			if (!self::convertType($params[$name], $type)) {
+			if (!self::convertType($params[$name], $meta['type'])) {
 				throw new InvalidLinkException(sprintf(
 					"Value passed to persistent parameter '%s' in %s must be %s, %s given.",
 					$name,
 					$component instanceof Presenter ? 'presenter ' . $component->getName() : "component '{$component->getUniqueId()}'",
-					$type === 'NULL' ? 'scalar' : $type,
+					$meta['type'] === 'NULL' ? 'scalar' : $meta['type'],
 					is_object($params[$name]) ? get_class($params[$name]) : gettype($params[$name])
 				));
 			}
