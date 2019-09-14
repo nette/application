@@ -36,6 +36,7 @@
 		"mockery/mockery": "^1.0"
 	},
 	"conflict": {
+		"nette/bootstrap": "<3.0.1",
 		"nette/di": "<3.0-stable",
 		"nette/forms": "<3.0",
 		"nette/latte": "<3.0"
