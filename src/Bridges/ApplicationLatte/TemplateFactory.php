@@ -60,10 +60,6 @@ class TemplateFactory implements UI\ITemplateFactory
 		$template = new $this->templateClass($latte);
 		$presenter = ($control && $control->hasPresenter()) ? $control->getPresenter() : null;
 
-		if ($control instanceof UI\Presenter) {
-			$latte->setLoader(new Loader($control));
-		}
-
 		if ($latte->onCompile instanceof \Traversable) {
 			$latte->onCompile = iterator_to_array($latte->onCompile);
 		}
