@@ -22,7 +22,7 @@ use Nette\Http;
  * @property-read Nette\Application\Request $request
  * @property-read string $action
  * @property      string $view
- * @property      string|bool $layout
+ * @property      string|null $layout
  * @property-read \stdClass $payload
  * @property-read Nette\DI\Container $context
  * @property-read Nette\Http\Session $session
@@ -84,8 +84,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @var string */
 	private $view;
 
-	/** @var string|bool */
-	private $layout;
+	/** @var string|null */
+	private $layout = 'layout';
 
 	/** @var \stdClass */
 	private $payload;
@@ -426,9 +426,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Returns current layout name.
-	 * @return string|bool
 	 */
-	final public function getLayout()
+	final public function getLayout(): ?string
 	{
 		return $this->layout;
 	}
@@ -436,12 +435,16 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Changes or disables layout.
-	 * @param  string|bool  $layout
+	 * @param  string|null  $layout
 	 * @return static
 	 */
 	public function setLayout($layout)
 	{
-		$this->layout = $layout === false ? false : (string) $layout;
+		if (!is_string($layout) && $layout !== null) {
+			trigger_error(__METHOD__ . '() parameter $layout accepts only string|null, passing other values is deprecated.', E_USER_DEPRECATED);
+		}
+
+		$this->layout = $layout === false || $layout === null ? null : (string) $layout;
 		return $this;
 	}
 
@@ -478,7 +481,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function findLayoutTemplateFile(): ?string
 	{
-		if ($this->layout === false) {
+		if ($this->layout === null) {
 			return null;
 		}
 		$files = $this->formatLayoutTemplateFiles();
@@ -488,7 +491,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			}
 		}
 
-		if ($this->layout) {
+		if ($this->layout !== null) {
 			$file = strtr(reset($files), '/', DIRECTORY_SEPARATOR);
 			throw new Nette\FileNotFoundException("Layout not found. Missing template '$file'.");
 		}
@@ -501,7 +504,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function formatLayoutTemplateFiles(): array
 	{
-		if (preg_match('#/|\\\\#', (string) $this->layout)) {
+		if ($this->layout !== null && preg_match('#/|\\\\#', $this->layout)) {
 			return [$this->layout];
 		}
 		[$module, $presenter] = Helpers::splitName($this->getName());
