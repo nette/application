@@ -38,7 +38,8 @@
 	"conflict": {
 		"nette/di": "<3.0-stable",
 		"nette/forms": "<3.0",
-		"nette/latte": "<3.0"
+		"latte/latte": "<2.4",
+		"tracy/tracy": "<2.5"
 	},
 	"autoload": {
 		"classmap": ["src/"],
