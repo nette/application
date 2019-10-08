@@ -64,7 +64,7 @@ class Template implements Nette\Application\UI\ITemplate
 	 * Renders template to string.
 	 * @param  can throw exceptions? (hidden parameter)
 	 */
-	final public function __toString(): string
+	public function __toString(): string
 	{
 		try {
 			return $this->latte->renderToString($this->file, $this->params);
