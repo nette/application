@@ -163,6 +163,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	}
 
 
+	/** @deprecated */
 	final public function hasPresenter(): bool
 	{
 		return true;

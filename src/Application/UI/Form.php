@@ -81,9 +81,7 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 	}
 
 
-	/**
-	 * Returns whether there is a presenter.
-	 */
+	/** @deprecated */
 	public function hasPresenter(): bool
 	{
 		return (bool) $this->lookup(Presenter::class, false);
