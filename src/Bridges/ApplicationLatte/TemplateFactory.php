@@ -58,7 +58,7 @@ class TemplateFactory implements UI\ITemplateFactory
 	{
 		$latte = $this->latteFactory->create();
 		$template = new $this->templateClass($latte);
-		$presenter = ($control && $control->hasPresenter()) ? $control->getPresenter() : null;
+		$presenter = $control ? $control->getPresenterIfExists() : null;
 
 		if ($latte->onCompile instanceof \Traversable) {
 			$latte->onCompile = iterator_to_array($latte->onCompile);
