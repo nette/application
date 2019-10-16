@@ -55,9 +55,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	}
 
 
-	/**
-	 * Returns whether there is a presenter.
-	 */
+	/** @deprecated */
 	public function hasPresenter(): bool
 	{
 		return (bool) $this->lookup(Presenter::class, false);
