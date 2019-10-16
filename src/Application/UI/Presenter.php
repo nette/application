@@ -157,6 +157,12 @@ abstract class Presenter extends Control implements Application\IPresenter
 	}
 
 
+	final public function getPresenterIfExists(): self
+	{
+		return $this;
+	}
+
+
 	final public function hasPresenter(): bool
 	{
 		return true;

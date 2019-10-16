@@ -65,10 +65,19 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 	final public function getPresenter(): ?Presenter
 	{
 		if (func_num_args()) {
-			trigger_error(__METHOD__ . '() parameter $throw is deprecated, use hasPresenter()', E_USER_DEPRECATED);
+			trigger_error(__METHOD__ . '() parameter $throw is deprecated, use getPresenterIfExists()', E_USER_DEPRECATED);
 			$throw = func_get_arg(0);
 		}
 		return $this->lookup(Presenter::class, $throw ?? true);
+	}
+
+
+	/**
+	 * Returns the presenter where this component belongs to.
+	 */
+	final public function getPresenterIfExists(): ?Presenter
+	{
+		return $this->lookup(Presenter::class, false);
 	}
 
 
