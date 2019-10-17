@@ -65,6 +65,9 @@ class Application
 	/** @var Router */
 	private $router;
 
+	/** @var Nette\Http\ResponseEmitter */
+	private $emitter;
+
 
 	public function __construct(IPresenterFactory $presenterFactory, Router $router, Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse)
 	{
@@ -72,6 +75,7 @@ class Application
 		$this->httpResponse = $httpResponse;
 		$this->presenterFactory = $presenterFactory;
 		$this->router = $router;
+		$this->emitter = new Nette\Http\ResponseEmitter;
 	}
 
 
@@ -83,6 +87,7 @@ class Application
 		try {
 			$this->onStartup($this);
 			$this->processRequest($this->createInitialRequest());
+			$this->emitter->send($this->httpResponse);
 			$this->onShutdown($this);
 
 		} catch (\Throwable $e) {
@@ -90,6 +95,7 @@ class Application
 			if ($this->catchExceptions && $this->errorPresenter) {
 				try {
 					$this->processException($e);
+					$this->emitter->send($this->httpResponse);
 					$this->onShutdown($this, $e);
 					return;
 
@@ -154,18 +160,18 @@ class Application
 		}
 
 		$this->onResponse($this, $response);
-		$response->send($this->httpRequest, $this->httpResponse);
+		$this->httpResponse->setBody(function () use ($response) {
+			$response->send($this->httpRequest, $this->httpResponse);
+		});
 	}
 
 
 	public function processException(\Throwable $e): void
 	{
-		if (!$e instanceof BadRequestException && $this->httpResponse instanceof Nette\Http\Response) {
-			$this->httpResponse->warnOnBuffer = false;
+		if (!$e instanceof BadRequestException) {
+			$this->emitter->warnOnBuffer = false;
 		}
-		if (!$this->httpResponse->isSent()) {
-			$this->httpResponse->setCode($e instanceof BadRequestException ? ($e->getHttpCode() ?: 404) : 500);
-		}
+		$this->httpResponse->setCode($e instanceof BadRequestException ? ($e->getHttpCode() ?: 404) : 500);
 
 		$args = ['exception' => $e, 'request' => end($this->requests) ?: null];
 		if ($this->presenter instanceof UI\Presenter) {

@@ -17,7 +17,7 @@
 	"require": {
 		"php": ">=7.1",
 		"nette/component-model": "^3.0",
-		"nette/http": "^3.0.2",
+		"nette/http": "^4.0",
 		"nette/routing": "~3.0.0",
 		"nette/utils": "^3.0"
 	},
@@ -28,7 +28,7 @@
 	"require-dev": {
 		"nette/tester": "^2.0.1",
 		"nette/di": "^v3.0",
-		"nette/forms": "^3.0",
+		"nette/forms": "^4.0",
 		"nette/robot-loader": "^3.2",
 		"nette/security": "^3.0",
 		"latte/latte": "^2.5.1",
