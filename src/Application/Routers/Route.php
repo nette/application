@@ -139,7 +139,12 @@ class Route extends Nette\Routing\Route implements Nette\Application\IRouter
 	public function getConstantParameters(): array
 	{
 		$res = parent::getConstantParameters();
-		unset($res['module']);
+		if (isset($res[self::MODULE_KEY], $res[self::PRESENTER_KEY])) {
+			$res[self::PRESENTER_KEY] = $res[self::MODULE_KEY] . ':' . $res[self::PRESENTER_KEY];
+		} elseif (isset($this->getMetadata()[self::MODULE_KEY])) {
+			unset($res[self::PRESENTER_KEY]);
+		}
+		unset($res[self::MODULE_KEY]);
 		return $res;
 	}
 
