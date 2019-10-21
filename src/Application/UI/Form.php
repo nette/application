@@ -20,6 +20,9 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 	/** @var callable[]&(callable(Form $sender): void)[]; Occurs when form is attached to presenter */
 	public $onAnchor;
 
+	/** @var bool */
+	private $sameSiteProtection = true;
+
 
 	/**
 	 * Application form constructor.
@@ -98,6 +101,15 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 
 
 	/**
+	 * Disables CSRF protection using a SameSite cookie.
+	 */
+	public function disableSameSiteProtection(): void
+	{
+		$this->sameSiteProtection = false;
+	}
+
+
+	/**
 	 * Internal: returns submitted HTTP data or null when form was not submitted.
 	 */
 	protected function receiveHttpData(): ?array
@@ -143,7 +155,7 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 			$class = get_class($this);
 			throw new BadSignalException("Missing handler for signal '$signal' in $class.");
 
-		} elseif (!$this->getPresenter()->getHttpRequest()->isSameSite()) {
+		} elseif ($this->sameSiteProtection && !$this->getPresenter()->getHttpRequest()->isSameSite()) {
 			$this->getPresenter()->detectedCsrf();
 
 		} elseif (!$this->getPresenter()->getRequest()->hasFlag(Nette\Application\Request::RESTORED)) {
