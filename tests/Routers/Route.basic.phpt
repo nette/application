@@ -17,6 +17,8 @@ require __DIR__ . '/Route.php';
 
 $route = new Route('<presenter>/<action=default>/<id= \d{1,3}>');
 
+Assert::same([], $route->getConstantParameters());
+
 Assert::same('http://example.com/homepage/', testRouteOut($route, ['presenter' => 'Homepage']));
 
 Assert::same('http://example.com/homepage/', testRouteOut($route, ['presenter' => 'Homepage', 'action' => 'default']));

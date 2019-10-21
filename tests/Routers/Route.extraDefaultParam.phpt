@@ -7,6 +7,7 @@
 declare(strict_types=1);
 
 use Nette\Application\Routers\Route;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -17,6 +18,8 @@ require __DIR__ . '/Route.php';
 $route = new Route('<presenter>/<action>/<id \d{1,3}>/', [
 	'extra' => null,
 ]);
+
+Assert::same(['extra' => null], $route->getConstantParameters());
 
 testRouteIn($route, '/presenter/action/12/any');
 
