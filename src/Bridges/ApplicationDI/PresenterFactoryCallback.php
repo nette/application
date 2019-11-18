@@ -44,10 +44,7 @@ final class PresenterFactoryCallback
 
 		} elseif (!$services) {
 			if ($this->touchToRefresh) {
-				$dir = pathinfo($this->touchToRefresh, PATHINFO_DIRNAME);
-				if (!file_exists($dir)) {
-					mkdir($dir, 0777, true);
-				}
+				Nette\Utils\FileSystem::createDir(dirname($this->touchToRefresh));
 				touch($this->touchToRefresh);
 			}
 
