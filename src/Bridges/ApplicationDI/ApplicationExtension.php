@@ -82,11 +82,15 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 		}
 		$this->compiler->addExportedType(Nette\Application\Application::class);
 
-		$touch = $this->debugMode && ($config->scanDirs || $this->robotLoader) && $this->tempDir ? $this->tempDir . '/touch' : null;
+		if ($this->debugMode && ($config->scanDirs || $this->robotLoader) && $this->tempDir) {
+			$touch = $this->tempDir . '/touch';
+			Nette\Utils\FileSystem::createDir($this->tempDir);
+			$this->getContainerBuilder()->addDependency($touch);
+		}
 		$presenterFactory = $builder->addDefinition($this->prefix('presenterFactory'))
 			->setType(Nette\Application\IPresenterFactory::class)
 			->setFactory(Nette\Application\PresenterFactory::class, [new Definitions\Statement(
-				Nette\Bridges\ApplicationDI\PresenterFactoryCallback::class, [1 => $this->invalidLinkMode, $touch]
+				Nette\Bridges\ApplicationDI\PresenterFactoryCallback::class, [1 => $this->invalidLinkMode, $touch ?? null]
 			)]);
 
 		if ($config->mapping) {
@@ -163,7 +167,6 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 		$classes = [];
 		if (isset($robot)) {
 			$classes = array_keys($robot->getIndexedClasses());
-			$this->getContainerBuilder()->addDependency($this->tempDir . '/touch');
 		}
 
 		if ($config->scanComposer) {
