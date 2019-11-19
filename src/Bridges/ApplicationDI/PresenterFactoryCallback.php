@@ -44,6 +44,7 @@ final class PresenterFactoryCallback
 
 		} elseif (!$services) {
 			if ($this->touchToRefresh) {
+				Nette\Utils\FileSystem::createDir(dirname($this->touchToRefresh));
 				touch($this->touchToRefresh);
 			}
 
