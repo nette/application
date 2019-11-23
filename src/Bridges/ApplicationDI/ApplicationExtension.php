@@ -142,14 +142,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 	{
 		$config = $this->getConfig();
 
-		if ($this->robotLoader) {
-			if ($config->scanDirs && $config->scanDirs !== $this->scanDirs) {
-				trigger_error("Option 'scanDir' has no effect, global RobotLoader is used.", E_USER_DEPRECATED);
-			}
-			$robot = $this->robotLoader;
-			$robot->refresh();
-
-		} elseif ($config->scanDirs) {
+		if ($config->scanDirs) {
 			if (!class_exists(Nette\Loaders\RobotLoader::class)) {
 				throw new Nette\NotSupportedException("RobotLoader is required to find presenters, install package `nette/robot-loader` or disable option {$this->prefix('scanDirs')}: false");
 			}
@@ -162,6 +155,10 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 			} else {
 				$robot->rebuild();
 			}
+
+		} elseif ($this->robotLoader && $config->scanDirs !== false) {
+			$robot = $this->robotLoader;
+			$robot->refresh();
 		}
 
 		$classes = [];
