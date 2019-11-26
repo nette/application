@@ -40,6 +40,9 @@ final class FileResponse implements Nette\Application\IResponse
 		if (!is_file($file)) {
 			throw new Nette\Application\BadRequestException("File '$file' doesn't exist.");
 		}
+		if (!is_readable($file)) {
+			throw new Nette\Application\BadRequestException("File '$file' is not readable.");
+		}
 
 		$this->file = $file;
 		$this->name = $name ?? basename($file);
@@ -88,6 +91,9 @@ final class FileResponse implements Nette\Application\IResponse
 
 		$filesize = $length = filesize($this->file);
 		$handle = fopen($this->file, 'r');
+		if (!$handle) {
+			throw new Nette\Application\BadRequestException("Cannot open file: '{$this->file}'.");
+		}
 
 		if ($this->resuming) {
 			$httpResponse->setHeader('Accept-Ranges', 'bytes');
