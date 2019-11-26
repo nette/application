@@ -21,7 +21,7 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 	public $onAnchor;
 
 	/** @var bool */
-	private $sameSiteProtection = true;
+	private $crossOrigin = false;
 
 
 	/**
@@ -103,9 +103,16 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 	/**
 	 * Disables CSRF protection using a SameSite cookie.
 	 */
+	public function allowCrossOrigin(): void
+	{
+		$this->crossOrigin = true;
+	}
+
+
+	/** @deprecated  use allowCrossOrigin() */
 	public function disableSameSiteProtection(): void
 	{
-		$this->sameSiteProtection = false;
+		$this->crossOrigin = true;
 	}
 
 
@@ -155,7 +162,7 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 			$class = get_class($this);
 			throw new BadSignalException("Missing handler for signal '$signal' in $class.");
 
-		} elseif ($this->sameSiteProtection && !$this->getPresenter()->getHttpRequest()->isSameSite()) {
+		} elseif (!$this->crossOrigin && !$this->getPresenter()->getHttpRequest()->isSameSite()) {
 			$this->getPresenter()->detectedCsrf();
 
 		} elseif (!$this->getPresenter()->getRequest()->hasFlag(Nette\Application\Request::RESTORED)) {
