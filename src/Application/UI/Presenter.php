@@ -1284,8 +1284,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/********************* services ****************d*g**/
 
 
-	final public function injectPrimary(Nette\DI\Container $context = null, Application\IPresenterFactory $presenterFactory = null, Nette\Routing\Router $router = null,
-		Http\IRequest $httpRequest, Http\IResponse $httpResponse, Http\Session $session = null, Nette\Security\User $user = null, ITemplateFactory $templateFactory = null)
+	final public function injectPrimary(?Nette\DI\Container $context, ?Application\IPresenterFactory $presenterFactory, ?Nette\Routing\Router $router,
+		Http\IRequest $httpRequest, Http\IResponse $httpResponse, ?Http\Session $session = null, ?Nette\Security\User $user = null, ?ITemplateFactory $templateFactory = null)
 	{
 		if ($this->presenterFactory !== null) {
 			throw new Nette\InvalidStateException('Method ' . __METHOD__ . ' is intended for initialization and should not be called more than once.');
