@@ -154,10 +154,10 @@ final class ComponentReflection extends \ReflectionClass
 		$res = [];
 		foreach ($method->getParameters() as $i => $param) {
 			$name = $param->getName();
-			[$type, $isClass] = self::getParameterType($param);
+			$type = self::getParameterType($param);
 			if (isset($args[$name])) {
 				$res[$i] = $args[$name];
-				if (!self::convertType($res[$i], $type, $isClass)) {
+				if (!self::convertType($res[$i], $type)) {
 					throw new Nette\InvalidArgumentException(sprintf(
 						'Argument $%s passed to %s() must be %s, %s given.',
 						$name,
@@ -187,9 +187,15 @@ final class ComponentReflection extends \ReflectionClass
 	/**
 	 * Non data-loss type conversion.
 	 */
-	public static function convertType(&$val, string $type, bool $isClass = false): bool
+	public static function convertType(&$val, string $type): bool
 	{
-		if ($isClass) {
+		static $builtin = [
+			'string' => 1, 'int' => 1, 'float' => 1, 'bool' => 1, 'array' => 1, 'object' => 1,
+			'callable' => 1, 'iterable' => 1, 'void' => 1, 'null' => 1,
+			'boolean' => 1, 'integer' => 1, 'double' => 1, 'NULL' => 1,
+		];
+
+		if (empty($builtin[$type])) {
 			return $val instanceof $type;
 
 		} elseif ($type === 'callable') {
@@ -240,14 +246,11 @@ final class ComponentReflection extends \ReflectionClass
 	}
 
 
-	/**
-	 * @return array [string|null, bool]
-	 */
-	public static function getParameterType(\ReflectionParameter $param): array
+	public static function getParameterType(\ReflectionParameter $param): string
 	{
 		return $param->hasType()
-			? [$param->getType()->getName(), !$param->getType()->isBuiltin()]
-			: [gettype($param->isDefaultValueAvailable() ? $param->getDefaultValue() : null), false];
+			? $param->getType()->getName()
+			: gettype($param->isDefaultValueAvailable() ? $param->getDefaultValue() : null);
 	}
 
 
