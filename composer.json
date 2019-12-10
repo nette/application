@@ -33,7 +33,8 @@
 		"nette/security": "^3.0",
 		"latte/latte": "^2.5.1",
 		"tracy/tracy": "^2.6",
-		"mockery/mockery": "^1.0"
+		"mockery/mockery": "^1.0",
+		"phpstan/phpstan-nette": "^0.12"
 	},
 	"conflict": {
 		"nette/di": "<3.0-stable",
@@ -46,6 +47,10 @@
 		"files": ["src/compatibility.php"]
 	},
 	"minimum-stability": "dev",
+	"scripts": {
+		"phpstan": "phpstan analyse --level 5 --configuration tests/phpstan.neon src",
+		"tester": "tester tests -s"
+	},
 	"extra": {
 		"branch-alias": {
 			"dev-master": "3.0-dev"
