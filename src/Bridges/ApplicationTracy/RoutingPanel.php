@@ -69,10 +69,10 @@ final class RoutingPanel implements Tracy\IBarPanel
 	public function getTab(): string
 	{
 		$this->analyse($this->router);
-		ob_start(function () {});
-		$matched = $this->matched;
-		require __DIR__ . '/templates/RoutingPanel.tab.phtml';
-		return ob_get_clean();
+		return Nette\Utils\Helpers::capture(function () {
+			$matched = $this->matched;
+			require __DIR__ . '/templates/RoutingPanel.tab.phtml';
+		});
 	}
 
 
@@ -81,15 +81,15 @@ final class RoutingPanel implements Tracy\IBarPanel
 	 */
 	public function getPanel(): string
 	{
-		ob_start(function () {});
-		$matched = $this->matched;
-		$routers = $this->routers;
-		$source = $this->source;
-		$hasModule = (bool) array_filter($routers, function (array $rq): string { return $rq['module']; });
-		$url = $this->httpRequest->getUrl();
-		$method = $this->httpRequest->getMethod();
-		require __DIR__ . '/templates/RoutingPanel.panel.phtml';
-		return ob_get_clean();
+		return Nette\Utils\Helpers::capture(function () {
+			$matched = $this->matched;
+			$routers = $this->routers;
+			$source = $this->source;
+			$hasModule = (bool) array_filter($routers, function (array $rq): string { return $rq['module']; });
+			$url = $this->httpRequest->getUrl();
+			$method = $this->httpRequest->getMethod();
+			require __DIR__ . '/templates/RoutingPanel.panel.phtml';
+		});
 	}
 
 
