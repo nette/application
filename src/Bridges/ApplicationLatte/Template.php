@@ -93,6 +93,17 @@ class Template implements Nette\Application\UI\ITemplate
 
 
 	/**
+	 * Registers run-time function.
+	 * @return static
+	 */
+	public function addFunction(string $name, callable $callback)
+	{
+		$this->latte->addFunction($name, $callback);
+		return $this;
+	}
+
+
+	/**
 	 * Sets translate adapter.
 	 * @return static
 	 */
