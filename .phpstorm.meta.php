@@ -54,3 +54,5 @@ expectedArguments(\Nette\Application\UI\Component::error(), 1, argumentsSet('net
 
 expectedArguments(\Nette\Application\BadRequestException::__construct(), 1, argumentsSet('nette_http_codes_4xx'));
 expectedReturnValues(\Nette\Application\BadRequestException::getHttpCode(), argumentsSet('nette_http_codes_4xx'));
+
+override(new \Nette\Application\UI\Control, map(['' => 'Nette\Application\UI\Control']));
