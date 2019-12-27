@@ -181,8 +181,16 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	public function isModuleCurrent(string $module): bool
 	{
-		$current = Helpers::splitName($this->getName())[0];
-		return Nette\Utils\Strings::startsWith($current . ':', ltrim($module . ':', ':'));
+		return Nette\Utils\Strings::startsWith($this->getModule() . ':', ltrim($module . ':', ':'));
+	}
+
+
+	/**
+	 * Returns module name.
+	 */
+	final public function getModule(): string
+	{
+		return Helpers::splitName($this->getName())[0];
 	}
 
 
