@@ -179,6 +179,15 @@ abstract class Presenter extends Control implements Application\IPresenter
 	}
 
 
+	/**
+	 * Returns module name.
+	 */
+	final public function getModule(): string
+	{
+		return Helpers::splitName($this->getName())[0];
+	}
+
+
 	/********************* interface IPresenter ****************d*g**/
 
 
