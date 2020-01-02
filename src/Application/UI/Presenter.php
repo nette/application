@@ -188,6 +188,18 @@ abstract class Presenter extends Control implements Application\IPresenter
 	}
 
 
+	public function isModuleCurrent(string $moduleName): bool
+	{
+		if (!$moduleName) {
+			throw new Nette\InvalidArgumentException('Missing module name!');
+		}
+
+		$moduleName = trim($moduleName, ':') . ':';
+
+		return Nette\Utils\Strings::startsWith($this->getModule() . ':', $moduleName);
+	}
+
+
 	/********************* interface IPresenter ****************d*g**/
 
 
