@@ -42,6 +42,15 @@ final class Link
 
 
 	/**
+	 * Returns link component.
+	 */
+	public function getComponent(): Component
+	{
+		return $this->component;
+	}
+
+
+	/**
 	 * Returns link destination.
 	 */
 	public function getDestination(): string
@@ -77,6 +86,15 @@ final class Link
 	public function getParameters(): array
 	{
 		return $this->params;
+	}
+
+
+	/**
+	 * Determines whether this links to the current page.
+	 */
+	public function isLinkCurrent(): bool
+	{
+		return $this->component->isLinkCurrent($this->destination, $this->params);
 	}
 
 
