@@ -117,4 +117,4 @@ EOD
 
 <a n:href="default!#hash 10, 20"></a>
 EOD
-, $params), ['&#039;' => "'"]));
+, $params), ['&#039;' => "'", '&apos;' => "'"]));
