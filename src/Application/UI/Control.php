@@ -25,6 +25,9 @@ abstract class Control extends Component implements IRenderable
 	/** @var ITemplateFactory */
 	private $templateFactory;
 
+	/** @var string|null */
+	private $templateFile;
+
 	/** @var ITemplate */
 	private $template;
 
@@ -42,6 +45,23 @@ abstract class Control extends Component implements IRenderable
 	}
 
 
+	final public function setTemplateFile(string $templateFile = null)
+	{
+		$this->templateFile = $templateFile;
+
+		if ($this->template !== null) {
+			$this->template->setFile($templateFile);
+		}
+		return $this;
+	}
+
+
+	final public function getTemplateFile(): ?string
+	{
+		return $this->templateFile;
+	}
+
+
 	final public function getTemplate(): ITemplate
 	{
 		if ($this->template === null) {
@@ -54,7 +74,13 @@ abstract class Control extends Component implements IRenderable
 	protected function createTemplate(): ITemplate
 	{
 		$templateFactory = $this->templateFactory ?: $this->getPresenter()->getTemplateFactory();
-		return $templateFactory->createTemplate($this);
+		$template = $templateFactory->createTemplate($this);
+
+		if ($this->templateFile !== null) {
+			$template->setFile($this->templateFile);
+		}
+
+		return $template;
 	}
 
 
