@@ -37,8 +37,8 @@ final class FileResponse implements Nette\Application\IResponse
 
 	public function __construct(string $file, string $name = null, string $contentType = null, bool $forceDownload = true)
 	{
-		if (!is_file($file)) {
-			throw new Nette\Application\BadRequestException("File '$file' doesn't exist.");
+		if (!is_file($file) || !is_readable($file)) {
+			throw new Nette\Application\BadRequestException("File '$file' doesn't exist or is not readable.");
 		}
 
 		$this->file = $file;
@@ -88,6 +88,9 @@ final class FileResponse implements Nette\Application\IResponse
 
 		$filesize = $length = filesize($this->file);
 		$handle = fopen($this->file, 'r');
+		if (!$handle) {
+			throw new Nette\Application\BadRequestException("Cannot open file: '{$this->file}'.");
+		}
 
 		if ($this->resuming) {
 			$httpResponse->setHeader('Accept-Ranges', 'bytes');
