@@ -87,6 +87,11 @@ class TemplateFactory implements UI\ITemplateFactory
 			});
 		}
 
+		if ($presenter) {
+			$latte->addFunction('isLinkCurrent', [$presenter, 'isLinkCurrent']);
+			$latte->addFunction('isModuleCurrent', [$presenter, 'isModuleCurrent']);
+		}
+
 		// default parameters
 		$template->user = $this->user;
 		$template->baseUrl = $this->httpRequest ? rtrim($this->httpRequest->getUrl()->withoutUserInfo()->getBaseUrl(), '/') : null;
