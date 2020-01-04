@@ -54,10 +54,15 @@ class TemplateFactory implements UI\ITemplateFactory
 	}
 
 
-	public function createTemplate(UI\Control $control = null): UI\ITemplate
+	public function createTemplate(UI\Control $control = null, string $class = null): UI\ITemplate
 	{
 		$latte = $this->latteFactory->create();
-		$template = new $this->templateClass($latte);
+		$class = $class ?: $this->templateClass;
+		$template = new $class($latte);
+		if (!$template instanceof LatteTemplate) {
+			throw new Nette\InvalidArgumentException("Class $class does not extend " . LatteTemplate::class . '.');
+		}
+
 		$presenter = $control ? $control->getPresenterIfExists() : null;
 
 		if ($latte->onCompile instanceof \Traversable) {
