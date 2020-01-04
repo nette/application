@@ -54,7 +54,26 @@ abstract class Control extends Component implements IRenderable
 	protected function createTemplate(): ITemplate
 	{
 		$templateFactory = $this->templateFactory ?: $this->getPresenter()->getTemplateFactory();
-		return $templateFactory->createTemplate($this);
+		return $templateFactory->createTemplate($this, $this->formatTemplateClass());
+	}
+
+
+	public function formatTemplateClass(): ?string
+	{
+		$class = preg_replace('#Presenter$|Control$#', 'Template', static::class);
+		if ($class === static::class || !class_exists($class)) {
+			return null;
+		} elseif (!is_a($class, ITemplate::class, true)) {
+			trigger_error(sprintf(
+				'%s: class %s was found but does not implement the %s, so it will not be used for the template.',
+				static::class,
+				$class,
+				ITemplate::class
+			), E_USER_NOTICE);
+			return null;
+		} else {
+			return $class;
+		}
 	}
 
 

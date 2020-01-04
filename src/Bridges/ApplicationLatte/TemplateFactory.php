@@ -58,10 +58,15 @@ class TemplateFactory implements UI\ITemplateFactory
 	}
 
 
-	public function createTemplate(UI\Control $control = null): UI\ITemplate
+	public function createTemplate(UI\Control $control = null, string $class = null): UI\ITemplate
 	{
+		$class = $class ?? $this->templateClass;
+		if (!is_a($class, UI\ITemplate::class, true)) {
+			throw new Nette\InvalidArgumentException("Class $class does not implement " . UI\ITemplate::class . ' or it does not exist.');
+		}
+
 		$latte = $this->latteFactory->create();
-		$template = new $this->templateClass($latte);
+		$template = new $class($latte);
 		$presenter = $control ? $control->getPresenterIfExists() : null;
 
 		if ($latte->onCompile instanceof \Traversable) {
