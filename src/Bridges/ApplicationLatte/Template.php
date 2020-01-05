@@ -17,20 +17,16 @@ use Nette;
  */
 class Template extends LatteTemplate
 {
-	/** @var array */
-	private $params = [];
-
-
 	/**
 	 * Adds new template parameter.
 	 * @return static
 	 */
 	public function add(string $name, $value)
 	{
-		if (array_key_exists($name, $this->params)) {
+		if (property_exists($this, $name)) {
 			throw new Nette\InvalidStateException("The variable '$name' already exists.");
 		}
-		$this->params[$name] = $value;
+		$this->$name = $value;
 		return $this;
 	}
 
@@ -41,7 +37,9 @@ class Template extends LatteTemplate
 	 */
 	public function setParameters(array $params)
 	{
-		$this->params = $params + $this->params;
+		foreach ($params as $k => $v) {
+			$this->$k = $v;
+		}
 		return $this;
 	}
 
@@ -51,47 +49,6 @@ class Template extends LatteTemplate
 	 */
 	public function getParameters(): array
 	{
-		return $this->params;
-	}
-
-
-	/**
-	 * Sets a template parameter. Do not call directly.
-	 */
-	public function __set(string $name, $value): void
-	{
-		$this->params[$name] = $value;
-	}
-
-
-	/**
-	 * Returns a template parameter. Do not call directly.
-	 * @return mixed  value
-	 */
-	public function &__get(string $name)
-	{
-		if (!array_key_exists($name, $this->params)) {
-			trigger_error("The variable '$name' does not exist in template.", E_USER_NOTICE);
-		}
-
-		return $this->params[$name];
-	}
-
-
-	/**
-	 * Determines whether parameter is defined. Do not call directly.
-	 */
-	public function __isset(string $name): bool
-	{
-		return isset($this->params[$name]);
-	}
-
-
-	/**
-	 * Removes a template parameter. Do not call directly.
-	 */
-	public function __unset(string $name): void
-	{
-		unset($this->params[$name]);
+		return get_object_vars($this);
 	}
 }
