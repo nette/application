@@ -14,6 +14,15 @@ use Nette;
 
 /**
  * Dynamic Latte powered template.
+ *
+ * @property Nette\Security\User $user
+ * @property string $baseUrl
+ * @property string $basePath
+ * @property array $flashes
+ * @property Nette\Application\UI\Presenter $presenter
+ * @property Nette\Application\UI\Control $control
+ * @method bool isLinkCurrent(string $destination = null, ...$args)
+ * @method bool isModuleCurrent(string $module)
  */
 class Template extends LatteTemplate
 {
