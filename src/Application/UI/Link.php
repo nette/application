@@ -94,7 +94,7 @@ final class Link
 	 */
 	public function isLinkCurrent(): bool
 	{
-		return $this->component->isLinkCurrent($this->destination, $this->parameters);
+		return $this->component->isLinkCurrent($this->destination, $this->params);
 	}
 
 
