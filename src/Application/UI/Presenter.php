@@ -250,9 +250,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			}
 
 			// finish template rendering
-			if ($this->getTemplate()) {
-				$this->sendTemplate();
-			}
+			$this->sendTemplate();
 
 		} catch (Application\AbortException $e) {
 		}
@@ -453,12 +451,11 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 
 	/**
-	 * @throws Nette\Application\BadRequestException if no template found
 	 * @throws Nette\Application\AbortException
 	 */
-	public function sendTemplate(): void
+	public function sendTemplate(ITemplate $template = null): void
 	{
-		$template = $this->getTemplate();
+		$template = $template ?: $this->getTemplate();
 		if (!$template->getFile()) {
 			$files = $this->formatTemplateFiles();
 			foreach ($files as $file) {
