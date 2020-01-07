@@ -7,5 +7,22 @@
 
 declare(strict_types=1);
 
-class_alias(Nette\Application\UI\Component::class, Nette\Application\UI\PresenterComponent::class);
-class_alias(Nette\Application\UI\ComponentReflection::class, Nette\Application\UI\PresenterComponentReflection::class);
+namespace Nette\Application\UI;
+
+if (false) {
+	/** @deprecated use Nette\Application\UI\Component */
+	class PresenterComponent
+	{
+	}
+} elseif (!class_exists(PresenterComponent::class)) {
+	class_alias(Component::class, PresenterComponent::class);
+}
+
+if (false) {
+	/** @deprecated use Nette\Application\UI\ComponentReflection */
+	class PresenterComponentReflection
+	{
+	}
+} elseif (!class_exists(PresenterComponentReflection::class)) {
+	class_alias(ComponentReflection::class, PresenterComponentReflection::class);
+}
