@@ -42,8 +42,7 @@
 		"nette/latte": "<2.4"
 	},
 	"autoload": {
-		"classmap": ["src/"],
-		"files": ["src/compatibility.php"]
+		"classmap": ["src/"]
 	},
 	"minimum-stability": "dev",
 	"extra": {

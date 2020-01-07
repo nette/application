@@ -410,3 +410,6 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 		}
 	}
 }
+
+
+class_exists(PresenterComponent::class);
