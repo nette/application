@@ -310,3 +310,12 @@ final class ComponentReflection extends \ReflectionClass
 		return $res;
 	}
 }
+
+
+class_alias(ComponentReflection::class, PresenterComponentReflection::class);
+if (false) {
+	/** @deprecated use Nette\Application\UI\ComponentReflection */
+	class PresenterComponentReflection
+	{
+	}
+}

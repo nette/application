@@ -312,3 +312,12 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 		throw new Nette\Application\BadRequestException($message, $httpCode);
 	}
 }
+
+
+class_alias(Component::class, PresenterComponent::class);
+if (false) {
+	/** @deprecated use Nette\Application\UI\Component */
+	class PresenterComponent
+	{
+	}
+}
