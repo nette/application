@@ -44,6 +44,7 @@ final class UIMacros extends Latte\Macros\MacroSet
 		$me->addMacro('extends', [$me, 'macroExtends']);
 		$me->addMacro('layout', [$me, 'macroExtends']);
 		$me->addMacro('nonce', null, null, 'echo $this->global->uiNonce ? " nonce=\"{$this->global->uiNonce}\"" : "";');
+		$me->addMacro('templatePrint', [$me, 'macroTemplatePrint'], null, null, self::ALLOWED_IN_HEAD);
 	}
 
 
@@ -146,5 +147,15 @@ final class UIMacros extends Latte\Macros\MacroSet
 			return $this->extends = false;
 		}
 		$this->extends = $writer->write('$this->parentName = $this->global->uiPresenter->findLayoutTemplateFile();');
+	}
+
+
+	/**
+	 * {templatePrint [ClassName]}
+	 */
+	public function macroTemplatePrint(MacroNode $node, PhpWriter $writer)
+	{
+		$class = $node->tokenizer->fetchWord() ?: null;
+		return $writer->write('ob_end_clean(); header("Content-Type: text/plain"); echo (new Nette\Bridges\ApplicationLatte\TemplatePrinter)->print($this, %var); exit;', $class);
 	}
 }
