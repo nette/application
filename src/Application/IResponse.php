@@ -17,7 +17,6 @@ use Nette;
  */
 interface IResponse
 {
-
 	/**
 	 * Sends response to output.
 	 */
