@@ -11,6 +11,8 @@ namespace Nette\Bridges\ApplicationLatte;
 
 use Latte;
 use Nette;
+use Nette\Application\UI\Presenter;
+use Nette\PhpGenerator as Php;
 
 
 /**
@@ -33,5 +35,48 @@ final class UIRuntime
 		) {
 			$parentName = $providers->uiControl->findLayoutTemplateFile();
 		}
+	}
+
+
+	public static function printClass(Latte\Runtime\Template $template, string $parent = null): void
+	{
+		$name = 'Template';
+		$parent = $parent === 'default'
+			? DefaultTemplate::class
+			: ($parent ?: Template::class);
+
+		$params = $template->getParameters();
+		$control = $params['control'] ?? $params['presenter'] ?? null;
+		if ($control) {
+			$name = preg_replace('#(Control|Presenter)$#', '', get_class($control)) . 'Template';
+			unset($params[$control instanceof Presenter ? 'control' : 'presenter']);
+		}
+
+		if (class_exists($parent)) {
+			get_class_vars($parent);
+			$params = array_diff_key($params, get_class_vars($parent));
+		}
+
+		$funcs = (array) $template->global->fn;
+		unset($funcs['isLinkCurrent'], $funcs['isModuleCurrent']);
+
+		$namespace = new Php\PhpNamespace(Php\Helpers::extractNamespace($name));
+		$class = $namespace->addClass(Php\Helpers::extractShortName($name));
+		$class->setExtends($parent);
+		$class->addTrait(Nette\SmartObject::class);
+
+		$blueprint = new Latte\Runtime\Blueprint;
+		$blueprint->addProperties($class, $params, true);
+		$blueprint->addFunctions($class, $funcs);
+
+		$end = $blueprint->printCanvas();
+		$blueprint->printHeader('Native types');
+		$blueprint->printCode((string) $namespace);
+
+		$blueprint->addProperties($class, $params, false);
+
+		$blueprint->printHeader('phpDoc types');
+		$blueprint->printCode((string) $namespace);
+		echo $end;
 	}
 }
