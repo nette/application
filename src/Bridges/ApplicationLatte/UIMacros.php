@@ -11,8 +11,10 @@ namespace Nette\Bridges\ApplicationLatte;
 
 use Latte;
 use Latte\CompileException;
+use Latte\Helpers;
 use Latte\MacroNode;
 use Latte\PhpWriter;
+use Nette\Application\UI\Presenter;
 use Nette\Utils\Strings;
 
 
@@ -44,6 +46,7 @@ final class UIMacros extends Latte\Macros\MacroSet
 		$me->addMacro('extends', [$me, 'macroExtends']);
 		$me->addMacro('layout', [$me, 'macroExtends']);
 		$me->addMacro('nonce', null, null, 'echo $this->global->uiNonce ? " nonce=\"{$this->global->uiNonce}\"" : "";');
+		$me->addMacro('templatePrint', [$me, 'macroTemplatePrint'], null, null, self::ALLOWED_IN_HEAD);
 	}
 
 
@@ -146,5 +149,56 @@ final class UIMacros extends Latte\Macros\MacroSet
 			return $this->extends = false;
 		}
 		$this->extends = $writer->write('$this->parentName = $this->global->uiPresenter->findLayoutTemplateFile();');
+	}
+
+
+	/**
+	 * {templatePrint [ClassName]}
+	 */
+	public function macroTemplatePrint(MacroNode $node, PhpWriter $writer)
+	{
+		$class = $node->tokenizer->fetchWord() ?: null;
+		return $writer->write(__CLASS__ . '::macroTemplatePrintRuntime($this, %var)', $class);
+	}
+
+
+	/**
+	 * Generates blueprint of template class.
+	 */
+	public static function macroTemplatePrintRuntime(Latte\Runtime\Template $template, ?string $class): void
+	{
+		$types = array_map([Helpers::class, 'getType'], $template->getParameters());
+		if ($template->getParameter('control') instanceof Presenter) {
+			unset($types['control']);
+			$subject = $template->getParameter('presenter');
+			$class = $class ?: preg_replace('#Presenter$#', '', get_class($subject)) . ucfirst($subject->getView()) . 'Template';
+		} else {
+			unset($types['presenter']);
+			$subject = $template->getParameter('control');
+			$class = $class ?: preg_replace('#Control$#', '', get_class($subject)) . 'Template';
+		}
+		unset($types['user'], $types['baseUrl'], $types['basePath'], $types['flashes']);
+
+		ob_end_clean();
+		header('Content-Type: text/plain');
+		$parts = explode('\\', $class);
+		$name = array_pop($parts);
+		$namespace = implode('\\', $parts);
+		$parent = Template::class;
+		$subject = explode('\\', get_class($subject));
+		$subject = end($subject);
+		echo
+			($namespace ? "namespace $namespace;\n\n" : '')
+			. "class $name extends $parent\n"
+			. "{\n" . Helpers::printProperties($types, true) . "\n}\n"
+			. "\n\n"
+			. "/**\n" . Helpers::printProperties($types, false) . "\n */\n"
+			. "class $name extends $parent\n"
+			. "{\n}\n"
+			. "\n\n"
+			. "/**\n * @property $name \$template\n */\n"
+			. "class $subject\n"
+			. "{\n}\n";
+		exit;
 	}
 }
