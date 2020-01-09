@@ -51,10 +51,14 @@ abstract class Control extends Component implements IRenderable
 	}
 
 
-	protected function createTemplate(): ITemplate
+	/**
+	 * @param  string  $class
+	 */
+	protected function createTemplate(/*string $class = null*/): ITemplate
 	{
+		$class = func_num_args() ? func_get_arg(0) : $this->formatTemplateClass(); // back compatibility
 		$templateFactory = $this->templateFactory ?: $this->getPresenter()->getTemplateFactory();
-		return $templateFactory->createTemplate($this, $this->formatTemplateClass());
+		return $templateFactory->createTemplate($this, $class);
 	}
 
 

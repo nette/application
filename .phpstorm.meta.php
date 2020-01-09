@@ -64,3 +64,5 @@ exitPoint(\Nette\Application\UI\Presenter::sendPayload());
 exitPoint(\Nette\Application\UI\Presenter::sendResponse());
 exitPoint(\Nette\Application\UI\Presenter::sendTemplate());
 exitPoint(\Nette\Application\UI\Presenter::terminate());
+
+override(\Nette\Application\UI\Control::createTemplate(0), map(['' => '@']));

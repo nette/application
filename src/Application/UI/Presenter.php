@@ -551,9 +551,13 @@ abstract class Presenter extends Control implements Application\IPresenter
 	}
 
 
-	protected function createTemplate(): ITemplate
+	/**
+	 * @param  string  $class
+	 */
+	protected function createTemplate(/*string $class = null*/): ITemplate
 	{
-		return $this->getTemplateFactory()->createTemplate($this, $this->formatTemplateClass());
+		$class = func_num_args() ? func_get_arg(0) : $this->formatTemplateClass(); // back compatibility
+		return $this->getTemplateFactory()->createTemplate($this, $class);
 	}
 
 
