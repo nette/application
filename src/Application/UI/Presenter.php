@@ -556,9 +556,10 @@ abstract class Presenter extends Control implements Application\IPresenter
 	}
 
 
-	protected function createTemplate(): ITemplate
+	protected function createTemplate(?string $class = null): ITemplate
 	{
-		return $this->getTemplateFactory()->createTemplate($this, self::formatTemplateClass());
+		$class = $class ?? self::formatTemplateClass();
+		return $this->getTemplateFactory()->createTemplate($this, $class);
 	}
 
 
