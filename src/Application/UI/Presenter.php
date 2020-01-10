@@ -1068,11 +1068,15 @@ abstract class Presenter extends Control implements Application\IPresenter
 		}
 		$request = clone $session[$key][1];
 		unset($session[$key]);
-		$request->setFlag(Application\Request::RESTORED, true);
 		$params = $request->getParameters();
 		$params[self::FLASH_KEY] = $this->getFlashKey();
 		$request->setParameters($params);
-		$this->sendResponse(new Responses\ForwardResponse($request));
+		if ($request->isMethod('POST')) {
+			$request->setFlag(Application\Request::RESTORED, true);
+			$this->sendResponse(new Responses\ForwardResponse($request));
+		} else {
+			$this->redirectUrl($this->requestToUrl($request));
+		}
 	}
 
 
