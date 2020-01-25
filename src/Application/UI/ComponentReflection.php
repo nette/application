@@ -123,7 +123,7 @@ final class ComponentReflection extends \ReflectionClass
 			}
 
 			if ($params[$name] === $meta['def'] || ($meta['def'] === null && $params[$name] === '')) {
-				$params[$name] = null; // value transmit is unnecessary
+				unset($params[$name]); // value transmit is unnecessary
 			}
 		}
 	}
