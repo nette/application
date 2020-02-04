@@ -7,18 +7,18 @@
 <a href="%A%"%A%>href after n:class</a>
 
 <?php
-		if ($this->global->uiPresenter->getLastCreatedRequestFlag("current")) {
+		if ($this->global->uiPresenter->getLastCreatedRequestFlag(%c%current%c%)) {
 			?>empty<?php
 		}
 ?>
 
 
 <?php
-		if ($this->global->uiPresenter->isLinkCurrent("default")) {
+		if ($this->global->uiPresenter->isLinkCurrent(%c%default%c%)) {
 			?>default<?php
 		}
 ?>
 
 
-<a href="%A%"%A%($this->global->_fnislinkcurrent)('default') ? 'current' : null%A%>custom function</a>
+<a href="%A%"%A%($this->global->fn->isLinkCurrent)('default') ? 'current' : null%A%>custom function</a>
 %A%
