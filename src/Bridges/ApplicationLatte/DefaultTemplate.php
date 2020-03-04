@@ -9,10 +9,37 @@ declare(strict_types=1);
 
 namespace Nette\Bridges\ApplicationLatte;
 
+use Nette;
+
 
 /**
  * Default template for controls and presenters.
  */
 class DefaultTemplate extends Template
 {
+	/**
+	 * Adds new template parameter.
+	 * @return static
+	 */
+	public function add(string $name, $value)
+	{
+		if (property_exists($this, $name)) {
+			throw new Nette\InvalidStateException("The variable '$name' already exists.");
+		}
+		$this->$name = $value;
+		return $this;
+	}
+
+
+	/**
+	 * Sets all parameters.
+	 * @return static
+	 */
+	public function setParameters(array $params)
+	{
+		foreach ($params as $k => $v) {
+			$this->$k = $v;
+		}
+		return $this;
+	}
 }
