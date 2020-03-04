@@ -23,7 +23,7 @@ final class DefaultTemplate extends Template
 	 */
 	public function add(string $name, $value)
 	{
-		if (isset($this->$name)) {
+		if (property_exists($this, $name)) {
 			throw new Nette\InvalidStateException("The variable '$name' already exists.");
 		}
 		$this->$name = $value;
