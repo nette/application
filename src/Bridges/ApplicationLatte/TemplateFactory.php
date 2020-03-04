@@ -93,13 +93,27 @@ class TemplateFactory implements UI\ITemplateFactory
 		}
 
 		// default parameters
-		$template->user = $this->user;
-		$template->baseUrl = $this->httpRequest ? rtrim($this->httpRequest->getUrl()->withoutUserInfo()->getBaseUrl(), '/') : null;
-		$template->basePath = preg_replace('#https?://[^/]+#A', '', $template->baseUrl);
-		$template->flashes = [];
+		$baseUrl = $this->httpRequest ? rtrim($this->httpRequest->getUrl()->withoutUserInfo()->getBaseUrl(), '/') : null;
+		$flashes = $presenter instanceof UI\Presenter && $presenter->hasFlashSession()
+			? (array) $presenter->getFlashSession()->{$control->getParameterId('flash')}
+			: [];
+
+		$params = [
+			'user' => $this->user,
+			'baseUrl' => $baseUrl,
+			'basePath' => $baseUrl ? preg_replace('#https?://[^/]+#A', '', $baseUrl) : null,
+			'flashes' => $flashes,
+			'control' => $control,
+			'presenter' => $presenter,
+		];
+
+		foreach ($params as $key => $value) {
+			if (property_exists($template, $key)) {
+				$template->$key = $value;
+			}
+		}
+
 		if ($control) {
-			$template->control = $control;
-			$template->presenter = $presenter;
 			$latte->addProvider('uiControl', $control);
 			$latte->addProvider('uiPresenter', $presenter);
 			$latte->addProvider('snippetBridge', new Nette\Bridges\ApplicationLatte\SnippetBridge($control));
@@ -111,11 +125,6 @@ class TemplateFactory implements UI\ITemplateFactory
 			$latte->addProvider('uiNonce', $nonce);
 		}
 		$latte->addProvider('cacheStorage', $this->cacheStorage);
-
-		if ($presenter instanceof UI\Presenter && $presenter->hasFlashSession()) {
-			$id = $control->getParameterId('flash');
-			$template->flashes = (array) $presenter->getFlashSession()->$id;
-		}
 
 		$this->onCreate($template);
 
