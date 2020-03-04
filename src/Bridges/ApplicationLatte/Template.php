@@ -18,16 +18,11 @@ use Nette;
  */
 class Template implements Nette\Application\UI\ITemplate
 {
-	use Nette\SmartObject;
-
 	/** @var Latte\Engine */
 	private $latte;
 
 	/** @var string */
 	private $file;
-
-	/** @var array */
-	private $params = [];
 
 
 	public function __construct(Latte\Engine $latte)
@@ -47,7 +42,7 @@ class Template implements Nette\Application\UI\ITemplate
 	 */
 	public function render(string $file = null, array $params = []): void
 	{
-		$this->latte->render($file ?: $this->file, $params + $this->params);
+		$this->latte->render($file ?: $this->file, $params + $this->getParameters());
 	}
 
 
@@ -56,7 +51,7 @@ class Template implements Nette\Application\UI\ITemplate
 	 */
 	public function renderToString(string $file = null, array $params = []): string
 	{
-		return $this->latte->renderToString($file ?: $this->file, $params + $this->params);
+		return $this->latte->renderToString($file ?: $this->file, $params + $this->getParameters());
 	}
 
 
@@ -67,7 +62,7 @@ class Template implements Nette\Application\UI\ITemplate
 	public function __toString(): string
 	{
 		try {
-			return $this->latte->renderToString($this->file, $this->params);
+			return $this->latte->renderToString($this->file, $this->getParameters());
 		} catch (\Throwable $e) {
 			if (func_num_args() || PHP_VERSION_ID >= 70400) {
 				throw $e;
@@ -143,48 +138,13 @@ class Template implements Nette\Application\UI\ITemplate
 	 */
 	final public function getParameters(): array
 	{
-		return $this->params;
-	}
-
-
-	/**
-	 * Sets a template parameter. Do not call directly.
-	 */
-	public function __set($name, $value): void
-	{
-		$this->params[$name] = $value;
-	}
-
-
-	/**
-	 * Returns a template parameter. Do not call directly.
-	 * @return mixed  value
-	 */
-	public function &__get($name)
-	{
-		if (!array_key_exists($name, $this->params)) {
-			trigger_error("The variable '$name' does not exist in template.", E_USER_NOTICE);
+		$res = [];
+		foreach ((new \ReflectionObject($this))->getProperties(\ReflectionProperty::IS_PUBLIC) as $prop) {
+			if (PHP_VERSION_ID < 70400 || $prop->isInitialized($this)) {
+				$res[$prop->getName()] = $prop->getValue($this);
+			}
 		}
-
-		return $this->params[$name];
-	}
-
-
-	/**
-	 * Determines whether parameter is defined. Do not call directly.
-	 */
-	public function __isset($name)
-	{
-		return isset($this->params[$name]);
-	}
-
-
-	/**
-	 * Removes a template parameter. Do not call directly.
-	 */
-	public function __unset(string $name): void
-	{
-		unset($this->params[$name]);
+		return $res;
 	}
 
 
