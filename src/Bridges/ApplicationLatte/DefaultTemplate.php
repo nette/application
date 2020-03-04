@@ -14,9 +14,31 @@ use Nette;
 
 /**
  * Default template for controls and presenters.
+ *
+ * @method bool isLinkCurrent(string $destination = null, ...$args)
+ * @method bool isModuleCurrent(string $module)
  */
 final class DefaultTemplate extends Template
 {
+	/** @var Nette\Application\UI\Presenter */
+	public $presenter;
+
+	/** @var Nette\Application\UI\Control */
+	public $control;
+
+	/** @var Nette\Security\User */
+	public $user;
+
+	/** @var string */
+	public $baseUrl;
+
+	/** @var string */
+	public $basePath;
+
+	/** @var \stdClass[] */
+	public $flashes = [];
+
+
 	/**
 	 * Adds new template parameter.
 	 * @return static
