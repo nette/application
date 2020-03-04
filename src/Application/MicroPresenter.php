@@ -114,7 +114,7 @@ final class MicroPresenter implements Application\IPresenter
 	public function createTemplate(string $class = null, callable $latteFactory = null): Application\UI\ITemplate
 	{
 		$latte = $latteFactory ? $latteFactory() : $this->getContext()->getByType(Nette\Bridges\ApplicationLatte\ILatteFactory::class)->create();
-		$template = $class ? new $class : new Nette\Bridges\ApplicationLatte\Template($latte);
+		$template = $class ? new $class : new Nette\Bridges\ApplicationLatte\DefaultTemplate($latte);
 
 		$template->setParameters($this->request->getParameters());
 		$template->presenter = $this;
