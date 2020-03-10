@@ -15,7 +15,7 @@ use Nette;
 /**
  * The router broker.
  */
-class RouteList extends Nette\Routing\RouteList implements Nette\Application\IRouter, \ArrayAccess, \Countable, \IteratorAggregate
+class RouteList extends Nette\Routing\RouteList implements Nette\Routing\Router, \ArrayAccess, \Countable, \IteratorAggregate
 {
 	private const PRESENTER_KEY = 'presenter';
 
