@@ -41,6 +41,8 @@ final class SimpleRouter extends Nette\Routing\SimpleRouter implements Nette\Rou
 
 		if (isset($defaults[self::MODULE_KEY])) {
 			throw new Nette\DeprecatedException(__METHOD__ . '() parameter module is deprecated, use RouteList::withModule() instead.');
+		} elseif ($flags) {
+			trigger_error(__METHOD__ . '() parameter $flags is deprecated, use RouteList::add(..., $flags) instead.', E_USER_DEPRECATED);
 		}
 
 		$this->flags = $flags;
@@ -60,11 +62,10 @@ final class SimpleRouter extends Nette\Routing\SimpleRouter implements Nette\Rou
 	}
 
 
-	/**
-	 * Returns flags.
-	 */
+	/** @deprecated */
 	public function getFlags(): int
 	{
+		trigger_error(__METHOD__ . '() is deprecated.', E_USER_DEPRECATED);
 		return $this->flags;
 	}
 }
