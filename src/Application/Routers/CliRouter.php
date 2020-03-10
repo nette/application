@@ -10,13 +10,12 @@ declare(strict_types=1);
 namespace Nette\Application\Routers;
 
 use Nette;
-use Nette\Application;
 
 
 /**
  * The unidirectional router for CLI. (experimental)
  */
-final class CliRouter implements Application\IRouter
+final class CliRouter implements Nette\Routing\Router
 {
 	use Nette\SmartObject;
 
