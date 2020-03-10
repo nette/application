@@ -48,7 +48,7 @@ final class RoutingExtension extends Nette\DI\CompilerExtension
 		$builder = $this->getContainerBuilder();
 
 		$router = $builder->addDefinition($this->prefix('router'))
-			->setType(Nette\Application\IRouter::class)
+			->setType(Nette\Routing\Router::class)
 			->setFactory(Nette\Application\Routers\RouteList::class);
 
 		foreach ($this->config->routes as $mask => $action) {

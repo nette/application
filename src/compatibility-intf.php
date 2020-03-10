@@ -9,12 +9,11 @@ declare(strict_types=1);
 
 namespace Nette\Application;
 
-use Nette;
-
-
-/**
- * @deprecated use Nette\Routing\Router
- */
-interface IRouter extends Nette\Routing\Router
-{
+if (false) {
+	/** @deprecated use Nette\Routing\Router */
+	interface IRouter
+	{
+	}
+} elseif (!interface_exists(IRouter::class)) {
+	class_alias(\Nette\Routing\Router::class, IRouter::class);
 }
