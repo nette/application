@@ -16,7 +16,7 @@ use Nette;
  * The bidirectional route is responsible for mapping
  * HTTP request to an array for dispatch and vice-versa.
  */
-class Route extends Nette\Routing\Route implements Nette\Application\IRouter
+class Route extends Nette\Routing\Route implements Nette\Routing\Router
 {
 	private const
 		PRESENTER_KEY = 'presenter',
@@ -201,3 +201,6 @@ class Route extends Nette\Routing\Route implements Nette\Application\IRouter
 		return $s;
 	}
 }
+
+
+interface_exists(Nette\Application\IRouter::class);
