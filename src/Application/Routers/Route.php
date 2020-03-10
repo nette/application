@@ -66,6 +66,10 @@ class Route extends Nette\Routing\Route implements Nette\Routing\Router
 			];
 		}
 
+		if ($flags) {
+			trigger_error(__METHOD__ . '() parameter $flags is deprecated, use RouteList::addRoute(..., ..., $flags) instead.', E_USER_DEPRECATED);
+		}
+
 		$this->defaultMeta += self::UI_META;
 		$this->flags = $flags;
 		parent::__construct($mask, $metadata);
@@ -140,11 +144,10 @@ class Route extends Nette\Routing\Route implements Nette\Routing\Router
 	}
 
 
-	/**
-	 * Returns flags.
-	 */
+	/** @deprecated */
 	public function getFlags(): int
 	{
+		trigger_error(__METHOD__ . '() is deprecated.', E_USER_DEPRECATED);
 		return $this->flags;
 	}
 
