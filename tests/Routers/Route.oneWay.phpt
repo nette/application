@@ -14,7 +14,7 @@ require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/Route.php';
 
 
-$route = new Route('<presenter>/<action>', [
+@$route = new Route('<presenter>/<action>', [ // @ is deprecated
 	'presenter' => 'Default',
 	'action' => 'default',
 ], Route::ONE_WAY);
