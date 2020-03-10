@@ -100,7 +100,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 	{
 		if ($router instanceof Routers\RouteList) {
 			if ($router->match($this->httpRequest)) {
-				foreach ($router as $subRouter) {
+				foreach ($router->getRouters() as $subRouter) {
 					$this->analyse($subRouter, $module . $router->getModule());
 				}
 			}

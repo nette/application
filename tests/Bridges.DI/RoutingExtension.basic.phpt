@@ -36,12 +36,12 @@ test(function () {
 	$container = new Container1;
 	$router = $container->getService('router');
 	Assert::type(Nette\Application\Routers\RouteList::class, $router);
-	Assert::count(2, $router);
-	Assert::same('index.php', $router[0]->getMask());
-	Assert::same('item/<id>', $router[1]->getMask());
+	@Assert::count(2, $router); // @ is deprecated
+	Assert::same('index.php', @$router[0]->getMask()); // @ is deprecated
+	Assert::same('item/<id>', @$router[1]->getMask()); // @ is deprecated
 
 	Assert::type(Nette\Application\Routers\RouteList::class, $router);
-	Assert::type(Nette\Application\Routers\Route::class, $router[0]);
+	Assert::type(Nette\Application\Routers\Route::class, @$router[0]); // @ is deprecated
 });
 
 
@@ -64,5 +64,5 @@ test(function () {
 	$router = $container->getService('router');
 
 	Assert::type(Nette\Application\Routers\RouteList::class, $router);
-	Assert::type(Route::class, $router[0]);
+	Assert::type(Route::class, @$router[0]); // @ is deprecated
 });
