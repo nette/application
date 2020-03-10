@@ -16,7 +16,7 @@ use Nette\Application;
 /**
  * The bidirectional route for trivial routing via query parameters.
  */
-final class SimpleRouter extends Nette\Routing\SimpleRouter implements Nette\Application\IRouter
+final class SimpleRouter extends Nette\Routing\SimpleRouter implements Nette\Routing\Router
 {
 	private const
 		PRESENTER_KEY = 'presenter',
@@ -68,3 +68,6 @@ final class SimpleRouter extends Nette\Routing\SimpleRouter implements Nette\App
 		return $this->flags;
 	}
 }
+
+
+interface_exists(Nette\Application\IRouter::class);
