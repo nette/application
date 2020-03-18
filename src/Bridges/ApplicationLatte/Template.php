@@ -237,4 +237,13 @@ class Template implements Nette\Application\UI\ITemplate
 	{
 		unset($this->params[$name]);
 	}
+
+
+	/**
+	 * Prevents unserialization.
+	 */
+	final public function __wakeup()
+	{
+		throw new Nette\NotImplementedException('Object unserialization is not supported by class ' . static::class);
+	}
 }
