@@ -99,10 +99,8 @@ final class RoutingPanel implements Tracy\IBarPanel
 	private function analyse(Nette\Routing\Router $router, string $module = ''): void
 	{
 		if ($router instanceof Routers\RouteList) {
-			if ($router->match($this->httpRequest)) {
-				foreach ($router->getRouters() as $subRouter) {
-					$this->analyse($subRouter, $module . $router->getModule());
-				}
+			foreach ($router->getRouters() as $subRouter) {
+				$this->analyse($subRouter, $module . $router->getModule());
 			}
 			return;
 		}
