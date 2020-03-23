@@ -60,9 +60,11 @@ class Template implements Nette\Application\UI\ITemplate
 	/**
 	 * Renders template to string.
 	 * @param  can throw exceptions? (hidden parameter)
+	 * @deprecated
 	 */
 	public function __toString(): string
 	{
+		trigger_error(__METHOD__ . '() is deprecated, renderToString() instead.', E_USER_DEPRECATED);
 		try {
 			return $this->latte->renderToString($this->file, $this->getParameters());
 		} catch (\Throwable $e) {
