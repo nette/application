@@ -52,9 +52,13 @@ namespace {
 	test(function () use ($pf) {
 		$generator = new LinkGenerator(new Routers\SimpleRouter, new Http\UrlScript('http://nette.org/en/'), $pf);
 		Assert::same('http://nette.org/en/?action=default&presenter=Homepage', $generator->link('Homepage:default'));
+		Assert::same('http://nette.org/en/?action=default&presenter=Homepage', $generator->link(':Homepage:default'));
 		Assert::same('http://nette.org/en/?action=default&presenter=Module%3AMy', $generator->link('Module:My:default'));
+		Assert::same('http://nette.org/en/?action=default&presenter=Module%3AMy', $generator->link(':Module:My:default'));
 		Assert::same('http://nette.org/en/?presenter=Module%3AMy', $generator->link('Module:My:'));
+		Assert::same('http://nette.org/en/?presenter=Module%3AMy', $generator->link(':Module:My:'));
 		Assert::same('http://nette.org/en/?action=default&presenter=Homepage', $generator->link('Homepage:'));
+		Assert::same('http://nette.org/en/?action=default&presenter=Homepage', $generator->link(':Homepage:'));
 		Assert::same('http://nette.org/en/?a=10&action=default&presenter=Homepage', $generator->link('Homepage:', [10]));
 		Assert::same('http://nette.org/en/?id=20&b=10&action=detail&presenter=Homepage', $generator->link('Homepage:detail', [10, 'id' => 20]));
 		Assert::same('http://nette.org/en/?action=default&presenter=Homepage#frag:ment', $generator->link('Homepage:#frag:ment'));
@@ -66,6 +70,18 @@ namespace {
 		$generator = new LinkGenerator(new Routers\SimpleRouter, new Http\UrlScript('http://nette.org/en/'), $pf);
 		$generator->link('default');
 	}, Nette\Application\UI\InvalidLinkException::class, "Invalid link destination 'default'.");
+
+
+	Assert::exception(function () use ($pf) {
+		$generator = new LinkGenerator(new Routers\Route('/', 'Homepage:'), new Http\UrlScript('http://nette.org/en/'), $pf);
+		$generator->link(':');
+	}, Nette\Application\UI\InvalidLinkException::class, 'Invalid link destination \':\'.');
+
+
+	Assert::exception(function () use ($pf) {
+		$generator = new LinkGenerator(new Routers\Route('/', 'Homepage:'), new Http\UrlScript('http://nette.org/en/'), $pf);
+		$generator->link('::');
+	}, Nette\Application\UI\InvalidLinkException::class, 'Missing presenter name in \'::\'.');
 
 
 	Assert::exception(function () use ($pf) {
@@ -83,9 +99,13 @@ namespace {
 	test(function () {
 		$generator = new LinkGenerator(new Routers\SimpleRouter, new Http\UrlScript('http://nette.org/en/'));
 		Assert::same('http://nette.org/en/?action=default&presenter=Homepage', $generator->link('Homepage:default'));
+		Assert::same('http://nette.org/en/?action=default&presenter=Homepage', $generator->link(':Homepage:default'));
 		Assert::same('http://nette.org/en/?action=default&presenter=Module%3AMy', $generator->link('Module:My:default'));
+		Assert::same('http://nette.org/en/?action=default&presenter=Module%3AMy', $generator->link(':Module:My:default'));
 		Assert::same('http://nette.org/en/?presenter=Module%3AMy', $generator->link('Module:My:'));
+		Assert::same('http://nette.org/en/?presenter=Module%3AMy', $generator->link(':Module:My:'));
 		Assert::same('http://nette.org/en/?presenter=Homepage', $generator->link('Homepage:'));
+		Assert::same('http://nette.org/en/?presenter=Homepage', $generator->link(':Homepage:'));
 		Assert::same('http://nette.org/en/?0=10&presenter=Homepage', $generator->link('Homepage:', [10]));
 		Assert::same('http://nette.org/en/?0=10&id=20&action=detail&presenter=Homepage', $generator->link('Homepage:detail', [10, 'id' => 20]));
 		Assert::same('http://nette.org/en/?presenter=Homepage#frag:ment', $generator->link('Homepage:#frag:ment'));
