@@ -51,7 +51,7 @@ test('', function () {
 
 Assert::exception(function () {
 	$factory = new TemplateFactory(Mockery::mock(ILatteFactory::class), null, null, null, stdClass::class);
-}, \Nette\InvalidArgumentException::class, 'Class stdClass does not extend Nette\Bridges\ApplicationLatte\Template or it does not exist.');
+}, \Nette\InvalidArgumentException::class, 'Class stdClass does not implement Nette\Application\UI\ITemplate or it does not exist.');
 
 
 test('', function () {
