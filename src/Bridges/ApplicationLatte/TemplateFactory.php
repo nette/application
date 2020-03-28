@@ -21,7 +21,7 @@ class TemplateFactory implements UI\ITemplateFactory
 {
 	use Nette\SmartObject;
 
-	/** @var callable[]&(callable(Template $template): void)[]; Occurs when a new template is created */
+	/** @var callable[]&(callable(UI\ITemplate $template): void)[]; Occurs when a new template is created */
 	public $onCreate;
 
 	/** @var ILatteFactory */
@@ -51,8 +51,8 @@ class TemplateFactory implements UI\ITemplateFactory
 		$this->httpRequest = $httpRequest;
 		$this->user = $user;
 		$this->cacheStorage = $cacheStorage;
-		if ($templateClass && (!class_exists($templateClass) || !is_a($templateClass, Template::class, true))) {
-			throw new Nette\InvalidArgumentException("Class $templateClass does not extend " . Template::class . ' or it does not exist.');
+		if ($templateClass && (!class_exists($templateClass) || !is_a($templateClass, UI\ITemplate::class, true))) {
+			throw new Nette\InvalidArgumentException("Class $templateClass does not implement " . UI\ITemplate::class . ' or it does not exist.');
 		}
 		$this->templateClass = $templateClass ?: DefaultTemplate::class;
 	}
