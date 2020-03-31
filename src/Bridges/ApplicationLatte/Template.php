@@ -42,7 +42,8 @@ class Template implements Nette\Application\UI\ITemplate
 	 */
 	public function render(string $file = null, array $params = []): void
 	{
-		$this->latte->render($file ?: $this->file, $params + $this->getParameters());
+		Nette\Utils\Arrays::toObject($params, $this);
+		$this->latte->render($file ?: $this->file, $this);
 	}
 
 
@@ -51,7 +52,8 @@ class Template implements Nette\Application\UI\ITemplate
 	 */
 	public function renderToString(string $file = null, array $params = []): string
 	{
-		return $this->latte->renderToString($file ?: $this->file, $params + $this->getParameters());
+		Nette\Utils\Arrays::toObject($params, $this);
+		return $this->latte->renderToString($file ?: $this->file, $this);
 	}
 
 
