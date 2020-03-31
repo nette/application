@@ -39,7 +39,7 @@
 	"conflict": {
 		"nette/di": "<3.0-stable",
 		"nette/forms": "<3.0",
-		"latte/latte": "<2.6 >=3.0",
+		"latte/latte": "<2.7.1 >=3.0",
 		"tracy/tracy": "<2.5"
 	},
 	"autoload": {
