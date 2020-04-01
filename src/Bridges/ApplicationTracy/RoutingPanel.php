@@ -31,7 +31,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 	/** @var Nette\Application\IPresenterFactory */
 	private $presenterFactory;
 
-	/** @var array */
+	/** @var \stdClass[] */
 	private $routers = [];
 
 	/** @var array|null */
@@ -85,7 +85,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 			$matched = $this->matched;
 			$routers = $this->routers;
 			$source = $this->source;
-			$hasModule = (bool) array_filter($routers, function (array $rq): string { return $rq['module']; });
+			$hasModule = (bool) array_filter($routers, function (\stdClass $rq): string { return $rq->module; });
 			$url = $this->httpRequest->getUrl();
 			$method = $this->httpRequest->getMethod();
 			require __DIR__ . '/templates/RoutingPanel.panel.phtml';
@@ -125,7 +125,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 			}
 		}
 
-		$this->routers[] = [
+		$this->routers[] = (object) [
 			'matched' => $matched,
 			'class' => get_class($router),
 			'defaults' => $router instanceof Routing\Route || $router instanceof Routing\SimpleRouter ? $router->getDefaults() : [],
