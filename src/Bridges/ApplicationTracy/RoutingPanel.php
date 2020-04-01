@@ -96,12 +96,20 @@ final class RoutingPanel implements Tracy\IBarPanel
 	/**
 	 * Analyses simple route.
 	 */
-	private function analyse(Routing\Router $router, string $module = '', bool $parentMatches = true): void
+	private function analyse(Routing\Router $router, string $module = '', bool $parentMatches = true, int $level = -1): void
 	{
 		if ($router instanceof Routing\RouteList) {
 			$parentMatches = $parentMatches && $router->match($this->httpRequest) !== null;
+			$next = count($this->routers);
 			foreach ($router->getRouters() as $subRouter) {
-				$this->analyse($subRouter, $module . $router->getModule(), $parentMatches);
+				$this->analyse($subRouter, $module . $router->getModule(), $parentMatches, $level + 1);
+			}
+
+			if ($info = $this->routers[$next] ?? null) {
+				$info->gutterTop = abs(max(0, $level) - $info->level);
+			}
+			if ($info = end($this->routers)) {
+				$info->gutterBottom = abs(max(0, $level) - $info->level);
 			}
 			return;
 		}
@@ -125,6 +133,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 		}
 
 		$this->routers[] = (object) [
+			'level' => max(0, $level),
 			'matched' => $matched,
 			'class' => get_class($router),
 			'defaults' => $router instanceof Routing\Route || $router instanceof Routing\SimpleRouter ? $router->getDefaults() : [],

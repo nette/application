@@ -14,6 +14,10 @@ use Tracy\Helpers;
 		font: 9pt/1.5 Consolas, monospace;
 	}
 
+	#tracy-debug .nette-RoutingPanel tr {
+		border: #d6ceb0 0 solid;
+	}
+
 	#tracy-debug .nette-RoutingPanel .yes td {
 		background: #BDE678 !important;
 	}
@@ -68,7 +72,7 @@ use Tracy\Helpers;
 
 	<tbody>
 	<?php foreach ($routers as $router): ?>
-	<tr class="<?= $router->matched ?>">
+	<tr class="<?= $router->matched ?>" style="border-width: <?=($router->gutterTop ?? 0) * 3?>px 0 <?=($router->gutterBottom ?? 0) * 3?>px <?=$router->level * 6?>px">
 		<td><?= $router->matched === 'yes' ? '✓' : ($router->matched === 'may' ? '≈' : '') ?></td>
 
 		<td><code title="<?= Helpers::escapeHtml($router->class) ?>"><?= isset($router->mask) ? str_replace(['/', '-'], ['<wbr>/', '<wbr>-'], Helpers::escapeHtml($router->mask)) : str_replace('\\', '<wbr>\\', Helpers::escapeHtml($router->class)) ?></code></td>
