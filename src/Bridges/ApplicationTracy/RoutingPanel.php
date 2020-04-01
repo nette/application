@@ -10,8 +10,8 @@ declare(strict_types=1);
 namespace Nette\Bridges\ApplicationTracy;
 
 use Nette;
-use Nette\Application\Routers;
 use Nette\Application\UI\Presenter;
+use Nette\Routing;
 use Tracy;
 
 
@@ -22,7 +22,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 {
 	use Nette\SmartObject;
 
-	/** @var Nette\Routing\Router */
+	/** @var Routing\Router */
 	private $router;
 
 	/** @var Nette\Http\IRequest */
@@ -55,7 +55,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 	}
 
 
-	public function __construct(Nette\Routing\Router $router, Nette\Http\IRequest $httpRequest, Nette\Application\IPresenterFactory $presenterFactory)
+	public function __construct(Routing\Router $router, Nette\Http\IRequest $httpRequest, Nette\Application\IPresenterFactory $presenterFactory)
 	{
 		$this->router = $router;
 		$this->httpRequest = $httpRequest;
@@ -96,11 +96,11 @@ final class RoutingPanel implements Tracy\IBarPanel
 	/**
 	 * Analyses simple route.
 	 */
-	private function analyse(Nette\Routing\Router $router, string $module = ''): void
+	private function analyse(Routing\Router $router, string $module = ''): void
 	{
-		if ($router instanceof Routers\RouteList) {
+		if ($router instanceof Routing\RouteList) {
 			if ($router->match($this->httpRequest)) {
-				foreach ($router as $subRouter) {
+				foreach ($router->getRouters() as $subRouter) {
 					$this->analyse($subRouter, $module . $router->getModule());
 				}
 			}
@@ -128,8 +128,8 @@ final class RoutingPanel implements Tracy\IBarPanel
 		$this->routers[] = [
 			'matched' => $matched,
 			'class' => get_class($router),
-			'defaults' => $router instanceof Routers\Route || $router instanceof Routers\SimpleRouter ? $router->getDefaults() : [],
-			'mask' => $router instanceof Routers\Route ? $router->getMask() : null,
+			'defaults' => $router instanceof Routing\Route || $router instanceof Routing\SimpleRouter ? $router->getDefaults() : [],
+			'mask' => $router instanceof Routing\Route ? $router->getMask() : null,
 			'params' => $params,
 			'module' => rtrim($module, ':'),
 			'error' => $e,
