@@ -55,4 +55,12 @@ expectedArguments(\Nette\Application\UI\Component::error(), 1, argumentsSet('net
 expectedArguments(\Nette\Application\BadRequestException::__construct(), 1, argumentsSet('nette_http_codes_4xx'));
 expectedReturnValues(\Nette\Application\BadRequestException::getHttpCode(), argumentsSet('nette_http_codes_4xx'));
 
-override(new \Nette\Application\UI\Control, map(['' => 'Nette\Application\UI\Control']));
+exitPoint(\Nette\Application\UI\Component::redirect());
+exitPoint(\Nette\Application\UI\Component::redirectPermanent());
+exitPoint(\Nette\Application\UI\Presenter::forward());
+exitPoint(\Nette\Application\UI\Presenter::redirectUrl());
+exitPoint(\Nette\Application\UI\Presenter::sendJson());
+exitPoint(\Nette\Application\UI\Presenter::sendPayload());
+exitPoint(\Nette\Application\UI\Presenter::sendResponse());
+exitPoint(\Nette\Application\UI\Presenter::sendTemplate());
+exitPoint(\Nette\Application\UI\Presenter::terminate());
