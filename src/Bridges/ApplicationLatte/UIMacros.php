@@ -92,7 +92,7 @@ final class UIMacros extends Latte\Macros\MacroSet
 				break;
 			}
 		}
-		if (empty($wrap)) {
+		if (empty($wrap) && $param[0] === '[') {
 			$param = substr($param, 1, -1); // removes array() or []
 		}
 		return "/* line $node->startLine */ "
