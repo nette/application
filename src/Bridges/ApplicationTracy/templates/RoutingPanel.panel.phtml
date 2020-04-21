@@ -79,7 +79,7 @@ use Tracy\Helpers;
 
 		<td><code>
 		<?php foreach ($router->defaults as $key => $value): ?>
-			<?= Helpers::escapeHtml($key), '&nbsp;=&nbsp;', is_string($value) ? Helpers::escapeHtml($value) . '<br />' : Dumper::toHtml($value, [Dumper::COLLAPSE => true, Dumper::LIVE => true]) ?>
+			<?= '<nobr>' . Helpers::escapeHtml($key) . '</nobr>nbsp;=&nbsp;', is_string($value) ? Helpers::escapeHtml($value) . '<br />' : Dumper::toHtml($value, [Dumper::COLLAPSE => true, Dumper::LIVE => true]) ?>
 		<?php endforeach ?>
 		</code></td>
 
@@ -92,7 +92,7 @@ use Tracy\Helpers;
 		<?php unset($params[Presenter::PRESENTER_KEY], $params[Presenter::ACTION_KEY]) ?>
 		<?php endif ?>
 		<?php foreach ($params as $key => $value): ?>
-			<?= Helpers::escapeHtml($key), '&nbsp;=&nbsp;', is_string($value) ? Helpers::escapeHtml($value) . '<br />' : Dumper::toHtml($value, [Dumper::COLLAPSE => true, Dumper::LIVE => true]) ?>
+			<?= '<nobr>' . Helpers::escapeHtml($key) . '</nobr>&nbsp;=&nbsp;', is_string($value) ? Helpers::escapeHtml($value) . '<br />' : Dumper::toHtml($value, [Dumper::COLLAPSE => true, Dumper::LIVE => true]) ?>
 		<?php endforeach ?>
 		</code><?php elseif ($router->error): ?><strong><?= Helpers::escapeHtml($router->error->getMessage()) ?></strong><?php endif ?></td>
 	</tr>
