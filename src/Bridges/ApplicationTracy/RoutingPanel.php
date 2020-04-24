@@ -83,6 +83,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 	{
 		return Nette\Utils\Helpers::capture(function () {
 			$matched = $this->matched;
+			$matchedSymbols = ['yes' => '✓', 'may' => '≈', 'error' => '&times;'];
 			$routers = $this->routers;
 			$source = $this->source;
 			$hasModule = (bool) array_filter($routers, function (\stdClass $rq): string { return $rq->module; });
@@ -99,7 +100,11 @@ final class RoutingPanel implements Tracy\IBarPanel
 	private function analyse(Routing\Router $router, string $module = '', bool $parentMatches = true, int $level = -1): void
 	{
 		if ($router instanceof Routing\RouteList) {
-			$parentMatches = $parentMatches && $router->match($this->httpRequest) !== null;
+			try {
+				$parentMatches = $parentMatches && $router->match($this->httpRequest) !== null;
+			} catch (\Throwable $e) {
+				$parentMatches = true;
+			}
 			$next = count($this->routers);
 			foreach ($router->getRouters() as $subRouter) {
 				$this->analyse($subRouter, $module . $router->getModule(), $parentMatches, $level + 1);
@@ -119,6 +124,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 		try {
 			$params = $parentMatches ? $router->match($this->httpRequest) : null;
 		} catch (\Exception $e) {
+			$matched = 'error';
 		}
 		if ($params !== null) {
 			if ($module) {
