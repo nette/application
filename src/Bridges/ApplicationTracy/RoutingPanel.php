@@ -122,6 +122,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 		try {
 			$params = $parentMatches ? $router->match($this->httpRequest) : null;
 		} catch (\Exception $e) {
+			$matched = 'error';
 		}
 		if ($params !== null) {
 			if ($module) {
