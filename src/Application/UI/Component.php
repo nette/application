@@ -35,6 +35,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 	/**
 	 * Returns the presenter where this component belongs to.
+	 * @return Presenter
 	 */
 	public function getPresenter(): ?Presenter
 	{
