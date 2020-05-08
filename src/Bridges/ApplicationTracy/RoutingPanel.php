@@ -99,7 +99,10 @@ final class RoutingPanel implements Tracy\IBarPanel
 	private function analyse(Routing\Router $router, string $module = '', bool $parentMatches = true, int $level = -1): void
 	{
 		if ($router instanceof Routing\RouteList) {
-			$parentMatches = $parentMatches && $router->match($this->httpRequest) !== null;
+			try {
+				$parentMatches = $parentMatches && $router->match($this->httpRequest) !== null;
+			} catch (\Exception $e) {
+			}
 			$next = count($this->routers);
 			foreach ($router->getRouters() as $subRouter) {
 				$this->analyse($subRouter, $module . $router->getModule(), $parentMatches, $level + 1);
