@@ -198,6 +198,9 @@ final class ComponentReflection extends \ReflectionClass
 		if (empty($builtin[$type])) {
 			return $val instanceof $type;
 
+		} elseif ($type === 'object') {
+			return is_object($val);
+
 		} elseif ($type === 'callable') {
 			return false;
 

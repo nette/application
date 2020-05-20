@@ -192,6 +192,23 @@ testIt('callable', 1);
 testIt('callable', 1.0);
 testIt('callable', 1.2);
 
+testIt('object', null);
+testIt('object', []);
+testIt('object', $obj, $obj);
+testIt('object', $var = function () {}, $var);
+testIt('object', '');
+testIt('object', 'a');
+testIt('object', '1');
+testIt('object', '1.0');
+testIt('object', '1.1');
+testIt('object', '1a');
+testIt('object', true);
+testIt('object', false);
+testIt('object', 0);
+testIt('object', 1);
+testIt('object', 1.0);
+testIt('object', 1.2);
+
 testIt('stdClass', null);
 testIt('stdClass', []);
 testIt('stdClass', $obj, $obj);
