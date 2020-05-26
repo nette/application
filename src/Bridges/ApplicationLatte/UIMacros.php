@@ -81,6 +81,9 @@ final class UIMacros extends Latte\Macros\MacroSet
 	 */
 	public function macroControl(MacroNode $node, PhpWriter $writer)
 	{
+		if ($node->modifiers) {
+			trigger_error('Modifiers are deprecated in ' . $node->getNotation(), E_USER_DEPRECATED);
+		}
 		$words = $node->tokenizer->fetchWords();
 		if (!$words) {
 			throw new CompileException('Missing control name in {control}');
@@ -120,6 +123,9 @@ final class UIMacros extends Latte\Macros\MacroSet
 	 */
 	public function macroLink(MacroNode $node, PhpWriter $writer)
 	{
+		if ($node->modifiers) {
+			trigger_error('Modifiers are deprecated in ' . $node->getNotation(), E_USER_DEPRECATED);
+		}
 		$node->modifiers = preg_replace('#\|safeurl\s*(?=\||$)#Di', '', $node->modifiers);
 		return $writer->using($node, $this->getCompiler())
 			->write('echo %escape(%modify('
@@ -161,6 +167,9 @@ final class UIMacros extends Latte\Macros\MacroSet
 	 */
 	public function macroTemplatePrint(MacroNode $node)
 	{
+		if ($node->modifiers) {
+			throw new CompileException('Modifiers are not allowed in ' . $node->getNotation());
+		}
 		$this->printTemplate = var_export($node->tokenizer->fetchWord() ?: null, true);
 	}
 }
