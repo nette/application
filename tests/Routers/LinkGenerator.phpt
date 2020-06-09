@@ -89,6 +89,14 @@ namespace {
 		Assert::same('http://nette.org/en/?0=10&presenter=Homepage', $generator->link('Homepage:', [10]));
 		Assert::same('http://nette.org/en/?0=10&id=20&action=detail&presenter=Homepage', $generator->link('Homepage:detail', [10, 'id' => 20]));
 		Assert::same('http://nette.org/en/?presenter=Homepage#frag:ment', $generator->link('Homepage:#frag:ment'));
+		Assert::same('http://nette.org/en/?action=default&presenter=Homepage', $generator->link('Homepage:default'));
 	});
 
+
+	test(function () {
+		$generator = new LinkGenerator(new Routers\SimpleRouter, new Http\UrlScript('http://nette.org/en/'));
+		$generator2 = $generator->withReferenceUrl('http://nette.org/cs/');
+		Assert::same('http://nette.org/en/?action=default&presenter=Homepage', $generator->link('Homepage:default'));
+		Assert::same('http://nette.org/cs/?action=default&presenter=Homepage', $generator2->link('Homepage:default'));
+	});
 }
