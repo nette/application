@@ -92,7 +92,10 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 		$rc = $this->getReflection();
 		if ($rc->hasMethod($method)) {
 			$rm = $rc->getMethod($method);
-			if ($rm->isPublic() && !$rm->isAbstract() && !$rm->isStatic()) {
+			if ($rm->isPublic() === false) {
+				throw new Nette\InvalidStateException('Method ' . $rm->getName() . '() can not be called because it is private.');
+			}
+			if (!$rm->isAbstract() && !$rm->isStatic()) {
 				$this->checkRequirements($rm);
 				try {
 					$args = $rc->combineArgs($rm, $params);
