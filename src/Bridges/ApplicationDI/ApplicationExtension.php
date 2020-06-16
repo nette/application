@@ -52,7 +52,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 		return Expect::structure([
 			'debugger' => Expect::bool(interface_exists(Tracy\IBarPanel::class)),
 			'errorPresenter' => Expect::string('Nette:Error')->dynamic(),
-			'catchExceptions' => Expect::bool(!$this->debugMode)->dynamic(),
+			'catchExceptions' => Expect::bool()->dynamic(),
 			'mapping' => Expect::arrayOf('string|array'),
 			'scanDirs' => Expect::anyOf(Expect::arrayOf('string'), false)->default($this->scanDirs),
 			'scanComposer' => Expect::bool(class_exists(ClassLoader::class)),
@@ -74,7 +74,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 
 		$application = $builder->addDefinition($this->prefix('application'))
 			->setFactory(Nette\Application\Application::class)
-			->addSetup('$catchExceptions', [$config->catchExceptions])
+			->addSetup('$catchExceptions', [$this->debugMode ? $config->catchExceptions : true])
 			->addSetup('$errorPresenter', [$config->errorPresenter]);
 
 		if ($config->debugger) {
