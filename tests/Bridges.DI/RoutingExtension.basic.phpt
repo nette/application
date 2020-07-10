@@ -57,7 +57,7 @@ test('', function () {
 
 	$compiler = new DI\Compiler;
 	$compiler->addExtension('routing', new RoutingExtension(false));
-	$code = $compiler->addConfig($config)->setClassName('Container2')->compile();
+	$code = @$compiler->addConfig($config)->setClassName('Container2')->compile(); // @ routingClass is deprecated
 	eval($code);
 
 	$container = new Container2;

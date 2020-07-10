@@ -11,6 +11,7 @@ namespace Nette\Bridges\ApplicationDI;
 
 use Nette;
 use Nette\DI\Definitions;
+use Nette\Schema\Expect;
 use Tracy;
 
 
@@ -26,20 +27,17 @@ final class RoutingExtension extends Nette\DI\CompilerExtension
 	public function __construct(bool $debugMode = false)
 	{
 		$this->debugMode = $debugMode;
+	}
 
-		$this->config = new class {
-			/** @var ?bool */
-			public $debugger;
 
-			/** @var string[] */
-			public $routes = [];
-
-			/** @var ?string */
-			public $routeClass = Nette\Application\Routers\Route::class;
-
-			/** @var bool */
-			public $cache = false;
-		};
+	public function getConfigSchema(): Nette\Schema\Schema
+	{
+		return Expect::structure([
+			'debugger' => Expect::bool(),
+			'routes' => Expect::arrayOf('string'),
+			'routeClass' => Expect::string()->deprecated(),
+			'cache' => Expect::bool(false),
+		]);
 	}
 
 
@@ -51,8 +49,14 @@ final class RoutingExtension extends Nette\DI\CompilerExtension
 			->setType(Nette\Routing\Router::class)
 			->setFactory(Nette\Application\Routers\RouteList::class);
 
-		foreach ($this->config->routes as $mask => $action) {
-			$router->addSetup('$service[] = new ' . $this->config->routeClass . '(?, ?)', [$mask, $action]);
+		if ($this->config->routeClass) {
+			foreach ($this->config->routes as $mask => $action) {
+				$router->addSetup('$service[] = new ' . $this->config->routeClass . '(?, ?)', [$mask, $action]);
+			}
+		} else {
+			foreach ($this->config->routes as $mask => $action) {
+				$router->addSetup('$service->addRoute(?, ?)', [$mask, $action]);
+			}
 		}
 
 		if ($this->name === 'routing') {
