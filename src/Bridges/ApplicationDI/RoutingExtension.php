@@ -43,10 +43,13 @@ final class RoutingExtension extends Nette\DI\CompilerExtension
 
 	public function loadConfiguration()
 	{
+		if (!$this->config->routes) {
+			return;
+		}
+
 		$builder = $this->getContainerBuilder();
 
 		$router = $builder->addDefinition($this->prefix('router'))
-			->setType(Nette\Routing\Router::class)
 			->setFactory(Nette\Application\Routers\RouteList::class);
 
 		if ($this->config->routeClass) {
@@ -85,7 +88,9 @@ final class RoutingExtension extends Nette\DI\CompilerExtension
 	public function afterCompile(Nette\PhpGenerator\ClassType $class)
 	{
 		if ($this->config->cache) {
-			$method = $class->getMethod(Nette\DI\Container::getMethodName($this->prefix('router')));
+			$builder = $this->getContainerBuilder();
+			$def = $builder->getDefinitionByType(Nette\Routing\Router::class);
+			$method = $class->getMethod(Nette\DI\Container::getMethodName($def->getName()));
 			try {
 				$router = eval($method->getBody());
 				if ($router instanceof Nette\Application\Routers\RouteList) {
