@@ -35,7 +35,7 @@ final class RoutingExtension extends Nette\DI\CompilerExtension
 			public $routes = [];
 
 			/** @var ?string */
-			public $routeClass = Nette\Application\Routers\Route::class;
+			public $routeClass;
 
 			/** @var bool */
 			public $cache = false;
@@ -51,8 +51,15 @@ final class RoutingExtension extends Nette\DI\CompilerExtension
 			->setType(Nette\Routing\Router::class)
 			->setFactory(Nette\Application\Routers\RouteList::class);
 
-		foreach ($this->config->routes as $mask => $action) {
-			$router->addSetup('$service[] = new ' . $this->config->routeClass . '(?, ?)', [$mask, $action]);
+		if ($this->config->routeClass) {
+			trigger_error('Option routing.routeClass is deprecated.', E_USER_DEPRECATED);
+			foreach ($this->config->routes as $mask => $action) {
+				$router->addSetup('$service[] = new ' . $this->config->routeClass . '(?, ?)', [$mask, $action]);
+			}
+		} else {
+			foreach ($this->config->routes as $mask => $action) {
+				$router->addSetup('$service->addRoute(?, ?)', [$mask, $action]);
+			}
 		}
 
 		if ($this->name === 'routing') {
