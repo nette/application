@@ -104,8 +104,9 @@ final class RoutingPanel implements Tracy\IBarPanel
 			} catch (\Exception $e) {
 			}
 			$next = count($this->routers);
+			$parentModule = $module . ($router instanceof Nette\Application\Routers\RouteList ? $router->getModule() : '');
 			foreach ($router->getRouters() as $subRouter) {
-				$this->analyse($subRouter, $module . $router->getModule(), $parentMatches, $level + 1);
+				$this->analyse($subRouter, $parentModule, $parentMatches, $level + 1);
 			}
 
 			if ($info = $this->routers[$next] ?? null) {
