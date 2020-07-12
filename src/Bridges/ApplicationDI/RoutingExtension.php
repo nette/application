@@ -82,6 +82,13 @@ final class RoutingExtension extends Nette\DI\CompilerExtension
 				new Definitions\Statement(Nette\Bridges\ApplicationTracy\RoutingPanel::class),
 			]);
 		}
+
+		if (!$builder->getByType(Nette\Routing\Router::class)) {
+			$builder->addDefinition($this->prefix('router'))
+				->setType(Nette\Routing\Router::class)
+				->setFactory(Nette\Routing\SimpleRouter::class);
+			$builder->addAlias('router', $this->prefix('router'));
+		}
 	}
 
 
