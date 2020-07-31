@@ -51,6 +51,13 @@ final class LinkGenerator
 		}
 		[, $presenter, $action, $frag] = $m;
 
+		if ($presenter[0] === ':') { // absolute
+			$presenter = substr($presenter, 1);
+			if (!$presenter) {
+				throw new UI\InvalidLinkException("Missing presenter name in '$dest'.");
+			}
+		}
+
 		try {
 			$class = $this->presenterFactory ? $this->presenterFactory->getPresenterClass($presenter) : null;
 		} catch (InvalidPresenterException $e) {
