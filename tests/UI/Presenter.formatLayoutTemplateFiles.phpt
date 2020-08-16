@@ -14,7 +14,7 @@ require __DIR__ . '/one/Presenter1.php';
 require __DIR__ . '/two/Presenter2.php';
 
 
-test(function () { // with subdir templates
+test('with subdir templates', function () {
 	$presenter = new Presenter1;
 	$presenter->setParent(null, 'One');
 	$presenter->setLayout('my');
@@ -27,7 +27,7 @@ test(function () { // with subdir templates
 });
 
 
-test(function () { // without subdir templates
+test('without subdir templates', function () {
 	$presenter = new Presenter2;
 	$presenter->setParent(null, 'Two');
 
@@ -39,7 +39,7 @@ test(function () { // without subdir templates
 });
 
 
-test(function () { // with module & subdir templates
+test('with module & subdir templates', function () {
 	$presenter = new Presenter1;
 	$presenter->setParent(null, 'Module:SubModule:One');
 
@@ -53,7 +53,7 @@ test(function () { // with module & subdir templates
 });
 
 
-test(function () { // with module & without subdir templates
+test('with module & without subdir templates', function () {
 	$presenter = new Presenter2;
 	$presenter->setParent(null, 'Module:SubModule:Two');
 
@@ -67,7 +67,7 @@ test(function () { // with module & without subdir templates
 });
 
 
-test(function () { // direct file
+test('direct file', function () {
 	$presenter = new Presenter2;
 	$presenter->setLayout(__DIR__ . '/file.latte');
 

@@ -16,7 +16,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test(function () {
+test('', function () {
 	$engine = new Latte\Engine;
 	$latteFactory = Mockery::mock(ILatteFactory::class);
 	$latteFactory->shouldReceive('create')->andReturn($engine);

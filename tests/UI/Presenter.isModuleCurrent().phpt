@@ -16,7 +16,7 @@ class TestPresenter extends \Nette\Application\UI\Presenter
 }
 
 
-test(function () {
+test('', function () {
 	$presenter = new TestPresenter;
 	$presenter->setParent(null, 'Test');
 
@@ -26,7 +26,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$presenter = new TestPresenter;
 	$presenter->setParent(null, 'First:Second:Third:Test');
 

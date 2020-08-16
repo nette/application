@@ -37,7 +37,7 @@ class MyRouter implements Nette\Routing\Router
 }
 
 
-test(function () {
+test('', function () {
 	$loader = new DI\Config\Loader;
 	$config = $loader->load(Tester\FileMock::create('
 	services:
@@ -55,7 +55,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$loader = new DI\Config\Loader;
 	$config = $loader->load(Tester\FileMock::create('
 	routing:
@@ -77,7 +77,6 @@ test(function () {
 
 
 Assert::exception(function () {
-
 	/** @return Nette\Routing\Router */
 	function myRouterFactory()
 	{

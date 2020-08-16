@@ -37,7 +37,7 @@ function createContainer()
 }
 
 
-test(function () {
+test('', function () {
 	$presenter = new NetteModule\MicroPresenter(createContainer());
 	$response = $presenter->run(new Request('Nette:Micro', 'GET', [
 		'callback' => function () {
@@ -50,7 +50,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$presenter = new NetteModule\MicroPresenter(createContainer());
 	$response = $presenter->run(new Request('Nette:Micro', 'GET', [
 		'callback' => function ($param) {
@@ -64,7 +64,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$presenter = new NetteModule\MicroPresenter(createContainer());
 	$response = $presenter->run(new Request('Nette:Micro', 'GET', [
 		'callback' => function () {
@@ -77,7 +77,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$presenter = new NetteModule\MicroPresenter(createContainer());
 	$response = $presenter->run(new Request('Nette:Micro', 'GET', [
 		'callback' => function () {
@@ -91,7 +91,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$presenter = new NetteModule\MicroPresenter;
 
 	$response = $presenter->run(new Request('Nette:Micro', 'GET', [
@@ -111,7 +111,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$presenter = new NetteModule\MicroPresenter;
 
 	$response = $presenter->run(new Request('Nette:Micro', 'GET', [
@@ -132,7 +132,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$filename = 'notfound.latte';
 	Assert::exception(function () use ($filename) {
 		$presenter = new NetteModule\MicroPresenter;

@@ -16,7 +16,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 
-test(function () {
+test('', function () {
 	$router = new SimpleRouter;
 	$url = new Http\UrlScript('http://nette.org?presenter[]=foo');
 	$httpRequest = new Http\Request($url);
@@ -25,7 +25,7 @@ test(function () {
 	Assert::same(['presenter' => ['foo']], $req);
 });
 
-test(function () {
+test('', function () {
 	$router = new SimpleRouter;
 	$url = new Http\UrlScript('http://nette.org');
 	$httpRequest = new Http\Request($url);

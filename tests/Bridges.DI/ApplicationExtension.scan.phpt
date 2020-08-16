@@ -11,7 +11,7 @@ require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/files/MyPresenter.php';
 
 
-test(function () {
+test('', function () {
 	$compiler = new DI\Compiler;
 	$compiler->addExtension('application', new ApplicationExtension);
 
@@ -29,7 +29,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$compiler = new DI\Compiler;
 	$compiler->addExtension('application', new ApplicationExtension);
 
@@ -51,7 +51,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$compiler = new DI\Compiler;
 	$compiler->addExtension('application', new ApplicationExtension(false, [__DIR__ . '/files']));
 
@@ -80,7 +80,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$robot = new Nette\Loaders\RobotLoader;
 	$robot->addDirectory(__DIR__ . '/files');
 	$robot->setTempDirectory(getTempDir());

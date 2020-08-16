@@ -106,8 +106,7 @@ Assert::exception(function () use ($httpRequest, $httpResponse) {
 }, BadRequestException::class, 'No route for HTTP request.');
 
 
-// no route with error presenter
-test(function () use ($httpRequest, $httpResponse) {
+test('no route with error presenter', function () use ($httpRequest, $httpResponse) {
 	$errorPresenter = new ErrorPresenter;
 
 	$presenterFactory = Mockery::mock(IPresenterFactory::class);
@@ -132,8 +131,7 @@ test(function () use ($httpRequest, $httpResponse) {
 });
 
 
-// route to error presenter
-test(function () use ($httpRequest, $httpResponse) {
+test('route to error presenter', function () use ($httpRequest, $httpResponse) {
 	$errorPresenter = new ErrorPresenter;
 
 	$presenterFactory = Mockery::mock(IPresenterFactory::class);
@@ -173,8 +171,7 @@ Assert::exception(function () use ($httpRequest, $httpResponse) {
 }, BadRequestException::class);
 
 
-// missing presenter with error presenter
-test(function () use ($httpRequest, $httpResponse) {
+test('missing presenter with error presenter', function () use ($httpRequest, $httpResponse) {
 	$errorPresenter = new ErrorPresenter;
 
 	$presenterFactory = Mockery::mock(IPresenterFactory::class);
@@ -215,8 +212,7 @@ Assert::exception(function () use ($httpRequest, $httpResponse) {
 }, BadException::class);
 
 
-// presenter error with error presenter
-test(function () use ($httpRequest, $httpResponse) {
+test('presenter error with error presenter', function () use ($httpRequest, $httpResponse) {
 	$errorPresenter = new ErrorPresenter;
 
 	$presenterFactory = Mockery::mock(IPresenterFactory::class);

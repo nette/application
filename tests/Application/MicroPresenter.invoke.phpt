@@ -13,7 +13,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test(function () {
+test('', function () {
 	$presenter = $p = new NetteModule\MicroPresenter;
 
 	$presenter->run(new Request('Nette:Micro', 'GET', [
@@ -30,7 +30,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$container = Mockery::mock(Nette\DI\Container::class)
 		->shouldReceive('getByType')->with('stdClass', false)->once()->andReturn(new stdClass)
 		->mock();

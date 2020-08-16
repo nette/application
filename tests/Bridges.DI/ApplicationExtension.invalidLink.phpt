@@ -24,7 +24,7 @@ function createCompiler(string $config): DI\Compiler
 }
 
 
-test(function () {
+test('', function () {
 	$compiler = createCompiler('
 	application:
 		silentLinks: yes
@@ -44,7 +44,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$compiler = createCompiler('
 	application:
 		silentLinks: no
@@ -64,7 +64,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$compiler = createCompiler('
 	application:
 		silentLinks: yes
@@ -84,7 +84,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$compiler = createCompiler('
 	application:
 		silentLinks: no

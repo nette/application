@@ -19,7 +19,7 @@ class Route extends Nette\Application\Routers\Route
 }
 
 
-test(function () {
+test('', function () {
 	$loader = new DI\Config\Loader;
 	$config = $loader->load(Tester\FileMock::create('
 	routing:
@@ -45,7 +45,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$loader = new DI\Config\Loader;
 	$config = $loader->load(Tester\FileMock::create('
 	routing:

@@ -14,7 +14,7 @@ require __DIR__ . '/one/Presenter1.php';
 require __DIR__ . '/two/Presenter2.php';
 
 
-test(function () { // with subdir templates
+test('with subdir templates', function () {
 	$presenter = new Presenter1;
 	$presenter->setParent(null, 'One');
 	$presenter->setView('view');
@@ -26,7 +26,7 @@ test(function () { // with subdir templates
 });
 
 
-test(function () { // without subdir templates
+test('without subdir templates', function () {
 	$presenter = new Presenter2;
 	$presenter->setParent(null, 'Two');
 	$presenter->setView('view');
@@ -38,7 +38,7 @@ test(function () { // without subdir templates
 });
 
 
-test(function () { // with module & subdir templates
+test('with module & subdir templates', function () {
 	$presenter = new Presenter1;
 	$presenter->setParent(null, 'Module:One');
 	$presenter->setView('view');
@@ -50,7 +50,7 @@ test(function () { // with module & subdir templates
 });
 
 
-test(function () { // with module & without subdir templates
+test('with module & without subdir templates', function () {
 	$presenter = new Presenter2;
 	$presenter->setParent(null, 'Module:Two');
 	$presenter->setView('view');

@@ -50,7 +50,7 @@ class MyPresenter
 }
 
 
-test(function () {
+test('', function () {
 	$method = new ReflectionMethod('MyPresenter', 'params');
 
 	Assert::same([null, null, null, null], Reflection::combineArgs($method, []));
@@ -65,7 +65,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$method = new ReflectionMethod('MyPresenter', 'hints');
 
 	Assert::same([1, true, 'abc', [1], [2]], Reflection::combineArgs($method, ['int' => '1', 'bool' => '1', 'str' => 'abc', 'arr' => [1], 'iter' => [2]]));
@@ -101,7 +101,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$method = new ReflectionMethod('MyPresenter', 'hintsNulls');
 
 	Assert::same([null, null, null, null, null], Reflection::combineArgs($method, []));
@@ -131,7 +131,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$method = new ReflectionMethod('MyPresenter', 'hintsNullable');
 
 	Assert::same([null, null, null, null, null], Reflection::combineArgs($method, []));
@@ -161,7 +161,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$method = new ReflectionMethod('MyPresenter', 'hintsDefaults');
 
 	Assert::same([0, false, '', [], []], Reflection::combineArgs($method, []));
@@ -191,7 +191,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$method = new ReflectionMethod('MyPresenter', 'defaults');
 
 	Assert::same([0, false, '', []], Reflection::combineArgs($method, []));
@@ -221,7 +221,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$method = new ReflectionMethod('MyPresenter', 'objects');
 
 	Assert::equal([new stdClass, new stdClass, new stdClass], Reflection::combineArgs($method, ['req' => new stdClass, 'opt' => new stdClass, 'nullable' => new stdClass]));

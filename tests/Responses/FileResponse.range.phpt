@@ -19,7 +19,7 @@ $file = __FILE__;
 $fileResponse = new FileResponse($file);
 $origData = file_get_contents($file);
 
-test(function () use ($fileResponse, $origData) {
+test('', function () use ($fileResponse, $origData) {
 	ob_start();
 	$fileResponse->send(
 		new Http\Request(new Http\UrlScript, null, null, null, ['range' => 'bytes=10-20']),
@@ -30,7 +30,7 @@ test(function () use ($fileResponse, $origData) {
 });
 
 
-test(function () use ($fileResponse, $origData) {
+test('', function () use ($fileResponse, $origData) {
 	ob_start();
 	$fileResponse->send(
 		new Http\Request(new Http\UrlScript, null, null, null, ['range' => 'bytes=10-10']),
@@ -40,7 +40,7 @@ test(function () use ($fileResponse, $origData) {
 });
 
 
-test(function () use ($fileResponse, $origData, $file) {
+test('', function () use ($fileResponse, $origData, $file) {
 	ob_start();
 	$fileResponse->send(
 		new Http\Request(new Http\UrlScript, null, null, null, ['range' => 'bytes=10-' . filesize($file)]),
@@ -50,7 +50,7 @@ test(function () use ($fileResponse, $origData, $file) {
 });
 
 
-test(function () use ($fileResponse, $origData) { // prefix
+test('prefix', function () use ($fileResponse, $origData) {
 	ob_start();
 	$fileResponse->send(
 		new Http\Request(new Http\UrlScript, null, null, null, ['range' => 'bytes=20-']),
@@ -60,7 +60,7 @@ test(function () use ($fileResponse, $origData) { // prefix
 });
 
 
-test(function () use ($fileResponse, $origData, $file) { // prefix
+test('prefix', function () use ($fileResponse, $origData, $file) {
 	ob_start();
 	$fileResponse->send(
 		new Http\Request(new Http\UrlScript, null, null, null, ['range' => 'bytes=' . (filesize($file) - 1) . '-']),
@@ -70,7 +70,7 @@ test(function () use ($fileResponse, $origData, $file) { // prefix
 });
 
 
-test(function () use ($fileResponse, $file) { // prefix
+test('prefix', function () use ($fileResponse, $file) {
 	ob_start();
 	$fileResponse->send(
 		new Http\Request(new Http\UrlScript, null, null, null, ['range' => 'bytes=' . filesize($file) . '-']),
@@ -81,7 +81,7 @@ test(function () use ($fileResponse, $file) { // prefix
 });
 
 
-test(function () use ($fileResponse, $origData) { // suffix
+test('suffix', function () use ($fileResponse, $origData) {
 	ob_start();
 	$fileResponse->send(
 		new Http\Request(new Http\UrlScript, null, null, null, ['range' => 'bytes=-20']),
@@ -91,7 +91,7 @@ test(function () use ($fileResponse, $origData) { // suffix
 });
 
 
-test(function () use ($fileResponse, $origData, $file) { // suffix
+test('suffix', function () use ($fileResponse, $origData, $file) {
 	ob_start();
 	$fileResponse->send(
 		new Http\Request(new Http\UrlScript, null, null, null, ['range' => 'bytes=-' . filesize($file)]),

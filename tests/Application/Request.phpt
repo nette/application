@@ -13,7 +13,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test(function () {
+test('', function () {
 	$request = new Request('Homepage', 'GET', ['a' => 1, 'b' => null]);
 
 	Assert::same(1, $request->getParameter('a'));
@@ -21,7 +21,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$request = new Request('Homepage', 'GET', [], ['a' => 1, 'b' => null]);
 
 	Assert::same(['a' => 1, 'b' => null], $request->getPost());

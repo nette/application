@@ -113,7 +113,7 @@ class MockUser extends Security\User
 	}
 }
 
-test(function () {
+test('', function () {
 	$presenter = new TestPresenter;
 	$presenter->injectPrimary(
 		null,
@@ -140,7 +140,7 @@ test(function () {
 	Assert::same([$user->getId(), $applicationRequest], $section->storedValue);
 });
 
-test(function () {
+test('', function () {
 	$presenter = new TestPresenter;
 	$presenter->injectPrimary(
 		null,

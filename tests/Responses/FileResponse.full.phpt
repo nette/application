@@ -15,7 +15,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 /* A small file */
-test(function () {
+test('', function () {
 	$file = __FILE__;
 	$fileResponse = new FileResponse($file);
 	$origData = file_get_contents($file);
@@ -26,7 +26,7 @@ test(function () {
 });
 
 /* A big file */
-test(function () {
+test('', function () {
 	$file = Tester\FileMock::create();
 
 	$data = '';

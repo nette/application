@@ -15,7 +15,7 @@ require __DIR__ . '/../bootstrap.php';
 
 $factory = new PresenterFactory;
 
-test(function () use ($factory) {
+test('', function () use ($factory) {
 	$factory->setMapping([
 		'Foo2' => 'App2\*\*Presenter',
 		'Foo3' => 'My\App\*Mod\*Presenter',
@@ -37,7 +37,7 @@ test(function () use ($factory) {
 });
 
 
-test(function () use ($factory) {
+test('', function () use ($factory) {
 	$factory->setMapping([
 		'Foo2' => 'App2\*Presenter',
 		'Foo3' => 'My\App\*Presenter',

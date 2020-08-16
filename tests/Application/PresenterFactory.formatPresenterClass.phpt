@@ -13,7 +13,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test(function () {
+test('', function () {
 	$factory = new PresenterFactory;
 
 	$factory->setMapping([
@@ -36,7 +36,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$factory = new PresenterFactory;
 
 	$factory->setMapping([
@@ -53,7 +53,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$factory = new PresenterFactory;
 	$factory->setMapping([
 		'*' => ['App', 'Module\*', 'Presenter\*'],
@@ -63,7 +63,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$factory = new PresenterFactory;
 	$factory->setMapping([
 		'*' => ['', '*', '*'],
