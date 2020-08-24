@@ -115,6 +115,10 @@ class Application
 		if (!$request instanceof Request) {
 			throw new BadRequestException('No route for HTTP request.');
 		}
+		$presenter = $request->getPresenterName();
+		if (Nette\Utils\Strings::startsWith($presenter, 'Nette:') && $presenter !== 'Nette:Micro') {
+			throw new BadRequestException('Invalid request. Presenter is not achievable.');
+		}
 		return $request;
 	}
 
