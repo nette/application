@@ -112,6 +112,8 @@ class Application
 			throw new BadRequestException('No route for HTTP request.');
 		} elseif (!is_string($presenter)) {
 			throw new Nette\InvalidStateException('Missing presenter in route definition.');
+		} elseif (Nette\Utils\Strings::startsWith($presenter, 'Nette:') && $presenter !== 'Nette:Micro') {
+			throw new BadRequestException('Invalid request. Presenter is not achievable.');
 		}
 
 		unset($params[UI\Presenter::PRESENTER_KEY]);
