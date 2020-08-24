@@ -11,15 +11,6 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-class Invokable extends Nette\Object
-{
-	public function __invoke($page, $id, NetteModule\MicroPresenter $presenter)
-	{
-		Notes::add('Callback id ' . $id . ' page ' . $page);
-	}
-}
-
-
 test(function () {
 	$presenter = $p = new NetteModule\MicroPresenter;
 
@@ -28,20 +19,6 @@ test(function () {
 			Assert::same($p, $presenter);
 			Notes::add('Callback id ' . $id . ' page ' . $page);
 		},
-		'id' => 1,
-		'page' => 2,
-	)));
-	Assert::same(array(
-		'Callback id 1 page 2',
-	), Notes::fetch());
-});
-
-
-test(function () {
-	$presenter = new NetteModule\MicroPresenter;
-
-	$presenter->run(new Request('Nette:Micro', 'GET', array(
-		'callback' => new Invokable(),
 		'id' => 1,
 		'page' => 2,
 	)));
