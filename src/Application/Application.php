@@ -108,13 +108,15 @@ class Application extends Nette\Object
 
 		if (!$request instanceof Request) {
 			throw new BadRequestException('No route for HTTP request.');
-
-		} elseif (strcasecmp($request->getPresenterName(), $this->errorPresenter) === 0) {
+		}
+		$name = $request->getPresenterName();
+		if (strcasecmp($name, $this->errorPresenter) === 0
+			|| (Nette\Utils\Strings::startsWith($name, 'Nette:') && $name !== 'Nette:Micro')
+		) {
 			throw new BadRequestException('Invalid request. Presenter is not achievable.');
 		}
 
 		try {
-			$name = $request->getPresenterName();
 			$this->presenterFactory->getPresenterClass($name);
 		} catch (InvalidPresenterException $e) {
 			throw new BadRequestException($e->getMessage(), 0, $e);
