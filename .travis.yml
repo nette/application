@@ -67,7 +67,7 @@ jobs:
         -   stage: Code Coverage
 
 
-sudo: false
+dist: xenial
 
 cache:
     directories:
