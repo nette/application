@@ -17,7 +17,7 @@ matrix:
 
 script:
     - vendor/bin/tester -p $PHP_BIN tests -s
-    - php code-checker/src/code-checker.php
+    - php code-checker/src/code-checker.php --ignore tests/Bridges.Latte/templates/snippet.latte --ignore "tests/UI/*.php7.phpt"
 
 after_failure:
     # Print *.actual content
