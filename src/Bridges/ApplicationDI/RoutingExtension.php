@@ -28,7 +28,7 @@ final class RoutingExtension extends Nette\DI\CompilerExtension
 		$this->debugMode = $debugMode;
 
 		$this->config = new class {
-			/** @var bool */
+			/** @var ?bool */
 			public $debugger;
 			/** @var string[] */
 			public $routes = [];
@@ -37,7 +37,6 @@ final class RoutingExtension extends Nette\DI\CompilerExtension
 			/** @var bool */
 			public $cache = false;
 		};
-		$this->config->debugger = interface_exists(Tracy\IBarPanel::class);
 	}
 
 
@@ -65,7 +64,7 @@ final class RoutingExtension extends Nette\DI\CompilerExtension
 
 		if (
 			$this->debugMode &&
-			$this->config->debugger &&
+			($this->config->debugger ?? $builder->getByType(Tracy\Bar::class)) &&
 			($name = $builder->getByType(Nette\Application\Application::class)) &&
 			($application = $builder->getDefinition($name)) instanceof Definitions\ServiceDefinition
 		) {
