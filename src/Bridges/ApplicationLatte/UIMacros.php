@@ -83,7 +83,10 @@ final class UIMacros extends Latte\Macros\MacroSet
 	{
 		if ($node->modifiers) {
 			trigger_error('Modifiers are deprecated in ' . $node->getNotation(), E_USER_DEPRECATED);
+		} elseif ($node->context !== [Latte\Compiler::CONTENT_HTML, Latte\Compiler::CONTEXT_HTML_TEXT]) {
+			trigger_error('Tag {control} must be used in HTML text.', E_USER_WARNING);
 		}
+
 		$words = $node->tokenizer->fetchWords();
 		if (!$words) {
 			throw new CompileException('Missing control name in {control}');
