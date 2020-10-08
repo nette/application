@@ -63,7 +63,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 				false
 			)->default($this->scanDirs),
 			'scanComposer' => Expect::bool(class_exists(ClassLoader::class)),
-			'scanFilter' => Expect::string('Presenter'),
+			'scanFilter' => Expect::string('*Presenter'),
 			'silentLinks' => Expect::bool(),
 		]);
 	}
@@ -159,7 +159,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 			}
 			$robot = new Nette\Loaders\RobotLoader;
 			$robot->addDirectory(...$config->scanDirs);
-			$robot->acceptFiles = ['*' . $config->scanFilter . '*.php'];
+			$robot->acceptFiles = [$config->scanFilter . '.php'];
 			if ($this->tempDir) {
 				$robot->setTempDirectory($this->tempDir);
 				$robot->refresh();
@@ -191,7 +191,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 		$presenters = [];
 		foreach (array_unique($classes) as $class) {
 			if (
-				strpos($class, $config->scanFilter) !== false
+				fnmatch($config->scanFilter, $class)
 				&& class_exists($class)
 				&& ($rc = new \ReflectionClass($class))
 				&& $rc->implementsInterface(Nette\Application\IPresenter::class)
