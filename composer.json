@@ -19,7 +19,7 @@
 		"nette/component-model": "^2.3",
 		"nette/http": "^2.2",
 		"nette/reflection": "^2.2",
-		"nette/utils": "^2.4"
+		"nette/utils": "^2.4.3"
 	},
 	"suggest": {
 		"nette/forms": "Allows to use Nette\\Application\\UI\\Form",

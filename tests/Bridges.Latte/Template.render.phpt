@@ -47,5 +47,5 @@ test(function () use ($engine) {
 
 	Assert::error(function () use ($template) {
 		$template->renderToString();
-	}, E_NOTICE, 'Undefined variable: bar');
+	}, PHP_VERSION_ID < 80000 ? E_NOTICE : E_WARNING);
 });

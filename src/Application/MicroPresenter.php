@@ -76,8 +76,8 @@ class MicroPresenter implements Application\IPresenter
 
 		if ($this->context) {
 			foreach ($reflection->getParameters() as $param) {
-				if ($param->getClass()) {
-					$params[$param->getName()] = $this->context->getByType($param->getClass()->getName(), false);
+				if ($type = Nette\Utils\Reflection::getParameterType($param)) {
+					$params[$param->getName()] = $this->context->getByType($type, false);
 				}
 			}
 		}
