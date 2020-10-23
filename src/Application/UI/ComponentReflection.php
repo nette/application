@@ -49,7 +49,10 @@ final class ComponentReflection extends \ReflectionClass
 			$defaults = get_class_vars($class);
 			foreach ($defaults as $name => $default) {
 				$rp = new \ReflectionProperty($class, $name);
-				if (!$rp->isStatic() && self::parseAnnotation($rp, 'persistent')) {
+				if (!$rp->isStatic()
+					&& ((PHP_VERSION_ID >= 80000 && $rp->getAttributes(Nette\Application\Attributes\Persistent::class))
+						|| self::parseAnnotation($rp, 'persistent'))
+				) {
 					$params[$name] = [
 						'def' => $default,
 						'type' => Nette\Utils\Reflection::getPropertyType($rp) ?: gettype($default),

@@ -95,6 +95,13 @@ class ThirdPresenter extends BasePresenter
 }
 
 
+class FourthPresenter extends BasePresenter
+{
+	#[Application\Attributes\Persistent]
+	public $p1;
+}
+
+
 Assert::same([
 	'p1' => ['def' => null, 'type' => 'NULL', 'since' => 'BasePresenter'],
 	't1' => ['def' => null, 'type' => 'NULL', 'since' => 'PersistentParam1'],
@@ -120,6 +127,12 @@ Assert::same([
 	't2' => ['def' => null, 'type' => 'NULL', 'since' => 'PersistentParam2A'],
 ], ThirdPresenter::getReflection()->getPersistentParams());
 
+if (PHP_VERSION_ID >= 80000) {
+	Assert::same([
+		'p1' => ['def' => null, 'type' => 'NULL', 'since' => 'BasePresenter'],
+		't1' => ['def' => null, 'type' => 'NULL', 'since' => 'PersistentParam1'],
+	], FourthPresenter::getReflection()->getPersistentParams());
+}
 
 $url = new Http\UrlScript('http://localhost/index.php', '/index.php');
 
