@@ -15,7 +15,7 @@ use Nette;
 /**
  * Control is renderable Presenter component.
  *
- * @property-read ITemplate|Nette\Bridges\ApplicationLatte\Template|\stdClass $template
+ * @property-read ITemplate|Nette\Bridges\ApplicationLatte\DefaultTemplate|\stdClass $template
  */
 abstract class Control extends Component implements IRenderable
 {
