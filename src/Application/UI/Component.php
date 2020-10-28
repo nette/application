@@ -200,16 +200,6 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	}
 
 
-	/** @deprecated */
-	final public function getParam($name = null, $default = null)
-	{
-		trigger_error(__METHOD__ . '() is deprecated; use getParameter() or getParameters() instead.', E_USER_DEPRECATED);
-		return func_num_args()
-			? $this->getParameter($name, $default)
-			: $this->getParameters();
-	}
-
-
 	/********************* interface ISignalReceiver ****************d*g**/
 
 
@@ -296,23 +286,13 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	 * @param  array|mixed  $args
 	 * @throws Nette\Application\AbortException
 	 */
-	public function redirect(/*int $code, string */$destination, $args = []): void
+	public function redirect(string $destination, $args = []): void
 	{
-		if (is_numeric($destination)) {
-			trigger_error(__METHOD__ . '() first parameter $code is deprecated; use redirectPermanent() for 301 redirect.', E_USER_DEPRECATED);
-			[$code, $destination, $args] = func_get_args() + [null, null, []];
-			if (func_num_args() > 3 || !is_array($args)) {
-				$args = array_slice(func_get_args(), 2);
-			}
-		} else {
-			$code = null;
-			$args = func_num_args() < 3 && is_array($args)
-				? $args
-				: array_slice(func_get_args(), 1);
-		}
-
+		$args = func_num_args() < 3 && is_array($args)
+			? $args
+			: array_slice(func_get_args(), 1);
 		$presenter = $this->getPresenter();
-		$presenter->redirectUrl($presenter->createRequest($this, $destination, $args, 'redirect'), $code);
+		$presenter->redirectUrl($presenter->createRequest($this, $destination, $args, 'redirect'));
 	}
 
 
