@@ -24,8 +24,13 @@ class MyPresenter
 	}
 
 
-	public function hintsNulls(int $int = null, bool $bool = null, string $str = null, array $arr = null, iterable $iter = null)
-	{
+	public function hintsNulls(
+		int $int = null,
+		bool $bool = null,
+		string $str = null,
+		array $arr = null,
+		iterable $iter = null
+	) {
 	}
 
 
@@ -34,8 +39,13 @@ class MyPresenter
 	}
 
 
-	public function hintsDefaults(int $int = 0, bool $bool = false, string $str = '', array $arr = [], iterable $iter = [])
-	{
+	public function hintsDefaults(
+		int $int = 0,
+		bool $bool = false,
+		string $str = '',
+		array $arr = [],
+		iterable $iter = []
+	) {
 	}
 
 

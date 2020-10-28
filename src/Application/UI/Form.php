@@ -124,11 +124,9 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 			return null;
 		}
 
-		if ($this->isMethod('post')) {
-			return Nette\Utils\Arrays::mergeTree($request->getPost(), $request->getFiles());
-		} else {
-			return $request->getParameters();
-		}
+		return $this->isMethod('post')
+			? Nette\Utils\Arrays::mergeTree($request->getPost(), $request->getFiles())
+			: $request->getParameters();
 	}
 
 
@@ -152,7 +150,7 @@ class Form extends Nette\Forms\Form implements ISignalReceiver
 	public function signalReceived(string $signal): void
 	{
 		if ($signal !== 'submit') {
-			$class = get_class($this);
+			$class = static::class;
 			throw new BadSignalException("Missing handler for signal '$signal' in $class.");
 
 		} elseif ($this->sameSiteProtection && !$this->getPresenter()->getHttpRequest()->isSameSite()) {

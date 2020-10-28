@@ -62,7 +62,7 @@ class NonStaticMacrosFactory
 	{
 		$macros = new Latte\Macros\MacroSet($compiler);
 		$macros->addMacro('foo', 'foo ' . $this->parameter);
-		Notes::add(get_class($this) . '::install');
+		Notes::add(static::class . '::install');
 	}
 
 
@@ -70,7 +70,7 @@ class NonStaticMacrosFactory
 	{
 		$macros = new Latte\Macros\MacroSet($compiler);
 		$macros->addMacro('foo2', 'foo ' . $this->parameter);
-		Notes::add(get_class($this) . '::create');
+		Notes::add(static::class . '::create');
 	}
 }
 

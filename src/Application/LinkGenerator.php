@@ -52,7 +52,9 @@ final class LinkGenerator
 		[, $presenter, $action, $frag] = $m;
 
 		try {
-			$class = $this->presenterFactory ? $this->presenterFactory->getPresenterClass($presenter) : null;
+			$class = $this->presenterFactory
+				? $this->presenterFactory->getPresenterClass($presenter)
+				: null;
 		} catch (InvalidPresenterException $e) {
 			throw new UI\InvalidLinkException($e->getMessage(), 0, $e);
 		}

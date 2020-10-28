@@ -92,7 +92,7 @@ abstract class Control extends Component implements IRenderable
 	public function redrawControl(string $snippet = null, bool $redraw = true): void
 	{
 		if ($redraw) {
-			$this->invalidSnippets[$snippet === null ? "\0" : $snippet] = true;
+			$this->invalidSnippets[$snippet ?? "\0"] = true;
 
 		} elseif ($snippet === null) {
 			$this->invalidSnippets = [];
@@ -108,32 +108,29 @@ abstract class Control extends Component implements IRenderable
 	 */
 	public function isControlInvalid(string $snippet = null): bool
 	{
-		if ($snippet === null) {
-			if (count($this->invalidSnippets) > 0) {
-				return true;
-
-			} else {
-				$queue = [$this];
-				do {
-					foreach (array_shift($queue)->getComponents() as $component) {
-						if ($component instanceof IRenderable) {
-							if ($component->isControlInvalid()) {
-								// $this->invalidSnippets['__child'] = true; // as cache
-								return true;
-							}
-
-						} elseif ($component instanceof Nette\ComponentModel\IContainer) {
-							$queue[] = $component;
-						}
-					}
-				} while ($queue);
-
-				return false;
-			}
-
-		} else {
+		if ($snippet !== null) {
 			return $this->invalidSnippets[$snippet] ?? isset($this->invalidSnippets["\0"]);
+
+		} elseif (count($this->invalidSnippets) > 0) {
+			return true;
 		}
+
+		$queue = [$this];
+		do {
+			foreach (array_shift($queue)->getComponents() as $component) {
+				if ($component instanceof IRenderable) {
+					if ($component->isControlInvalid()) {
+						// $this->invalidSnippets['__child'] = true; // as cache
+						return true;
+					}
+
+				} elseif ($component instanceof Nette\ComponentModel\IContainer) {
+					$queue[] = $component;
+				}
+			}
+		} while ($queue);
+
+		return false;
 	}
 
 

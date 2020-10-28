@@ -22,17 +22,23 @@ $list
 		->addRoute('hello', ['presenter' => 'hello']);
 
 
-testRouteIn($list, '/foo',
+testRouteIn(
+	$list,
+	'/foo',
 	['presenter' => 'A:foo', 'test' => 'testvalue'],
 	'/foo?test=testvalue'
 );
 
-testRouteIn($list, '/bar',
+testRouteIn(
+	$list,
+	'/bar',
 	['presenter' => 'A:B:bar', 'test' => 'testvalue'],
 	'/bar?test=testvalue'
 );
 
-testRouteIn($list, '/hello',
+testRouteIn(
+	$list,
+	'/hello',
 	['presenter' => 'C:hello', 'test' => 'testvalue'],
 	'/hello?test=testvalue'
 );

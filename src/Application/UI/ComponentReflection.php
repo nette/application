@@ -38,7 +38,7 @@ final class ComponentReflection extends \ReflectionClass
 	 */
 	public function getPersistentParams(string $class = null): array
 	{
-		$class = $class === null ? $this->getName() : $class;
+		$class = $class ?? $this->getName();
 		$params = &self::$ppCache[$class];
 		if ($params !== null) {
 			return $params;
@@ -71,7 +71,7 @@ final class ComponentReflection extends \ReflectionClass
 
 	public function getPersistentComponents(string $class = null): array
 	{
-		$class = $class === null ? $this->getName() : $class;
+		$class = $class ?? $this->getName();
 		$components = &self::$pcCache[$class];
 		if ($components !== null) {
 			return $components;
@@ -242,7 +242,9 @@ final class ComponentReflection extends \ReflectionClass
 		$res = [];
 		foreach ($m[1] as $s) {
 			foreach (preg_split('#\s*,\s*#', $s, -1, PREG_SPLIT_NO_EMPTY) ?: ['true'] as $item) {
-				$res[] = array_key_exists($tmp = strtolower($item), $tokens) ? $tokens[$tmp] : $item;
+				$res[] = array_key_exists($tmp = strtolower($item), $tokens)
+					? $tokens[$tmp]
+					: $item;
 			}
 		}
 		return $res;

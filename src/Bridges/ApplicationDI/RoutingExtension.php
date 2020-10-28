@@ -30,10 +30,13 @@ final class RoutingExtension extends Nette\DI\CompilerExtension
 		$this->config = new class {
 			/** @var ?bool */
 			public $debugger;
+
 			/** @var string[] */
 			public $routes = [];
+
 			/** @var ?string */
 			public $routeClass = Nette\Application\Routers\Route::class;
+
 			/** @var bool */
 			public $cache = false;
 		};

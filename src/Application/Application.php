@@ -66,8 +66,12 @@ class Application
 	private $router;
 
 
-	public function __construct(IPresenterFactory $presenterFactory, Router $router, Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse)
-	{
+	public function __construct(
+		IPresenterFactory $presenterFactory,
+		Router $router,
+		Nette\Http\IRequest $httpRequest,
+		Nette\Http\IResponse $httpResponse
+	) {
 		$this->httpRequest = $httpRequest;
 		$this->httpResponse = $httpResponse;
 		$this->presenterFactory = $presenterFactory;
@@ -138,14 +142,19 @@ class Application
 		$this->requests[] = $request;
 		$this->onRequest($this, $request);
 
-		if (!$request->isMethod($request::FORWARD) && !strcasecmp($request->getPresenterName(), (string) $this->errorPresenter)) {
+		if (
+			!$request->isMethod($request::FORWARD)
+			&& !strcasecmp($request->getPresenterName(), (string) $this->errorPresenter)
+		) {
 			throw new BadRequestException('Invalid request. Presenter is not achievable.');
 		}
 
 		try {
 			$this->presenter = $this->presenterFactory->createPresenter($request->getPresenterName());
 		} catch (InvalidPresenterException $e) {
-			throw count($this->requests) > 1 ? $e : new BadRequestException($e->getMessage(), 0, $e);
+			throw count($this->requests) > 1
+				? $e
+				: new BadRequestException($e->getMessage(), 0, $e);
 		}
 		$this->onPresenter($this, $this->presenter);
 		$response = $this->presenter->run(clone $request);

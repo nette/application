@@ -33,8 +33,10 @@ class MockSession extends Http\Session
 	}
 
 
-	public function getSection(string $section, string $class = Nette\Http\SessionSection::class): Nette\Http\SessionSection
-	{
+	public function getSection(
+		string $section,
+		string $class = Nette\Http\SessionSection::class
+	): Nette\Http\SessionSection {
 		return $this->testSection;
 	}
 }

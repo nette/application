@@ -62,7 +62,7 @@ test('with module & without subdir templates', function () {
 		__DIR__ . '/templates/Two.@layout.latte',
 		__DIR__ . '/templates/@layout.latte',
 		dirname(__DIR__) . '/templates/@layout.latte',
-		dirname(dirname(__DIR__)) . '/templates/@layout.latte',
+		dirname(__DIR__, 2) . '/templates/@layout.latte',
 	], $presenter->formatLayoutTemplateFiles());
 });
 

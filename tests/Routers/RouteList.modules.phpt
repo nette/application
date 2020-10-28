@@ -27,7 +27,9 @@ $list[] = new Route('<presenter>[/<action>]', [
 	'action' => 'default',
 ]);
 
-testRouteIn($list, '/auth/',
+testRouteIn(
+	$list,
+	'/auth/',
 	[
 		'presenter' => 'Auth:Homepage',
 		'action' => 'default',

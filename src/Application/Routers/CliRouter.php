@@ -64,13 +64,15 @@ final class CliRouter implements Application\IRouter
 				$flag = null;
 			}
 
-			if ($opt !== '') {
-				$pair = explode('=', $opt, 2);
-				if (isset($pair[1])) {
-					$params[$pair[0]] = $pair[1];
-				} else {
-					$flag = $pair[0];
-				}
+			if ($opt === '') {
+				continue;
+			}
+
+			$pair = explode('=', $opt, 2);
+			if (isset($pair[1])) {
+				$params[$pair[0]] = $pair[1];
+			} else {
+				$flag = $pair[0];
 			}
 		}
 

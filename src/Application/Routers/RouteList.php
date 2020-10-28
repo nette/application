@@ -51,11 +51,11 @@ class RouteList extends Nette\Routing\RouteList implements Nette\Application\IRo
 	public function constructUrl(array $params, Nette\Http\UrlScript $refUrl): ?string
 	{
 		if ($this->module) {
-			if (strncmp($params[self::PRESENTER_KEY], $this->module, strlen($this->module)) === 0) {
-				$params[self::PRESENTER_KEY] = substr($params[self::PRESENTER_KEY], strlen($this->module));
-			} else {
+			if (strncmp($params[self::PRESENTER_KEY], $this->module, strlen($this->module)) !== 0) {
 				return null;
 			}
+
+			$params[self::PRESENTER_KEY] = substr($params[self::PRESENTER_KEY], strlen($this->module));
 		}
 
 		return parent::constructUrl($params, $refUrl);

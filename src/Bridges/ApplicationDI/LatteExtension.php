@@ -33,10 +33,13 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 		$this->config = new class {
 			/** @var bool */
 			public $xhtml = false;
+
 			/** @var string[] */
 			public $macros = [];
+
 			/** @var ?string */
 			public $templateClass;
+
 			/** @var bool */
 			public $strictTypes = false;
 		};

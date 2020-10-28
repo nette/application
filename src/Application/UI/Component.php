@@ -203,7 +203,9 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	final public function getParam($name = null, $default = null)
 	{
 		trigger_error(__METHOD__ . '() is deprecated; use getParameter() or getParameters() instead.', E_USER_DEPRECATED);
-		return func_num_args() ? $this->getParameter($name, $default) : $this->getParameters();
+		return func_num_args()
+			? $this->getParameter($name, $default)
+			: $this->getParameters();
 	}
 
 
@@ -217,7 +219,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	public function signalReceived(string $signal): void
 	{
 		if (!$this->tryCall($this->formatSignalMethod($signal), $this->params)) {
-			$class = get_class($this);
+			$class = static::class;
 			throw new BadSignalException("There is no handler for signal '$signal' in class $class.");
 		}
 	}
@@ -244,7 +246,9 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	public function link(string $destination, $args = []): string
 	{
 		try {
-			$args = func_num_args() < 3 && is_array($args) ? $args : array_slice(func_get_args(), 1);
+			$args = func_num_args() < 3 && is_array($args)
+				? $args
+				: array_slice(func_get_args(), 1);
 			return $this->getPresenter()->createRequest($this, $destination, $args, 'link');
 
 		} catch (InvalidLinkException $e) {
@@ -260,7 +264,9 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	 */
 	public function lazyLink(string $destination, $args = []): Link
 	{
-		$args = func_num_args() < 3 && is_array($args) ? $args : array_slice(func_get_args(), 1);
+		$args = func_num_args() < 3 && is_array($args)
+			? $args
+			: array_slice(func_get_args(), 1);
 		return new Link($this, $destination, $args);
 	}
 
@@ -274,7 +280,9 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	public function isLinkCurrent(string $destination = null, $args = []): bool
 	{
 		if ($destination !== null) {
-			$args = func_num_args() < 3 && is_array($args) ? $args : array_slice(func_get_args(), 1);
+			$args = func_num_args() < 3 && is_array($args)
+				? $args
+				: array_slice(func_get_args(), 1);
 			$this->getPresenter()->createRequest($this, $destination, $args, 'test');
 		}
 		return $this->getPresenter()->getLastCreatedRequestFlag('current');
@@ -297,7 +305,9 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 			}
 		} else {
 			$code = null;
-			$args = func_num_args() < 3 && is_array($args) ? $args : array_slice(func_get_args(), 1);
+			$args = func_num_args() < 3 && is_array($args)
+				? $args
+				: array_slice(func_get_args(), 1);
 		}
 
 		$presenter = $this->getPresenter();
@@ -313,7 +323,9 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	 */
 	public function redirectPermanent(string $destination, $args = []): void
 	{
-		$args = func_num_args() < 3 && is_array($args) ? $args : array_slice(func_get_args(), 1);
+		$args = func_num_args() < 3 && is_array($args)
+			? $args
+			: array_slice(func_get_args(), 1);
 		$presenter = $this->getPresenter();
 		$presenter->redirectUrl(
 			$presenter->createRequest($this, $destination, $args, 'redirect'),

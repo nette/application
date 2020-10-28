@@ -40,9 +40,13 @@ class TemplateFactory implements UI\ITemplateFactory
 	private $templateClass;
 
 
-	public function __construct(ILatteFactory $latteFactory, Nette\Http\IRequest $httpRequest = null,
-		Nette\Security\User $user = null, Nette\Caching\IStorage $cacheStorage = null, $templateClass = null)
-	{
+	public function __construct(
+		ILatteFactory $latteFactory,
+		Nette\Http\IRequest $httpRequest = null,
+		Nette\Security\User $user = null,
+		Nette\Caching\IStorage $cacheStorage = null,
+		$templateClass = null
+	) {
 		$this->latteFactory = $latteFactory;
 		$this->httpRequest = $httpRequest;
 		$this->user = $user;
@@ -91,7 +95,9 @@ class TemplateFactory implements UI\ITemplateFactory
 			trigger_error('Filter |null is deprecated.', E_USER_DEPRECATED);
 		});
 		$latte->addFilter('modifyDate', function ($time, $delta, $unit = null) {
-			return $time == null ? null : Nette\Utils\DateTime::from($time)->modify($delta . $unit); // intentionally ==
+			return $time == null // intentionally ==
+				? null
+				: Nette\Utils\DateTime::from($time)->modify($delta . $unit);
 		});
 
 		if (!isset($latte->getFilters()['translate'])) {
@@ -107,8 +113,12 @@ class TemplateFactory implements UI\ITemplateFactory
 
 		// default parameters
 		$template->user = $this->user;
-		$template->baseUrl = $this->httpRequest ? rtrim($this->httpRequest->getUrl()->withoutUserInfo()->getBaseUrl(), '/') : null;
-		$template->basePath = $this->httpRequest ? preg_replace('#https?://[^/]+#A', '', $template->baseUrl) : null;
+		$template->baseUrl = $this->httpRequest
+			? rtrim($this->httpRequest->getUrl()->withoutUserInfo()->getBaseUrl(), '/')
+			: null;
+		$template->basePath = $this->httpRequest
+			? preg_replace('#https?://[^/]+#A', '', $template->baseUrl)
+			: null;
 		$template->flashes = [];
 		if ($control) {
 			$template->control = $control;

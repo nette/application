@@ -38,8 +38,12 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 	private $tempDir;
 
 
-	public function __construct(bool $debugMode = false, array $scanDirs = null, string $tempDir = null, Nette\Loaders\RobotLoader $robotLoader = null)
-	{
+	public function __construct(
+		bool $debugMode = false,
+		array $scanDirs = null,
+		string $tempDir = null,
+		Nette\Loaders\RobotLoader $robotLoader = null
+	) {
 		$this->debugMode = $debugMode;
 		$this->scanDirs = (array) $scanDirs;
 		$this->tempDir = $tempDir;
@@ -87,7 +91,8 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 		$presenterFactory = $builder->addDefinition($this->prefix('presenterFactory'))
 			->setType(Nette\Application\IPresenterFactory::class)
 			->setFactory(Nette\Application\PresenterFactory::class, [new Definitions\Statement(
-				Nette\Bridges\ApplicationDI\PresenterFactoryCallback::class, [1 => $this->invalidLinkMode, $touch ?? null]
+				Nette\Bridges\ApplicationDI\PresenterFactoryCallback::class,
+				[1 => $this->invalidLinkMode, $touch ?? null]
 			)]);
 
 		if ($config->mapping) {

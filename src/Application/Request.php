@@ -59,8 +59,14 @@ final class Request
 	/**
 	 * @param  string  $name  presenter name (module:module:presenter)
 	 */
-	public function __construct(string $name, string $method = null, array $params = [], array $post = [], array $files = [], array $flags = [])
-	{
+	public function __construct(
+		string $name,
+		string $method = null,
+		array $params = [],
+		array $post = [],
+		array $files = [],
+		array $flags = []
+	) {
 		$this->name = $name;
 		$this->method = $method;
 		$this->params = $params;

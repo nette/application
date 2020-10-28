@@ -80,7 +80,9 @@ final class UIMacros extends Latte\Macros\MacroSet
 		}
 		$name = $writer->formatWord($words[0]);
 		$method = ucfirst($words[1] ?? '');
-		$method = Strings::match($method, '#^\w*$#D') ? "render$method" : "{\"render$method\"}";
+		$method = Strings::match($method, '#^\w*$#D')
+			? "render$method"
+			: "{\"render$method\"}";
 
 		$tokens = $node->tokenizer;
 		$pos = $tokens->position;
@@ -115,7 +117,8 @@ final class UIMacros extends Latte\Macros\MacroSet
 	{
 		$node->modifiers = preg_replace('#\|safeurl\s*(?=\||$)#Di', '', $node->modifiers);
 		return $writer->using($node, $this->getCompiler())
-			->write('echo %escape(%modify('
+			->write(
+				'echo %escape(%modify('
 				. ($node->name === 'plink' ? '$this->global->uiPresenter' : '$this->global->uiControl')
 				. '->link(%node.word, %node.array?)))'
 			);
@@ -130,9 +133,10 @@ final class UIMacros extends Latte\Macros\MacroSet
 		if ($node->modifiers) {
 			throw new CompileException('Modifiers are not allowed in ' . $node->getNotation());
 		}
-		return $writer->write($node->args
-			? 'if ($this->global->uiPresenter->isLinkCurrent(%node.word, %node.array?)) {'
-			: 'if ($this->global->uiPresenter->getLastCreatedRequestFlag("current")) {'
+		return $writer->write(
+			$node->args
+				? 'if ($this->global->uiPresenter->isLinkCurrent(%node.word, %node.array?)) {'
+				: 'if ($this->global->uiPresenter->getLastCreatedRequestFlag("current")) {'
 		);
 	}
 
