@@ -40,9 +40,6 @@ class Route extends Nette\Routing\Route implements Nette\Application\IRouter
 		],
 	];
 
-	/** @deprecated */
-	public static $styles = [];
-
 	/** @var int */
 	private $flags;
 
@@ -70,11 +67,6 @@ class Route extends Nette\Routing\Route implements Nette\Application\IRouter
 		}
 
 		$this->defaultMeta += self::UI_META;
-		if (self::$styles) {
-			trigger_error('Route::$styles is deprecated.', E_USER_DEPRECATED);
-			array_replace_recursive($this->defaultMeta, self::$styles);
-		}
-
 		$this->flags = $flags;
 		parent::__construct($mask, $metadata);
 	}

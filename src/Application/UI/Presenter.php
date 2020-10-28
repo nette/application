@@ -313,22 +313,6 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 
 	/**
-	 * Checks authorization.
-	 */
-	public function checkRequirements($element): void
-	{
-		parent::checkRequirements($element);
-		$user = (array) ComponentReflection::parseAnnotation($element, 'User');
-		if (in_array('loggedIn', $user, true)) {
-			trigger_error(__METHOD__ . '() annotation @User is deprecated', E_USER_DEPRECATED);
-			if (!$this->getUser()->isLoggedIn()) {
-				throw new Application\ForbiddenRequestException;
-			}
-		}
-	}
-
-
-	/**
 	 * This method will be called when CSRF is detected.
 	 */
 	public function detectedCsrf(): void
