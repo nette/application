@@ -41,20 +41,6 @@ final class RoutingPanel implements Tracy\IBarPanel
 	private $source;
 
 
-	public static function initializePanel(Nette\Application\Application $application): void
-	{
-		$blueScreen = Tracy\Debugger::getBlueScreen();
-		$blueScreen->addPanel(function (?\Throwable $e) use ($application, $blueScreen): ?array {
-			$dumper = $blueScreen->getDumper();
-			return $e ? null : [
-				'tab' => 'Nette Application',
-				'panel' => '<h3>Requests</h3>' . $dumper($application->getRequests())
-					. '<h3>Presenter</h3>' . $dumper($application->getPresenter()),
-			];
-		});
-	}
-
-
 	public function __construct(
 		Routing\Router $router,
 		Nette\Http\IRequest $httpRequest,
