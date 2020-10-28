@@ -61,7 +61,6 @@ test('', function () {
 	$template = $factory->createTemplate();
 	Assert::type(TemplateMock::class, $template);
 	Assert::type(UI\ITemplate::class, $template);
-	Assert::same([], $template->flashes);
 	ob_start();
 	$template->render();
 	Assert::same('ok', ob_get_clean());
