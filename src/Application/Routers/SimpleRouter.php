@@ -22,9 +22,6 @@ final class SimpleRouter extends Nette\Routing\SimpleRouter implements Nette\App
 		PRESENTER_KEY = 'presenter',
 		MODULE_KEY = 'module';
 
-	/** @var string */
-	private $module = '';
-
 	/** @var int */
 	private $flags;
 
@@ -43,28 +40,11 @@ final class SimpleRouter extends Nette\Routing\SimpleRouter implements Nette\App
 		}
 
 		if (isset($defaults[self::MODULE_KEY])) {
-			trigger_error(__METHOD__ . '() parameter module is deprecated, use RouteList::withModule() instead.', E_USER_DEPRECATED);
-			$this->module = $defaults[self::MODULE_KEY] . ':';
-			unset($defaults[self::MODULE_KEY]);
+			throw new Nette\DeprecatedException(__METHOD__ . '() parameter module is deprecated, use RouteList::withModule() instead.');
 		}
 
 		$this->flags = $flags;
 		parent::__construct($defaults);
-	}
-
-
-	/**
-	 * Maps HTTP request to an array.
-	 */
-	public function match(Nette\Http\IRequest $httpRequest): ?array
-	{
-		$params = parent::match($httpRequest);
-		$presenter = $params[self::PRESENTER_KEY] ?? null;
-		if (is_string($presenter)) {
-			$params[self::PRESENTER_KEY] = $this->module . $presenter;
-		}
-
-		return $params;
 	}
 
 
@@ -76,11 +56,6 @@ final class SimpleRouter extends Nette\Routing\SimpleRouter implements Nette\App
 		if ($this->flags & self::ONE_WAY) {
 			return null;
 		}
-
-		if (strncmp($params[self::PRESENTER_KEY], $this->module, strlen($this->module)) !== 0) {
-			return null;
-		}
-		$params[self::PRESENTER_KEY] = substr($params[self::PRESENTER_KEY], strlen($this->module));
 		return parent::constructUrl($params, $refUrl);
 	}
 
