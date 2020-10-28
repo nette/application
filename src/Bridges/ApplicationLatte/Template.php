@@ -139,31 +139,6 @@ class Template implements Nette\Application\UI\ITemplate
 
 
 	/**
-	 * Adds new template parameter.
-	 * @return static
-	 */
-	public function add(string $name, $value)
-	{
-		if (array_key_exists($name, $this->params)) {
-			throw new Nette\InvalidStateException("The variable '$name' already exists.");
-		}
-		$this->params[$name] = $value;
-		return $this;
-	}
-
-
-	/**
-	 * Sets all parameters.
-	 * @return static
-	 */
-	public function setParameters(array $params)
-	{
-		$this->params = $params + $this->params;
-		return $this;
-	}
-
-
-	/**
 	 * Returns array of all parameters.
 	 */
 	final public function getParameters(): array

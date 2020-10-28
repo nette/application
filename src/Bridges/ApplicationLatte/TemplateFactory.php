@@ -54,7 +54,7 @@ class TemplateFactory implements UI\ITemplateFactory
 		if ($templateClass && (!class_exists($templateClass) || !is_a($templateClass, Template::class, true))) {
 			throw new Nette\InvalidArgumentException("Class $templateClass does not extend " . Template::class . ' or it does not exist.');
 		}
-		$this->templateClass = $templateClass ?: Template::class;
+		$this->templateClass = $templateClass ?: DefaultTemplate::class;
 	}
 
 
