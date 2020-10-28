@@ -126,7 +126,7 @@ final class MicroPresenter implements Application\IPresenter
 			: $this->getContext()->getByType(Nette\Bridges\ApplicationLatte\ILatteFactory::class)->create();
 		$template = $class
 			? new $class
-			: new Nette\Bridges\ApplicationLatte\Template($latte);
+			: new Nette\Bridges\ApplicationLatte\DefaultTemplate($latte);
 
 		$template->setParameters($this->request->getParameters());
 		$template->presenter = $this;
