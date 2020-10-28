@@ -120,7 +120,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 
 		if ($this->config->debugger ?? $builder->getByType(Tracy\BlueScreen::class)) {
 			$builder->getDefinition($this->prefix('application'))
-				->addSetup([Nette\Bridges\ApplicationTracy\RoutingPanel::class, 'initializePanel']);
+				->addSetup([self::class, 'initializeBlueScreenPanel']);
 		}
 
 		$all = [];
@@ -201,5 +201,21 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 			}
 		}
 		return $presenters;
+	}
+
+
+	/** @internal */
+	public static function initializeBlueScreenPanel(
+		Tracy\BlueScreen $blueScreen,
+		Nette\Application\Application $application
+	): void {
+		$blueScreen->addPanel(function (?\Throwable $e) use ($application, $blueScreen): ?array {
+			$dumper = $blueScreen->getDumper();
+			return $e ? null : [
+				'tab' => 'Nette Application',
+				'panel' => '<h3>Requests</h3>' . $dumper($application->getRequests())
+					. '<h3>Presenter</h3>' . $dumper($application->getPresenter()),
+			];
+		});
 	}
 }
