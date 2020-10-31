@@ -93,15 +93,17 @@ abstract class Control extends Component implements IRenderable
 
 	/**
 	 * Saves the message to template, that can be displayed after redirect.
+	 * @param  string|\stdClass  $message
 	 */
 	public function flashMessage($message, string $type = 'info'): \stdClass
 	{
 		$id = $this->getParameterId('flash');
-		$messages = $this->getPresenter()->getFlashSession()->$id;
-		$messages[] = $flash = (object) [
+		$flash = $message instanceof \stdClass ? $message : (object) [
 			'message' => $message,
 			'type' => $type,
 		];
+		$messages = $this->getPresenter()->getFlashSession()->$id;
+		$messages[] = $flash;
 		$this->getTemplate()->flashes = $messages;
 		$this->getPresenter()->getFlashSession()->$id = $messages;
 		return $flash;
