@@ -95,9 +95,9 @@ class TemplateFactory implements UI\ITemplateFactory
 			trigger_error('Filter |null is deprecated.', E_USER_DEPRECATED);
 		});
 		$latte->addFilter('modifyDate', function ($time, $delta, $unit = null) {
-			return $time == null // intentionally ==
-				? null
-				: Nette\Utils\DateTime::from($time)->modify($delta . $unit);
+			return $time
+				? Nette\Utils\DateTime::from($time)->modify($delta . $unit)
+				: null;
 		});
 
 		if (!isset($latte->getFilters()['translate'])) {
