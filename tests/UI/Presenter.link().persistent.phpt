@@ -103,34 +103,34 @@ class FourthPresenter extends BasePresenter
 
 
 Assert::same([
-	'p1' => ['def' => null, 'type' => 'NULL', 'since' => 'BasePresenter'],
-	't1' => ['def' => null, 'type' => 'NULL', 'since' => 'PersistentParam1'],
+	'p1' => ['def' => null, 'type' => 'scalar', 'since' => 'BasePresenter'],
+	't1' => ['def' => null, 'type' => 'scalar', 'since' => 'PersistentParam1'],
 ], BasePresenter::getReflection()->getPersistentParams());
 
 Assert::same([
-	'p2' => ['def' => null, 'type' => 'NULL', 'since' => 'TestPresenter'],
-	'p1' => ['def' => null, 'type' => 'NULL', 'since' => 'BasePresenter'],
-	't1' => ['def' => null, 'type' => 'NULL', 'since' => 'PersistentParam1'],
-	't2' => ['def' => null, 'type' => 'NULL', 'since' => 'PersistentParam2A'],
+	'p2' => ['def' => null, 'type' => 'scalar', 'since' => 'TestPresenter'],
+	'p1' => ['def' => null, 'type' => 'scalar', 'since' => 'BasePresenter'],
+	't1' => ['def' => null, 'type' => 'scalar', 'since' => 'PersistentParam1'],
+	't2' => ['def' => null, 'type' => 'scalar', 'since' => 'PersistentParam2A'],
 ], TestPresenter::getReflection()->getPersistentParams());
 
 Assert::same([
 	'p1' => ['def' => 20, 'type' => 'integer', 'since' => 'BasePresenter'],
-	'p3' => ['def' => null, 'type' => 'NULL', 'since' => 'SecondPresenter'],
-	't1' => ['def' => null, 'type' => 'NULL', 'since' => 'PersistentParam1'],
-	't3' => ['def' => null, 'type' => 'NULL', 'since' => 'PersistentParam3'],
+	'p3' => ['def' => null, 'type' => 'scalar', 'since' => 'SecondPresenter'],
+	't1' => ['def' => null, 'type' => 'scalar', 'since' => 'PersistentParam1'],
+	't3' => ['def' => null, 'type' => 'scalar', 'since' => 'PersistentParam3'],
 ], SecondPresenter::getReflection()->getPersistentParams());
 
 Assert::same([
-	'p1' => ['def' => null, 'type' => 'NULL', 'since' => 'BasePresenter'],
-	't1' => ['def' => null, 'type' => 'NULL', 'since' => 'PersistentParam1'],
-	't2' => ['def' => null, 'type' => 'NULL', 'since' => 'PersistentParam2A'],
+	'p1' => ['def' => null, 'type' => 'scalar', 'since' => 'BasePresenter'],
+	't1' => ['def' => null, 'type' => 'scalar', 'since' => 'PersistentParam1'],
+	't2' => ['def' => null, 'type' => 'scalar', 'since' => 'PersistentParam2A'],
 ], ThirdPresenter::getReflection()->getPersistentParams());
 
 if (PHP_VERSION_ID >= 80000) {
 	Assert::same([
-		'p1' => ['def' => null, 'type' => 'NULL', 'since' => 'BasePresenter'],
-		't1' => ['def' => null, 'type' => 'NULL', 'since' => 'PersistentParam1'],
+		'p1' => ['def' => null, 'type' => 'scalar', 'since' => 'BasePresenter'],
+		't1' => ['def' => null, 'type' => 'scalar', 'since' => 'PersistentParam1'],
 	], FourthPresenter::getReflection()->getPersistentParams());
 }
 

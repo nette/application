@@ -149,7 +149,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 						"Value passed to persistent parameter '%s' in %s must be %s, %s given.",
 						$name,
 						$this instanceof Presenter ? 'presenter ' . $this->getName() : "component '{$this->getUniqueId()}'",
-						$meta['type'] === 'NULL' ? 'scalar' : $meta['type'],
+						$meta['type'],
 						is_object($params[$name]) ? get_class($params[$name]) : gettype($params[$name])
 					));
 				}

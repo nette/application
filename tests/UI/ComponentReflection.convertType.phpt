@@ -36,22 +36,22 @@ function testIt(string $type, $val, $res = null)
 
 $obj = new stdClass;
 
-testIt('NULL', null, null);
-testIt('NULL', []);
-testIt('NULL', $obj, $obj);
-testIt('NULL', '', '');
-testIt('NULL', 'a', 'a');
-testIt('NULL', '0', '0');
-testIt('NULL', '1', '1');
-testIt('NULL', '1.0', '1.0');
-testIt('NULL', '1.1', '1.1');
-testIt('NULL', '1a', '1a');
-testIt('NULL', true, true);
-testIt('NULL', false, false);
-testIt('NULL', 0, 0);
-testIt('NULL', 1, 1);
-testIt('NULL', 1.0, 1.0);
-testIt('NULL', 1.2, 1.2);
+testIt('scalar', null, null);
+testIt('scalar', []);
+testIt('scalar', $obj, $obj);
+testIt('scalar', '', '');
+testIt('scalar', 'a', 'a');
+testIt('scalar', '0', '0');
+testIt('scalar', '1', '1');
+testIt('scalar', '1.0', '1.0');
+testIt('scalar', '1.1', '1.1');
+testIt('scalar', '1a', '1a');
+testIt('scalar', true, true);
+testIt('scalar', false, false);
+testIt('scalar', 0, 0);
+testIt('scalar', 1, 1);
+testIt('scalar', 1.0, 1.0);
+testIt('scalar', 1.2, 1.2);
 
 testIt('mixed', null, null);
 testIt('mixed', [], []);

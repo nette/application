@@ -1015,7 +1015,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 				if (
 					!$param->isDefaultValueAvailable()
 					&& !$param->allowsNull()
-					&& $type !== 'NULL'
+					&& $type !== 'scalar'
 					&& $type !== 'array'
 					&& $type !== 'iterable'
 				) {
@@ -1030,7 +1030,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 					'Argument $%s passed to %s() must be %s, %s given.',
 					$name,
 					$rm->getDeclaringClass()->getName() . '::' . $rm->getName(),
-					$type === 'NULL' ? 'scalar' : $type,
+					$type,
 					is_object($args[$name]) ? get_class($args[$name]) : gettype($args[$name])
 				));
 			}
