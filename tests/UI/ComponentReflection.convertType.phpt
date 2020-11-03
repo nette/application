@@ -53,6 +53,23 @@ testIt('NULL', 1, 1);
 testIt('NULL', 1.0, 1.0);
 testIt('NULL', 1.2, 1.2);
 
+testIt('mixed', null, null);
+testIt('mixed', [], []);
+testIt('mixed', $obj, $obj);
+testIt('mixed', '', '');
+testIt('mixed', 'a', 'a');
+testIt('mixed', '0', '0');
+testIt('mixed', '1', '1');
+testIt('mixed', '1.0', '1.0');
+testIt('mixed', '1.1', '1.1');
+testIt('mixed', '1a', '1a');
+testIt('mixed', true, true);
+testIt('mixed', false, false);
+testIt('mixed', 0, 0);
+testIt('mixed', 1, 1);
+testIt('mixed', 1.0, 1.0);
+testIt('mixed', 1.2, 1.2);
+
 testIt('string', null);
 testIt('string', []);
 testIt('string', $obj);
