@@ -244,3 +244,21 @@ testIt('stdClass', 1.0);
 testIt('stdClass', 1.2);
 
 testIt('Closure', $var = function () {}, $var);
+
+
+testIt('int|array', null);
+testIt('int|array', [], []);
+testIt('int|array', $obj);
+testIt('int|array', function () {});
+testIt('int|array', '');
+testIt('int|array', 'a');
+testIt('int|array', '1', 1);
+testIt('int|array', '1.0');
+testIt('int|array', '1.1');
+testIt('int|array', '1a');
+testIt('int|array', true, 1);
+testIt('int|array', false, 0);
+testIt('int|array', 0, 0);
+testIt('int|array', 1, 1);
+testIt('int|array', 1.0, 1);
+testIt('int|array', 1.2);

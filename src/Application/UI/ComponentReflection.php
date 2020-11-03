@@ -55,7 +55,7 @@ final class ComponentReflection extends \ReflectionClass
 				) {
 					$params[$name] = [
 						'def' => $default,
-						'type' => Nette\Utils\Reflection::getPropertyType($rp) ?: gettype($default),
+						'type' => self::getPropertyType($rp, $default),
 						'since' => $isPresenter ? Nette\Utils\Reflection::getPropertyDeclaringClass($rp)->getName() : null,
 					];
 				}
@@ -190,7 +190,21 @@ final class ComponentReflection extends \ReflectionClass
 	/**
 	 * Non data-loss type conversion.
 	 */
-	public static function convertType(&$val, string $type): bool
+	public static function convertType(&$val, string $types): bool
+	{
+		foreach (explode('|', $types) as $type) {
+			if (self::convertSingleType($val, $type)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+	/**
+	 * Non data-loss type conversion.
+	 */
+	private static function convertSingleType(&$val, string $type): bool
 	{
 		static $builtin = [
 			'string' => 1, 'int' => 1, 'float' => 1, 'bool' => 1, 'array' => 1, 'object' => 1,
@@ -259,9 +273,19 @@ final class ComponentReflection extends \ReflectionClass
 
 	public static function getParameterType(\ReflectionParameter $param): string
 	{
-		return $param->hasType()
-			? $param->getType()->getName()
+		$type = $param->getType();
+		return $type
+			? ($type instanceof \ReflectionNamedType ? $type->getName() : (string) $type)
 			: gettype($param->isDefaultValueAvailable() ? $param->getDefaultValue() : null);
+	}
+
+
+	public static function getPropertyType(\ReflectionProperty $prop, $default): string
+	{
+		$type = PHP_VERSION_ID < 70400 ? null : $prop->getType();
+		return $type
+			? ($type instanceof \ReflectionNamedType ? $type->getName() : (string) $type)
+			: gettype($default);
 	}
 
 
