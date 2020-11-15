@@ -31,7 +31,7 @@
 		"nette/forms": "^2.4",
 		"nette/robot-loader": "^2.4.2 || ^3.0",
 		"nette/security": "^2.4",
-		"latte/latte": "^2.4.3",
+		"latte/latte": "^2.4.3 <2.8",
 		"tracy/tracy": "^2.4",
 		"mockery/mockery": "^1.0"
 	},
@@ -39,7 +39,7 @@
 		"nette/nette": "<2.2",
 		"nette/di": "<2.4",
 		"nette/forms": "<2.4",
-		"nette/latte": "<2.4"
+		"nette/latte": "<2.4 >=3.0"
 	},
 	"autoload": {
 		"classmap": ["src/"]
