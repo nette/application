@@ -80,14 +80,7 @@ class PresenterFactory implements IPresenterFactory
 			throw new InvalidPresenterException("Cannot load presenter '$name', class '$class' is abstract.");
 		}
 
-		$this->cache[$name] = $class;
-
-		if ($name !== ($realName = $this->unformatPresenterClass($class))) {
-			trigger_error("Case mismatch on presenter name '$name', correct name is '$realName'.", E_USER_WARNING);
-			$name = $realName;
-		}
-
-		return $class;
+		return $this->cache[$name] = $class;
 	}
 
 
