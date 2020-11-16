@@ -128,6 +128,7 @@ class PresenterFactory implements IPresenterFactory
 	 */
 	public function unformatPresenterClass(string $class): ?string
 	{
+		trigger_error(__METHOD__ . '() is deprecated.', E_USER_DEPRECATED);
 		foreach ($this->mapping as $module => $mapping) {
 			$mapping = str_replace(['\\', '*'], ['\\\\', '(\w+)'], $mapping);
 			if (preg_match("#^\\\\?$mapping[0]((?:$mapping[1])*)$mapping[2]$#Di", $class, $matches)) {

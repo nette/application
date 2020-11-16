@@ -1343,11 +1343,12 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * Gets the context.
 	 * @deprecated
 	 */
-	final public function getContext(): Nette\DI\Container
+	public function getContext(): Nette\DI\Container
 	{
 		if (!$this->context) {
 			throw new Nette\InvalidStateException('Context has not been set.');
 		}
+		trigger_error(__METHOD__ . '() is deprecated, use dependency injection.', E_USER_DEPRECATED);
 		return $this->context;
 	}
 
