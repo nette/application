@@ -15,7 +15,7 @@ use Nette;
 /**
  * File download response.
  */
-final class FileResponse implements Nette\Application\IResponse
+final class FileResponse implements Nette\Application\Response
 {
 	use Nette\SmartObject;
 

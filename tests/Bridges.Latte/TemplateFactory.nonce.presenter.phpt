@@ -17,7 +17,7 @@ Tester\Environment::bypassFinals();
 
 $latte = new Latte\Engine;
 
-$latteFactory = Mockery::mock(ApplicationLatte\ILatteFactory::class);
+$latteFactory = Mockery::mock(ApplicationLatte\LatteFactory::class);
 $latteFactory->shouldReceive('create')->andReturn($latte);
 
 $response = Mockery::mock(Nette\Http\IResponse::class);

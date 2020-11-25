@@ -113,7 +113,7 @@ final class UIMacros extends Latte\Macros\MacroSet
 		return "/* line $node->startLine */ "
 			. ($name[0] === '$' ? "if (is_object($name)) \$_tmp = $name; else " : '')
 			. '$_tmp = $this->global->uiControl->getComponent(' . $name . '); '
-			. 'if ($_tmp instanceof Nette\Application\UI\IRenderable) $_tmp->redrawControl(null, false); '
+			. 'if ($_tmp instanceof Nette\Application\UI\Renderable) $_tmp->redrawControl(null, false); '
 			. ($node->modifiers === ''
 				? "\$_tmp->$method($param);"
 				: $writer->write("ob_start(function () {}); \$_tmp->$method($param); echo %modify(ob_get_clean());")

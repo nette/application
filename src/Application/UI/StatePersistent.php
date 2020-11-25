@@ -13,7 +13,7 @@ namespace Nette\Application\UI;
 /**
  * Component with ability to save and load its state.
  */
-interface IStatePersistent
+interface StatePersistent
 {
 	/**
 	 * Loads state informations.
@@ -25,3 +25,6 @@ interface IStatePersistent
 	 */
 	function saveState(array &$params): void;
 }
+
+
+interface_exists(IStatePersistent::class);

@@ -16,7 +16,7 @@ use Nette\Http;
 /**
  * Redirects to new URI.
  */
-final class RedirectResponse implements Nette\Application\IResponse
+final class RedirectResponse implements Nette\Application\Response
 {
 	use Nette\SmartObject;
 

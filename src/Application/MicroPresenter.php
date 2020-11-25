@@ -57,7 +57,7 @@ final class MicroPresenter implements Application\IPresenter
 	}
 
 
-	public function run(Application\Request $request): Application\IResponse
+	public function run(Application\Request $request): Application\Response
 	{
 		$this->request = $request;
 
@@ -108,7 +108,7 @@ final class MicroPresenter implements Application\IPresenter
 			}
 			$response->setFile((string) $templateSource);
 		}
-		if ($response instanceof Application\UI\ITemplate) {
+		if ($response instanceof Application\UI\Template) {
 			return new Responses\TextResponse($response);
 		} else {
 			return $response ?: new Responses\VoidResponse;
@@ -119,11 +119,11 @@ final class MicroPresenter implements Application\IPresenter
 	/**
 	 * Template factory.
 	 */
-	public function createTemplate(string $class = null, callable $latteFactory = null): Application\UI\ITemplate
+	public function createTemplate(string $class = null, callable $latteFactory = null): Application\UI\Template
 	{
 		$latte = $latteFactory
 			? $latteFactory()
-			: $this->getContext()->getByType(Nette\Bridges\ApplicationLatte\ILatteFactory::class)->create();
+			: $this->getContext()->getByType(Nette\Bridges\ApplicationLatte\LatteFactory::class)->create();
 		$template = $class
 			? new $class
 			: new Nette\Bridges\ApplicationLatte\DefaultTemplate($latte);

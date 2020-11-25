@@ -13,7 +13,7 @@ namespace Nette\Application\UI;
 /**
  * Defines template.
  */
-interface ITemplate
+interface Template
 {
 	/**
 	 * Renders template to output.
@@ -31,3 +31,6 @@ interface ITemplate
 	 */
 	function getFile(): ?string;
 }
+
+
+interface_exists(ITemplate::class);

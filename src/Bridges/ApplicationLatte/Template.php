@@ -16,7 +16,7 @@ use Nette;
 /**
  * Latte powered template.
  */
-class Template implements Nette\Application\UI\ITemplate
+class Template implements Nette\Application\UI\Template
 {
 	/** @var Latte\Engine */
 	private $latte;
