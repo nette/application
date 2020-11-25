@@ -22,7 +22,7 @@ use Nette;
  * @property-read Presenter $presenter
  * @property-read bool $linkCurrent
  */
-abstract class Component extends Nette\ComponentModel\Container implements ISignalReceiver, IStatePersistent, \ArrayAccess
+abstract class Component extends Nette\ComponentModel\Container implements SignalReceiver, StatePersistent, \ArrayAccess
 {
 	use Nette\ComponentModel\ArrayAccess;
 
@@ -133,7 +133,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	}
 
 
-	/********************* interface IStatePersistent ****************d*g**/
+	/********************* interface StatePersistent ****************d*g**/
 
 
 	/**
@@ -200,7 +200,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	}
 
 
-	/********************* interface ISignalReceiver ****************d*g**/
+	/********************* interface SignalReceiver ****************d*g**/
 
 
 	/**

@@ -30,7 +30,7 @@ namespace ModuleModule {
 
 	class MyPresenter implements Nette\Application\IPresenter
 	{
-		public function run(Nette\Application\Request $request): Nette\Application\IResponse
+		public function run(Nette\Application\Request $request): Nette\Application\Response
 		{
 		}
 	}

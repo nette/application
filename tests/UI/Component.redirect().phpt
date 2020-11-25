@@ -24,7 +24,7 @@ class TestPresenter extends Application\UI\Presenter
 	}
 
 
-	public function sendResponse(Application\IResponse $response): void
+	public function sendResponse(Application\Response $response): void
 	{
 		$this->response = $response;
 	}

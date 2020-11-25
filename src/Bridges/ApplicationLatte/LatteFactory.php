@@ -12,7 +12,10 @@ namespace Nette\Bridges\ApplicationLatte;
 use Latte;
 
 
-interface ILatteFactory
+interface LatteFactory
 {
 	function create(): Latte\Engine;
 }
+
+
+interface_exists(ILatteFactory::class);

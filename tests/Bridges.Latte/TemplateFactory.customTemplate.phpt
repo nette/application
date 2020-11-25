@@ -7,7 +7,7 @@
 declare(strict_types=1);
 
 use Nette\Application\UI;
-use Nette\Bridges\ApplicationLatte\ILatteFactory;
+use Nette\Bridges\ApplicationLatte\LatteFactory;
 use Nette\Bridges\ApplicationLatte\Template;
 use Nette\Bridges\ApplicationLatte\TemplateFactory;
 use Tester\Assert;
@@ -43,24 +43,24 @@ class TemplateMock extends Template
 
 
 test('', function () {
-	$latteFactory = Mockery::mock(ILatteFactory::class);
+	$latteFactory = Mockery::mock(LatteFactory::class);
 	$latteFactory->shouldReceive('create')->andReturn(new Latte\Engine);
 	$factory = new TemplateFactory($latteFactory);
 	Assert::type(Template::class, $factory->createTemplate());
 });
 
 Assert::exception(function () {
-	$factory = new TemplateFactory(Mockery::mock(ILatteFactory::class), null, null, null, stdClass::class);
-}, \Nette\InvalidArgumentException::class, 'Class stdClass does not implement Nette\Application\UI\ITemplate or it does not exist.');
+	$factory = new TemplateFactory(Mockery::mock(LatteFactory::class), null, null, null, stdClass::class);
+}, \Nette\InvalidArgumentException::class, 'Class stdClass does not implement Nette\Application\UI\Template or it does not exist.');
 
 
 test('', function () {
-	$latteFactory = Mockery::mock(ILatteFactory::class);
+	$latteFactory = Mockery::mock(LatteFactory::class);
 	$latteFactory->shouldReceive('create')->andReturn(new Latte\Engine);
 	$factory = new TemplateFactory($latteFactory, null, null, null, TemplateMock::class);
 	$template = $factory->createTemplate();
 	Assert::type(TemplateMock::class, $template);
-	Assert::type(UI\ITemplate::class, $template);
+	Assert::type(UI\Template::class, $template);
 	ob_start();
 	$template->render();
 	Assert::same('ok', ob_get_clean());

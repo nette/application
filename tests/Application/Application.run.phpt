@@ -6,8 +6,8 @@ use Nette\Application\Application;
 use Nette\Application\ApplicationException;
 use Nette\Application\BadRequestException;
 use Nette\Application\IPresenterFactory;
-use Nette\Application\IResponse;
 use Nette\Application\Request;
+use Nette\Application\Response;
 use Nette\Application\Responses\ForwardResponse;
 use Nette\Application\Responses\TextResponse;
 use Nette\Routing\Router;
@@ -22,7 +22,7 @@ class GoodPresenter implements Nette\Application\IPresenter
 	public $request;
 
 
-	public function run(Request $request): IResponse
+	public function run(Request $request): Response
 	{
 		$this->request = $request;
 		return new TextResponse('');
@@ -32,7 +32,7 @@ class GoodPresenter implements Nette\Application\IPresenter
 
 class InfinityForwardingPresenter implements Nette\Application\IPresenter
 {
-	public function run(Request $request): IResponse
+	public function run(Request $request): Response
 	{
 		return new ForwardResponse($request);
 	}
@@ -46,7 +46,7 @@ class BadException extends Exception
 
 class BadPresenter implements Nette\Application\IPresenter
 {
-	public function run(Request $request): IResponse
+	public function run(Request $request): Response
 	{
 		throw new BadException;
 	}
@@ -58,7 +58,7 @@ class ErrorPresenter implements Nette\Application\IPresenter
 	public $request;
 
 
-	public function run(Request $request): IResponse
+	public function run(Request $request): Response
 	{
 		$this->request = $request;
 		return new TextResponse('');

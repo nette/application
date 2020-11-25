@@ -11,9 +11,12 @@ namespace Nette\Application\UI;
 
 
 /**
- * Defines ITemplate factory.
+ * Component with ability to receive signal.
  */
-interface ITemplateFactory
+interface SignalReceiver
 {
-	function createTemplate(Control $control = null): ITemplate;
+	function signalReceived(string $signal): void; // handleSignal
 }
+
+
+interface_exists(ISignalReceiver::class);

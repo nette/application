@@ -6,7 +6,7 @@
 
 declare(strict_types=1);
 
-use Nette\Bridges\ApplicationLatte\ILatteFactory;
+use Nette\Bridges\ApplicationLatte\LatteFactory;
 use Nette\Bridges\ApplicationLatte\Template;
 use Nette\Bridges\ApplicationLatte\TemplateFactory;
 use Nette\Http;
@@ -18,7 +18,7 @@ require __DIR__ . '/../bootstrap.php';
 
 test('', function () {
 	$engine = new Latte\Engine;
-	$latteFactory = Mockery::mock(ILatteFactory::class);
+	$latteFactory = Mockery::mock(LatteFactory::class);
 	$latteFactory->shouldReceive('create')->andReturn($engine);
 	$factory = new TemplateFactory($latteFactory, new Http\Request(new Http\UrlScript('http://nette.org')));
 	$factory->onCreate[] = $callback = function (Template $template) {

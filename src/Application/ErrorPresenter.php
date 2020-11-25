@@ -32,7 +32,7 @@ final class ErrorPresenter implements Application\IPresenter
 	}
 
 
-	public function run(Application\Request $request): Application\IResponse
+	public function run(Application\Request $request): Application\Response
 	{
 		$e = $request->getParameter('exception');
 		if ($e instanceof Application\BadRequestException) {

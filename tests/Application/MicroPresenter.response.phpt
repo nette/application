@@ -29,10 +29,10 @@ function renderResponse(Nette\Application\Responses\TextResponse $response)
 
 function createContainer()
 {
-	$latteFactory = Mockery::mock(Nette\Bridges\ApplicationLatte\ILatteFactory::class);
+	$latteFactory = Mockery::mock(Nette\Bridges\ApplicationLatte\LatteFactory::class);
 	$latteFactory->shouldReceive('create')->andReturn(new Latte\Engine);
 	$container = Mockery::mock(Nette\DI\Container::class);
-	$container->shouldReceive('getByType')->with('Nette\Bridges\ApplicationLatte\ILatteFactory')->andReturn($latteFactory);
+	$container->shouldReceive('getByType')->with('Nette\Bridges\ApplicationLatte\LatteFactory')->andReturn($latteFactory);
 	return $container;
 }
 

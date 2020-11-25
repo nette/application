@@ -17,14 +17,14 @@ use Nette\Application\UI;
 /**
  * Latte powered template factory.
  */
-class TemplateFactory implements UI\ITemplateFactory
+class TemplateFactory implements UI\TemplateFactory
 {
 	use Nette\SmartObject;
 
-	/** @var callable[]&(callable(UI\ITemplate $template): void)[]; Occurs when a new template is created */
+	/** @var callable[]&(callable(UI\Template $template): void)[]; Occurs when a new template is created */
 	public $onCreate;
 
-	/** @var ILatteFactory */
+	/** @var LatteFactory */
 	private $latteFactory;
 
 	/** @var Nette\Http\IRequest|null */
@@ -41,7 +41,7 @@ class TemplateFactory implements UI\ITemplateFactory
 
 
 	public function __construct(
-		ILatteFactory $latteFactory,
+		LatteFactory $latteFactory,
 		Nette\Http\IRequest $httpRequest = null,
 		Nette\Security\User $user = null,
 		Nette\Caching\IStorage $cacheStorage = null,
@@ -51,18 +51,18 @@ class TemplateFactory implements UI\ITemplateFactory
 		$this->httpRequest = $httpRequest;
 		$this->user = $user;
 		$this->cacheStorage = $cacheStorage;
-		if ($templateClass && (!class_exists($templateClass) || !is_a($templateClass, UI\ITemplate::class, true))) {
-			throw new Nette\InvalidArgumentException("Class $templateClass does not implement " . UI\ITemplate::class . ' or it does not exist.');
+		if ($templateClass && (!class_exists($templateClass) || !is_a($templateClass, UI\Template::class, true))) {
+			throw new Nette\InvalidArgumentException("Class $templateClass does not implement " . UI\Template::class . ' or it does not exist.');
 		}
 		$this->templateClass = $templateClass ?: DefaultTemplate::class;
 	}
 
 
-	public function createTemplate(UI\Control $control = null, string $class = null): UI\ITemplate
+	public function createTemplate(UI\Control $control = null, string $class = null): UI\Template
 	{
 		$class = $class ?? $this->templateClass;
-		if (!is_a($class, UI\ITemplate::class, true)) {
-			throw new Nette\InvalidArgumentException("Class $class does not implement " . UI\ITemplate::class . ' or it does not exist.');
+		if (!is_a($class, UI\Template::class, true)) {
+			throw new Nette\InvalidArgumentException("Class $class does not implement " . UI\Template::class . ' or it does not exist.');
 		}
 
 		$latte = $this->latteFactory->create();

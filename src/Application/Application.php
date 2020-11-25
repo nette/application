@@ -41,7 +41,7 @@ class Application
 	/** @var callable[]&(callable(Application $sender, IPresenter $presenter): void)[]; Occurs when a presenter is created */
 	public $onPresenter;
 
-	/** @var callable[]&(callable(Application $sender, IResponse $response): void)[]; Occurs when a new response is ready for dispatch */
+	/** @var callable[]&(callable(Application $sender, Response $response): void)[]; Occurs when a new response is ready for dispatch */
 	public $onResponse;
 
 	/** @var callable[]&(callable(Application $sender, \Throwable $e): void)[]; Occurs when an unhandled exception occurs in the application */

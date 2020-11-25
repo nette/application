@@ -15,7 +15,7 @@ use Nette;
 /**
  * JSON response used mainly for AJAX requests.
  */
-final class JsonResponse implements Nette\Application\IResponse
+final class JsonResponse implements Nette\Application\Response
 {
 	use Nette\SmartObject;
 

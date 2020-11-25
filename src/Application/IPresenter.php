@@ -11,9 +11,9 @@ namespace Nette\Application;
 
 
 /**
- * Presenter converts Request to IResponse.
+ * Presenter converts Request to Response.
  */
 interface IPresenter
 {
-	function run(Request $request): IResponse;
+	function run(Request $request): Response;
 }

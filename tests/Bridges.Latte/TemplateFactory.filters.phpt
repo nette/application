@@ -13,7 +13,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-class LatteFactory implements Nette\Bridges\ApplicationLatte\ILatteFactory
+class LatteFactory implements Nette\Bridges\ApplicationLatte\LatteFactory
 {
 	private $engine;
 

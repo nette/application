@@ -108,7 +108,7 @@ eval($code);
 $container = new Container;
 
 
-Assert::type(Nette\Bridges\ApplicationLatte\ILatteFactory::class, $container->getService('nette.latteFactory'));
+Assert::type(Nette\Bridges\ApplicationLatte\LatteFactory::class, $container->getService('nette.latteFactory'));
 $container->getService('nette.latteFactory')->create()->setLoader(new Latte\Loaders\StringLoader)->compile('');
 
 Assert::same([
