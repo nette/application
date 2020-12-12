@@ -27,3 +27,4 @@ Assert::match('<?php %a% $this->global->uiControl->getComponent("form"); %a%->re
 Assert::match('<?php %a% $this->global->uiControl->getComponent("form"); %a%->renderType([\'param\' => 123]); ?>', $compiler->expandMacro('control', 'form:type param => 123', '')->openingCode);
 Assert::match('<?php %a% $this->global->uiControl->getComponent("form"); %a%->renderType([\'param\' => 123]); ?>', $compiler->expandMacro('control', 'form:type, param => 123', '')->openingCode);
 @Assert::match('<?php %a% $this->global->uiControl->getComponent("form"); %a%->render(); echo ($this->filters->striptags)(%a%); ?>', $compiler->expandMacro('control', 'form', 'striptags')->openingCode); // @ deprecated
+Assert::match('<?php %a% $this->global->uiControl->getComponent("form"); %a%->renderType(param: 123); ?>', $compiler->expandMacro('control', 'form:type, param: 123', '')->openingCode);

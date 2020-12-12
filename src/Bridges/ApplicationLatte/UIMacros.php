@@ -99,17 +99,16 @@ final class UIMacros extends Latte\Macros\MacroSet
 
 		$tokens = $node->tokenizer;
 		$pos = $tokens->position;
-		$param = $writer->formatArray();
-		$tokens->position = $pos;
+		$wrap = false;
 		while ($tokens->nextToken()) {
-			if ($tokens->isCurrent('=>') && !$tokens->depth) {
+			if ($tokens->isCurrent('=>', '(expand)') && !$tokens->depth) {
 				$wrap = true;
 				break;
 			}
 		}
-		if (empty($wrap) && $param[0] === '[') {
-			$param = substr($param, 1, -1); // removes array() or []
-		}
+		$tokens->position = $pos;
+		$param = $wrap ? $writer->formatArray() : $writer->formatArgs();
+
 		return "/* line $node->startLine */ "
 			. ($name[0] === '$' ? "if (is_object($name)) \$_tmp = $name; else " : '')
 			. '$_tmp = $this->global->uiControl->getComponent(' . $name . '); '
