@@ -59,7 +59,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 			'catchExceptions' => Expect::bool()->dynamic(),
 			'mapping' => Expect::arrayOf('string|array'),
 			'scanDirs' => Expect::anyOf(
-				Expect::arrayOf('string')->default($this->scanDirs),
+				Expect::arrayOf('string')->default($this->scanDirs)->mergeDefaults(),
 				false
 			)->default($this->scanDirs),
 			'scanComposer' => Expect::bool(class_exists(ClassLoader::class)),
