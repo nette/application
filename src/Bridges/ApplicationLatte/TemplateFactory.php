@@ -33,7 +33,7 @@ class TemplateFactory implements UI\TemplateFactory
 	/** @var Nette\Security\User|null */
 	private $user;
 
-	/** @var Nette\Caching\IStorage|null */
+	/** @var Nette\Caching\Storage|null */
 	private $cacheStorage;
 
 	/** @var string */
@@ -44,7 +44,7 @@ class TemplateFactory implements UI\TemplateFactory
 		LatteFactory $latteFactory,
 		Nette\Http\IRequest $httpRequest = null,
 		Nette\Security\User $user = null,
-		Nette\Caching\IStorage $cacheStorage = null,
+		Nette\Caching\Storage $cacheStorage = null,
 		$templateClass = null
 	) {
 		$this->latteFactory = $latteFactory;
