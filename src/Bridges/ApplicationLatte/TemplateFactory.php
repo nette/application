@@ -21,7 +21,7 @@ class TemplateFactory implements UI\TemplateFactory
 {
 	use Nette\SmartObject;
 
-	/** @var callable[]&(callable(UI\Template $template): void)[]; Occurs when a new template is created */
+	/** @var callable[]&(callable(Template $template): void)[]; Occurs when a new template is created */
 	public $onCreate;
 
 	/** @var LatteFactory */
@@ -51,18 +51,19 @@ class TemplateFactory implements UI\TemplateFactory
 		$this->httpRequest = $httpRequest;
 		$this->user = $user;
 		$this->cacheStorage = $cacheStorage;
-		if ($templateClass && (!class_exists($templateClass) || !is_a($templateClass, UI\Template::class, true))) {
-			throw new Nette\InvalidArgumentException("Class $templateClass does not implement " . UI\Template::class . ' or it does not exist.');
+		if ($templateClass && (!class_exists($templateClass) || !is_a($templateClass, Template::class, true))) {
+			throw new Nette\InvalidArgumentException("Class $templateClass does not implement " . Template::class . ' or it does not exist.');
 		}
 		$this->templateClass = $templateClass ?: DefaultTemplate::class;
 	}
 
 
+	/** @return Template */
 	public function createTemplate(UI\Control $control = null, string $class = null): UI\Template
 	{
 		$class = $class ?? $this->templateClass;
-		if (!is_a($class, UI\Template::class, true)) {
-			throw new Nette\InvalidArgumentException("Class $class does not implement " . UI\Template::class . ' or it does not exist.');
+		if (!is_a($class, Template::class, true)) {
+			throw new Nette\InvalidArgumentException("Class $class does not implement " . Template::class . ' or it does not exist.');
 		}
 
 		$latte = $this->latteFactory->create();
