@@ -18,7 +18,7 @@ use Nette;
 class Form extends Nette\Forms\Form implements SignalReceiver
 {
 	/** @var callable[]&(callable(Form $sender): void)[]; Occurs when form is attached to presenter */
-	public $onAnchor;
+	public $onAnchor = [];
 
 	/** @var bool */
 	private $sameSiteProtection = true;
@@ -57,7 +57,7 @@ class Form extends Nette\Forms\Form implements SignalReceiver
 				}
 			}
 
-			$this->onAnchor($this);
+			Nette\Utils\Arrays::invoke($this->onAnchor, $this);
 		});
 	}
 

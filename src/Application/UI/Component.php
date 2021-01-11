@@ -27,7 +27,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	use Nette\ComponentModel\ArrayAccess;
 
 	/** @var callable[]&(callable(Component $sender): void)[]; Occurs when component is attached to presenter */
-	public $onAnchor;
+	public $onAnchor = [];
 
 	/** @var array */
 	protected $params = [];
@@ -78,7 +78,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 		parent::validateParent($parent);
 		$this->monitor(Presenter::class, function (Presenter $presenter): void {
 			$this->loadState($presenter->popGlobalParameters($this->getUniqueId()));
-			$this->onAnchor($this);
+			Nette\Utils\Arrays::invoke($this->onAnchor, $this);
 		});
 	}
 
