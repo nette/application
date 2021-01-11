@@ -14,6 +14,7 @@ use Nette\Application;
 use Nette\Application\Helpers;
 use Nette\Application\Responses;
 use Nette\Http;
+use Nette\Utils\Arrays;
 
 
 /**
@@ -49,13 +50,13 @@ abstract class Presenter extends Control implements Application\IPresenter
 	public $invalidLinkMode;
 
 	/** @var callable[]&(callable(Presenter $sender): void)[]; Occurs when the presenter is starting */
-	public $onStartup;
+	public $onStartup = [];
 
 	/** @var callable[]&(callable(Presenter $sender): void)[]; Occurs when the presenter is rendering after beforeRender */
-	public $onRender;
+	public $onRender = [];
 
 	/** @var callable[]&(callable(Presenter $sender, Response $response): void)[]; Occurs when the presenter is shutting down */
-	public $onShutdown;
+	public $onShutdown = [];
 
 	/** @var bool  automatically call canonicalize() */
 	public $autoCanonicalize = true;
@@ -203,7 +204,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 			$this->initGlobalParameters();
 			$this->checkRequirements(static::getReflection());
-			$this->onStartup($this);
+			Arrays::invoke($this->onStartup, $this);
 			$this->startup();
 			if (!$this->startupCheck) {
 				$class = static::getReflection()->getMethod('startup')->getDeclaringClass()->getName();
@@ -230,7 +231,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 			// RENDERING VIEW
 			$this->beforeRender();
-			$this->onRender($this);
+			Arrays::invoke($this->onRender, $this);
 			// calls $this->render<View>()
 			$this->tryCall(static::formatRenderMethod($this->view), $this->params);
 			$this->afterRender();
@@ -268,7 +269,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			$this->response = new Responses\VoidResponse;
 		}
 
-		$this->onShutdown($this, $this->response);
+		Arrays::invoke($this->onShutdown, $this, $this->response);
 		$this->shutdown($this->response);
 
 		return $this->response;

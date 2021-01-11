@@ -11,6 +11,7 @@ namespace Nette\Application;
 
 use Nette;
 use Nette\Routing\Router;
+use Nette\Utils\Arrays;
 
 
 /**
@@ -30,22 +31,22 @@ class Application
 	public $errorPresenter;
 
 	/** @var callable[]&(callable(Application $sender): void)[]; Occurs before the application loads presenter */
-	public $onStartup;
+	public $onStartup = [];
 
-	/** @var callable[]&(callable(Application $sender, \Throwable $e = null): void)[]; Occurs before the application shuts down */
-	public $onShutdown;
+	/** @var callable[]&(callable(Application $sender, \Throwable|null $e): void)[]; Occurs before the application shuts down */
+	public $onShutdown = [];
 
 	/** @var callable[]&(callable(Application $sender, Request $request): void)[]; Occurs when a new request is received */
-	public $onRequest;
+	public $onRequest = [];
 
 	/** @var callable[]&(callable(Application $sender, IPresenter $presenter): void)[]; Occurs when a presenter is created */
-	public $onPresenter;
+	public $onPresenter = [];
 
 	/** @var callable[]&(callable(Application $sender, Response $response): void)[]; Occurs when a new response is ready for dispatch */
-	public $onResponse;
+	public $onResponse = [];
 
 	/** @var callable[]&(callable(Application $sender, \Throwable $e): void)[]; Occurs when an unhandled exception occurs in the application */
-	public $onError;
+	public $onError = [];
 
 	/** @var Request[] */
 	private $requests = [];
@@ -85,23 +86,23 @@ class Application
 	public function run(): void
 	{
 		try {
-			$this->onStartup($this);
+			Arrays::invoke($this->onStartup, $this);
 			$this->processRequest($this->createInitialRequest());
-			$this->onShutdown($this);
+			Arrays::invoke($this->onShutdown, $this);
 
 		} catch (\Throwable $e) {
-			$this->onError($this, $e);
+			Arrays::invoke($this->onError, $this, $e);
 			if ($this->catchExceptions && $this->errorPresenter) {
 				try {
 					$this->processException($e);
-					$this->onShutdown($this, $e);
+					Arrays::invoke($this->onShutdown, $this, $e);
 					return;
 
 				} catch (\Throwable $e) {
-					$this->onError($this, $e);
+					Arrays::invoke($this->onError, $this, $e);
 				}
 			}
-			$this->onShutdown($this, $e);
+			Arrays::invoke($this->onShutdown, $this, $e);
 			throw $e;
 		}
 	}
@@ -140,7 +141,7 @@ class Application
 		}
 
 		$this->requests[] = $request;
-		$this->onRequest($this, $request);
+		Arrays::invoke($this->onRequest, $this, $request);
 
 		if (
 			!$request->isMethod($request::FORWARD)
@@ -156,7 +157,7 @@ class Application
 				? $e
 				: new BadRequestException($e->getMessage(), 0, $e);
 		}
-		$this->onPresenter($this, $this->presenter);
+		Arrays::invoke($this->onPresenter, $this, $this->presenter);
 		$response = $this->presenter->run(clone $request);
 
 		if ($response instanceof Responses\ForwardResponse) {
@@ -164,7 +165,7 @@ class Application
 			goto process;
 		}
 
-		$this->onResponse($this, $response);
+		Arrays::invoke($this->onResponse, $this, $response);
 		$response->send($this->httpRequest, $this->httpResponse);
 	}
 

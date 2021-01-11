@@ -22,7 +22,7 @@ class TemplateFactory implements UI\TemplateFactory
 	use Nette\SmartObject;
 
 	/** @var callable[]&(callable(Template $template): void)[]; Occurs when a new template is created */
-	public $onCreate;
+	public $onCreate = [];
 
 	/** @var LatteFactory */
 	private $latteFactory;
@@ -140,7 +140,7 @@ class TemplateFactory implements UI\TemplateFactory
 		}
 		$latte->addProvider('cacheStorage', $this->cacheStorage);
 
-		$this->onCreate($template);
+		Nette\Utils\Arrays::invoke($this->onCreate, $template);
 
 		return $template;
 	}
