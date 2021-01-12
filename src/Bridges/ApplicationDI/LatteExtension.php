@@ -11,6 +11,8 @@ namespace Nette\Bridges\ApplicationDI;
 
 use Latte;
 use Nette;
+use Nette\Bridges\ApplicationLatte;
+use Nette\Schema\Expect;
 
 
 /**
@@ -29,20 +31,17 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 	{
 		$this->tempDir = $tempDir;
 		$this->debugMode = $debugMode;
+	}
 
-		$this->config = new class {
-			/** @var bool */
-			public $xhtml = false;
 
-			/** @var string[] */
-			public $macros = [];
-
-			/** @var ?string */
-			public $templateClass;
-
-			/** @var bool */
-			public $strictTypes = false;
-		};
+	public function getConfigSchema(): Nette\Schema\Schema
+	{
+		return Expect::structure([
+			'xhtml' => Expect::bool(false),
+			'macros' => Expect::arrayOf('string'),
+			'templateClass' => Expect::string(),
+			'strictTypes' => Expect::bool(false),
+		]);
 	}
 
 
@@ -56,7 +55,7 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 		$builder = $this->getContainerBuilder();
 
 		$latteFactory = $builder->addFactoryDefinition($this->prefix('latteFactory'))
-			->setImplement(Nette\Bridges\ApplicationLatte\LatteFactory::class)
+			->setImplement(ApplicationLatte\LatteFactory::class)
 			->getResultDefinition()
 				->setFactory(Latte\Engine::class)
 				->addSetup('setTempDirectory', [$this->tempDir])
@@ -70,7 +69,7 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 
 		$builder->addDefinition($this->prefix('templateFactory'))
 			->setType(Nette\Application\UI\TemplateFactory::class)
-			->setFactory(Nette\Bridges\ApplicationLatte\TemplateFactory::class)
+			->setFactory(ApplicationLatte\TemplateFactory::class)
 			->setArguments(['templateClass' => $config->templateClass]);
 
 		foreach ($config->macros as $macro) {
