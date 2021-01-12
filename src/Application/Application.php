@@ -179,7 +179,7 @@ class Application
 			$this->httpResponse->setCode($e instanceof BadRequestException ? ($e->getHttpCode() ?: 404) : 500);
 		}
 
-		$args = ['exception' => $e, 'request' => end($this->requests) ?: null];
+		$args = ['exception' => $e, 'request' => Arrays::last($this->requests) ?: null];
 		if ($this->presenter instanceof UI\Presenter) {
 			try {
 				$this->presenter->forward(":$this->errorPresenter:", $args);
