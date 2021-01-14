@@ -17,7 +17,7 @@ use Nette\Routing\Router;
 /**
  * Link generator.
  */
-final class LinkGenerator
+final class LinkGenerator implements ILinkGenerator
 {
 	use Nette\SmartObject;
 
