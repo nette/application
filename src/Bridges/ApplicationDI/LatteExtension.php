@@ -13,6 +13,7 @@ use Latte;
 use Nette;
 use Nette\Bridges\ApplicationLatte;
 use Nette\Schema\Expect;
+use Tracy;
 
 
 /**
@@ -37,6 +38,7 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 	public function getConfigSchema(): Nette\Schema\Schema
 	{
 		return Expect::structure([
+			'debugger' => Expect::anyOf(true, false, 'all'),
 			'xhtml' => Expect::bool(false),
 			'macros' => Expect::arrayOf('string'),
 			'templateClass' => Expect::string(),
@@ -80,6 +82,34 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 			$builder->addAlias('nette.latteFactory', $this->prefix('latteFactory'));
 			$builder->addAlias('nette.templateFactory', $this->prefix('templateFactory'));
 		}
+	}
+
+
+	public function beforeCompile()
+	{
+		$builder = $this->getContainerBuilder();
+
+		if (
+			$this->debugMode
+			&& ($this->config->debugger ?? $builder->getByType(Tracy\Bar::class))
+			&& class_exists(Latte\Bridges\Tracy\LattePanel::class)
+		) {
+			$factory = $builder->getDefinition($this->prefix('templateFactory'));
+			$factory->addSetup([self::class, 'initLattePanel'], [$factory, 'all' => $this->config->debugger === 'all']);
+		}
+	}
+
+
+	public static function initLattePanel(ApplicationLatte\TemplateFactory $factory, Tracy\Bar $bar, bool $all = false)
+	{
+		$factory->onCreate[] = function (ApplicationLatte\Template $template) use ($bar, $all) {
+			if ($all || $template->control instanceof Nette\Application\UI\Presenter) {
+				$bar->addPanel(new Latte\Bridges\Tracy\LattePanel(
+					$template->getLatte(),
+					$all ? (new \ReflectionObject($template->control))->getShortName() : ''
+				));
+			}
+		};
 	}
 
 
