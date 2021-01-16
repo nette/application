@@ -39,7 +39,7 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 	{
 		return Expect::structure([
 			'debugger' => Expect::anyOf(true, false, 'all'),
-			'xhtml' => Expect::bool(false),
+			'xhtml' => Expect::bool(false)->deprecated(),
 			'macros' => Expect::arrayOf('string'),
 			'templateClass' => Expect::string(),
 			'strictTypes' => Expect::bool(false),
