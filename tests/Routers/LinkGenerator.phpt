@@ -39,7 +39,7 @@ namespace ModuleModule {
 
 namespace {
 
-	use Nette\Application\LinkGenerator;
+	use Nette\Application\DefaultLinkGenerator;
 	use Nette\Application\PresenterFactory;
 	use Nette\Application\Routers;
 	use Nette\Http;
@@ -50,7 +50,7 @@ namespace {
 
 
 	test('', function () use ($pf) {
-		$generator = new LinkGenerator(new Routers\SimpleRouter, new Http\UrlScript('http://nette.org/en/'), $pf);
+		$generator = new DefaultLinkGenerator(new Routers\SimpleRouter, new Http\UrlScript('http://nette.org/en/'), $pf);
 		Assert::same('http://nette.org/en/?action=default&presenter=Homepage', $generator->link('Homepage:default'));
 		Assert::same('http://nette.org/en/?action=default&presenter=Module%3AMy', $generator->link('Module:My:default'));
 		Assert::same('http://nette.org/en/?presenter=Module%3AMy', $generator->link('Module:My:'));
@@ -63,25 +63,25 @@ namespace {
 
 
 	Assert::exception(function () use ($pf) {
-		$generator = new LinkGenerator(new Routers\SimpleRouter, new Http\UrlScript('http://nette.org/en/'), $pf);
+		$generator = new DefaultLinkGenerator(new Routers\SimpleRouter, new Http\UrlScript('http://nette.org/en/'), $pf);
 		$generator->link('default');
 	}, Nette\Application\UI\InvalidLinkException::class, "Invalid link destination 'default'.");
 
 
 	Assert::exception(function () use ($pf) {
-		$generator = new LinkGenerator(new Routers\Route('/', 'Product:'), new Http\UrlScript('http://nette.org/en/'), $pf);
+		$generator = new DefaultLinkGenerator(new Routers\Route('/', 'Product:'), new Http\UrlScript('http://nette.org/en/'), $pf);
 		$generator->link('Homepage:default', ['id' => 10]);
 	}, Nette\Application\UI\InvalidLinkException::class, 'No route for Homepage:default(id=10)');
 
 
 	Assert::exception(function () use ($pf) {
-		$generator = new LinkGenerator(new Routers\Route('/', 'Homepage:'), new Http\UrlScript('http://nette.org/en/'), $pf);
+		$generator = new DefaultLinkGenerator(new Routers\Route('/', 'Homepage:'), new Http\UrlScript('http://nette.org/en/'), $pf);
 		$generator->link('Homepage:missing', [10]);
 	}, Nette\Application\UI\InvalidLinkException::class, "Unable to pass parameters to action 'Homepage:missing', missing corresponding method.");
 
 
 	test('', function () {
-		$generator = new LinkGenerator(new Routers\SimpleRouter, new Http\UrlScript('http://nette.org/en/'));
+		$generator = new DefaultLinkGenerator(new Routers\SimpleRouter, new Http\UrlScript('http://nette.org/en/'));
 		Assert::same('http://nette.org/en/?action=default&presenter=Homepage', $generator->link('Homepage:default'));
 		Assert::same('http://nette.org/en/?action=default&presenter=Module%3AMy', $generator->link('Module:My:default'));
 		Assert::same('http://nette.org/en/?presenter=Module%3AMy', $generator->link('Module:My:'));
@@ -94,7 +94,7 @@ namespace {
 
 
 	test('', function () {
-		$generator = new LinkGenerator(new Routers\SimpleRouter, new Http\UrlScript('http://nette.org/en/'));
+		$generator = new DefaultLinkGenerator(new Routers\SimpleRouter, new Http\UrlScript('http://nette.org/en/'));
 		$generator2 = $generator->withReferenceUrl('http://nette.org/cs/');
 		Assert::same('http://nette.org/en/?action=default&presenter=Homepage', $generator->link('Homepage:default'));
 		Assert::same('http://nette.org/cs/?action=default&presenter=Homepage', $generator2->link('Homepage:default'));

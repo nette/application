@@ -17,7 +17,7 @@ use Nette\Routing\Router;
 /**
  * Link generator.
  */
-final class LinkGenerator
+final class DefaultLinkGenerator implements ILinkGenerator
 {
 	use Nette\SmartObject;
 
@@ -93,7 +93,7 @@ final class LinkGenerator
 	}
 
 
-	public function withReferenceUrl(string $url): self
+	public function withReferenceUrl(string $url): ILinkGenerator
 	{
 		return new self(
 			$this->router,
