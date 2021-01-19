@@ -25,5 +25,5 @@ test('', function () {
 	$container = new Container1;
 	Assert::type(Nette\Application\Application::class, $container->getService('application'));
 	Assert::type(Nette\Application\PresenterFactory::class, $container->getService('nette.presenterFactory'));
-	Assert::type(Nette\Application\LinkGenerator::class, $container->getService('application.linkGenerator'));
+	Assert::type(Nette\Application\DefaultLinkGenerator::class, $container->getService('application.linkGenerator'));
 });

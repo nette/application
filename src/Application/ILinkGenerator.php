@@ -22,5 +22,5 @@ interface ILinkGenerator
 	 */
 	public function link(string $dest, array $params = []): string;
 
-	public function withReferenceUrl(string $url): self;
+	public function withReferenceUrl(string $url): ILinkGenerator;
 }

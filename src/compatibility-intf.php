@@ -24,6 +24,15 @@ if (false) {
 	class_alias(Response::class, IResponse::class);
 }
 
+if (false) {
+	/** @deprecated use ILinkGenerator */
+	interface LinkGenerator
+	{
+	}
+} elseif (!interface_exists(LinkGenerator::class)) {
+	class_alias(\Nette\Application\ILinkGenerator::class, LinkGenerator::class);
+}
+
 namespace Nette\Application\UI;
 
 if (false) {
