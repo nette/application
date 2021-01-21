@@ -61,7 +61,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 			'scanDirs' => Expect::anyOf(
 				Expect::arrayOf('string')->default($this->scanDirs)->mergeDefaults(),
 				false
-			)->default($this->scanDirs),
+			)->firstIsDefault(),
 			'scanComposer' => Expect::bool(class_exists(ClassLoader::class)),
 			'scanFilter' => Expect::string('*Presenter'),
 			'silentLinks' => Expect::bool(),
