@@ -31,7 +31,7 @@
 		"nette/forms": "^3.0",
 		"nette/robot-loader": "^3.2",
 		"nette/security": "^3.0",
-		"latte/latte": "^2.9.1",
+		"latte/latte": "^2.10.2",
 		"tracy/tracy": "^2.6",
 		"mockery/mockery": "^1.0",
 		"phpstan/phpstan-nette": "^0.12"
