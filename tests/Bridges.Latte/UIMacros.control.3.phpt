@@ -22,6 +22,7 @@ $latte->addProvider('uiControl', new class {
 		echo '<>&amp;';
 	}
 
+
 	public function __call($name, $args)
 	{
 		return new self;
@@ -30,7 +31,7 @@ $latte->addProvider('uiControl', new class {
 
 Assert::exception(function () use ($latte) {
 	$latte->renderToString('<div {control x}');
-}, Latte\CompileException::class, 'Filters: unable to convert content type HTML to HTMLTAG');
+}, Latte\RuntimeException::class, 'Filters: unable to convert content type HTML to HTMLTAG');
 
 Assert::same(
 	'<div title="&lt;&gt;&amp;">',
@@ -39,4 +40,4 @@ Assert::same(
 
 Assert::exception(function () use ($latte) {
 	$latte->renderToString('<style> {control x} </style>');
-}, Latte\CompileException::class, 'Filters: unable to convert content type HTML to HTMLCSS');
+}, Latte\RuntimeException::class, 'Filters: unable to convert content type HTML to HTMLCSS');
