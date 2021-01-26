@@ -131,11 +131,12 @@ final class UIMacros extends Latte\Macros\MacroSet
 	public function macroLink(MacroNode $node, PhpWriter $writer)
 	{
 		$node->modifiers = preg_replace('#\|safeurl\s*(?=\||$)#Di', '', $node->modifiers);
+		$line = $node->startLine ? " /* line $node->startLine */" : '';
 		return $writer->using($node, $this->getCompiler())
 			->write(
 				'echo %escape(%modify('
 				. ($node->name === 'plink' ? '$this->global->uiPresenter' : '$this->global->uiControl')
-				. '->link(%node.word, %node.array?)))'
+				. "->link(%node.word, %node.array?)))$line;"
 			);
 	}
 
