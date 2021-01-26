@@ -103,10 +103,12 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 	public static function initLattePanel(ApplicationLatte\TemplateFactory $factory, Tracy\Bar $bar, bool $all = false)
 	{
 		$factory->onCreate[] = function (ApplicationLatte\Template $template) use ($bar, $all) {
-			if ($all || ($template->control ?? null) instanceof Nette\Application\UI\Presenter) {
+			$control = ($template->control ?? $template->presenter) ?? null;
+
+			if ($all || $control instanceof Nette\Application\UI\Presenter) {
 				$bar->addPanel(new Latte\Bridges\Tracy\LattePanel(
 					$template->getLatte(),
-					$all ? (new \ReflectionObject($template->control))->getShortName() : ''
+					$control !== null ? (new \ReflectionObject($control))->getShortName() : ''
 				));
 			}
 		};
