@@ -136,6 +136,7 @@ final class UIMacros extends Latte\Macros\MacroSet
 				'echo %escape(%modify('
 				. ($node->name === 'plink' ? '$this->global->uiPresenter' : '$this->global->uiControl')
 				. '->link(%node.word, %node.array?)))'
+				. ($node->startLine ? " /* line $node->startLine */;" : ';')
 			);
 	}
 
