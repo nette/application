@@ -78,7 +78,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 		$res = parent::createComponent($name);
 		if (!$res instanceof SignalReceiver && !$res instanceof StatePersistent) {
 			$type = get_class($res);
-			trigger_error("It seems that component '$name' of type $type is not intended to for in the Presenter.", E_USER_NOTICE);
+			trigger_error("It seems that component '$name' of type $type is not intended to be used in the Presenter.", E_USER_NOTICE);
 		}
 		return $res;
 	}
