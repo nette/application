@@ -30,22 +30,22 @@ class Application
 	/** @var string|null */
 	public $errorPresenter;
 
-	/** @var callable[]&(callable(Application $sender): void)[]; Occurs before the application loads presenter */
+	/** @var array<callable(self): void>  Occurs before the application loads presenter */
 	public $onStartup = [];
 
-	/** @var callable[]&(callable(Application $sender, \Throwable|null $e): void)[]; Occurs before the application shuts down */
+	/** @var array<callable(self, ?\Throwable): void>  Occurs before the application shuts down */
 	public $onShutdown = [];
 
-	/** @var callable[]&(callable(Application $sender, Request $request): void)[]; Occurs when a new request is received */
+	/** @var array<callable(self, Request): void>  Occurs when a new request is received */
 	public $onRequest = [];
 
-	/** @var callable[]&(callable(Application $sender, IPresenter $presenter): void)[]; Occurs when a presenter is created */
+	/** @var array<callable(self, IPresenter): void>  Occurs when a presenter is created */
 	public $onPresenter = [];
 
-	/** @var callable[]&(callable(Application $sender, Response $response): void)[]; Occurs when a new response is ready for dispatch */
+	/** @var array<callable(self, Response): void>  Occurs when a new response is ready for dispatch */
 	public $onResponse = [];
 
-	/** @var callable[]&(callable(Application $sender, \Throwable $e): void)[]; Occurs when an unhandled exception occurs in the application */
+	/** @var array<callable(self, \Throwable): void>  Occurs when an unhandled exception occurs in the application */
 	public $onError = [];
 
 	/** @var Request[] */
