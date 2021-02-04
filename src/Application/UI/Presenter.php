@@ -49,13 +49,13 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @var int */
 	public $invalidLinkMode;
 
-	/** @var callable[]&(callable(Presenter $sender): void)[]; Occurs when the presenter is starting */
+	/** @var array<callable(self): void>  Occurs when the presenter is starting */
 	public $onStartup = [];
 
-	/** @var callable[]&(callable(Presenter $sender): void)[]; Occurs when the presenter is rendering after beforeRender */
+	/** @var array<callable(self): void>  Occurs when the presenter is rendering after beforeRender */
 	public $onRender = [];
 
-	/** @var callable[]&(callable(Presenter $sender, Response $response): void)[]; Occurs when the presenter is shutting down */
+	/** @var array<callable(self, Application\Response): void>  Occurs when the presenter is shutting down */
 	public $onShutdown = [];
 
 	/** @var bool  automatically call canonicalize() */
