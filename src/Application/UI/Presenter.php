@@ -565,6 +565,16 @@ abstract class Presenter extends Control implements Application\IPresenter
 	}
 
 
+    public function formatTemplateClass(): ?string
+    {
+        $class = preg_replace('#Presenter$#', ucfirst($this->action) . 'Template', static::class);
+        if (class_exists($class) && is_a($class, Template::class, true)) {
+            return $class;
+        }
+        return parent::formatTemplateClass();
+    }
+
+
 	/********************* partial AJAX rendering ****************d*g**/
 
 
