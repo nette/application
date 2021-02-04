@@ -22,8 +22,8 @@ use Nette\Utils\Arrays;
  *
  * @property-read Nette\Application\Request $request
  * @property-read string $action
- * @property	  string $view
- * @property	  string|bool $layout
+ * @property      string $view
+ * @property      string|bool $layout
  * @property-read \stdClass $payload
  * @property-read Nette\DI\Container $context
  * @property-read Nette\Http\Session $session
