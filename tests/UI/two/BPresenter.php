@@ -2,6 +2,6 @@
 
 declare(strict_types=1);
 
-class Presenter2 extends Presenter1
+class BPresenter extends APresenter
 {
 }
