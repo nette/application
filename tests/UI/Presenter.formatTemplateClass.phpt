@@ -59,7 +59,7 @@ test('with class', function () {
 	Assert::error(function () {
 		$presenter = new BPresenter;
 		Assert::null($presenter->formatTemplateClass());
-	}, E_USER_NOTICE, '%a% BTemplate was found but does not implement%a%');
+	}, [E_USER_NOTICE, E_USER_NOTICE]);
 });
 
 

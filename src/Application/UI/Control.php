@@ -66,8 +66,14 @@ abstract class Control extends Component implements Renderable
 
 	public function formatTemplateClass(): ?string
 	{
-		$class = preg_replace('#Presenter$|Control$#', 'Template', static::class);
-		if ($class === static::class || !class_exists($class)) {
+		return $this->checkTemplateClass(preg_replace('#Control$#', '', static::class) . 'Template');
+	}
+
+
+	/** @internal */
+	protected function checkTemplateClass(string $class): ?string
+	{
+		if (!class_exists($class)) {
 			return null;
 		} elseif (!is_a($class, Template::class, true)) {
 			trigger_error(sprintf(
