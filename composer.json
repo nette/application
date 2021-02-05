@@ -41,7 +41,7 @@
 		"nette/di": "<3.0.7",
 		"nette/forms": "<3.0",
 		"nette/schema": "<1.2",
-		"latte/latte": "<2.7.1 >=3.0",
+		"latte/latte": "<2.7.1 || >=3.0",
 		"tracy/tracy": "<2.5"
 	},
 	"autoload": {
