@@ -748,7 +748,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * @throws InvalidLinkException
 	 * @internal
 	 */
-	final protected function createRequest(
+	protected function createRequest(
 		Component $component,
 		string $destination,
 		array $args,
@@ -816,7 +816,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 					throw new InvalidLinkException("Unknown signal '$signal', missing handler {$reflection->getName()}::$method()");
 				}
 				// convert indexed parameters to named
-				self::argsToParams(get_class($component), $method, $args, [], $missing);
+				static::argsToParams(get_class($component), $method, $args, [], $missing);
 			}
 
 			// counterpart of StatePersistent
@@ -858,7 +858,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 					throw new InvalidLinkException("Unable to pass parameters to action '$presenter:$action', missing corresponding method.");
 				}
 			} else {
-				self::argsToParams($presenterClass, $method, $args, $path === 'this' ? $this->params : [], $missing);
+				static::argsToParams($presenterClass, $method, $args, $path === 'this' ? $this->params : [], $missing);
 			}
 
 			// counterpart of StatePersistent
