@@ -14,6 +14,7 @@ use Nette\Application;
 use Nette\Application\Helpers;
 use Nette\Application\Responses;
 use Nette\Http;
+use Nette\Utils\Arrays;
 
 
 /**
@@ -48,14 +49,14 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @var int */
 	public $invalidLinkMode;
 
-	/** @var callable[]&(callable(Presenter $sender): void)[]; Occurs when the presenter is starting */
-	public $onStartup;
+	/** @var array<callable(self): void>  Occurs when the presenter is starting */
+	public $onStartup = [];
 
-	/** @var callable[]&(callable(Presenter $sender): void)[]; Occurs when the presenter is rendering after beforeRender */
-	public $onRender;
+	/** @var array<callable(self): void>  Occurs when the presenter is rendering after beforeRender */
+	public $onRender = [];
 
-	/** @var callable[]&(callable(Presenter $sender, Response $response): void)[]; Occurs when the presenter is shutting down */
-	public $onShutdown;
+	/** @var array<callable(self, Application\Response): void>  Occurs when the presenter is shutting down */
+	public $onShutdown = [];
 
 	/** @var bool  automatically call canonicalize() */
 	public $autoCanonicalize = true;
@@ -203,7 +204,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 			$this->initGlobalParameters();
 			$this->checkRequirements(static::getReflection());
-			$this->onStartup($this);
+			Arrays::invoke($this->onStartup, $this);
 			$this->startup();
 			if (!$this->startupCheck) {
 				$class = static::getReflection()->getMethod('startup')->getDeclaringClass()->getName();
@@ -230,7 +231,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 			// RENDERING VIEW
 			$this->beforeRender();
-			$this->onRender($this);
+			Arrays::invoke($this->onRender, $this);
 			// calls $this->render<View>()
 			$this->tryCall(static::formatRenderMethod($this->view), $this->params);
 			$this->afterRender();
@@ -268,7 +269,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			$this->response = new Responses\VoidResponse;
 		}
 
-		$this->onShutdown($this, $this->response);
+		Arrays::invoke($this->onShutdown, $this, $this->response);
 		$this->shutdown($this->response);
 
 		return $this->response;
@@ -462,7 +463,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			}
 
 			if (!$template->getFile()) {
-				$file = strtr(reset($files), '/', DIRECTORY_SEPARATOR);
+				$file = strtr(Arrays::first($files), '/', DIRECTORY_SEPARATOR);
 				$this->error("Page not found. Missing template '$file'.");
 			}
 		}
@@ -488,7 +489,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		}
 
 		if ($this->layout) {
-			$file = strtr(reset($files), '/', DIRECTORY_SEPARATOR);
+			$file = strtr(Arrays::first($files), '/', DIRECTORY_SEPARATOR);
 			throw new Nette\FileNotFoundException("Layout not found. Missing template '$file'.");
 		}
 		return null;
@@ -747,7 +748,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * @throws InvalidLinkException
 	 * @internal
 	 */
-	final protected function createRequest(
+	protected function createRequest(
 		Component $component,
 		string $destination,
 		array $args,
@@ -815,7 +816,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 					throw new InvalidLinkException("Unknown signal '$signal', missing handler {$reflection->getName()}::$method()");
 				}
 				// convert indexed parameters to named
-				self::argsToParams(get_class($component), $method, $args, [], $missing);
+				static::argsToParams(get_class($component), $method, $args, [], $missing);
 			}
 
 			// counterpart of StatePersistent
@@ -857,7 +858,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 					throw new InvalidLinkException("Unable to pass parameters to action '$presenter:$action', missing corresponding method.");
 				}
 			} else {
-				self::argsToParams($presenterClass, $method, $args, $path === 'this' ? $this->params : [], $missing);
+				static::argsToParams($presenterClass, $method, $args, $path === 'this' ? $this->params : [], $missing);
 			}
 
 			// counterpart of StatePersistent

@@ -11,6 +11,7 @@ namespace Nette\Bridges\ApplicationDI;
 
 use Nette;
 use Nette\DI\Definitions;
+use Nette\Schema\Expect;
 use Tracy;
 
 
@@ -26,20 +27,17 @@ final class RoutingExtension extends Nette\DI\CompilerExtension
 	public function __construct(bool $debugMode = false)
 	{
 		$this->debugMode = $debugMode;
+	}
 
-		$this->config = new class {
-			/** @var ?bool */
-			public $debugger;
 
-			/** @var string[] */
-			public $routes = [];
-
-			/** @var ?string */
-			public $routeClass;
-
-			/** @var bool */
-			public $cache = false;
-		};
+	public function getConfigSchema(): Nette\Schema\Schema
+	{
+		return Expect::structure([
+			'debugger' => Expect::bool(),
+			'routes' => Expect::arrayOf('string'),
+			'routeClass' => Expect::string()->deprecated(),
+			'cache' => Expect::bool(false),
+		]);
 	}
 
 
@@ -55,7 +53,6 @@ final class RoutingExtension extends Nette\DI\CompilerExtension
 			->setFactory(Nette\Application\Routers\RouteList::class);
 
 		if ($this->config->routeClass) {
-			trigger_error('Option routing.routeClass is deprecated.', E_USER_DEPRECATED);
 			foreach ($this->config->routes as $mask => $action) {
 				$router->addSetup('$service[] = new ' . $this->config->routeClass . '(?, ?)', [$mask, $action]);
 			}

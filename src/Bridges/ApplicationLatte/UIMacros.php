@@ -84,7 +84,7 @@ final class UIMacros extends Latte\Macros\MacroSet
 		if ($node->modifiers) {
 			trigger_error('Modifiers are deprecated in ' . $node->getNotation(), E_USER_DEPRECATED);
 		} elseif ($node->context !== [Latte\Compiler::CONTENT_HTML, Latte\Compiler::CONTEXT_HTML_TEXT]) {
-			trigger_error('Tag {control} must be used in HTML text.', E_USER_WARNING);
+			$node->modifiers .= '|escape';
 		}
 
 		$words = $node->tokenizer->fetchWords();
@@ -115,7 +115,10 @@ final class UIMacros extends Latte\Macros\MacroSet
 			. 'if ($_tmp instanceof Nette\Application\UI\Renderable) $_tmp->redrawControl(null, false); '
 			. ($node->modifiers === ''
 				? "\$_tmp->$method($param);"
-				: $writer->write("ob_start(function () {}); \$_tmp->$method($param); echo %modify(ob_get_clean());")
+				: $writer->write(
+					"ob_start(function () {}); \$_tmp->$method($param); \$ʟ_fi = new LR\\FilterInfo(%var); echo %modifyContent(ob_get_clean());",
+					Latte\Engine::CONTENT_HTML
+				)
 			);
 	}
 
@@ -128,11 +131,12 @@ final class UIMacros extends Latte\Macros\MacroSet
 	public function macroLink(MacroNode $node, PhpWriter $writer)
 	{
 		$node->modifiers = preg_replace('#\|safeurl\s*(?=\||$)#Di', '', $node->modifiers);
+		$line = $node->startLine ? " /* line $node->startLine */" : '';
 		return $writer->using($node, $this->getCompiler())
 			->write(
 				'echo %escape(%modify('
 				. ($node->name === 'plink' ? '$this->global->uiPresenter' : '$this->global->uiControl')
-				. '->link(%node.word, %node.array?)))'
+				. "->link(%node.word, %node.array?)))$line;"
 			);
 	}
 

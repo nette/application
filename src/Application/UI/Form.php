@@ -17,11 +17,11 @@ use Nette;
  */
 class Form extends Nette\Forms\Form implements SignalReceiver
 {
-	/** @var callable[]&(callable(Form $sender): void)[]; Occurs when form is attached to presenter */
-	public $onAnchor;
+	/** @var array<callable(self): void>  Occurs when form is attached to presenter */
+	public $onAnchor = [];
 
 	/** @var bool */
-	private $sameSiteProtection = true;
+	protected $crossOrigin = false;
 
 
 	/**
@@ -57,7 +57,7 @@ class Form extends Nette\Forms\Form implements SignalReceiver
 				}
 			}
 
-			$this->onAnchor($this);
+			Nette\Utils\Arrays::invoke($this->onAnchor, $this);
 		});
 	}
 
@@ -103,9 +103,16 @@ class Form extends Nette\Forms\Form implements SignalReceiver
 	/**
 	 * Disables CSRF protection using a SameSite cookie.
 	 */
+	public function allowCrossOrigin(): void
+	{
+		$this->crossOrigin = true;
+	}
+
+
+	/** @deprecated  use allowCrossOrigin() */
 	public function disableSameSiteProtection(): void
 	{
-		$this->sameSiteProtection = false;
+		$this->crossOrigin = true;
 	}
 
 
@@ -153,7 +160,7 @@ class Form extends Nette\Forms\Form implements SignalReceiver
 			$class = static::class;
 			throw new BadSignalException("Missing handler for signal '$signal' in $class.");
 
-		} elseif ($this->sameSiteProtection && !$this->getPresenter()->getHttpRequest()->isSameSite()) {
+		} elseif (!$this->crossOrigin && !$this->getPresenter()->getHttpRequest()->isSameSite()) {
 			$this->getPresenter()->detectedCsrf();
 
 		} elseif (!$this->getPresenter()->getRequest()->hasFlag(Nette\Application\Request::RESTORED)) {

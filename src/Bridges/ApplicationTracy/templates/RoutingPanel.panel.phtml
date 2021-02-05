@@ -81,7 +81,8 @@ use Tracy\Helpers;
 	<tbody>
 	<?php foreach ($routers as $router): ?>
 	<tr class="<?= $router->matched ?>" style="border-width: <?=($router->gutterTop ?? 0) * 3?>px 0 <?=($router->gutterBottom ?? 0) * 3?>px <?=$router->level * 6?>px">
-		<td class="symbol"><?= ['yes' => '✓', 'may' => '≈', 'no' => '', 'error' => '❌'][$router->matched] ?></td>
+		<td class="symbol" title="<?= Helpers::escapeHtml(['yes' => 'matched as first', 'may' => 'suitable but not matched as first', 'no' => '', 'oneway' => 'one-way', 'error' => 'error'][$router->matched]) ?>"
+			><?= ['yes' => '✓', 'may' => '≈', 'no' => '', 'oneway' => '⛔', 'error' => '❌'][$router->matched] ?></td>
 
 		<td><code title="<?= Helpers::escapeHtml($router->class) ?>"><?= isset($router->mask) ? str_replace(['/', '-'], ['<wbr>/', '<wbr>-'], Helpers::escapeHtml($router->mask)) : str_replace('\\', '<wbr>\\', Helpers::escapeHtml($router->class)) ?></code></td>
 

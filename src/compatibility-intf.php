@@ -11,12 +11,12 @@ namespace Nette\Application;
 
 if (false) {
 	/** @deprecated use Nette\Routing\Router */
-	interface IRouter
+	interface IRouter extends \Nette\Routing\Router
 	{
 	}
 
 	/** @deprecated use Nette\Application\Response */
-	interface IResponse
+	interface IResponse extends Response
 	{
 	}
 } elseif (!interface_exists(IRouter::class)) {
@@ -28,27 +28,27 @@ namespace Nette\Application\UI;
 
 if (false) {
 	/** @deprecated use Nette\Application\UI\Renderable */
-	interface IRenderable
+	interface IRenderable extends Renderable
 	{
 	}
 
 	/** @deprecated use Nette\Application\UI\SignalReceiver */
-	interface ISignalReceiver
+	interface ISignalReceiver extends SignalReceiver
 	{
 	}
 
 	/** @deprecated use Nette\Application\UI\StatePersistent */
-	interface IStatePersistent
+	interface IStatePersistent extends StatePersistent
 	{
 	}
 
 	/** @deprecated use Nette\Application\UI\Template */
-	interface ITemplate
+	interface ITemplate extends Template
 	{
 	}
 
 	/** @deprecated use Nette\Application\UI\TemplateFactory */
-	interface ITemplateFactory
+	interface ITemplateFactory extends TemplateFactory
 	{
 	}
 } elseif (!interface_exists(IRenderable::class)) {
@@ -63,7 +63,7 @@ namespace Nette\Bridges\ApplicationLatte;
 
 if (false) {
 	/** @deprecated use Nette\Bridges\ApplicationLatte\LatteFactory */
-	interface ILatteFactory
+	interface ILatteFactory extends LatteFactory
 	{
 	}
 } elseif (!interface_exists(ILatteFactory::class)) {
