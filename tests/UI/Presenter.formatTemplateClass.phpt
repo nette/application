@@ -45,6 +45,9 @@ class CTemplate implements Nette\Application\UI\Template
 	}
 }
 
+class CBarTemplate extends CTemplate
+{
+}
 
 test('without template', function () {
 	$presenter = new APresenter;
@@ -63,4 +66,14 @@ test('with class', function () {
 test('with template', function () {
 	$presenter = new CPresenter;
 	Assert::same(CTemplate::class, $presenter->formatTemplateClass());
+});
+
+
+test('with action template', function () {
+	$presenter = new CPresenter;
+	$presenter->changeAction('foo');
+	Assert::same(CTemplate::class, $presenter->formatTemplateClass());
+
+	$presenter->changeAction('bar');
+	Assert::same(CBarTemplate::class, $presenter->formatTemplateClass());
 });
