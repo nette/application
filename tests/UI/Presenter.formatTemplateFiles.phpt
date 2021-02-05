@@ -10,12 +10,12 @@ use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
-require __DIR__ . '/one/Presenter1.php';
-require __DIR__ . '/two/Presenter2.php';
+require __DIR__ . '/one/APresenter.php';
+require __DIR__ . '/two/BPresenter.php';
 
 
 test('with subdir templates', function () {
-	$presenter = new Presenter1;
+	$presenter = new APresenter;
 	$presenter->setParent(null, 'One');
 	$presenter->setView('view');
 
@@ -27,7 +27,7 @@ test('with subdir templates', function () {
 
 
 test('without subdir templates', function () {
-	$presenter = new Presenter2;
+	$presenter = new BPresenter;
 	$presenter->setParent(null, 'Two');
 	$presenter->setView('view');
 
@@ -39,7 +39,7 @@ test('without subdir templates', function () {
 
 
 test('with module & subdir templates', function () {
-	$presenter = new Presenter1;
+	$presenter = new APresenter;
 	$presenter->setParent(null, 'Module:One');
 	$presenter->setView('view');
 
@@ -51,7 +51,7 @@ test('with module & subdir templates', function () {
 
 
 test('with module & without subdir templates', function () {
-	$presenter = new Presenter2;
+	$presenter = new BPresenter;
 	$presenter->setParent(null, 'Module:Two');
 	$presenter->setView('view');
 
