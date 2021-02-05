@@ -89,7 +89,8 @@ final class RoutingPanel implements Tracy\IBarPanel
 		Routing\Router $router,
 		string $module = '',
 		bool $parentMatches = true,
-		int $level = -1
+		int $level = -1,
+		int $flag = 0
 	): void {
 		if ($router instanceof Routing\RouteList) {
 			try {
@@ -98,8 +99,9 @@ final class RoutingPanel implements Tracy\IBarPanel
 			}
 			$next = count($this->routers);
 			$parentModule = $module . ($router instanceof Nette\Application\Routers\RouteList ? $router->getModule() : '');
-			foreach ($router->getRouters() as $subRouter) {
-				$this->analyse($subRouter, $parentModule, $parentMatches, $level + 1);
+			$flags = $router->getFlags();
+			foreach ($router->getRouters() as $i => $subRouter) {
+				$this->analyse($subRouter, $parentModule, $parentMatches, $level + 1, $flags[$i]);
 			}
 
 			if ($info = $this->routers[$next] ?? null) {
@@ -111,7 +113,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 			return;
 		}
 
-		$matched = 'no';
+		$matched = $flag & Routing\RouteList::ONE_WAY ? 'oneway' : 'no';
 		$params = $e = null;
 		try {
 			$params = $parentMatches
