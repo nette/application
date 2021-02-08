@@ -209,6 +209,4 @@ test('', function () {
 		'http://example.com/homepage/',
 		testRouteOut($route, ['presenter' => 'Homepage', 'param' => null])
 	);
-
-	Assert::null(testRouteOut($route, ['presenter' => 'Homepage', 'param' => '']));
 });
