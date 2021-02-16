@@ -70,7 +70,6 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 		}
 
 		$builder->addDefinition($this->prefix('templateFactory'))
-			->setType(Nette\Application\UI\TemplateFactory::class)
 			->setFactory(ApplicationLatte\TemplateFactory::class)
 			->setArguments(['templateClass' => $config->templateClass]);
 
