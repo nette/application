@@ -52,11 +52,9 @@ abstract class Control extends Component implements Renderable
 	 * @param  class-string<T>  $class
 	 * @return T
 	 */
-	protected function createTemplate(/*string $class = null*/): Template
+	protected function createTemplate(string $class = null): Template
 	{
-		$class = func_num_args() // back compatibility
-			? func_get_arg(0)
-			: $this->formatTemplateClass();
+		$class ??= $this->formatTemplateClass();
 		$templateFactory = $this->templateFactory ?? $this->getPresenter()->getTemplateFactory();
 		return $templateFactory->createTemplate($this, $class);
 	}
