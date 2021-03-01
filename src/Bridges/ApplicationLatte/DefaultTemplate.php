@@ -36,9 +36,8 @@ final class DefaultTemplate extends Template
 
 	/**
 	 * Adds new template parameter.
-	 * @return static
 	 */
-	public function add(string $name, $value)
+	public function add(string $name, $value): static
 	{
 		if (property_exists($this, $name)) {
 			throw new Nette\InvalidStateException("The variable '$name' already exists.");
@@ -50,9 +49,8 @@ final class DefaultTemplate extends Template
 
 	/**
 	 * Sets all parameters.
-	 * @return static
 	 */
-	public function setParameters(array $params)
+	public function setParameters(array $params): static
 	{
 		return Nette\Utils\Arrays::toObject($params, $this);
 	}
