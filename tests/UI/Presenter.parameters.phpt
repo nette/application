@@ -25,7 +25,7 @@ class TestPresenter extends Application\UI\Presenter
 	}
 
 
-	protected function startup()
+	protected function startup(): void
 	{
 		parent::startup();
 		throw new Application\AbortException;

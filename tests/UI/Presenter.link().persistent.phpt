@@ -54,7 +54,7 @@ class TestPresenter extends BasePresenter
 	public $p2;
 
 
-	protected function startup()
+	protected function startup(): void
 	{
 		parent::startup();
 
