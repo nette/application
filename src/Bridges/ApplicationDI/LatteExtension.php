@@ -106,7 +106,7 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 			if ($all || $control instanceof Nette\Application\UI\Presenter) {
 				$bar->addPanel(new Latte\Bridges\Tracy\LattePanel(
 					$template->getLatte(),
-					$all && $control ? (new \ReflectionObject($control))->getShortName() : ''
+					$all && $control ? (new \ReflectionObject($control))->getShortName() : '',
 				));
 			}
 		};
