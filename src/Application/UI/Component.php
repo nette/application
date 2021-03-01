@@ -34,7 +34,6 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 
 	/**
 	 * Returns the presenter where this component belongs to.
-	 * @return Presenter
 	 */
 	public function getPresenter(): Presenter
 	{
@@ -90,7 +89,6 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 
 	/**
 	 * Calls public method if exists.
-	 * @return bool  does method exist?
 	 */
 	protected function tryCall(string $method, array $params): bool
 	{
@@ -181,9 +179,8 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 
 	/**
 	 * Returns component param.
-	 * @return mixed
 	 */
-	final public function getParameter(string $name, $default = null)
+	final public function getParameter(string $name, $default = null): mixed
 	{
 		return $this->params[$name] ?? $default;
 	}

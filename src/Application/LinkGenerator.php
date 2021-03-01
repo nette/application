@@ -90,7 +90,7 @@ final class LinkGenerator
 	}
 
 
-	public function withReferenceUrl(string $url): self
+	public function withReferenceUrl(string $url): static
 	{
 		return new self(
 			$this->router,
