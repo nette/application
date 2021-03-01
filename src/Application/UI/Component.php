@@ -29,8 +29,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	/** @var array<callable(self): void>  Occurs when component is attached to presenter */
 	public $onAnchor = [];
 
-	/** @var array */
-	protected $params = [];
+	protected array $params = [];
 
 
 	/**

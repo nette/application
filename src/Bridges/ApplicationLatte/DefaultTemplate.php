@@ -20,23 +20,18 @@ use Nette;
  */
 final class DefaultTemplate extends Template
 {
-	/** @var Nette\Application\UI\Presenter */
-	public $presenter;
+	public Nette\Application\IPresenter $presenter;
 
-	/** @var Nette\Application\UI\Control */
-	public $control;
+	public Nette\Application\UI\Control $control;
 
-	/** @var Nette\Security\User */
-	public $user;
+	public Nette\Security\User $user;
 
-	/** @var string */
-	public $baseUrl;
+	public string $baseUrl;
 
-	/** @var string */
-	public $basePath;
+	public string $basePath;
 
 	/** @var \stdClass[] */
-	public $flashes = [];
+	public array $flashes = [];
 
 
 	/**

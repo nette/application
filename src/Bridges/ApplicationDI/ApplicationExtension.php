@@ -22,20 +22,15 @@ use Tracy;
  */
 final class ApplicationExtension extends Nette\DI\CompilerExtension
 {
-	/** @var bool */
-	private $debugMode;
+	private bool $debugMode;
 
-	/** @var array */
-	private $scanDirs;
+	private array $scanDirs;
 
-	/** @var Nette\Loaders\RobotLoader|null */
-	private $robotLoader;
+	private ?Nette\Loaders\RobotLoader $robotLoader;
 
-	/** @var int */
-	private $invalidLinkMode;
+	private int $invalidLinkMode;
 
-	/** @var string|null */
-	private $tempDir;
+	private ?string $tempDir;
 
 
 	public function __construct(
@@ -56,7 +51,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 		return Expect::structure([
 			'debugger' => Expect::bool(),
 			'errorPresenter' => Expect::string('Nette:Error')->dynamic(),
-			'catchExceptions' => Expect::bool()->dynamic(),
+			'catchExceptions' => Expect::bool(false)->dynamic(),
 			'mapping' => Expect::arrayOf('string|array'),
 			'scanDirs' => Expect::anyOf(
 				Expect::arrayOf('string')->default($this->scanDirs)->mergeDefaults(),

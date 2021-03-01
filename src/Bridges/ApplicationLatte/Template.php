@@ -18,11 +18,9 @@ use Nette;
  */
 class Template implements Nette\Application\UI\Template
 {
-	/** @var Latte\Engine */
-	private $latte;
+	private Latte\Engine $latte;
 
-	/** @var string */
-	private $file;
+	private ?string $file = null;
 
 
 	public function __construct(Latte\Engine $latte)

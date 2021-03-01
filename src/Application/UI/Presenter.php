@@ -45,8 +45,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		FLASH_KEY = '_fid',
 		DEFAULT_ACTION = 'default';
 
-	/** @var int */
-	public $invalidLinkMode;
+	public int $invalidLinkMode = 0;
 
 	/** @var array<callable(self): void>  Occurs when the presenter is starting */
 	public $onStartup = [];
@@ -57,80 +56,57 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @var array<callable(self, Application\Response): void>  Occurs when the presenter is shutting down */
 	public $onShutdown = [];
 
-	/** @var bool  automatically call canonicalize() */
-	public $autoCanonicalize = true;
+	/** automatically call canonicalize() */
+	public bool $autoCanonicalize = true;
 
-	/** @var bool  use absolute Urls or paths? */
-	public $absoluteUrls = false;
+	/** use absolute Urls or paths? */
+	public bool $absoluteUrls = false;
 
-	/** @var Nette\Application\Request|null */
-	private $request;
+	private ?Nette\Application\Request $request = null;
 
-	/** @var Nette\Application\Response */
-	private $response;
+	private ?Nette\Application\Response $response = null;
 
-	/** @var array */
-	private $globalParams = [];
+	private array $globalParams = [];
 
-	/** @var array */
-	private $globalState;
+	private array $globalState;
 
-	/** @var array|null */
-	private $globalStateSinces;
+	private ?array $globalStateSinces;
 
-	/** @var string */
-	private $action;
+	private string $action = '';
 
-	/** @var string */
-	private $view;
+	private string $view = '';
 
-	/** @var string|bool */
-	private $layout;
+	private string|bool $layout = '';
 
-	/** @var \stdClass */
-	private $payload;
+	private \stdClass $payload;
 
-	/** @var string */
-	private $signalReceiver;
+	private string $signalReceiver;
 
-	/** @var string|null */
-	private $signal;
+	private ?string $signal = null;
 
-	/** @var bool */
-	private $ajaxMode;
+	private bool $ajaxMode;
 
-	/** @var bool */
-	private $startupCheck;
+	private bool $startupCheck = false;
 
-	/** @var Nette\Application\Request|null */
-	private $lastCreatedRequest;
+	private ?Nette\Application\Request $lastCreatedRequest;
 
-	/** @var array|null */
-	private $lastCreatedRequestFlag;
+	private ?array $lastCreatedRequestFlag;
 
-	/** @var Nette\Http\IRequest */
-	private $httpRequest;
+	private Nette\Http\IRequest $httpRequest;
 
-	/** @var Nette\Http\IResponse */
-	private $httpResponse;
+	private Nette\Http\IResponse $httpResponse;
 
-	/** @var Nette\Http\Session */
-	private $session;
+	private ?Nette\Http\Session $session = null;
 
-	/** @var Nette\Application\IPresenterFactory */
-	private $presenterFactory;
+	private ?Nette\Application\IPresenterFactory $presenterFactory = null;
 
-	/** @var Nette\Routing\Router */
-	private $router;
+	private ?Nette\Routing\Router $router = null;
 
-	/** @var Nette\Security\User */
-	private $user;
+	private ?Nette\Security\User $user = null;
 
-	/** @var TemplateFactory */
-	private $templateFactory;
+	private ?TemplateFactory $templateFactory = null;
 
-	/** @var Nette\Http\UrlScript */
-	private $refUrlCache;
+	private Nette\Http\UrlScript $refUrlCache;
 
 
 	public function __construct()
@@ -190,7 +166,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		try {
 			// STARTUP
 			$this->request = $request;
-			$this->payload = $this->payload ?: new \stdClass;
+			$this->payload ??= new \stdClass;
 			$this->setParent($this->getParent(), $request->getPresenterName());
 
 			if (!$this->httpResponse->isSent()) {
@@ -321,7 +297,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function processSignal(): void
 	{
-		if ($this->signal === null) {
+		if (!isset($this->signal)) {
 			return;
 		}
 
@@ -580,7 +556,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function isAjax(): bool
 	{
-		if ($this->ajaxMode === null) {
+		if (!isset($this->ajaxMode)) {
 			$this->ajaxMode = $this->httpRequest->isAjax();
 		}
 		return $this->ajaxMode;
@@ -942,7 +918,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	protected function requestToUrl(Application\Request $request, bool $relative = null): string
 	{
-		if ($this->refUrlCache === null) {
+		if (!isset($this->refUrlCache)) {
 			$url = $this->httpRequest->getUrl();
 			$this->refUrlCache = new Http\UrlScript($url->withoutUserInfo()->getHostUrl() . $url->getScriptPath());
 		}
@@ -1122,7 +1098,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	{
 		$sinces = &$this->globalStateSinces;
 
-		if ($this->globalState === null) {
+		if (!isset($this->globalState)) {
 			$state = [];
 			foreach ($this->globalParams as $id => $params) {
 				$prefix = $id . self::NAME_SEPARATOR;
@@ -1326,7 +1302,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		?Nette\Security\User $user = null,
 		?TemplateFactory $templateFactory = null,
 	) {
-		if ($this->presenterFactory !== null) {
+		if (isset($this->presenterFactory)) {
 			throw new Nette\InvalidStateException('Method ' . __METHOD__ . ' is intended for initialization and should not be called more than once.');
 		}
 

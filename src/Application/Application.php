@@ -21,14 +21,12 @@ class Application
 {
 	use Nette\SmartObject;
 
-	/** @var int */
-	public $maxLoop = 20;
+	public int $maxLoop = 20;
 
-	/** @var bool enable fault barrier? */
-	public $catchExceptions;
+	/** enable fault barrier? */
+	public bool $catchExceptions = false;
 
-	/** @var string|null */
-	public $errorPresenter;
+	public ?string $errorPresenter = null;
 
 	/** @var array<callable(self): void>  Occurs before the application loads presenter */
 	public $onStartup = [];
@@ -49,22 +47,17 @@ class Application
 	public $onError = [];
 
 	/** @var Request[] */
-	private $requests = [];
+	private array $requests = [];
 
-	/** @var IPresenter|null */
-	private $presenter;
+	private ?IPresenter $presenter = null;
 
-	/** @var Nette\Http\IRequest */
-	private $httpRequest;
+	private Nette\Http\IRequest $httpRequest;
 
-	/** @var Nette\Http\IResponse */
-	private $httpResponse;
+	private Nette\Http\IResponse $httpResponse;
 
-	/** @var IPresenterFactory */
-	private $presenterFactory;
+	private IPresenterFactory $presenterFactory;
 
-	/** @var Router */
-	private $router;
+	private Router $router;
 
 
 	public function __construct(
