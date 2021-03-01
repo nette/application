@@ -81,7 +81,7 @@ abstract class Control extends Component implements Renderable
 				'%s: class %s was found but does not implement the %s, so it will not be used for the template.',
 				static::class,
 				$class,
-				Template::class
+				Template::class,
 			), E_USER_NOTICE);
 			return null;
 		} else {
