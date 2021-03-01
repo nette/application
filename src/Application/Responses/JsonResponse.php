@@ -31,10 +31,7 @@ final class JsonResponse implements Nette\Application\Response
 	}
 
 
-	/**
-	 * @return mixed
-	 */
-	public function getPayload()
+	public function getPayload(): mixed
 	{
 		return $this->payload;
 	}

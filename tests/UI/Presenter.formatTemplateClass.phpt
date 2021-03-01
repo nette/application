@@ -35,7 +35,7 @@ class CTemplate implements Nette\Application\UI\Template
 	}
 
 
-	public function setFile(string $file)
+	public function setFile(string $file): static
 	{
 	}
 

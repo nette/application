@@ -73,10 +73,11 @@ class MockSessionSection extends Nette\Http\SessionSection
 	}
 
 
-	public function setExpiration($expiraton, $variables = null)
+	public function setExpiration(?string $expiraton, string|array $variables = null): static
 	{
 		$this->testExpiration = $expiraton;
 		$this->testExpirationVariables = $variables;
+		return $this;
 	}
 
 
@@ -92,7 +93,7 @@ class MockSessionSection extends Nette\Http\SessionSection
 	}
 
 
-	public function offsetGet($name)
+	public function offsetGet($name): mixed
 	{
 	}
 
@@ -109,7 +110,7 @@ class MockUser extends Security\User
 	}
 
 
-	public function getId()
+	public function getId(): string|int
 	{
 		return 'test_id';
 	}

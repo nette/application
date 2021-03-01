@@ -29,9 +29,10 @@ class TemplateMock extends Template
 	}
 
 
-	public function setFile(string $file)
+	public function setFile(string $file): static
 	{
 		$this->file = $file;
+		return $this;
 	}
 
 
