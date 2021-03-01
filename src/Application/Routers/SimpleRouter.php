@@ -21,7 +21,7 @@ final class SimpleRouter extends Nette\Routing\SimpleRouter implements Nette\Rou
 	private const PresenterKey = 'presenter';
 
 
-	public function __construct(array $defaults = [])
+	public function __construct(array|string $defaults = [])
 	{
 		if (is_string($defaults)) {
 			[$presenter, $action] = Nette\Application\Helpers::splitName($defaults);
