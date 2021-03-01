@@ -23,13 +23,13 @@ $route = new Route('//example.org/test', [
 
 $url = $route->constructUrl(
 	['presenter' => 'Default', 'action' => 'default'],
-	new UrlScript('https://example.org')
+	new UrlScript('https://example.org'),
 );
 Assert::same('https://example.org/test', $url);
 
 $url = $route->constructUrl(
 	['presenter' => 'Default', 'action' => 'default'],
-	new UrlScript('https://example.com')
+	new UrlScript('https://example.com'),
 );
 Assert::same('https://example.org/test', $url);
 
@@ -42,12 +42,12 @@ $route = new Route('https://example.org/test', [
 
 $url = $route->constructUrl(
 	['presenter' => 'Default', 'action' => 'default'],
-	new UrlScript('https://example.org')
+	new UrlScript('https://example.org'),
 );
 Assert::same('https://example.org/test', $url);
 
 $url = $route->constructUrl(
 	['presenter' => 'Default', 'action' => 'default'],
-	new UrlScript('https://example.com')
+	new UrlScript('https://example.com'),
 );
 Assert::same('https://example.org/test', $url);

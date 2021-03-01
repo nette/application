@@ -20,5 +20,5 @@ $params = ['id' => 5, 'presenter' => 'p'];
 
 Assert::same(
 	'http://example.com/?presenter=p',
-	$route->constructUrl($params, new Nette\Http\UrlScript('http://example.com'))
+	$route->constructUrl($params, new Nette\Http\UrlScript('http://example.com')),
 );

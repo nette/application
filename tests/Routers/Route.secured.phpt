@@ -22,6 +22,6 @@ $route = new Route('<param>', [
 
 $url = $route->constructUrl(
 	['presenter' => 'Presenter', 'param' => 'any'],
-	new UrlScript('https://example.org')
+	new UrlScript('https://example.org'),
 );
 Assert::same('https://example.org/any', $url);

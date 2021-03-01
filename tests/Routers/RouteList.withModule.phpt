@@ -26,21 +26,21 @@ testRouteIn(
 	$list,
 	'/foo',
 	['presenter' => 'A:foo', 'test' => 'testvalue'],
-	'/foo?test=testvalue'
+	'/foo?test=testvalue',
 );
 
 testRouteIn(
 	$list,
 	'/bar',
 	['presenter' => 'A:B:bar', 'test' => 'testvalue'],
-	'/bar?test=testvalue'
+	'/bar?test=testvalue',
 );
 
 testRouteIn(
 	$list,
 	'/hello',
 	['presenter' => 'C:hello', 'test' => 'testvalue'],
-	'/hello?test=testvalue'
+	'/hello?test=testvalue',
 );
 
 testRouteIn($list, '/none');

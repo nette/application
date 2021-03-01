@@ -124,7 +124,7 @@ test('', function () {
 		new Http\Request(new Http\UrlScript),
 		new Http\Response,
 		$session = new MockSession,
-		$user = new MockUser
+		$user = new MockUser,
 	);
 
 	$section = $session->testSection = new MockSessionSection($session);
@@ -150,7 +150,7 @@ test('', function () {
 		new Application\Routers\SimpleRouter,
 		new Http\Request(new Http\UrlScript),
 		new Http\Response,
-		$session = new MockSession
+		$session = new MockSession,
 	);
 
 	$section = $session->testSection = new MockSessionSection($session);

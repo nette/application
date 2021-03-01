@@ -39,7 +39,7 @@ test('', function () {
 	$container = new Container4;
 	Assert::same(
 		Presenter::INVALID_LINK_TEXTUAL,
-		$container->getService('presenter')->invalidLinkMode
+		$container->getService('presenter')->invalidLinkMode,
 	);
 });
 
@@ -59,7 +59,7 @@ test('', function () {
 	$container = new Container5;
 	Assert::same(
 		Presenter::INVALID_LINK_WARNING | Presenter::INVALID_LINK_TEXTUAL,
-		$container->getService('presenter')->invalidLinkMode
+		$container->getService('presenter')->invalidLinkMode,
 	);
 });
 
@@ -79,7 +79,7 @@ test('', function () {
 	$container = new Container6;
 	Assert::same(
 		Presenter::INVALID_LINK_WARNING,
-		$container->getService('presenter')->invalidLinkMode
+		$container->getService('presenter')->invalidLinkMode,
 	);
 });
 
@@ -99,6 +99,6 @@ test('', function () {
 	$container = new Container7;
 	Assert::same(
 		Presenter::INVALID_LINK_WARNING,
-		$container->getService('presenter')->invalidLinkMode
+		$container->getService('presenter')->invalidLinkMode,
 	);
 });

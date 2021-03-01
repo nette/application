@@ -80,5 +80,5 @@ Assert::exception(
 		]);
 	},
 	Nette\InvalidStateException::class,
-	'Invalid mapping mask for module *.'
+	'Invalid mapping mask for module *.',
 );

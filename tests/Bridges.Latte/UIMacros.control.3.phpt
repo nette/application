@@ -40,7 +40,7 @@ Assert::same(
 
 Assert::same(
 	'<div title="&lt;&gt;&amp;">',
-	$latte->renderToString('<div title="{control x}">')
+	$latte->renderToString('<div title="{control x}">'),
 );
 
 Assert::exception(function () use ($latte) {

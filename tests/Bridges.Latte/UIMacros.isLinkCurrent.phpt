@@ -43,5 +43,5 @@ Assert::matchFile(__DIR__ . '/expected/UIMacros.isLinkCurrent.phtml', $latte->co
 {ifCurrent default}default{/ifCurrent}
 
 <a n:class="isLinkCurrent(default) ? current" n:href="default">custom function</a>
-'
+',
 ));

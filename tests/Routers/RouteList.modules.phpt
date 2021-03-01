@@ -35,5 +35,5 @@ testRouteIn(
 		'action' => 'default',
 		'test' => 'testvalue',
 	],
-	'/auth/?test=testvalue'
+	'/auth/?test=testvalue',
 );

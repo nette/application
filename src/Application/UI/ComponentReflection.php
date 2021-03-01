@@ -38,7 +38,7 @@ final class ComponentReflection extends \ReflectionClass
 	 */
 	public function getPersistentParams(string $class = null): array
 	{
-		$class = $class ?? $this->getName();
+		$class ??= $this->getName();
 		$params = &self::$ppCache[$class];
 		if ($params !== null) {
 			return $params;
@@ -74,7 +74,7 @@ final class ComponentReflection extends \ReflectionClass
 
 	public function getPersistentComponents(string $class = null): array
 	{
-		$class = $class ?? $this->getName();
+		$class ??= $this->getName();
 		$components = &self::$pcCache[$class];
 		if ($components !== null) {
 			return $components;
@@ -98,7 +98,7 @@ final class ComponentReflection extends \ReflectionClass
 	 */
 	public function saveState(Component $component, array &$params): void
 	{
-		$tree = self::getClassesAndTraits(get_class($component));
+		$tree = self::getClassesAndTraits($component::class);
 
 		foreach ($this->getPersistentParams() as $name => $meta) {
 			if (isset($params[$name])) {
@@ -121,7 +121,7 @@ final class ComponentReflection extends \ReflectionClass
 					$name,
 					$component instanceof Presenter ? 'presenter ' . $component->getName() : "component '{$component->getUniqueId()}'",
 					$meta['type'],
-					is_object($params[$name]) ? get_class($params[$name]) : gettype($params[$name])
+					is_object($params[$name]) ? get_class($params[$name]) : gettype($params[$name]),
 				));
 			}
 
@@ -166,7 +166,7 @@ final class ComponentReflection extends \ReflectionClass
 						$name,
 						($method instanceof \ReflectionMethod ? $method->getDeclaringClass()->getName() . '::' : '') . $method->getName(),
 						$type,
-						is_object($args[$name]) ? get_class($args[$name]) : gettype($args[$name])
+						is_object($args[$name]) ? get_class($args[$name]) : gettype($args[$name]),
 					));
 				}
 			} elseif ($param->isDefaultValueAvailable()) {
@@ -179,7 +179,7 @@ final class ComponentReflection extends \ReflectionClass
 				throw new Nette\InvalidArgumentException(sprintf(
 					'Missing parameter $%s required by %s()',
 					$name,
-					($method instanceof \ReflectionMethod ? $method->getDeclaringClass()->getName() . '::' : '') . $method->getName()
+					($method instanceof \ReflectionMethod ? $method->getDeclaringClass()->getName() . '::' : '') . $method->getName(),
 				));
 			}
 		}

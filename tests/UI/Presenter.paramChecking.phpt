@@ -21,7 +21,7 @@ $presenter->injectPrimary(
 	null,
 	new Application\Routers\SimpleRouter,
 	new Http\Request(new Http\UrlScript),
-	new Http\Response
+	new Http\Response,
 );
 
 

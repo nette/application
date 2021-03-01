@@ -38,7 +38,7 @@ $presenter->injectPrimary(
 	null,
 	new Application\Routers\SimpleRouter,
 	new Http\Request(new Http\UrlScript('http://localhost')),
-	new Http\Response
+	new Http\Response,
 );
 
 
