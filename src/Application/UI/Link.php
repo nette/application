@@ -58,9 +58,8 @@ final class Link
 
 	/**
 	 * Changes link parameter.
-	 * @return static
 	 */
-	public function setParameter(string $key, $value)
+	public function setParameter(string $key, $value): static
 	{
 		$this->params[$key] = $value;
 		return $this;
@@ -69,9 +68,8 @@ final class Link
 
 	/**
 	 * Returns link parameter.
-	 * @return mixed
 	 */
-	public function getParameter(string $key)
+	public function getParameter(string $key): mixed
 	{
 		return $this->params[$key] ?? null;
 	}

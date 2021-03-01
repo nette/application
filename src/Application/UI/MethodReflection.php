@@ -30,9 +30,8 @@ final class MethodReflection extends \ReflectionMethod
 
 	/**
 	 * Returns an annotation value.
-	 * @return mixed
 	 */
-	public function getAnnotation(string $name)
+	public function getAnnotation(string $name): mixed
 	{
 		$res = ComponentReflection::parseAnnotation($this, $name);
 		return $res ? end($res) : null;
