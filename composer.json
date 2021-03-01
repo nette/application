@@ -16,25 +16,25 @@
 	],
 	"require": {
 		"php": ">=8.0 <8.3",
-		"nette/component-model": "^3.0",
-		"nette/http": "^3.0.2",
+		"nette/component-model": "^4.0",
+		"nette/http": "^4.0",
 		"nette/routing": "^3.0.2",
-		"nette/utils": "^3.2.1 || ~4.0.0"
+		"nette/utils": "^4.0"
 	},
 	"suggest": {
 		"nette/forms": "Allows to use Nette\\Application\\UI\\Form",
 		"latte/latte": "Allows using Latte in templates"
 	},
 	"require-dev": {
-		"nette/tester": "^2.3.1",
-		"nette/di": "^v3.0",
-		"nette/forms": "^3.0",
-		"nette/robot-loader": "^3.2",
-		"nette/security": "^3.0",
+		"nette/tester": "^2.4",
+		"nette/di": "^3.1 || ^4.0",
+		"nette/forms": "^4.0",
+		"nette/robot-loader": "^3.2 || ^4.0",
+		"nette/security": "^4.0",
 		"latte/latte": "^2.10.2 || ^3.0.3",
-		"tracy/tracy": "^2.6",
-		"mockery/mockery": "^1.0",
-		"phpstan/phpstan-nette": "^0.12",
+		"tracy/tracy": "^2.8",
+		"mockery/mockery": "^1.4",
+		"phpstan/phpstan-nette": "^1.0",
 		"jetbrains/phpstorm-attributes": "dev-master"
 	},
 	"conflict": {
