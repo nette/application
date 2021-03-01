@@ -24,20 +24,15 @@ class TemplateFactory implements UI\TemplateFactory
 	/** @var array<callable(Template): void>  Occurs when a new template is created */
 	public $onCreate = [];
 
-	/** @var LatteFactory */
-	private $latteFactory;
+	private LatteFactory $latteFactory;
 
-	/** @var Nette\Http\IRequest|null */
-	private $httpRequest;
+	private ?Nette\Http\IRequest $httpRequest;
 
-	/** @var Nette\Security\User|null */
-	private $user;
+	private ?Nette\Security\User $user;
 
-	/** @var Nette\Caching\Storage|null */
-	private $cacheStorage;
+	private ?Nette\Caching\Storage $cacheStorage;
 
-	/** @var string */
-	private $templateClass;
+	private string $templateClass;
 
 
 	public function __construct(
