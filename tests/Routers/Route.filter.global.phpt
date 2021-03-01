@@ -78,5 +78,5 @@ testRouteIn($route, '/cs/abc-cs/def-cs', [
 
 Assert::same(
 	'http://example.com/cs/abc-cs/def-cs?test=testvalue',
-	testRouteOut($route, ['presenter' => 'Abc', 'lang' => 'cs', 'action' => 'def', 'test' => 'testvalue'])
+	testRouteOut($route, ['presenter' => 'Abc', 'lang' => 'cs', 'action' => 'def', 'test' => 'testvalue']),
 );

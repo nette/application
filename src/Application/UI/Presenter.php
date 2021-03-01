@@ -451,7 +451,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function sendTemplate(Template $template = null): void
 	{
-		$template = $template ?? $this->getTemplate();
+		$template ??= $this->getTemplate();
 		if (!$template->getFile()) {
 			$files = $this->formatTemplateFiles();
 			foreach ($files as $file) {
@@ -719,7 +719,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 				$this,
 				$destination ?: $this->action,
 				$args + $this->getGlobalState() + $request->getParameters(),
-				'redirectX'
+				'redirectX',
 			);
 		} catch (InvalidLinkException $e) {
 		}
@@ -765,7 +765,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		Component $component,
 		string $destination,
 		array $args,
-		string $mode
+		string $mode,
 	): ?string {
 		// note: createRequest supposes that saveState(), run() & tryCall() behaviour is final
 
@@ -815,7 +815,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 		// PROCESS SIGNAL ARGUMENTS
 		if (isset($signal)) { // $component must be StatePersistent
-			$reflection = new ComponentReflection(get_class($component));
+			$reflection = new ComponentReflection($component::class);
 			if ($signal === 'this') { // means "no signal"
 				$signal = '';
 				if (array_key_exists(0, $args)) {
@@ -835,7 +835,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 					trigger_error("Link to deprecated signal '$signal'" . ($component === $this ? '' : ' in ' . $component::class) . " from '{$this->getName()}:{$this->getAction()}'.", E_USER_DEPRECATED);
 				}
 				// convert indexed parameters to named
-				static::argsToParams(get_class($component), $method, $args, [], $missing);
+				static::argsToParams($component::class, $method, $args, [], $missing);
 			}
 
 			// counterpart of StatePersistent
@@ -1007,7 +1007,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		string $method,
 		array &$args,
 		array $supplemental = [],
-		array &$missing = null
+		array &$missing = null,
 	): void {
 		$i = 0;
 		$rm = new \ReflectionMethod($class, $method);
@@ -1047,7 +1047,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 					$name,
 					$rm->getDeclaringClass()->getName() . '::' . $rm->getName(),
 					$type,
-					is_object($args[$name]) ? get_class($args[$name]) : gettype($args[$name])
+					is_object($args[$name]) ? get_class($args[$name]) : gettype($args[$name]),
 				));
 			}
 
@@ -1354,7 +1354,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		Http\IResponse $httpResponse,
 		?Http\Session $session = null,
 		?Nette\Security\User $user = null,
-		?TemplateFactory $templateFactory = null
+		?TemplateFactory $templateFactory = null,
 	) {
 		if ($this->presenterFactory !== null) {
 			throw new Nette\InvalidStateException('Method ' . __METHOD__ . ' is intended for initialization and should not be called more than once.');
