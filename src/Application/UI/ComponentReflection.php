@@ -251,7 +251,6 @@ final class ComponentReflection extends \ReflectionClass
 
 	/**
 	 * Returns an annotation value.
-	 * @param  \ReflectionClass|\ReflectionMethod  $ref
 	 */
 	public static function parseAnnotation(\Reflector $ref, string $name): ?array
 	{
@@ -301,9 +300,8 @@ final class ComponentReflection extends \ReflectionClass
 
 	/**
 	 * Returns an annotation value.
-	 * @return mixed
 	 */
-	public function getAnnotation(string $name)
+	public function getAnnotation(string $name): mixed
 	{
 		$res = self::parseAnnotation($this, $name);
 		return $res ? end($res) : null;
