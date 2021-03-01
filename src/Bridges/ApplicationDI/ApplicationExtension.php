@@ -42,7 +42,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 		bool $debugMode = false,
 		array $scanDirs = null,
 		string $tempDir = null,
-		Nette\Loaders\RobotLoader $robotLoader = null
+		Nette\Loaders\RobotLoader $robotLoader = null,
 	) {
 		$this->debugMode = $debugMode;
 		$this->scanDirs = (array) $scanDirs;
@@ -60,7 +60,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 			'mapping' => Expect::arrayOf('string|array'),
 			'scanDirs' => Expect::anyOf(
 				Expect::arrayOf('string')->default($this->scanDirs)->mergeDefaults(),
-				false
+				false,
 			)->firstIsDefault(),
 			'scanComposer' => Expect::bool(class_exists(ClassLoader::class)),
 			'scanFilter' => Expect::string('*Presenter'),
@@ -95,7 +95,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 			->setType(Nette\Application\IPresenterFactory::class)
 			->setFactory(Nette\Application\PresenterFactory::class, [new Definitions\Statement(
 				Nette\Bridges\ApplicationDI\PresenterFactoryCallback::class,
-				[1 => $this->invalidLinkMode, $touch ?? null]
+				[1 => $this->invalidLinkMode, $touch ?? null],
 			)]);
 
 		if ($config->mapping) {
@@ -182,9 +182,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 			$classFile = dirname($rc->getFileName()) . '/autoload_classmap.php';
 			if (is_file($classFile)) {
 				$this->getContainerBuilder()->addDependency($classFile);
-				$classes = array_merge($classes, array_keys((function ($path) {
-					return require $path;
-				})($classFile)));
+				$classes = array_merge($classes, array_keys((fn($path) => require $path)($classFile)));
 			}
 		}
 

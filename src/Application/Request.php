@@ -65,7 +65,7 @@ final class Request
 		array $params = [],
 		array $post = [],
 		array $files = [],
-		array $flags = []
+		array $flags = [],
 	) {
 		$this->name = $name;
 		$this->method = $method;

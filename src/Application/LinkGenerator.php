@@ -98,7 +98,7 @@ final class LinkGenerator
 		return new self(
 			$this->router,
 			new UrlScript($url),
-			$this->presenterFactory
+			$this->presenterFactory,
 		);
 	}
 }
