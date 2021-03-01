@@ -57,7 +57,6 @@ class Template implements Nette\Application\UI\Template
 
 	/**
 	 * Renders template to string.
-	 * @param  can throw exceptions? (hidden parameter)
 	 */
 	public function __toString(): string
 	{
@@ -70,9 +69,8 @@ class Template implements Nette\Application\UI\Template
 
 	/**
 	 * Registers run-time filter.
-	 * @return static
 	 */
-	public function addFilter(?string $name, callable $callback)
+	public function addFilter(?string $name, callable $callback): static
 	{
 		$this->latte->addFilter($name, $callback);
 		return $this;
@@ -81,9 +79,8 @@ class Template implements Nette\Application\UI\Template
 
 	/**
 	 * Registers run-time function.
-	 * @return static
 	 */
-	public function addFunction(string $name, callable $callback)
+	public function addFunction(string $name, callable $callback): static
 	{
 		$this->latte->addFunction($name, $callback);
 		return $this;
@@ -92,9 +89,8 @@ class Template implements Nette\Application\UI\Template
 
 	/**
 	 * Sets translate adapter.
-	 * @return static
 	 */
-	public function setTranslator(?Nette\Localization\Translator $translator, ?string $language = null)
+	public function setTranslator(?Nette\Localization\Translator $translator, ?string $language = null): static
 	{
 		if (version_compare(Latte\Engine::VERSION, '3', '<')) {
 			$this->latte->addFilter(
@@ -115,9 +111,8 @@ class Template implements Nette\Application\UI\Template
 
 	/**
 	 * Sets the path to the template file.
-	 * @return static
 	 */
-	public function setFile(string $file)
+	public function setFile(string $file): static
 	{
 		$this->file = $file;
 		return $this;
