@@ -22,23 +22,18 @@ final class RoutingPanel implements Tracy\IBarPanel
 {
 	use Nette\SmartObject;
 
-	/** @var Routing\Router */
-	private $router;
+	private Routing\Router $router;
 
-	/** @var Nette\Http\IRequest */
-	private $httpRequest;
+	private Nette\Http\IRequest $httpRequest;
 
-	/** @var Nette\Application\IPresenterFactory */
-	private $presenterFactory;
+	private Nette\Application\IPresenterFactory $presenterFactory;
 
 	/** @var \stdClass[] */
-	private $routers = [];
+	private array $routers = [];
 
-	/** @var array|null */
-	private $matched;
+	private ?array $matched = null;
 
-	/** @var \ReflectionClass|\ReflectionMethod */
-	private $source;
+	private \ReflectionClass|\ReflectionMethod|null $source = null;
 
 
 	public function __construct(
