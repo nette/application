@@ -49,8 +49,7 @@ class TemplateFactory implements UI\TemplateFactory
 	}
 
 
-	/** @return Template */
-	public function createTemplate(?UI\Control $control = null, ?string $class = null): UI\Template
+	public function createTemplate(?UI\Control $control = null, ?string $class = null): Template
 	{
 		$class ??= $this->templateClass;
 		if (!is_a($class, Template::class, true)) {

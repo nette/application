@@ -63,25 +63,19 @@ class RouteList extends Nette\Routing\RouteList implements Nette\Routing\Router,
 	}
 
 
-	/**
-	 * @param  array|string|\Closure  $metadata  default values or metadata or callback for NetteModule\MicroPresenter
-	 * @return static
-	 */
 	public function addRoute(
 		#[Language('TEXT')]
 		string $mask,
-		$metadata = [],
+		array|string|\Closure $metadata = [],
 		int $flags = 0,
-	) {
+	): static
+	{
 		$this->add(new Route($mask, $metadata), $flags);
 		return $this;
 	}
 
 
-	/**
-	 * @return static
-	 */
-	public function withModule(string $module)
+	public function withModule(string $module): static
 	{
 		$router = new static;
 		$router->module = $module . ':';
@@ -113,11 +107,9 @@ class RouteList extends Nette\Routing\RouteList implements Nette\Routing\Router,
 
 	/**
 	 * @param  int  $index
-	 * @return mixed
 	 * @throws Nette\OutOfRangeException
 	 */
-	#[\ReturnTypeWillChange]
-	public function offsetGet($index)
+	public function offsetGet($index): mixed
 	{
 		if (!$this->offsetExists($index)) {
 			throw new Nette\OutOfRangeException('Offset invalid or out of range');

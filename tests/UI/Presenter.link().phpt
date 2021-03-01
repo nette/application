@@ -63,7 +63,7 @@ class TestPresenter extends Application\UI\Presenter
 	public $pbool = true;
 
 
-	protected function startup()
+	protected function startup(): void
 	{
 		parent::startup();
 		$this['mycontrol'] = new TestControl;
