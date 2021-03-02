@@ -39,7 +39,6 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 	{
 		return Expect::structure([
 			'debugger' => Expect::anyOf(true, false, 'all'),
-			'xhtml' => Expect::bool(false)->deprecated(),
 			'macros' => Expect::arrayOf('string'),
 			'templateClass' => Expect::string(),
 			'strictTypes' => Expect::bool(false),
@@ -62,12 +61,6 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 				->setFactory(Latte\Engine::class)
 				->addSetup('setTempDirectory', [$this->tempDir])
 				->addSetup('setAutoRefresh', [$this->debugMode]);
-
-		if (version_compare(Latte\Engine::VERSION, '3', '<')) {
-			$latteFactory
-				->addSetup('setContentType', [$config->xhtml ? Latte\Compiler::CONTENT_XHTML : Latte\Compiler::CONTENT_HTML])
-				->addSetup('Nette\Utils\Html::$xhtml = ?', [$config->xhtml]);
-		}
 
 		if ($config->strictTypes) {
 			$latteFactory->addSetup('setStrictTypes', [true]);

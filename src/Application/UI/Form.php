@@ -66,14 +66,9 @@ class Form extends Nette\Forms\Form implements SignalReceiver
 	/**
 	 * Returns the presenter where this component belongs to.
 	 */
-	final public function getPresenter(): ?Presenter
+	final public function getPresenter(): Presenter
 	{
-		if (func_num_args()) {
-			trigger_error(__METHOD__ . '() parameter $throw is deprecated, use getPresenterIfExists()', E_USER_DEPRECATED);
-			$throw = func_get_arg(0);
-		}
-
-		return $this->lookup(Presenter::class, $throw ?? true);
+		return $this->lookup(Presenter::class, throw: true);
 	}
 
 
@@ -82,14 +77,13 @@ class Form extends Nette\Forms\Form implements SignalReceiver
 	 */
 	final public function getPresenterIfExists(): ?Presenter
 	{
-		return $this->lookup(Presenter::class, false);
+		return $this->lookup(Presenter::class, throw: false);
 	}
 
 
-	/** @deprecated */
 	public function hasPresenter(): bool
 	{
-		return (bool) $this->lookup(Presenter::class, false);
+		return (bool) $this->lookup(Presenter::class, throw: false);
 	}
 
 
