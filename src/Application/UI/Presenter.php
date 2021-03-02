@@ -25,7 +25,6 @@ use Nette\Utils\Arrays;
  * @property      string $view
  * @property      string|bool $layout
  * @property-read \stdClass $payload
- * @property-read Nette\DI\Container $context
  * @property-read Nette\Http\Session $session
  * @property-read Nette\Security\User $user
  */
@@ -109,9 +108,6 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @var array|null */
 	private $lastCreatedRequestFlag;
 
-	/** @var Nette\DI\Container */
-	private $context;
-
 	/** @var Nette\Http\IRequest */
 	private $httpRequest;
 
@@ -164,7 +160,6 @@ abstract class Presenter extends Control implements Application\IPresenter
 	}
 
 
-	/** @deprecated */
 	final public function hasPresenter(): bool
 	{
 		return true;
@@ -1323,7 +1318,6 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 
 	final public function injectPrimary(
-		?Nette\DI\Container $context,
 		?Application\IPresenterFactory $presenterFactory,
 		?Nette\Routing\Router $router,
 		Http\IRequest $httpRequest,
@@ -1336,7 +1330,6 @@ abstract class Presenter extends Control implements Application\IPresenter
 			throw new Nette\InvalidStateException('Method ' . __METHOD__ . ' is intended for initialization and should not be called more than once.');
 		}
 
-		$this->context = $context;
 		$this->presenterFactory = $presenterFactory;
 		$this->router = $router;
 		$this->httpRequest = $httpRequest;
@@ -1344,20 +1337,6 @@ abstract class Presenter extends Control implements Application\IPresenter
 		$this->session = $session;
 		$this->user = $user;
 		$this->templateFactory = $templateFactory;
-	}
-
-
-	/**
-	 * Gets the context.
-	 * @deprecated
-	 */
-	public function getContext(): Nette\DI\Container
-	{
-		if (!$this->context) {
-			throw new Nette\InvalidStateException('Context has not been set.');
-		}
-		trigger_error(__METHOD__ . '() is deprecated, use dependency injection.', E_USER_DEPRECATED);
-		return $this->context;
 	}
 
 

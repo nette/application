@@ -30,7 +30,6 @@ function callIsComponentLinkCurrent(
 	$presenterFactory->shouldReceive('getPresenterClass')->andReturn('TestPresenter');
 
 	$presenter->injectPrimary(
-		null,
 		$presenterFactory,
 		new Application\Routers\SimpleRouter,
 		new Http\Request($url),

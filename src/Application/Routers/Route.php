@@ -40,15 +40,12 @@ class Route extends Nette\Routing\Route implements Nette\Routing\Router
 		],
 	];
 
-	/** @var int */
-	private $flags;
-
 
 	/**
 	 * @param  string  $mask  e.g. '<presenter>/<action>/<id \d{1,3}>'
 	 * @param  array|string|\Closure  $metadata  default values or metadata or callback for NetteModule\MicroPresenter
 	 */
-	public function __construct(string $mask, $metadata = [], int $flags = 0)
+	public function __construct(string $mask, array|string|\Closure $metadata = [], int $flags = 0)
 	{
 		if (is_string($metadata)) {
 			[$presenter, $action] = Nette\Application\Helpers::splitName($metadata);
@@ -66,12 +63,8 @@ class Route extends Nette\Routing\Route implements Nette\Routing\Router
 			];
 		}
 
-		if ($flags) {
-			trigger_error(__METHOD__ . '() parameter $flags is deprecated, use RouteList::addRoute(..., ..., $flags) instead.', E_USER_DEPRECATED);
-		}
 
 		$this->defaultMeta += self::UI_META;
-		$this->flags = $flags;
 		parent::__construct($mask, $metadata);
 	}
 
@@ -106,10 +99,6 @@ class Route extends Nette\Routing\Route implements Nette\Routing\Router
 	 */
 	public function constructUrl(array $params, Nette\Http\UrlScript $refUrl): ?string
 	{
-		if ($this->flags & self::ONE_WAY) {
-			return null;
-		}
-
 		$metadata = $this->getMetadata();
 		if (isset($metadata[self::MODULE_KEY])) { // try split into module and [submodule:]presenter parts
 			$presenter = $params[self::PRESENTER_KEY];
@@ -141,14 +130,6 @@ class Route extends Nette\Routing\Route implements Nette\Routing\Router
 		}
 		unset($res[self::MODULE_KEY]);
 		return $res;
-	}
-
-
-	/** @deprecated */
-	public function getFlags(): int
-	{
-		trigger_error(__METHOD__ . '() is deprecated.', E_USER_DEPRECATED);
-		return $this->flags;
 	}
 
 

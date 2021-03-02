@@ -18,7 +18,6 @@ require __DIR__ . '/../bootstrap.php';
 $presenter = new ParamPresenter;
 $presenter->injectPrimary(
 	null,
-	null,
 	new Application\Routers\SimpleRouter,
 	new Http\Request(new Http\UrlScript),
 	new Http\Response,

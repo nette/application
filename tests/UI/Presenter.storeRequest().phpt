@@ -119,7 +119,6 @@ test('', function () {
 	$presenter = new TestPresenter;
 	$presenter->injectPrimary(
 		null,
-		null,
 		new Application\Routers\SimpleRouter,
 		new Http\Request(new Http\UrlScript),
 		new Http\Response,
@@ -145,7 +144,6 @@ test('', function () {
 test('', function () {
 	$presenter = new TestPresenter;
 	$presenter->injectPrimary(
-		null,
 		null,
 		new Application\Routers\SimpleRouter,
 		new Http\Request(new Http\UrlScript),

@@ -35,7 +35,6 @@ $presenter = new TestPresenter;
 $presenter->setParent(null, 'test');
 $presenter->injectPrimary(
 	null,
-	null,
 	new Application\Routers\SimpleRouter,
 	new Http\Request(new Http\UrlScript('http://localhost')),
 	new Http\Response,
