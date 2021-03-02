@@ -35,7 +35,6 @@ final class RoutingExtension extends Nette\DI\CompilerExtension
 		return Expect::structure([
 			'debugger' => Expect::bool(),
 			'routes' => Expect::arrayOf('string'),
-			'routeClass' => Expect::string()->deprecated(),
 			'cache' => Expect::bool(false),
 		]);
 	}
@@ -52,14 +51,8 @@ final class RoutingExtension extends Nette\DI\CompilerExtension
 		$router = $builder->addDefinition($this->prefix('router'))
 			->setFactory(Nette\Application\Routers\RouteList::class);
 
-		if ($this->config->routeClass) {
-			foreach ($this->config->routes as $mask => $action) {
-				$router->addSetup('$service[] = new ' . $this->config->routeClass . '(?, ?)', [$mask, $action]);
-			}
-		} else {
-			foreach ($this->config->routes as $mask => $action) {
-				$router->addSetup('$service->addRoute(?, ?)', [$mask, $action]);
-			}
+		foreach ($this->config->routes as $mask => $action) {
+			$router->addSetup('$service->addRoute(?, ?)', [$mask, $action]);
 		}
 
 		if ($this->name === 'routing') {
