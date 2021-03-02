@@ -289,7 +289,6 @@ $presenterFactory->shouldReceive('getPresenterClass')
 
 $presenter = new TestPresenter;
 $presenter->injectPrimary(
-	null,
 	$presenterFactory,
 	new Application\Routers\SimpleRouter,
 	new Http\Request($url),
