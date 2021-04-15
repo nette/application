@@ -63,7 +63,7 @@ class TestPresenter extends Application\UI\Presenter
 	public $pbool = true;
 
 	/** @persistent */
-	public ?array $parrn = null;
+	public array $parrn;
 
 	/** @persistent */
 	public ?bool $pbooln = null;
