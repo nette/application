@@ -250,8 +250,6 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 		if ($this->isAjax()) {
 			try {
-				$hasPayload = (array) $this->payload;
-				unset($hasPayload['state']);
 				if ($this->response instanceof Responses\TextResponse && $this->isControlInvalid()) {
 					$this->snippetMode = true;
 					$this->response->send($this->httpRequest, $this->httpResponse);
