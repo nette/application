@@ -34,6 +34,11 @@ Assert::exception(function () use ($latte) {
 }, Latte\RuntimeException::class, 'Filters: unable to convert content type HTML to HTMLTAG');
 
 Assert::same(
+	'<div <>&amp;',
+	$latte->renderToString('<div {control x|noescape}')
+);
+
+Assert::same(
 	'<div title="&lt;&gt;&amp;">',
 	$latte->renderToString('<div title="{control x}">')
 );

@@ -81,11 +81,13 @@ final class UIMacros extends Latte\Macros\MacroSet
 	 */
 	public function macroControl(MacroNode $node, PhpWriter $writer)
 	{
+		if ($node->context !== [Latte\Compiler::CONTENT_HTML, Latte\Compiler::CONTEXT_HTML_TEXT]) {
+			$escapeMod = Latte\Helpers::removeFilter($node->modifiers, 'noescape') ? '' : '|escape';
+		}
 		if ($node->modifiers) {
 			trigger_error('Modifiers are deprecated in ' . $node->getNotation(), E_USER_DEPRECATED);
-		} elseif ($node->context !== [Latte\Compiler::CONTENT_HTML, Latte\Compiler::CONTEXT_HTML_TEXT]) {
-			$node->modifiers .= '|escape';
 		}
+		$node->modifiers .= $escapeMod ?? '';
 
 		$words = $node->tokenizer->fetchWords();
 		if (!$words) {
