@@ -409,6 +409,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * @throws Nette\Application\AbortException
+	 * @return never
 	 */
 	public function sendTemplate(Template $template = null): void
 	{
@@ -552,6 +553,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/**
 	 * Sends AJAX payload to the output.
 	 * @throws Nette\Application\AbortException
+	 * @return never
 	 */
 	public function sendPayload(): void
 	{
@@ -562,6 +564,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/**
 	 * Sends JSON data to the output.
 	 * @throws Nette\Application\AbortException
+	 * @return never
 	 */
 	public function sendJson(mixed $data): void
 	{
@@ -575,6 +578,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/**
 	 * Sends response and terminates presenter.
 	 * @throws Nette\Application\AbortException
+	 * @return never
 	 */
 	public function sendResponse(Application\Response $response): void
 	{
@@ -586,6 +590,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/**
 	 * Correctly terminates presenter.
 	 * @throws Nette\Application\AbortException
+	 * @return never
 	 */
 	public function terminate(): void
 	{
@@ -597,6 +602,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * Forward to another presenter or action.
 	 * @param  array|mixed  $args
 	 * @throws Nette\Application\AbortException
+	 * @return never
 	 */
 	public function forward(string|Nette\Application\Request $destination, $args = []): void
 	{
@@ -615,6 +621,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/**
 	 * Redirect to another URL and ends presenter execution.
 	 * @throws Nette\Application\AbortException
+	 * @return never
 	 */
 	public function redirectUrl(string $url, int $httpCode = null): void
 	{
