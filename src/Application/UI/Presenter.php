@@ -1044,7 +1044,6 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Restores request from session.
-	 * @return never
 	 */
 	public function restoreRequest(string $key): void
 	{
