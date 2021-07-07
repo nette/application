@@ -661,7 +661,6 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/**
 	 * Conditional redirect to canonicalized URI.
 	 * @throws Nette\Application\AbortException
-	 * @return never|void
 	 */
 	public function canonicalize(string $destination = null, array $args = []): void
 	{
