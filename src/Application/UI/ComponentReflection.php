@@ -128,7 +128,7 @@ final class ComponentReflection extends \ReflectionClass
 					$name,
 					$component instanceof Presenter ? 'presenter ' . $component->getName() : "component '{$component->getUniqueId()}'",
 					$meta['type'],
-					is_object($params[$name]) ? get_class($params[$name]) : gettype($params[$name]),
+					get_debug_type($params[$name]),
 				));
 			}
 
@@ -174,7 +174,7 @@ final class ComponentReflection extends \ReflectionClass
 						$name,
 						($method instanceof \ReflectionMethod ? $method->getDeclaringClass()->getName() . '::' : '') . $method->getName(),
 						$type,
-						is_object($args[$name]) ? get_class($args[$name]) : gettype($args[$name]),
+						get_debug_type($args[$name]),
 					));
 				}
 			} elseif ($param->isDefaultValueAvailable()) {
@@ -291,7 +291,7 @@ final class ComponentReflection extends \ReflectionClass
 		$type = $param->getType();
 		return $type
 			? ($type instanceof \ReflectionNamedType ? $type->getName() : (string) $type)
-			: ($default === null ? 'scalar' : gettype($default));
+			: ($default === null ? 'scalar' : get_debug_type($default));
 	}
 
 
@@ -300,7 +300,7 @@ final class ComponentReflection extends \ReflectionClass
 		$type = $prop->getType();
 		return $type
 			? ($type instanceof \ReflectionNamedType ? $type->getName() : (string) $type)
-			: ($default === null ? 'scalar' : gettype($default));
+			: ($default === null ? 'scalar' : get_debug_type($default));
 	}
 
 

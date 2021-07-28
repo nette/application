@@ -120,7 +120,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	{
 		if (
 			$element instanceof \ReflectionMethod
-			&& substr($element->getName(), 0, 6) === 'handle'
+			&& str_starts_with($element->getName(), 'handle')
 			&& !ComponentReflection::parseAnnotation($element, 'crossOrigin')
 			&& !$element->getAttributes(Nette\Application\Attributes\CrossOrigin::class)
 			&& !$this->getPresenter()->getHttpRequest()->isSameSite()
@@ -156,7 +156,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 						$name,
 						$this instanceof Presenter ? 'presenter ' . $this->getName() : "component '{$this->getUniqueId()}'",
 						$meta['type'],
-						is_object($params[$name]) ? get_class($params[$name]) : gettype($params[$name]),
+						get_debug_type($params[$name]),
 					));
 				}
 
