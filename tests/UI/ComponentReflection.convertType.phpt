@@ -105,26 +105,6 @@ testIt('int', 1, 1);
 testIt('int', 1.0, 1);
 testIt('int', 1.2);
 
-testIt('double', null);
-testIt('double', []);
-testIt('double', $obj);
-testIt('double', '');
-testIt('double', 'a');
-testIt('double', '0', 0.0);
-testIt('double', '1', 1.0);
-testIt('double', '1.', 1.0);
-testIt('double', '1.0', 1.0);
-testIt('double', '1.00', 1.0);
-testIt('double', '1..0');
-testIt('double', '1.1', 1.1);
-testIt('double', '1a');
-testIt('double', true, 1.0);
-testIt('double', false, 0.0);
-testIt('double', 0, 0.0);
-testIt('double', 1, 1.0);
-testIt('double', 1.0, 1.0);
-testIt('double', 1.2, 1.2);
-
 testIt('float', null);
 testIt('float', []);
 testIt('float', $obj);
