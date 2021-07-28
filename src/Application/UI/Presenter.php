@@ -142,7 +142,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	public function isModuleCurrent(string $module): bool
 	{
 		$current = Helpers::splitName($this->getName())[0];
-		return Nette\Utils\Strings::startsWith($current . ':', ltrim($module . ':', ':'));
+		return str_starts_with($current . ':', ltrim($module . ':', ':'));
 	}
 
 
@@ -808,7 +808,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 				if (array_key_exists(0, $args)) {
 					throw new InvalidLinkException("Unable to pass parameters to 'this!' signal.");
 				}
-			} elseif (strpos($signal, self::NAME_SEPARATOR) === false) {
+			} elseif (!str_contains($signal, self::NAME_SEPARATOR)) {
 				// counterpart of signalReceived() & tryCall()
 				$method = $component->formatSignalMethod($signal);
 				if (!$reflection->hasCallableMethod($method)) {
@@ -1044,7 +1044,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 					$name,
 					$rm->getDeclaringClass()->getName() . '::' . $rm->getName(),
 					$type,
-					is_object($args[$name]) ? get_class($args[$name]) : gettype($args[$name]),
+					get_debug_type($args[$name]),
 				));
 			}
 

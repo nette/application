@@ -115,7 +115,7 @@ Assert::same([
 ], TestPresenter::getReflection()->getPersistentParams());
 
 Assert::same([
-	'p1' => ['def' => 20, 'type' => 'integer', 'since' => 'BasePresenter'],
+	'p1' => ['def' => 20, 'type' => 'int', 'since' => 'BasePresenter'],
 	'p3' => ['def' => null, 'type' => 'scalar', 'since' => 'SecondPresenter'],
 	't1' => ['def' => null, 'type' => 'scalar', 'since' => 'PersistentParam1'],
 	't3' => ['def' => null, 'type' => 'scalar', 'since' => 'PersistentParam3'],
