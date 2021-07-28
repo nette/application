@@ -51,14 +51,14 @@ test('', function () {
 });
 
 Assert::exception(function () {
-	$factory = new TemplateFactory(Mockery::mock(LatteFactory::class), null, null, null, stdClass::class);
+	$factory = new TemplateFactory(Mockery::mock(LatteFactory::class), templateClass: stdClass::class);
 }, Nette\InvalidArgumentException::class, 'Class stdClass does not implement Nette\Bridges\ApplicationLatte\Template or it does not exist.');
 
 
 test('', function () {
 	$latteFactory = Mockery::mock(LatteFactory::class);
 	$latteFactory->shouldReceive('create')->andReturn(new Latte\Engine);
-	$factory = new TemplateFactory($latteFactory, null, null, null, TemplateMock::class);
+	$factory = new TemplateFactory($latteFactory, templateClass: TemplateMock::class);
 	$template = $factory->createTemplate();
 	Assert::type(TemplateMock::class, $template);
 	Assert::type(UI\Template::class, $template);
