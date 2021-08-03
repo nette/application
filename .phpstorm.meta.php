@@ -57,6 +57,7 @@ expectedReturnValues(\Nette\Application\BadRequestException::getHttpCode(), argu
 
 exitPoint(\Nette\Application\UI\Component::redirect());
 exitPoint(\Nette\Application\UI\Component::redirectPermanent());
+exitPoint(\Nette\Application\UI\Component::error());
 exitPoint(\Nette\Application\UI\Presenter::forward());
 exitPoint(\Nette\Application\UI\Presenter::redirectUrl());
 exitPoint(\Nette\Application\UI\Presenter::sendJson());
