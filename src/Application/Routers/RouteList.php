@@ -120,6 +120,7 @@ class RouteList extends Nette\Routing\RouteList implements Nette\Routing\Router,
 	 * @return mixed
 	 * @throws Nette\OutOfRangeException
 	 */
+	#[\ReturnTypeWillChange]
 	public function offsetGet($index)
 	{
 		if (!$this->offsetExists($index)) {
