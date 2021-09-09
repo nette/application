@@ -828,6 +828,12 @@ abstract class Presenter extends Control implements Application\IPresenter
 				if (!$reflection->hasCallableMethod($method)) {
 					throw new InvalidLinkException("Unknown signal '$signal', missing handler {$reflection->getName()}::$method()");
 				}
+				if (
+					$this->invalidLinkMode
+					&& ComponentReflection::parseAnnotation(new \ReflectionMethod($component, $method), 'deprecated')
+				) {
+					trigger_error("Link to deprecated signal '$signal'" . ($component === $this ? '' : ' in ' . get_class($component)) . " from '{$this->getName()}:{$this->getAction()}'.", E_USER_DEPRECATED);
+				}
 				// convert indexed parameters to named
 				static::argsToParams(get_class($component), $method, $args, [], $missing);
 			}
@@ -855,6 +861,9 @@ abstract class Presenter extends Control implements Application\IPresenter
 			$current = ($action === '*' || strcasecmp($action, (string) $this->action) === 0) && $presenterClass === static::class;
 
 			$reflection = new ComponentReflection($presenterClass);
+			if ($this->invalidLinkMode && ComponentReflection::parseAnnotation($reflection, 'deprecated')) {
+				trigger_error("Link to deprecated presenter '$presenter' from '{$this->getName()}:{$this->getAction()}'.", E_USER_DEPRECATED);
+			}
 
 			// counterpart of run() & tryCall()
 			$method = $presenterClass::formatActionMethod($action);
@@ -871,6 +880,12 @@ abstract class Presenter extends Control implements Application\IPresenter
 					throw new InvalidLinkException("Unable to pass parameters to action '$presenter:$action', missing corresponding method.");
 				}
 			} else {
+				if (
+					$this->invalidLinkMode
+					&& ComponentReflection::parseAnnotation(new \ReflectionMethod($presenterClass, $method), 'deprecated')
+				) {
+					trigger_error("Link to deprecated action '$presenter:$action' from '{$this->getName()}:{$this->getAction()}'.", E_USER_DEPRECATED);
+				}
 				static::argsToParams($presenterClass, $method, $args, $path === 'this' ? $this->params : [], $missing);
 			}
 
