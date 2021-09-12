@@ -52,7 +52,9 @@ abstract class Control extends Component implements Renderable
 
 
 	/**
-	 * @param  string  $class
+	 * @template T of Template
+	 * @param  class-string<T>  $class
+	 * @return T
 	 */
 	protected function createTemplate(/*string $class = null*/): Template
 	{
