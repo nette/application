@@ -16,11 +16,11 @@ use function func_num_args, strcasecmp;
 /**
  * Presenter request.
  *
- * @property string $presenterName
- * @property array $parameters
- * @property array $post
- * @property array $files
- * @property string|null $method
+ * @property-deprecated string $presenterName
+ * @property-deprecated array $parameters
+ * @property-deprecated array $post
+ * @property-deprecated array $files
+ * @property-deprecated string|null $method
  */
 final class Request
 {
