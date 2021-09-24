@@ -20,13 +20,13 @@ use Nette\Utils\Arrays;
 /**
  * Presenter component represents a webpage instance. It converts Request to Response.
  *
- * @property-read Nette\Application\Request $request
- * @property-read string $action
- * @property      string $view
- * @property      string|bool $layout
+ * @property-deprecated Nette\Application\Request $request
+ * @property-deprecated string $action
+ * @property-deprecated      string $view
+ * @property-deprecated      string|bool $layout
  * @property-read \stdClass $payload
- * @property-read Nette\Http\Session $session
- * @property-read Nette\Security\User $user
+ * @property-deprecated Nette\Http\Session $session
+ * @property-deprecated Nette\Security\User $user
  */
 abstract class Presenter extends Control implements Application\IPresenter
 {

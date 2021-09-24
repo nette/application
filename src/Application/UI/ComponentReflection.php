@@ -14,8 +14,8 @@ use Nette;
 
 /**
  * Helpers for Presenter & Component.
- * @property-read string $name
- * @property-read string $fileName
+ * @property-deprecated string $name
+ * @property-deprecated string $fileName
  * @internal
  */
 final class ComponentReflection extends \ReflectionClass
