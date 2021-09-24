@@ -14,12 +14,6 @@ use Nette;
 
 /**
  * Presenter request.
- *
- * @property string $presenterName
- * @property array $parameters
- * @property array $post
- * @property array $files
- * @property string|null $method
  */
 final class Request
 {

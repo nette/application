@@ -18,9 +18,6 @@ use Nette;
  * Components are persistent objects located on a presenter. They have ability to own
  * other child components, and interact with user. Components have properties
  * for storing their status, and responds to user command.
- *
- * @property-read Presenter $presenter
- * @property-read bool $linkCurrent
  */
 abstract class Component extends Nette\ComponentModel\Container implements SignalReceiver, StatePersistent, \ArrayAccess
 {
