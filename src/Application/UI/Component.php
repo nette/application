@@ -19,8 +19,8 @@ use Nette;
  * other child components, and interact with user. Components have properties
  * for storing their status, and responds to user command.
  *
- * @property-read Presenter $presenter
- * @property-read bool $linkCurrent
+ * @property-deprecated Presenter $presenter
+ * @property-deprecated bool $linkCurrent
  */
 abstract class Component extends Nette\ComponentModel\Container implements SignalReceiver, StatePersistent, \ArrayAccess
 {
