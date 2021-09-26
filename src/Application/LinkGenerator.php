@@ -31,12 +31,16 @@ final class LinkGenerator
 
 	/**
 	 * Generates URL to presenter.
-	 * @param  string   $dest in format "[[[module:]presenter:]action] [#fragment]"
+	 * @param  string   $dest in format "[[[module:]presenter:]action] [#fragment]" or "[[Class\Name:]action] [#fragment]"
 	 * @throws UI\InvalidLinkException
 	 */
 	public function link(string $dest, array $params = []): string
 	{
-		if (!preg_match('~^([\w\\\:]+):(\w*+)(#.*)?()$~D', $dest, $m)) {
+		if (!preg_match('~^([\w:]+):(\w*+)(#.*)?()$~D', $dest, $m)
+			&& !preg_match('~^(\\?\w+(?:\\{1}\w+)+):(\w*+)(#.*)?()$~D', $dest, $m)
+		) {
+			throw new UI\InvalidLinkException("Invalid link destination '$dest'.");
+		}
 			throw new UI\InvalidLinkException("Invalid link destination '$dest'.");
 		}
 		[, $presenter, $action, $frag] = $m;
