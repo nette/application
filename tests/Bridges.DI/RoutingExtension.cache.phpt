@@ -77,8 +77,7 @@ test('', function () {
 
 
 Assert::exception(function () {
-	/** @return Nette\Routing\Router */
-	function myRouterFactory()
+	function myRouterFactory(): Nette\Routing\Router
 	{
 		return new Route('path', function () {});
 	}
