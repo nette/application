@@ -192,17 +192,18 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	public function run(Application\Request $request): Application\Response
 	{
+		$this->request = $request;
+		$this->payload = $this->payload ?: new \stdClass;
+		$this->setParent($this->getParent(), $request->getPresenterName());
+
+		if (!$this->httpResponse->isSent()) {
+			$this->httpResponse->addHeader('Vary', 'X-Requested-With');
+		}
+
+		$this->initGlobalParameters();
+
 		try {
 			// STARTUP
-			$this->request = $request;
-			$this->payload = $this->payload ?: new \stdClass;
-			$this->setParent($this->getParent(), $request->getPresenterName());
-
-			if (!$this->httpResponse->isSent()) {
-				$this->httpResponse->addHeader('Vary', 'X-Requested-With');
-			}
-
-			$this->initGlobalParameters();
 			$this->checkRequirements(static::getReflection());
 			Arrays::invoke($this->onStartup, $this);
 			$this->startup();
@@ -236,19 +237,17 @@ abstract class Presenter extends Control implements Application\IPresenter
 			$this->tryCall(static::formatRenderMethod($this->view), $this->params);
 			$this->afterRender();
 
-			// save component tree persistent state
-			$this->saveGlobalState();
-			if ($this->isAjax()) {
-				$this->payload->state = $this->getGlobalState();
-			}
-
 			// finish template rendering
 			$this->sendTemplate();
 
 		} catch (Application\AbortException $e) {
 		}
 
+		// save component tree persistent state
+		$this->saveGlobalState();
+
 		if ($this->isAjax()) {
+			$this->payload->state = $this->getGlobalState();
 			try {
 				if ($this->response instanceof Responses\TextResponse && $this->isControlInvalid()) {
 					$this->snippetMode = true;

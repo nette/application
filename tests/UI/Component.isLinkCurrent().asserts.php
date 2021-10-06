@@ -36,9 +36,11 @@ function callIsComponentLinkCurrent(
 		new Http\Request($url),
 		new Http\Response
 	);
+	$presenter->onStartup[] = function () use (&$res, $component,  $destination, $args) {
+		$res = $component->isLinkCurrent($destination, $args);
+	};
 	$presenter->run($request);
-
-	return $component->isLinkCurrent($destination, $args);
+	return $res;
 }
 
 
