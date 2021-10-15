@@ -141,6 +141,3 @@ class RouteList extends Nette\Routing\RouteList implements Nette\Routing\Router,
 		$this->modify($index, null);
 	}
 }
-
-
-interface_exists(Nette\Application\IRouter::class);
