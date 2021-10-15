@@ -342,6 +342,3 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 		throw new Nette\Application\BadRequestException($message, $httpCode);
 	}
 }
-
-
-class_exists(PresenterComponent::class);
