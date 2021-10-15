@@ -6,7 +6,6 @@ parameters:
 		- tests/types
 
 	excludePaths:
-		- src/compatibility.php
 		- src/compatibility-intf.php
 		- src/Bridges/ApplicationDI/LatteExtension.php
 		- src/Bridges/ApplicationLatte
