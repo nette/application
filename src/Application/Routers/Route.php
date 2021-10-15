@@ -8,7 +8,7 @@
 namespace Nette\Application\Routers;
 
 use Nette;
-use function interface_exists, is_string, lcfirst, preg_replace, rawurlencode, str_replace, strlen, strncmp, strrpos, strtolower, strtr, substr, ucwords;
+use function is_string, lcfirst, preg_replace, rawurlencode, str_replace, strlen, strncmp, strrpos, strtolower, strtr, substr, ucwords;
 
 
 /**
@@ -190,6 +190,3 @@ class Route extends Nette\Routing\Route implements Nette\Routing\Router
 		return $s;
 	}
 }
-
-
-interface_exists(Nette\Application\IRouter::class);

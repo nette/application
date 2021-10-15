@@ -9,7 +9,7 @@ namespace Nette\Application\Routers;
 
 use JetBrains\PhpStorm\Language;
 use Nette;
-use function count, interface_exists, is_int, is_string, strlen, strncmp, substr;
+use function count, is_int, is_string, strlen, strncmp, substr;
 
 
 /**
@@ -146,6 +146,3 @@ class RouteList extends Nette\Routing\RouteList implements Nette\Routing\Router,
 		$this->modify($index, null);
 	}
 }
-
-
-interface_exists(Nette\Application\IRouter::class);
