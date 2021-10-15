@@ -187,6 +187,3 @@ class Route extends Nette\Routing\Route implements Nette\Routing\Router
 		return $s;
 	}
 }
-
-
-interface_exists(Nette\Application\IRouter::class);
