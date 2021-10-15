@@ -215,6 +215,3 @@ final class ComponentReflection extends \ReflectionClass
 		return ParameterConverter::toArguments($method, $args);
 	}
 }
-
-
-class_exists(PresenterComponentReflection::class);
