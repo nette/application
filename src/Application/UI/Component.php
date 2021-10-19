@@ -290,15 +290,15 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	/**
 	 * Generates URL to presenter, action or signal.
 	 * @param  string   $destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
-	 * @param  array|mixed  $args
+	 * @param  mixed  ...$args
 	 * @throws InvalidLinkException
 	 */
-	public function link(string $destination, $args = []): string
+	public function link(string $destination, ...$args): string
 	{
 		try {
-			$args = func_num_args() < 3 && is_array($args)
-				? $args
-				: array_slice(func_get_args(), 1);
+			$args = count($args) === 1 && is_array($args[0] ?? null)
+				? $args[0]
+				: $args;
 			return $this->getPresenter()->getLinkGenerator()->link($destination, $args, $this, 'link');
 
 		} catch (InvalidLinkException $e) {
@@ -310,13 +310,13 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	/**
 	 * Returns destination as Link object.
 	 * @param  string   $destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
-	 * @param  array|mixed  $args
+	 * @param  mixed  ...$args
 	 */
-	public function lazyLink(string $destination, $args = []): Link
+	public function lazyLink(string $destination, ...$args): Link
 	{
-		$args = func_num_args() < 3 && is_array($args)
-			? $args
-			: array_slice(func_get_args(), 1);
+		$args = count($args) === 1 && is_array($args[0] ?? null)
+			? $args[0]
+			: $args;
 		return new Link($this, $destination, $args);
 	}
 
@@ -324,15 +324,15 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	/**
 	 * Determines whether it links to the current page.
 	 * @param  ?string   $destination in format "[[[module:]presenter:]action | signal! | this]"
-	 * @param  array|mixed  $args
+	 * @param  mixed  ...$args
 	 * @throws InvalidLinkException
 	 */
-	public function isLinkCurrent(?string $destination = null, $args = []): bool
+	public function isLinkCurrent(?string $destination = null, ...$args): bool
 	{
 		if ($destination !== null) {
-			$args = func_num_args() < 3 && is_array($args)
-				? $args
-				: array_slice(func_get_args(), 1);
+			$args = count($args) === 1 && is_array($args[0] ?? null)
+				? $args[0]
+				: $args;
 			$this->getPresenter()->getLinkGenerator()->createRequest($this, $destination, $args, 'test');
 		}
 
@@ -343,14 +343,14 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	/**
 	 * Redirect to another presenter, action or signal.
 	 * @param  string   $destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
-	 * @param  array|mixed  $args
+	 * @param  mixed  ...$args
 	 * @throws Nette\Application\AbortException
 	 */
-	public function redirect(string $destination, $args = []): never
+	public function redirect(string $destination, ...$args): never
 	{
-		$args = func_num_args() < 3 && is_array($args)
-			? $args
-			: array_slice(func_get_args(), 1);
+		$args = count($args) === 1 && is_array($args[0] ?? null)
+			? $args[0]
+			: $args;
 		$presenter = $this->getPresenter();
 		$presenter->saveGlobalState();
 		$presenter->redirectUrl($presenter->getLinkGenerator()->link($destination, $args, $this, 'redirect'));
@@ -360,14 +360,14 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	/**
 	 * Permanently redirects to presenter, action or signal.
 	 * @param  string   $destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
-	 * @param  array|mixed  $args
+	 * @param  mixed  ...$args
 	 * @throws Nette\Application\AbortException
 	 */
-	public function redirectPermanent(string $destination, $args = []): never
+	public function redirectPermanent(string $destination, ...$args): never
 	{
-		$args = func_num_args() < 3 && is_array($args)
-			? $args
-			: array_slice(func_get_args(), 1);
+		$args = count($args) === 1 && is_array($args[0] ?? null)
+			? $args[0]
+			: $args;
 		$presenter = $this->getPresenter();
 		$presenter->redirectUrl(
 			$presenter->getLinkGenerator()->link($destination, $args, $this, 'redirect'),
