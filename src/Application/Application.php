@@ -116,7 +116,6 @@ class Application
 			$params,
 			$this->httpRequest->getPost(),
 			$this->httpRequest->getFiles(),
-			[Request::SECURED => $this->httpRequest->isSecured()],
 		);
 	}
 
