@@ -29,9 +29,6 @@ final class Request
 	public const FORWARD = 'FORWARD';
 
 	/** flag */
-	public const SECURED = 'secured';
-
-	/** flag */
 	public const RESTORED = 'restored';
 
 	/** flag */
