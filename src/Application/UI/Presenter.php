@@ -16,6 +16,7 @@ use Nette\Application\Helpers;
 use Nette\Application\Responses;
 use Nette\Http;
 use Nette\Utils\Arrays;
+use Nette\Utils\Reflection;
 
 
 /**
@@ -288,14 +289,56 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function checkRequirements(\ReflectionClass|\ReflectionMethod $element): void
 	{
+		$attrs = array_map(
+			fn($ra) => $ra->newInstance(),
+			$element->getAttributes(Attributes\Requires::class, \ReflectionAttribute::IS_INSTANCEOF),
+		);
+
 		if (
 			$element instanceof \ReflectionMethod
 			&& str_starts_with($element->getName(), 'handle')
 			&& !ComponentReflection::parseAnnotation($element, 'crossOrigin')
-			&& !$element->getAttributes(Nette\Application\Attributes\CrossOrigin::class)
-			&& !$this->httpRequest->isSameSite()
+			&& !$element->getAttributes(Attributes\CrossOrigin::class)
+			&& !Arrays::some($attrs, fn($attr) => $attr->sameOrigin === false)
 		) {
-			$this->detectedCsrf();
+			$attrs[] = new Attributes\Requires(sameOrigin: true);
+		}
+
+		foreach ($attrs as $attribute) {
+			if ($attribute->methods !== null) {
+				if ($element instanceof \ReflectionClass) { // presenter class
+					$this->allowedMethods = [];
+				}
+				$attribute->methods = array_map(strtoupper(...), $attribute->methods);
+				if (!in_array($method = $this->httpRequest->getMethod(), $attribute->methods, strict: true)) {
+					$this->httpResponse->setHeader('Allow', implode(',', $attribute->methods));
+					$this->error("Method $method is not allowed by " . Reflection::toString($element), $this->httpResponse::S405_MethodNotAllowed);
+				}
+			}
+
+			if ($attribute->actions !== null) {
+				if (
+					$element instanceof \ReflectionMethod
+					&& !$element->getDeclaringClass()->isSubclassOf(self::class)
+				) {
+					throw new Nette\InvalidStateException("Option 'actions' used by " . Reflection::toString($element) . ' is allowed only in presenter.');
+				}
+				if (!in_array($this->action, $attribute->actions, strict: true)) {
+					$this->error("Action '$this->action' is not allowed by " . Reflection::toString($element), $this->httpResponse::S403_Forbidden);
+				}
+			}
+
+			if ($attribute->forward && !$this->request->isMethod($this->request::FORWARD)) {
+				$this->error('Forwarded request is required by ' . Reflection::toString($element), $this->httpResponse::S403_Forbidden);
+			}
+
+			if ($attribute->sameOrigin && !$this->httpRequest->isSameSite()) {
+				$this->getPresenter()->detectedCsrf();
+			}
+
+			if ($attribute->ajax && !$this->httpRequest->isAjax()) {
+				$this->error('AJAX request is required by ' . Reflection::toString($element), $this->httpResponse::S403_Forbidden);
+			}
 		}
 	}
 

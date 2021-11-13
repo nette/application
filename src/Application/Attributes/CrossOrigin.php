@@ -13,6 +13,6 @@ use Attribute;
 
 
 #[Attribute(Attribute::TARGET_METHOD)]
-class CrossOrigin
+class CrossOrigin // replaced by Requires(sameOrigin: false)
 {
 }
