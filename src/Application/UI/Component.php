@@ -129,6 +129,13 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 		) {
 			$this->getPresenter()->detectedCsrf();
 		}
+
+		if ($attrs = $element->getAttributes(Nette\Application\Attributes\AllowedFor::class)) {
+			$method = strtolower($this->getPresenter()->getRequest()->getMethod());
+			if (empty($attrs[0]->newInstance()->$method)) {
+				throw new Nette\Application\BadRequestException("Method '$method' is not allowed.");
+			}
+		}
 	}
 
 
