@@ -84,7 +84,10 @@ use Tracy\Helpers;
 		<td class="symbol" title="<?= Helpers::escapeHtml(['yes' => 'matched as first', 'may' => 'suitable but not matched as first', 'no' => '', 'oneway' => 'one-way', 'error' => 'error'][$router->matched]) ?>"
 			><?= ['yes' => '✓', 'may' => '≈', 'no' => '', 'oneway' => '⛔', 'error' => '❌'][$router->matched] ?></td>
 
-		<td><code title="<?= Helpers::escapeHtml($router->class) ?>"><?= isset($router->mask) ? str_replace(['/', '-'], ['<wbr>/', '<wbr>-'], Helpers::escapeHtml($router->mask)) : str_replace('\\', '<wbr>\\', Helpers::escapeHtml($router->class)) ?></code></td>
+		<td><code title="<?= Helpers::escapeHtml($router->class) ?>"><?=
+			isset($router->path) ? '<small>' . Helpers::escapeHtml($router->path) . '</small>' : '',
+			isset($router->mask) ? str_replace(['/', '-'], ['<wbr>/', '<wbr>-'], Helpers::escapeHtml($router->mask)) : str_replace('\\', '<wbr>\\', Helpers::escapeHtml($router->class))
+		?></code></td>
 
 		<td><code>
 		<?php foreach ($router->defaults as $key => $value): ?>
