@@ -11,7 +11,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-class TestPresenter extends \Nette\Application\UI\Presenter
+class TestPresenter extends Nette\Application\UI\Presenter
 {
 }
 

@@ -20,7 +20,7 @@ function renderResponse(Nette\Application\Responses\TextResponse $response)
 	try {
 		$response->send(new Http\Request(new Http\UrlScript), new Http\Response(null));
 		return ob_get_clean();
-	} catch (\Exception $e) {
+	} catch (Throwable $e) {
 		ob_end_clean();
 		throw $e;
 	}
@@ -45,7 +45,7 @@ test('', function () {
 		},
 	]));
 
-	Assert::type(\Nette\Application\Responses\TextResponse::class, $response);
+	Assert::type(Nette\Application\Responses\TextResponse::class, $response);
 	Assert::same('test', renderResponse($response));
 });
 

@@ -23,8 +23,7 @@ require __DIR__ . '/../bootstrap.php';
  * @persistent(true)
  * @persistent(FALSE)
  * @persistent(null)
- * @author
- *@renderable
+ * @renderable
  * @secured(role = "admin", level = 2)
  * @Secured\User(loggedIn)
  */

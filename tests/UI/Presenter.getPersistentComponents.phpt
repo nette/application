@@ -6,6 +6,7 @@
 
 declare(strict_types=1);
 
+use Nette\Application\Attributes\Persistent;
 use Nette\Application\UI\Presenter;
 use Tester\Assert;
 
@@ -26,7 +27,7 @@ class TwoPresenter extends Presenter
 }
 
 
-#[\Nette\Application\Attributes\Persistent('a', 'b')]
+#[Persistent('a', 'b')]
 class ThreePresenter extends Presenter
 {
 }
