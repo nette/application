@@ -23,24 +23,16 @@ class TemplateFactory implements UI\TemplateFactory
 
 	/** @var array<callable(Template): void>  Occurs when a new template is created */
 	public array $onCreate = [];
-	private LatteFactory $latteFactory;
-	private ?Nette\Http\IRequest $httpRequest;
-	private ?Nette\Security\User $user;
-	private ?Nette\Caching\Storage $cacheStorage;
 	private string $templateClass;
 
 
 	public function __construct(
-		LatteFactory $latteFactory,
-		?Nette\Http\IRequest $httpRequest = null,
-		?Nette\Security\User $user = null,
-		?Nette\Caching\Storage $cacheStorage = null,
+		private LatteFactory $latteFactory,
+		private ?Nette\Http\IRequest $httpRequest = null,
+		private ?Nette\Security\User $user = null,
+		private ?Nette\Caching\Storage $cacheStorage = null,
 		$templateClass = null,
 	) {
-		$this->latteFactory = $latteFactory;
-		$this->httpRequest = $httpRequest;
-		$this->user = $user;
-		$this->cacheStorage = $cacheStorage;
 		if ($templateClass && (!class_exists($templateClass) || !is_a($templateClass, Template::class, true))) {
 			throw new Nette\InvalidArgumentException("Class $templateClass does not implement " . Template::class . ' or it does not exist.');
 		}

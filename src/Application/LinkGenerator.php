@@ -21,18 +21,11 @@ final class LinkGenerator
 {
 	use Nette\SmartObject;
 
-	private Router $router;
-
-	private UrlScript $refUrl;
-
-	private ?IPresenterFactory $presenterFactory;
-
-
-	public function __construct(Router $router, UrlScript $refUrl, ?IPresenterFactory $presenterFactory = null)
-	{
-		$this->router = $router;
-		$this->refUrl = $refUrl;
-		$this->presenterFactory = $presenterFactory;
+	public function __construct(
+		private Router $router,
+		private UrlScript $refUrl,
+		private ?IPresenterFactory $presenterFactory = null,
+	) {
 	}
 
 
