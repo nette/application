@@ -38,9 +38,9 @@ final class MicroPresenter implements Application\IPresenter
 
 
 	public function __construct(
-		Nette\DI\Container $context = null,
-		Http\IRequest $httpRequest = null,
-		Router $router = null
+		?Nette\DI\Container $context = null,
+		?Http\IRequest $httpRequest = null,
+		?Router $router = null
 	) {
 		$this->context = $context;
 		$this->httpRequest = $httpRequest;
@@ -124,7 +124,7 @@ final class MicroPresenter implements Application\IPresenter
 	/**
 	 * Template factory.
 	 */
-	public function createTemplate(string $class = null, callable $latteFactory = null): Application\UI\Template
+	public function createTemplate(?string $class = null, ?callable $latteFactory = null): Application\UI\Template
 	{
 		$latte = $latteFactory
 			? $latteFactory()

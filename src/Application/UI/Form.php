@@ -27,7 +27,7 @@ class Form extends Nette\Forms\Form implements SignalReceiver
 	/**
 	 * Application form constructor.
 	 */
-	public function __construct(Nette\ComponentModel\IContainer $parent = null, string $name = null)
+	public function __construct(?Nette\ComponentModel\IContainer $parent = null, ?string $name = null)
 	{
 		parent::__construct();
 		if ($parent !== null) {

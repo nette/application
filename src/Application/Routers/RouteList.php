@@ -23,7 +23,7 @@ class RouteList extends Nette\Routing\RouteList implements Nette\Routing\Router,
 	private $module;
 
 
-	public function __construct(string $module = null)
+	public function __construct(?string $module = null)
 	{
 		parent::__construct();
 		$this->module = $module ? $module . ':' : null;

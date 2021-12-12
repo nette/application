@@ -9,7 +9,7 @@ declare(strict_types=1);
 use Tester\Assert;
 
 
-function testRouteIn(Nette\Routing\Router $route, string $url, array $expectedParams = null, string $expectedUrl = null): void
+function testRouteIn(Nette\Routing\Router $route, string $url, ?array $expectedParams = null, ?string $expectedUrl = null): void
 {
 	$urlBuilder = new Nette\Http\Url("http://example.com$url");
 	$urlBuilder->appendQuery([

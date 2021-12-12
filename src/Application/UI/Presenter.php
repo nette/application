@@ -451,7 +451,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * @throws Nette\Application\AbortException
 	 * @return never
 	 */
-	public function sendTemplate(Template $template = null): void
+	public function sendTemplate(?Template $template = null): void
 	{
 		$template = $template ?? $this->getTemplate();
 		if (!$template->getFile()) {
@@ -675,7 +675,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * @throws Nette\Application\AbortException
 	 * @return never
 	 */
-	public function redirectUrl(string $url, int $httpCode = null): void
+	public function redirectUrl(string $url, ?int $httpCode = null): void
 	{
 		if ($this->isAjax()) {
 			$this->payload->redirect = $url;
@@ -716,7 +716,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * @param  mixed  ...$args
 	 * @throws Nette\Application\AbortException
 	 */
-	public function canonicalize(string $destination = null, ...$args): void
+	public function canonicalize(?string $destination = null, ...$args): void
 	{
 		$request = $this->request;
 		if ($this->isAjax() || (!$request->isMethod('get') && !$request->isMethod('head'))) {
@@ -754,7 +754,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * @param  string  $expire  like '20 minutes'
 	 * @throws Nette\Application\AbortException
 	 */
-	public function lastModified($lastModified, string $etag = null, string $expire = null): void
+	public function lastModified($lastModified, ?string $etag = null, ?string $expire = null): void
 	{
 		if ($expire !== null) {
 			$this->httpResponse->setExpiration($expire);
@@ -992,7 +992,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * Converts Request to URL.
 	 * @internal
 	 */
-	protected function requestToUrl(Application\Request $request, bool $relative = null): string
+	protected function requestToUrl(Application\Request $request, ?bool $relative = null): string
 	{
 		if ($this->refUrlCache === null) {
 			$url = $this->httpRequest->getUrl();
@@ -1033,7 +1033,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		string $method,
 		array &$args,
 		array $supplemental = [],
-		array &$missing = null
+		?array &$missing = null
 	): void {
 		$i = 0;
 		$rm = new \ReflectionMethod($class, $method);
@@ -1176,7 +1176,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/**
 	 * Saves state information for all subcomponents to $this->globalState.
 	 */
-	protected function getGlobalState(string $forClass = null): array
+	protected function getGlobalState(?string $forClass = null): array
 	{
 		$sinces = &$this->globalStateSinces;
 
@@ -1251,7 +1251,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/**
 	 * Saves state informations for next request.
 	 */
-	public function saveState(array &$params, ComponentReflection $reflection = null): void
+	public function saveState(array &$params, ?ComponentReflection $reflection = null): void
 	{
 		($reflection ?: static::getReflection())->saveState($this, $params);
 	}
@@ -1438,7 +1438,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/**
 	 * @return Http\Session|Http\SessionSection
 	 */
-	final public function getSession(string $namespace = null)
+	final public function getSession(?string $namespace = null)
 	{
 		if (!$this->session) {
 			throw new Nette\InvalidStateException('Service Session has not been set.');

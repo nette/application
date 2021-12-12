@@ -26,7 +26,7 @@ final class ErrorPresenter implements Application\IPresenter
 	private $logger;
 
 
-	public function __construct(ILogger $logger = null)
+	public function __construct(?ILogger $logger = null)
 	{
 		$this->logger = $logger;
 	}

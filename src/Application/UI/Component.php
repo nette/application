@@ -289,7 +289,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	 * @param  array|mixed  $args
 	 * @throws InvalidLinkException
 	 */
-	public function isLinkCurrent(string $destination = null, $args = []): bool
+	public function isLinkCurrent(?string $destination = null, $args = []): bool
 	{
 		if ($destination !== null) {
 			$args = func_num_args() < 3 && is_array($args)

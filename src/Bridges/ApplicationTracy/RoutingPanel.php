@@ -89,7 +89,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 		Routing\Router $router,
 		Nette\Http\IRequest $httpRequest,
 		string $module = '',
-		string $path = null,
+		?string $path = null,
 		bool $parentMatches = true,
 		int $level = -1,
 		int $flag = 0

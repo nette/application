@@ -37,8 +37,8 @@ final class FileResponse implements Nette\Application\Response
 
 	public function __construct(
 		string $file,
-		string $name = null,
-		string $contentType = null,
+		?string $name = null,
+		?string $contentType = null,
 		bool $forceDownload = true
 	) {
 		if (!is_file($file) || !is_readable($file)) {

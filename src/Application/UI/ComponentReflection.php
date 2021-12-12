@@ -36,7 +36,7 @@ final class ComponentReflection extends \ReflectionClass
 	 * Returns array of classes persistent parameters. They have public visibility,
 	 * are non-static and have annotation @persistent.
 	 */
-	public function getPersistentParams(string $class = null): array
+	public function getPersistentParams(?string $class = null): array
 	{
 		$class = $class ?? $this->getName();
 		$params = &self::$ppCache[$class];
@@ -75,7 +75,7 @@ final class ComponentReflection extends \ReflectionClass
 	}
 
 
-	public function getPersistentComponents(string $class = null): array
+	public function getPersistentComponents(?string $class = null): array
 	{
 		$class = $class ?? $this->getName();
 		$components = &self::$pcCache[$class];

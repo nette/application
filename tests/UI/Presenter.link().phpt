@@ -239,7 +239,7 @@ class TestPresenter extends Application\UI\Presenter
 	}
 
 
-	public function actionHintsNulls(int $int = null, bool $bool = null, string $str = null, array $arr = null)
+	public function actionHintsNulls(?int $int = null, ?bool $bool = null, ?string $str = null, ?array $arr = null)
 	{
 	}
 
@@ -259,7 +259,7 @@ class TestPresenter extends Application\UI\Presenter
 	}
 
 
-	public function actionObjects(stdClass $req, ?stdClass $nullable, stdClass $opt = null)
+	public function actionObjects(stdClass $req, ?stdClass $nullable, ?stdClass $opt = null)
 	{
 	}
 

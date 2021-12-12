@@ -15,7 +15,7 @@ namespace Nette\Application\UI;
  */
 interface TemplateFactory
 {
-	function createTemplate(Control $control = null): Template;
+	function createTemplate(?Control $control = null): Template;
 }
 
 

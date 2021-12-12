@@ -123,7 +123,7 @@ abstract class Control extends Component implements Renderable
 	/**
 	 * Forces control or its snippet to repaint.
 	 */
-	public function redrawControl(string $snippet = null, bool $redraw = true): void
+	public function redrawControl(?string $snippet = null, bool $redraw = true): void
 	{
 		if ($redraw) {
 			$this->invalidSnippets[$snippet ?? "\0"] = true;
@@ -140,7 +140,7 @@ abstract class Control extends Component implements Renderable
 	/**
 	 * Is required to repaint the control or its snippet?
 	 */
-	public function isControlInvalid(string $snippet = null): bool
+	public function isControlInvalid(?string $snippet = null): bool
 	{
 		if ($snippet !== null) {
 			return $this->invalidSnippets[$snippet] ?? isset($this->invalidSnippets["\0"]);

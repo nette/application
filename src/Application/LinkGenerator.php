@@ -31,7 +31,7 @@ final class LinkGenerator
 	private $presenterFactory;
 
 
-	public function __construct(Router $router, UrlScript $refUrl, IPresenterFactory $presenterFactory = null)
+	public function __construct(Router $router, UrlScript $refUrl, ?IPresenterFactory $presenterFactory = null)
 	{
 		$this->router = $router;
 		$this->refUrl = $refUrl;

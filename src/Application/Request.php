@@ -61,7 +61,7 @@ final class Request
 	 */
 	public function __construct(
 		string $name,
-		string $method = null,
+		?string $method = null,
 		array $params = [],
 		array $post = [],
 		array $files = [],
@@ -142,7 +142,7 @@ final class Request
 	 * If no key is passed, returns the entire array.
 	 * @return mixed
 	 */
-	public function getPost(string $key = null)
+	public function getPost(?string $key = null)
 	{
 		return func_num_args() === 0
 			? $this->post

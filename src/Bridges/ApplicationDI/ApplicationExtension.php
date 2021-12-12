@@ -40,9 +40,9 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 
 	public function __construct(
 		bool $debugMode = false,
-		array $scanDirs = null,
-		string $tempDir = null,
-		Nette\Loaders\RobotLoader $robotLoader = null
+		?array $scanDirs = null,
+		?string $tempDir = null,
+		?Nette\Loaders\RobotLoader $robotLoader = null
 	) {
 		$this->debugMode = $debugMode;
 		$this->scanDirs = (array) $scanDirs;

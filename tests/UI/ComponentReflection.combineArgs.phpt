@@ -25,11 +25,11 @@ class MyPresenter
 
 
 	public function hintsNulls(
-		int $int = null,
-		bool $bool = null,
-		string $str = null,
-		array $arr = null,
-		iterable $iter = null
+		?int $int = null,
+		?bool $bool = null,
+		?string $str = null,
+		?array $arr = null,
+		?iterable $iter = null
 	) {
 	}
 
@@ -54,7 +54,7 @@ class MyPresenter
 	}
 
 
-	public function objects(stdClass $req, ?stdClass $nullable, stdClass $opt = null)
+	public function objects(stdClass $req, ?stdClass $nullable, ?stdClass $opt = null)
 	{
 	}
 }

@@ -42,9 +42,9 @@ class TemplateFactory implements UI\TemplateFactory
 
 	public function __construct(
 		LatteFactory $latteFactory,
-		Nette\Http\IRequest $httpRequest = null,
-		Nette\Security\User $user = null,
-		Nette\Caching\Storage $cacheStorage = null,
+		?Nette\Http\IRequest $httpRequest = null,
+		?Nette\Security\User $user = null,
+		?Nette\Caching\Storage $cacheStorage = null,
 		$templateClass = null
 	) {
 		$this->latteFactory = $latteFactory;
@@ -60,7 +60,7 @@ class TemplateFactory implements UI\TemplateFactory
 
 
 	/** @return Template */
-	public function createTemplate(UI\Control $control = null, string $class = null): UI\Template
+	public function createTemplate(?UI\Control $control = null, ?string $class = null): UI\Template
 	{
 		$class = $class ?? $this->templateClass;
 		if (!is_a($class, Template::class, true)) {
