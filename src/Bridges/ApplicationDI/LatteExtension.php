@@ -107,6 +107,7 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 		if (!$factory instanceof ApplicationLatte\TemplateFactory) {
 			return;
 		}
+
 		$factory->onCreate[] = function (ApplicationLatte\Template $template) use ($bar, $all) {
 			$control = $template->getLatte()->getProviders()['uiControl'] ?? null;
 			if ($all || $control instanceof Nette\Application\UI\Presenter) {
@@ -130,12 +131,14 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 			} else {
 				[$macro, $method] = explode('::', $macro);
 			}
+
 			$definition->addSetup('?->onCompile[] = function ($engine) { ?->' . $method . '($engine->getCompiler()); }', ['@self', $macro]);
 
 		} else {
 			if (strpos($macro, '::') === false && class_exists($macro)) {
 				$macro .= '::install';
 			}
+
 			$definition->addSetup('?->onCompile[] = function ($engine) { ' . $macro . '($engine->getCompiler()); }', ['@self']);
 		}
 	}

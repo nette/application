@@ -119,9 +119,11 @@ final class RoutingPanel implements Tracy\IBarPanel
 			if ($info = $this->routers[$next] ?? null) {
 				$info->gutterTop = abs(max(0, $level) - $info->level);
 			}
+
 			if ($info = end($this->routers)) {
 				$info->gutterBottom = abs(max(0, $level) - $info->level);
 			}
+
 			return;
 		}
 
@@ -134,10 +136,12 @@ final class RoutingPanel implements Tracy\IBarPanel
 		} catch (\Throwable $e) {
 			$matched = 'error';
 		}
+
 		if ($params !== null) {
 			if ($module) {
 				$params['presenter'] = $module . ($params['presenter'] ?? '');
 			}
+
 			$matched = 'may';
 			if ($this->matched === null) {
 				$this->matched = $params;
@@ -169,6 +173,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 		} catch (Nette\Application\InvalidPresenterException $e) {
 			return;
 		}
+
 		$rc = new \ReflectionClass($class);
 
 		if ($rc->isSubclassOf(Nette\Application\UI\Presenter::class)) {

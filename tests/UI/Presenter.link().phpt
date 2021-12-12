@@ -33,6 +33,7 @@ class TestControl extends Application\UI\Control
 		if (isset($params['order'])) {
 			$params['order'] = explode('.', $params['order']);
 		}
+
 		parent::loadState($params);
 	}
 

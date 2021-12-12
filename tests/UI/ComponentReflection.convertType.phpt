@@ -30,6 +30,7 @@ function testIt(string $type, $val, $res = null)
 		$res = $val;
 		Assert::false(ComponentReflection::convertType($val, $type, $isClass));
 	}
+
 	Assert::same($res, $val);
 }
 

@@ -103,10 +103,12 @@ final class RoutingExtension extends Nette\DI\CompilerExtension
 				if ($router instanceof Nette\Application\Routers\RouteList) {
 					$router->warmupCache();
 				}
+
 				$s = serialize($router);
 			} catch (\Throwable $e) {
 				throw new Nette\DI\ServiceCreationException('Unable to cache router due to error: ' . $e->getMessage(), 0, $e);
 			}
+
 			$method->setBody('return unserialize(?);', [$s]);
 		}
 	}

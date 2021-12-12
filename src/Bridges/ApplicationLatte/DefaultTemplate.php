@@ -48,6 +48,7 @@ final class DefaultTemplate extends Template
 		if (property_exists($this, $name)) {
 			throw new Nette\InvalidStateException("The variable '$name' already exists.");
 		}
+
 		$this->$name = $value;
 		return $this;
 	}

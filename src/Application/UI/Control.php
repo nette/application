@@ -47,6 +47,7 @@ abstract class Control extends Component implements Renderable
 		if ($this->template === null) {
 			$this->template = $this->createTemplate();
 		}
+
 		return $this->template;
 	}
 
@@ -156,7 +157,6 @@ abstract class Control extends Component implements Renderable
 						// $this->invalidSnippets['__child'] = true; // as cache
 						return true;
 					}
-
 				} elseif ($component instanceof Nette\ComponentModel\IContainer) {
 					$queue[] = $component;
 				}

@@ -91,6 +91,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 			Nette\Utils\FileSystem::createDir($this->tempDir);
 			$this->getContainerBuilder()->addDependency($touch);
 		}
+
 		$presenterFactory = $builder->addDefinition($this->prefix('presenterFactory'))
 			->setType(Nette\Application\IPresenterFactory::class)
 			->setFactory(Nette\Application\PresenterFactory::class, [new Definitions\Statement(
@@ -144,6 +145,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 			if (is_subclass_of($def->getType(), UI\Presenter::class) && $def instanceof Definitions\ServiceDefinition) {
 				$def->addSetup('$invalidLinkMode', [$this->invalidLinkMode]);
 			}
+
 			$this->compiler->addExportedType($def->getType());
 		}
 	}
@@ -157,6 +159,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 			if (!class_exists(Nette\Loaders\RobotLoader::class)) {
 				throw new Nette\NotSupportedException("RobotLoader is required to find presenters, install package `nette/robot-loader` or disable option {$this->prefix('scanDirs')}: false");
 			}
+
 			$robot = new Nette\Loaders\RobotLoader;
 			$robot->addDirectory(...$config->scanDirs);
 			$robot->acceptFiles = [$config->scanFilter . '.php'];
@@ -166,7 +169,6 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 			} else {
 				$robot->rebuild();
 			}
-
 		} elseif ($this->robotLoader && $config->scanDirs !== false) {
 			$robot = $this->robotLoader;
 			$robot->refresh();
@@ -200,6 +202,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 				$presenters[] = $rc->getName();
 			}
 		}
+
 		return $presenters;
 	}
 

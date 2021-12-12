@@ -72,6 +72,7 @@ class SnippetBridge implements ISnippetBridge
 		if ($this->payload === null) {
 			$this->payload = $this->control->getPresenter()->getPayload();
 		}
+
 		$this->payload->snippets[$this->control->getSnippetId($name)] = $content;
 	}
 

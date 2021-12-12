@@ -33,6 +33,7 @@ final class SimpleRouter extends Nette\Routing\SimpleRouter implements Nette\Rou
 			if (!$presenter) {
 				throw new Nette\InvalidArgumentException("Argument must be array or string in format Presenter:action, '$defaults' given.");
 			}
+
 			$defaults = [
 				self::PRESENTER_KEY => $presenter,
 				'action' => $action === '' ? Application\UI\Presenter::DEFAULT_ACTION : $action,
@@ -58,6 +59,7 @@ final class SimpleRouter extends Nette\Routing\SimpleRouter implements Nette\Rou
 		if ($this->flags & self::ONE_WAY) {
 			return null;
 		}
+
 		return parent::constructUrl($params, $refUrl);
 	}
 

@@ -69,6 +69,7 @@ final class UIMacros extends Latte\Macros\MacroSet
 		if ($this->printTemplate) {
 			return ["Nette\\Bridges\\ApplicationLatte\\UIRuntime::printClass(\$this, $this->printTemplate); exit;"];
 		}
+
 		return [$this->extends . 'Nette\Bridges\ApplicationLatte\UIRuntime::initialize($this, $this->parentName, $this->blocks);'];
 	}
 
@@ -84,15 +85,18 @@ final class UIMacros extends Latte\Macros\MacroSet
 		if ($node->context !== [Latte\Compiler::CONTENT_HTML, Latte\Compiler::CONTEXT_HTML_TEXT]) {
 			$escapeMod = Latte\Helpers::removeFilter($node->modifiers, 'noescape') ? '' : '|escape';
 		}
+
 		if ($node->modifiers) {
 			trigger_error('Modifiers are deprecated in ' . $node->getNotation(), E_USER_DEPRECATED);
 		}
+
 		$node->modifiers .= $escapeMod ?? '';
 
 		$words = $node->tokenizer->fetchWords();
 		if (!$words) {
 			throw new CompileException('Missing control name in {control}');
 		}
+
 		$name = $writer->formatWord($words[0]);
 		$method = ucfirst($words[1] ?? '');
 		$method = Strings::match($method, '#^\w*$#D')
@@ -108,6 +112,7 @@ final class UIMacros extends Latte\Macros\MacroSet
 				break;
 			}
 		}
+
 		$tokens->position = $pos;
 		$param = $wrap ? $writer->formatArray() : $writer->formatArgs();
 
@@ -151,6 +156,7 @@ final class UIMacros extends Latte\Macros\MacroSet
 		if ($node->modifiers) {
 			throw new CompileException('Modifiers are not allowed in ' . $node->getNotation());
 		}
+
 		return $writer->write(
 			$node->args
 				? 'if ($this->global->uiPresenter->isLinkCurrent(%node.word, %node.array?)) {'
@@ -167,6 +173,7 @@ final class UIMacros extends Latte\Macros\MacroSet
 		if ($node->modifiers || $node->parentNode || $node->args !== 'auto') {
 			return $this->extends = false;
 		}
+
 		$this->extends = $writer->write('$this->parentName = $this->global->uiPresenter->findLayoutTemplateFile();');
 	}
 
@@ -179,6 +186,7 @@ final class UIMacros extends Latte\Macros\MacroSet
 		if ($node->modifiers) {
 			throw new CompileException('Modifiers are not allowed in ' . $node->getNotation());
 		}
+
 		$this->printTemplate = var_export($node->tokenizer->fetchWord() ?: null, true);
 	}
 }

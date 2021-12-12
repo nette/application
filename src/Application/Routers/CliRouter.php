@@ -54,6 +54,7 @@ final class CliRouter implements Nette\Routing\Router
 				} else {
 					$params[] = $arg;
 				}
+
 				$flag = null;
 				continue;
 			}
@@ -78,11 +79,13 @@ final class CliRouter implements Nette\Routing\Router
 		if (!isset($params[self::PRESENTER_KEY])) {
 			throw new Nette\InvalidStateException('Missing presenter & action in route definition.');
 		}
+
 		[$module, $presenter] = Nette\Application\Helpers::splitName($params[self::PRESENTER_KEY]);
 		if ($module !== '') {
 			$params[self::PRESENTER_KEY] = $presenter;
 			$presenter = $module;
 		}
+
 		$params['presenter'] = $presenter;
 
 		return $params;

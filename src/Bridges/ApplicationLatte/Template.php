@@ -69,6 +69,7 @@ class Template implements Nette\Application\UI\Template
 			if (func_num_args() || PHP_VERSION_ID >= 70400) {
 				throw $e;
 			}
+
 			trigger_error('Exception in ' . __METHOD__ . "(): {$e->getMessage()} in {$e->getFile()}:{$e->getLine()}", E_USER_ERROR);
 			return '';
 		}
@@ -146,6 +147,7 @@ class Template implements Nette\Application\UI\Template
 				$res[$prop->getName()] = $prop->getValue($this);
 			}
 		}
+
 		return $res;
 	}
 

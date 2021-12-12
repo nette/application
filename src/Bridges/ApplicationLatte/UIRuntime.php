@@ -54,6 +54,7 @@ final class UIRuntime
 				$blueprint->printHeader("{templatePrint}: Class '$parent' doesn't exist.");
 				return;
 			}
+
 			$params = array_diff_key($params, get_class_vars($parent));
 		}
 

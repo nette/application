@@ -44,6 +44,7 @@ class Form extends Nette\Forms\Form implements SignalReceiver
 			if (!isset($this->getElementPrototype()->id)) {
 				$this->getElementPrototype()->id = 'frm-' . $this->lookupPath(Presenter::class);
 			}
+
 			if (!$this->getAction()) {
 				$this->setAction(new Link($presenter, 'this'));
 			}
@@ -71,6 +72,7 @@ class Form extends Nette\Forms\Form implements SignalReceiver
 			trigger_error(__METHOD__ . '() parameter $throw is deprecated, use getPresenterIfExists()', E_USER_DEPRECATED);
 			$throw = func_get_arg(0);
 		}
+
 		return $this->lookup(Presenter::class, $throw ?? true);
 	}
 

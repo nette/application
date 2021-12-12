@@ -54,6 +54,7 @@ class TemplateFactory implements UI\TemplateFactory
 		if ($templateClass && (!class_exists($templateClass) || !is_a($templateClass, Template::class, true))) {
 			throw new Nette\InvalidArgumentException("Class $templateClass does not implement " . Template::class . ' or it does not exist.');
 		}
+
 		$this->templateClass = $templateClass ?: DefaultTemplate::class;
 	}
 
@@ -78,10 +79,12 @@ class TemplateFactory implements UI\TemplateFactory
 			if ($this->cacheStorage) {
 				$latte->getCompiler()->addMacro('cache', new Nette\Bridges\CacheLatte\CacheMacro);
 			}
+
 			UIMacros::install($latte->getCompiler());
 			if (class_exists(Nette\Bridges\FormsLatte\FormMacros::class)) {
 				Nette\Bridges\FormsLatte\FormMacros::install($latte->getCompiler());
 			}
+
 			if ($control) {
 				$control->templatePrepareFilters($template);
 			}
@@ -135,9 +138,11 @@ class TemplateFactory implements UI\TemplateFactory
 				$header = $presenter->getHttpResponse()->getHeader('Content-Security-Policy')
 					?: $presenter->getHttpResponse()->getHeader('Content-Security-Policy-Report-Only');
 			}
+
 			$nonce = $presenter && preg_match('#\s\'nonce-([\w+/]+=*)\'#', (string) $header, $m) ? $m[1] : null;
 			$latte->addProvider('uiNonce', $nonce);
 		}
+
 		$latte->addProvider('cacheStorage', $this->cacheStorage);
 
 		Nette\Utils\Arrays::invoke($this->onCreate, $template);

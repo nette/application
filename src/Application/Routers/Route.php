@@ -55,6 +55,7 @@ class Route extends Nette\Routing\Route implements Nette\Routing\Router
 			if (!$presenter) {
 				throw new Nette\InvalidArgumentException("Second argument must be array or string in format Presenter:action, '$metadata' given.");
 			}
+
 			$metadata = [self::PRESENTER_KEY => $presenter];
 			if ($action !== '') {
 				$metadata['action'] = $action;
@@ -95,6 +96,7 @@ class Route extends Nette\Routing\Route implements Nette\Routing\Router
 		if (isset($this->getMetadata()[self::MODULE_KEY], $params[self::MODULE_KEY]) && is_string($presenter)) {
 			$params[self::PRESENTER_KEY] = $params[self::MODULE_KEY] . ':' . $params[self::PRESENTER_KEY];
 		}
+
 		unset($params[self::MODULE_KEY]);
 
 		return $params;
@@ -139,6 +141,7 @@ class Route extends Nette\Routing\Route implements Nette\Routing\Router
 		} elseif (isset($this->getMetadata()[self::MODULE_KEY])) {
 			unset($res[self::PRESENTER_KEY]);
 		}
+
 		unset($res[self::MODULE_KEY]);
 		return $res;
 	}

@@ -41,6 +41,7 @@ class RouteList extends Nette\Routing\RouteList implements Nette\Routing\Router,
 		if (is_string($presenter) && strncmp($presenter, 'Nette:', 6)) {
 			$params[self::PRESENTER_KEY] = $this->module . $presenter;
 		}
+
 		return $params;
 	}
 
@@ -126,6 +127,7 @@ class RouteList extends Nette\Routing\RouteList implements Nette\Routing\Router,
 		if (!$this->offsetExists($index)) {
 			throw new Nette\OutOfRangeException('Offset invalid or out of range');
 		}
+
 		return $this->getRouters()[$index];
 	}
 
@@ -148,6 +150,7 @@ class RouteList extends Nette\Routing\RouteList implements Nette\Routing\Router,
 		if (!$this->offsetExists($index)) {
 			throw new Nette\OutOfRangeException('Offset invalid or out of range');
 		}
+
 		$this->modify($index, null);
 	}
 
