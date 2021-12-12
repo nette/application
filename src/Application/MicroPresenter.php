@@ -24,23 +24,14 @@ final class MicroPresenter implements Application\IPresenter
 {
 	use Nette\SmartObject;
 
-	private ?Nette\DI\Container $context;
-
-	private ?Nette\Http\IRequest $httpRequest;
-
-	private ?Router $router;
-
 	private ?Application\Request $request;
 
 
 	public function __construct(
-		?Nette\DI\Container $context = null,
-		?Http\IRequest $httpRequest = null,
-		?Router $router = null,
+		private ?Nette\DI\Container $context = null,
+		private ?Nette\Http\IRequest $httpRequest = null,
+		private ?Router $router = null,
 	) {
-		$this->context = $context;
-		$this->httpRequest = $httpRequest;
-		$this->router = $router;
 	}
 
 
