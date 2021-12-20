@@ -220,5 +220,28 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 					. '<h3>Presenter</h3>' . $dumper($application->getPresenter()),
 			];
 		});
+		if (
+			version_compare(Tracy\Debugger::VERSION, '2.9.0', '>=')
+			&& version_compare(Tracy\Debugger::VERSION, '3.0', '<')
+		) {
+			$blueScreen->addFileGenerator([self::class, 'generateNewPresenterFileContents']);
+		}
+	}
+
+
+	public static function generateNewPresenterFileContents(string $file, ?string $class = null): ?string
+	{
+		if (!$class || substr($file, -13) !== 'Presenter.php') {
+			return null;
+		}
+
+		$res = "<?php\n\ndeclare(strict_types=1);\n\n";
+
+		if ($pos = strrpos($class, '\\')) {
+			$res .= 'namespace ' . substr($class, 0, $pos) . ";\n\n";
+			$class = substr($class, $pos + 1);
+		}
+
+		return $res . "use Nette;\n\n\nclass $class extends Nette\\Application\\UI\\Presenter\n{\n\$END\$\n}\n";
 	}
 }
