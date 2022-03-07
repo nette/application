@@ -17,7 +17,7 @@ use Nette;
  */
 class RouteList extends Nette\Routing\RouteList implements Nette\Routing\Router, \ArrayAccess, \Countable, \IteratorAggregate
 {
-	private const PRESENTER_KEY = 'presenter';
+	private const PresenterKey = 'presenter';
 
 	/** @var string|null */
 	private $module;
@@ -37,9 +37,9 @@ class RouteList extends Nette\Routing\RouteList implements Nette\Routing\Router,
 	{
 		$params = parent::match($httpRequest);
 
-		$presenter = $params[self::PRESENTER_KEY] ?? null;
+		$presenter = $params[self::PresenterKey] ?? null;
 		if (is_string($presenter) && strncmp($presenter, 'Nette:', 6)) {
-			$params[self::PRESENTER_KEY] = $this->module . $presenter;
+			$params[self::PresenterKey] = $this->module . $presenter;
 		}
 
 		return $params;
@@ -52,11 +52,11 @@ class RouteList extends Nette\Routing\RouteList implements Nette\Routing\Router,
 	public function constructUrl(array $params, Nette\Http\UrlScript $refUrl): ?string
 	{
 		if ($this->module) {
-			if (strncmp($params[self::PRESENTER_KEY], $this->module, strlen($this->module)) !== 0) {
+			if (strncmp($params[self::PresenterKey], $this->module, strlen($this->module)) !== 0) {
 				return null;
 			}
 
-			$params[self::PRESENTER_KEY] = substr($params[self::PRESENTER_KEY], strlen($this->module));
+			$params[self::PresenterKey] = substr($params[self::PresenterKey], strlen($this->module));
 		}
 
 		return parent::constructUrl($params, $refUrl);
