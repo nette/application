@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Nette\Bridges\ApplicationLatte;
 
 use Latte;
+use Latte\Compiler\Nodes\TemplateNode;
 use Nette;
 use Nette\Application\UI;
 
@@ -45,7 +46,7 @@ final class UIExtension extends Latte\Extension
 			'coreParentFinder' => [$this, 'findLayoutTemplate'],
 			'uiControl' => $this->control,
 			'uiPresenter' => $presenter,
-			//'snippetBridge' => $this->control ? new SnippetBridge($this->control) : null,
+			'snippetDriver' => $this->control ? new SnippetDriver($this->control) : null,
 			'uiNonce' => $httpResponse ? $this->findNonce($httpResponse) : null,
 		];
 	}
@@ -61,7 +62,30 @@ final class UIExtension extends Latte\Extension
 			'link' => [Nodes\LinkNode::class, 'create'],
 			'ifCurrent' => [Nodes\IfCurrentNode::class, 'create'],
 			'templatePrint' => [Nodes\TemplatePrintNode::class, 'create'],
+			'snippet' => [Nodes\SnippetNode::class, 'create'],
+			'snippetArea' => [Nodes\SnippetAreaNode::class, 'create'],
 		];
+	}
+
+
+	public function getPasses(): array
+	{
+		return [
+			'snippetRendering' => [$this, 'snippetRenderingPass'],
+		];
+	}
+
+
+	/**
+	 * Render snippets instead of template in snippet-mode.
+	 */
+	public function snippetRenderingPass(TemplateNode $templateNode): void
+	{
+		array_unshift($templateNode->main->children, new Latte\Compiler\Nodes\AuxiliaryNode(fn() => <<<'XX'
+			if ($this->global->snippetDriver?->renderSnippets($this->blocks[self::LayerSnippet], $this->params)) { return; }
+
+
+			XX));
 	}
 
 
