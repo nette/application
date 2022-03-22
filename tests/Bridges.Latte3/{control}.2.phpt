@@ -2,15 +2,18 @@
 
 /**
  * Test: {control ...}
+ * @phpVersion 8.0
  */
 
 declare(strict_types=1);
 
-use Nette\Bridges\ApplicationLatte\UIMacros;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
+
+if (version_compare(Latte\Engine::VERSION, '3', '<')) {
+	Tester\Environment::skip('Test for Latte 3');
+}
 
 
 class MockComponent
@@ -36,9 +39,9 @@ class MockControl
 
 $latte = new Latte\Engine;
 $latte->setLoader(new Latte\Loaders\StringLoader);
-UIMacros::install($latte->getCompiler());
-
+$latte->addExtension(new Nette\Bridges\ApplicationLatte\UIExtension(null));
 $latte->addProvider('uiControl', new MockComponent);
+
 $params['form'] = new MockControl;
 $params['name'] = 'form';
 
@@ -59,7 +62,11 @@ $latte->renderToString('
 
 {control form var1, 1, 2}
 
-{control form var1 => 5, 1, 2}
+{control form wrap => 5, 1, 2}
+
+{control form [var1 => 5], 1, 2}
+
+{control form 5, 1, var1: 2}
 ', $params);
 
 Assert::same([
@@ -79,5 +86,9 @@ Assert::same([
 	'MockComponent::getComponent', ['form'],
 	'MockControl::__call', ['render', ['var1', 1, 2]],
 	'MockComponent::getComponent', ['form'],
-	'MockControl::__call', ['render', [['var1' => 5, 0 => 1, 1 => 2]]],
+	'MockControl::__call', ['render', [['wrap' => 5, 1, 2]]],
+	'MockComponent::getComponent', ['form'],
+	'MockControl::__call', ['render', [['var1' => 5], 1, 2]],
+	'MockComponent::getComponent', ['form'],
+	'MockControl::__call', ['render', [5, 1, 'var1' => 2]],
 ], Notes::fetch());

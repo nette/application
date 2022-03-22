@@ -16,6 +16,7 @@ use Nette\Application\UI\Renderable;
 
 
 /**
+ * Latte v2 snippet bridge
  * @internal
  */
 class SnippetBridge implements ISnippetBridge

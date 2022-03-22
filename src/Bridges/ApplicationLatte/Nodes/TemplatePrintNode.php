@@ -1,51 +1,42 @@
 <?php
 
 /**
- * This file is part of the Nette Framework (https://nette.org)
- * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
+ * This file is part of the Latte (https://latte.nette.org)
+ * Copyright (c) 2008 David Grudl (https://davidgrudl.com)
  */
 
 declare(strict_types=1);
 
-namespace Nette\Bridges\ApplicationLatte;
+namespace Nette\Bridges\ApplicationLatte\Nodes;
 
 use Latte;
+use Latte\Compiler\PhpHelpers;
+use Latte\Compiler\PrintContext;
 use Nette;
 use Nette\Application\UI\Presenter;
+use Nette\Bridges\ApplicationLatte\Template;
 use Nette\PhpGenerator as Php;
 
 
 /**
- * Latte v2 helpers for UI macros.
- * @internal
+ * {templatePrint [ClassName]}
  */
-final class UIRuntime
+class TemplatePrintNode extends Latte\Essential\Nodes\TemplatePrintNode
 {
-	use Nette\StaticClass;
-
-	public static function initialize(Latte\Runtime\Template $template, &$parentName, array $blocks): void
+	public function print(PrintContext $context): string
 	{
-		$providers = $template->global;
-		$blocks = array_filter(array_keys($blocks), function (string $s): bool { return $s[0] !== '_'; });
-		if (
-			$parentName === null
-			&& $blocks
-			&& !$template->getReferringTemplate()
-			&& ($providers->uiControl ?? null) instanceof Nette\Application\UI\Presenter
-		) {
-			$parentName = $providers->uiControl->findLayoutTemplateFile();
-		}
+		return self::class . '::printClass($this, ' . PhpHelpers::dump($this->template) . '); exit;';
 	}
 
 
 	public static function printClass(Latte\Runtime\Template $template, ?string $parent = null): void
 	{
-		$blueprint = new Latte\Runtime\Blueprint;
+		$blueprint = new Latte\Essential\Blueprint;
 		$name = 'Template';
 		$params = $template->getParameters();
 		$control = $params['control'] ?? $params['presenter'] ?? null;
 		if ($control) {
-			$name = preg_replace('#(Control|Presenter)$#', '', get_class($control)) . 'Template';
+			$name = preg_replace('#(Control|Presenter)$#', '', $control::class) . 'Template';
 			unset($params[$control instanceof Presenter ? 'control' : 'presenter']);
 		}
 
@@ -58,7 +49,7 @@ final class UIRuntime
 			$params = array_diff_key($params, get_class_vars($parent));
 		}
 
-		$funcs = array_diff_key((array) $template->global->fn, (new Latte\Runtime\Defaults)->getFunctions());
+		$funcs = array_diff_key((array) $template->global->fn, (new Latte\Essential\CoreExtension)->getFunctions());
 		unset($funcs['isLinkCurrent'], $funcs['isModuleCurrent']);
 
 		$namespace = new Php\PhpNamespace(Php\Helpers::extractNamespace($name));

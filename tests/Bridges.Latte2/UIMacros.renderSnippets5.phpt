@@ -10,8 +10,11 @@ use Nette\Bridges\ApplicationLatte\SnippetBridge;
 use Nette\Bridges\ApplicationLatte\UIMacros;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
+
+if (version_compare(Latte\Engine::VERSION, '3', '>')) {
+	Tester\Environment::skip('Test for Latte 2');
+}
 
 
 
@@ -46,15 +49,6 @@ $presenter->redrawControl('foo');
 Assert::exception(function () use ($presenter) {
 	$presenter->render('<div id="x" n:snippet=foo>Hello</div>');
 }, Latte\CompileException::class, 'Cannot combine HTML attribute id with n:snippet.');
-
-
-/*$presenter = new TestPresenter;
-$presenter->snippetMode = true;
-$presenter->redrawControl('foo');
-Assert::exception(function () use ($presenter) {
-	$presenter->render('<div n:snippet="$foo">Hello</div>');
-}, Latte\CompileException::class, 'Dynamic snippets are allowed only inside static snippet/snippetArea.');
-*/
 
 
 $presenter = new TestPresenter;

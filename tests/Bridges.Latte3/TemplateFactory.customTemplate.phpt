@@ -2,6 +2,7 @@
 
 /**
  * Test: TemplateFactory custom template
+ * @phpVersion 8.0
  */
 
 declare(strict_types=1);
@@ -12,8 +13,11 @@ use Nette\Bridges\ApplicationLatte\Template;
 use Nette\Bridges\ApplicationLatte\TemplateFactory;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
+
+if (version_compare(Latte\Engine::VERSION, '3', '<')) {
+	Tester\Environment::skip('Test for Latte 3');
+}
 
 Tester\Environment::bypassFinals();
 
@@ -49,9 +53,11 @@ test('', function () {
 	Assert::type(Template::class, $factory->createTemplate());
 });
 
-Assert::exception(function () {
-	$factory = new TemplateFactory(Mockery::mock(LatteFactory::class), null, null, null, stdClass::class);
-}, Nette\InvalidArgumentException::class, 'Class stdClass does not implement Nette\Bridges\ApplicationLatte\Template or it does not exist.');
+Assert::exception(
+	fn() => new TemplateFactory(Mockery::mock(LatteFactory::class), null, null, null, stdClass::class),
+	Nette\InvalidArgumentException::class,
+	'Class stdClass does not implement Nette\Bridges\ApplicationLatte\Template or it does not exist.',
+);
 
 
 test('', function () {

@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Test: LatteExtension.
+ * Test: LatteExtension v3
+ * @phpVersion 8.0
  */
 
 declare(strict_types=1);
@@ -9,68 +10,21 @@ declare(strict_types=1);
 use Nette\DI;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 
-
-class LoremIpsumMacros extends Latte\Macros\MacroSet
-{
-	public static function install(Latte\Compiler $compiler)
-	{
-		$me = new static($compiler);
-		$me->addMacro('lorem', 'lorem');
-		Notes::add(get_class($me));
-	}
+if (version_compare(Latte\Engine::VERSION, '3', '<')) {
+	Tester\Environment::skip('Test for Latte 3');
 }
 
 
-class IpsumLoremMacros extends Latte\Macros\MacroSet
+class MyExtension extends Latte\Extension
 {
-	public static function install(Latte\Compiler $compiler)
+	public $arg;
+
+
+	public function __construct($arg = null)
 	{
-		$me = new static($compiler);
-		$me->addMacro('ipsum', 'ipsum');
-		Notes::add(get_class($me));
-	}
-}
-
-
-class FooMacros extends Latte\Macros\MacroSet
-{
-	public static function install(Latte\Compiler $compiler)
-	{
-		$me = new static($compiler);
-		$me->addMacro('foo', 'foo');
-		Notes::add(get_class($me));
-	}
-}
-
-
-class NonStaticMacrosFactory
-{
-	/** @var string */
-	private $parameter;
-
-
-	public function __construct($parameter)
-	{
-		$this->parameter = $parameter;
-	}
-
-
-	public function install(Latte\Compiler $compiler)
-	{
-		$macros = new Latte\Macros\MacroSet($compiler);
-		$macros->addMacro('foo', 'foo ' . $this->parameter);
-		Notes::add(static::class . '::install');
-	}
-
-
-	public function create(Latte\Compiler $compiler)
-	{
-		$macros = new Latte\Macros\MacroSet($compiler);
-		$macros->addMacro('foo2', 'foo ' . $this->parameter);
-		Notes::add(static::class . '::create');
+		$this->arg = $arg;
 	}
 }
 
@@ -80,23 +34,21 @@ class AnotherExtension extends Nette\DI\CompilerExtension
 	public function beforeCompile()
 	{
 		foreach ($this->compiler->getExtensions(Nette\Bridges\ApplicationDI\LatteExtension::class) as $extension) {
-			$extension->addMacro('FooMacros::install');
+			$extension->addExtension('MyExtension');
 		}
 	}
 }
 
-
 $loader = new DI\Config\Loader;
 $config = $loader->load(Tester\FileMock::create('
 latte:
-	macros:
-		- LoremIpsumMacros
-		- IpsumLoremMacros::install
-		- @macroFactory
-		- @macroFactory::create
+	extensions:
+		- MyExtension
+		- MyExtension(1)
+		- @latteExt
 
 services:
-	macroFactory: NonStaticMacrosFactory(foo)
+	latteExt: MyExtension(2)
 ', 'neon'));
 
 $compiler = new DI\Compiler;
@@ -109,12 +61,14 @@ $container = new Container;
 
 
 Assert::type(Nette\Bridges\ApplicationLatte\LatteFactory::class, $container->getService('nette.latteFactory'));
-$container->getService('nette.latteFactory')->create()->setLoader(new Latte\Loaders\StringLoader)->compile('');
+$latte = $container->getService('nette.latteFactory')->create();
+$extensions = Assert::with($latte, fn() => $this->extensions);
 
-Assert::same([
-	'LoremIpsumMacros',
-	'IpsumLoremMacros',
-	'NonStaticMacrosFactory::install',
-	'NonStaticMacrosFactory::create',
-	'FooMacros',
-], Notes::fetch());
+Assert::equal([
+	new Latte\Essential\CoreExtension,
+	new Latte\Sandbox\SandboxExtension,
+	new MyExtension,
+	new MyExtension(1),
+	new MyExtension(2),
+	new MyExtension,
+], $extensions);
