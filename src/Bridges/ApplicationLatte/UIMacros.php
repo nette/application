@@ -17,7 +17,7 @@ use Nette\Utils\Strings;
 
 
 /**
- * Macros for Nette\Application\UI.
+ * Latte v2 tags for Nette\Application\UI.
  *
  * - {link destination ...} control link
  * - {plink destination ...} presenter link

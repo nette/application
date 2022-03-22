@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace Nette\Bridges\ApplicationLatte;
 
-use Latte\Runtime\ISnippetBridge;
 use Nette;
 use Nette\Application\UI\Control;
 use Nette\Application\UI\Renderable;
@@ -18,7 +17,7 @@ use Nette\Application\UI\Renderable;
 /**
  * @internal
  */
-class SnippetBridge implements ISnippetBridge
+class SnippetBridge
 {
 	use Nette\SmartObject;
 
