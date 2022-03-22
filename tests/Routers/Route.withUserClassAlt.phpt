@@ -16,7 +16,7 @@ require __DIR__ . '/Route.php';
 
 $route = new Route('<presenter>/<id>', [
 	'id' => [
-		Route::PATTERN => '\d{1,3}',
+		Route::Pattern => '\d{1,3}',
 	],
 ]);
 
