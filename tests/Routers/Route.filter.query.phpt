@@ -16,8 +16,8 @@ require __DIR__ . '/Route.php';
 
 $route = new Route(' ? action=<presenter>', [
 	'presenter' => [
-		Route::FILTER_IN => fn($s) => strrev($s),
-		Route::FILTER_OUT => fn($s) => strtoupper(strrev($s)),
+		Route::FilterIn => fn($s) => strrev($s),
+		Route::FilterOut => fn($s) => strtoupper(strrev($s)),
 	],
 ]);
 
