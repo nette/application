@@ -216,7 +216,7 @@ final class ComponentReflection extends \ReflectionClass
 	 */
 	private static function convertSingleType(&$val, string $type): bool
 	{
-		static $builtin = [
+		$builtin = [
 			'string' => 1, 'int' => 1, 'float' => 1, 'bool' => 1, 'array' => 1, 'object' => 1,
 			'callable' => 1, 'iterable' => 1, 'void' => 1, 'null' => 1, 'mixed' => 1,
 			'boolean' => 1, 'integer' => 1, 'double' => 1, 'scalar' => 1,
@@ -272,7 +272,7 @@ final class ComponentReflection extends \ReflectionClass
 			return null;
 		}
 
-		static $tokens = ['true' => true, 'false' => false, 'null' => null];
+		$tokens = ['true' => true, 'false' => false, 'null' => null];
 		$res = [];
 		foreach ($m[1] as $s) {
 			foreach (preg_split('#\s*,\s*#', $s, -1, PREG_SPLIT_NO_EMPTY) ?: ['true'] as $item) {
