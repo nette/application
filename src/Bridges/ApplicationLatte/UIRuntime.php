@@ -35,6 +35,16 @@ final class UIRuntime
 		) {
 			$parentName = $providers->uiControl->findLayoutTemplateFile();
 		}
+
+		/*
+		if ($template->getReferenceType() !== 'import'
+			&& !$parentName
+			&& isset($providers->snippetDriver)
+			&& $providers->snippetDriver->renderSnippets($template->blocks[$template::LayerSnippet], $this->getParameters())
+		) {
+			// nothing
+		}
+		*/
 	}
 
 
