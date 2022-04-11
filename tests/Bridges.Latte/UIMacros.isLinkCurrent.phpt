@@ -29,8 +29,11 @@ $factory->createTemplate($presenter);
 
 $latte->setLoader(new Latte\Loaders\StringLoader);
 
-Assert::matchFile(__DIR__ . '/expected/UIMacros.isLinkCurrent.phtml', $latte->compile(
-	'<a n:href="default" n:class="$presenter->isLinkCurrent() ? current">n:href before n:class</a>
+Assert::matchFile(
+	__DIR__ . '/expected/UIMacros.isLinkCurrent.phtml',
+	$latte->compile(
+		<<<'XX'
+<a n:href="default" n:class="$presenter->isLinkCurrent() ? current">n:href before n:class</a>
 
 <a n:class="$presenter->isLinkCurrent() ? current" n:href="default">n:href after n:class</a>
 
@@ -43,5 +46,7 @@ Assert::matchFile(__DIR__ . '/expected/UIMacros.isLinkCurrent.phtml', $latte->co
 {ifCurrent default}default{/ifCurrent}
 
 <a n:class="isLinkCurrent(default) ? current" n:href="default">custom function</a>
-'
-));
+
+XX
+	)
+);
