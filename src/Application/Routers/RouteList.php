@@ -98,7 +98,7 @@ class RouteList extends Nette\Routing\RouteList implements Nette\Routing\Router,
 		if ($router instanceof Route) {
 			trigger_error('Usage `$router[] = new Route(...)` is deprecated, use `$router->addRoute(...)`.', E_USER_DEPRECATED);
 		} else {
-			$class = getclass($router);
+			$class = get_class($router);
 			trigger_error("Usage `\$router[] = new $class` is deprecated, use `\$router->add(new $class)`.", E_USER_DEPRECATED);
 		}
 
