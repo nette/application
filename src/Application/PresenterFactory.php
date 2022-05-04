@@ -123,23 +123,4 @@ class PresenterFactory implements IPresenterFactory
 
 		return $mapping[0];
 	}
-
-
-	/**
-	 * Formats presenter name from class name.
-	 * @internal
-	 */
-	public function unformatPresenterClass(string $class): ?string
-	{
-		trigger_error(__METHOD__ . '() is deprecated.', E_USER_DEPRECATED);
-		foreach ($this->mapping as $module => $mapping) {
-			$mapping = str_replace(['\\', '*'], ['\\\\', '(\w+)'], $mapping);
-			if (preg_match("#^\\\\?$mapping[0]((?:$mapping[1])*)$mapping[2]$#Di", $class, $matches)) {
-				return ($module === '*' ? '' : $module . ':')
-					. preg_replace("#$mapping[1]#iA", '$1:', $matches[1]) . $matches[3];
-			}
-		}
-
-		return null;
-	}
 }
