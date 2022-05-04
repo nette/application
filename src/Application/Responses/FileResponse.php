@@ -19,20 +19,15 @@ final class FileResponse implements Nette\Application\Response
 {
 	use Nette\SmartObject;
 
-	/** @var bool */
-	public $resuming = true;
+	public bool $resuming = true;
 
-	/** @var string */
-	private $file;
+	private string $file;
 
-	/** @var string */
-	private $contentType;
+	private string $contentType;
 
-	/** @var string */
-	private $name;
+	private string $name;
 
-	/** @var bool */
-	private $forceDownload;
+	private bool $forceDownload;
 
 
 	public function __construct(
