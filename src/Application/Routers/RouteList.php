@@ -16,7 +16,7 @@ use Nette;
 /**
  * The router broker.
  */
-class RouteList extends Nette\Routing\RouteList implements Nette\Routing\Router, \ArrayAccess, \Countable, \IteratorAggregate
+class RouteList extends Nette\Routing\RouteList implements Nette\Routing\Router, \ArrayAccess
 {
 	private const PresenterKey = 'presenter';
 
@@ -96,14 +96,6 @@ class RouteList extends Nette\Routing\RouteList implements Nette\Routing\Router,
 	}
 
 
-	/** @deprecated */
-	public function count(): int
-	{
-		trigger_error(__METHOD__ . '() is deprecated.', E_USER_DEPRECATED);
-		return count($this->getRouters());
-	}
-
-
 	/**
 	 * @param  mixed  $index
 	 * @param  Nette\Routing\Router  $router
@@ -154,14 +146,6 @@ class RouteList extends Nette\Routing\RouteList implements Nette\Routing\Router,
 		}
 
 		$this->modify($index, null);
-	}
-
-
-	/** @deprecated */
-	public function getIterator(): \ArrayIterator
-	{
-		trigger_error(__METHOD__ . '() is deprecated, use getRouters().', E_USER_DEPRECATED);
-		return new \ArrayIterator($this->getRouters());
 	}
 }
 
