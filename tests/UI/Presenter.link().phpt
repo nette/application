@@ -286,9 +286,7 @@ $url = new Http\UrlScript('http://localhost/index.php', '/index.php');
 
 $presenterFactory = Mockery::mock(Nette\Application\IPresenterFactory::class);
 $presenterFactory->shouldReceive('getPresenterClass')
-	->andReturnUsing(function ($presenter) {
-		return $presenter . 'Presenter';
-	});
+	->andReturnUsing(fn($presenter) => $presenter . 'Presenter');
 
 $presenter = new TestPresenter;
 $presenter->injectPrimary(
@@ -296,7 +294,7 @@ $presenter->injectPrimary(
 	$presenterFactory,
 	new Application\Routers\SimpleRouter,
 	new Http\Request($url),
-	new Http\Response
+	new Http\Response,
 );
 
 $presenter->invalidLinkMode = TestPresenter::InvalidLinkWarning;

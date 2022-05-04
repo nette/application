@@ -38,5 +38,5 @@ $latte->setLoader(new Latte\Loaders\StringLoader);
 
 Assert::match(
 	'<script nonce="abcd123=="></script>',
-	$latte->renderToString('<script n:nonce></script>')
+	$latte->renderToString('<script n:nonce></script>'),
 );

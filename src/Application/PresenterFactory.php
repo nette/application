@@ -37,7 +37,7 @@ class PresenterFactory implements IPresenterFactory
 	 */
 	public function __construct(?callable $factory = null)
 	{
-		$this->factory = $factory ?: function (string $class): IPresenter { return new $class; };
+		$this->factory = $factory ?: fn(string $class): IPresenter => new $class;
 	}
 
 

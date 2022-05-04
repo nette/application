@@ -39,7 +39,7 @@ test('', function () {
 
 	$presenter->run(new Request('Nette:Micro', 'GET', [
 		'callback' => function (stdClass $obj) use (&$log) {
-			$log[] = get_class($obj);
+			$log[] = $obj::class;
 		},
 	]));
 	Assert::same([

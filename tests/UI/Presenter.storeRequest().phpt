@@ -35,7 +35,7 @@ class MockSession extends Http\Session
 
 	public function getSection(
 		string $section,
-		string $class = Nette\Http\SessionSection::class
+		string $class = Nette\Http\SessionSection::class,
 	): Nette\Http\SessionSection
 	{
 		return $this->testSection;
@@ -125,7 +125,7 @@ test('', function () {
 		new Http\Request(new Http\UrlScript),
 		new Http\Response,
 		$session = new MockSession,
-		$user = new MockUser
+		$user = new MockUser,
 	);
 
 	$section = $session->testSection = new MockSessionSection($session);
@@ -151,7 +151,7 @@ test('', function () {
 		new Application\Routers\SimpleRouter,
 		new Http\Request(new Http\UrlScript),
 		new Http\Response,
-		$session = new MockSession
+		$session = new MockSession,
 	);
 
 	$section = $session->testSection = new MockSessionSection($session);

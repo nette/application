@@ -78,7 +78,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	{
 		$res = parent::createComponent($name);
 		if ($res && !$res instanceof SignalReceiver && !$res instanceof StatePersistent) {
-			$type = get_class($res);
+			$type = $res::class;
 			trigger_error("It seems that component '$name' of type $type is not intended to be used in the Presenter.", E_USER_NOTICE);
 		}
 
@@ -165,7 +165,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 						$name,
 						$this instanceof Presenter ? 'presenter ' . $this->getName() : "component '{$this->getUniqueId()}'",
 						$meta['type'],
-						is_object($params[$name]) ? get_class($params[$name]) : gettype($params[$name])
+						is_object($params[$name]) ? get_class($params[$name]) : gettype($params[$name]),
 					));
 				}
 
@@ -333,7 +333,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 		$presenter = $this->getPresenter();
 		$presenter->redirectUrl(
 			$presenter->createRequest($this, $destination, $args, 'redirect'),
-			Nette\Http\IResponse::S301_MOVED_PERMANENTLY
+			Nette\Http\IResponse::S301_MOVED_PERMANENTLY,
 		);
 	}
 

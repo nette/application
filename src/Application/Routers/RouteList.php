@@ -72,7 +72,7 @@ class RouteList extends Nette\Routing\RouteList implements Nette\Routing\Router,
 		#[Language('TEXT')]
 		string $mask,
 		$metadata = [],
-		int $flags = 0
+		int $flags = 0,
 	) {
 		$this->add(new Route($mask, $metadata), $flags);
 		return $this;
