@@ -26,7 +26,7 @@ final class UIRuntime
 	public static function initialize(Latte\Runtime\Template $template, &$parentName, array $blocks): void
 	{
 		$providers = $template->global;
-		$blocks = array_filter(array_keys($blocks), function (string $s): bool { return $s[0] !== '_'; });
+		$blocks = array_filter(array_keys($blocks), fn(string $s): bool => $s[0] !== '_');
 		if (
 			$parentName === null
 			&& $blocks
@@ -45,7 +45,7 @@ final class UIRuntime
 		$params = $template->getParameters();
 		$control = $params['control'] ?? $params['presenter'] ?? null;
 		if ($control) {
-			$name = preg_replace('#(Control|Presenter)$#', '', get_class($control)) . 'Template';
+			$name = preg_replace('#(Control|Presenter)$#', '', $control::class) . 'Template';
 			unset($params[$control instanceof Presenter ? 'control' : 'presenter']);
 		}
 

@@ -40,7 +40,7 @@ final class MicroPresenter implements Application\IPresenter
 	public function __construct(
 		?Nette\DI\Container $context = null,
 		?Http\IRequest $httpRequest = null,
-		?Router $router = null
+		?Router $router = null,
 	) {
 		$this->context = $context;
 		$this->httpRequest = $httpRequest;

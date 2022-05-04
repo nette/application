@@ -29,7 +29,7 @@ class MyPresenter
 		?bool $bool = null,
 		?string $str = null,
 		?array $arr = null,
-		?iterable $iter = null
+		?iterable $iter = null,
 	) {
 	}
 
@@ -44,7 +44,7 @@ class MyPresenter
 		bool $bool = false,
 		string $str = '',
 		array $arr = [],
-		iterable $iter = []
+		iterable $iter = [],
 	) {
 	}
 
