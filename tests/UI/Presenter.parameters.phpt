@@ -36,7 +36,7 @@ class TestPresenter extends Application\UI\Presenter
 function createPresenter()
 {
 	$presenter = new TestPresenter;
-	$presenter->injectPrimary(null, null, null, new Http\Request(new Http\UrlScript), new Http\Response);
+	$presenter->injectPrimary(new Http\Request(new Http\UrlScript), new Http\Response);
 	$presenter->autoCanonicalize = false;
 	return $presenter;
 }
