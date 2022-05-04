@@ -23,7 +23,7 @@ Tester\Environment::bypassFinals();
 
 class TemplateMock extends Template
 {
-	private $file = 'ko';
+	private string $file = 'ko';
 
 
 	public function render(?string $file = null, array $params = []): void
