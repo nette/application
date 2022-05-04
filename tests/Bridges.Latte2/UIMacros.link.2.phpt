@@ -60,66 +60,63 @@ $params['action'] = 'login';
 $params['arr'] = ['link' => 'login', 'param' => 123];
 
 Assert::match(<<<'EOD'
-plink:['Homepage:']
+	plink:['Homepage:']
 
-plink:['Homepage:']
+	plink:['Homepage:']
 
-plink:['Homepage:action']
+	plink:['Homepage:action']
 
-plink:['Homepage:action']
+	plink:['Homepage:action']
 
-plink:['Homepage:action',10,20,'{one}&amp;two']
+	plink:['Homepage:action',10,20,'{one}&amp;two']
 
-plink:['Homepage:action#hash',10,20,'{one}&amp;two']
+	plink:['Homepage:action#hash',10,20,'{one}&amp;two']
 
-plink:['#hash']
+	plink:['#hash']
 
-plink:[':',10]
+	plink:[':',10]
 
-plink:{'0':'default','1':10,'a':20,'b':30}
+	plink:{'0':'default','1':10,'a':20,'b':30}
 
-link:['login']
+	link:['login']
 
-<a href="plink:['login',123]"></a>
+	<a href="plink:['login',123]"></a>
 
-<a href="link:{'0':'default!','1':10,'a':20,'b':30}"></a>
+	<a href="link:{'0':'default!','1':10,'a':20,'b':30}"></a>
 
-<a href="link:['Homepage:']"></a>
+	<a href="link:['Homepage:']"></a>
 
-<a href="link:{'0':'default!','1':10,'a':20,'b':30}"></a>
+	<a href="link:{'0':'default!','1':10,'a':20,'b':30}"></a>
 
-<a href="link:['default!#hash',10,20]"></a>
-EOD
+	<a href="link:['default!#hash',10,20]"></a>
+	EOD, strtr($latte->renderToString(<<<'EOD'
+	{plink Homepage:}
 
-	, strtr($latte->renderToString(<<<'EOD'
-{plink Homepage:}
+	{plink  Homepage: }
 
-{plink  Homepage: }
+	{plink Homepage:action }
 
-{plink Homepage:action }
+	{plink 'Homepage:action' }
 
-{plink 'Homepage:action' }
+	{plink Homepage:action 10, 20, '{one}&two'}
 
-{plink Homepage:action 10, 20, '{one}&two'}
+	{plink Homepage:action#hash 10, 20, '{one}&two'}
 
-{plink Homepage:action#hash 10, 20, '{one}&two'}
+	{plink #hash}
 
-{plink #hash}
+	{plink : 10 }
 
-{plink : 10 }
+	{plink default 10, 'a' => 20, 'b' => 30}
 
-{plink default 10, 'a' => 20, 'b' => 30}
+	{link  $action}
 
-{link  $action}
+	<a href="{plink $arr['link'], $arr['param']}"></a>
 
-<a href="{plink $arr['link'], $arr['param']}"></a>
+	<a href="{link default! 10, 'a' => 20, 'b' => 30}"></a>
 
-<a href="{link default! 10, 'a' => 20, 'b' => 30}"></a>
+	<a n:href="Homepage:"></a>
 
-<a n:href="Homepage:"></a>
+	<a n:href="default! 10, 'a' => 20, 'b' => 30"></a>
 
-<a n:href="default! 10, 'a' => 20, 'b' => 30"></a>
-
-<a n:href="default!#hash 10, 20"></a>
-EOD
-		, $params), ['&#039;' => "'", '&apos;' => "'", '&#123;' => '{']));
+	<a n:href="default!#hash 10, 20"></a>
+	EOD, $params), ['&#039;' => "'", '&apos;' => "'", '&#123;' => '{']));

@@ -108,7 +108,7 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 	public static function initLattePanel(
 		Nette\Application\UI\TemplateFactory $factory,
 		Tracy\Bar $bar,
-		bool $all = false
+		bool $all = false,
 	) {
 		if (!$factory instanceof ApplicationLatte\TemplateFactory) {
 			return;
