@@ -38,7 +38,7 @@ class TestPresenter extends Nette\Application\UI\Presenter
 
 
 $presenter = new TestPresenter;
-$presenter->injectPrimary(null, null, null, new Http\Request(new Http\UrlScript('/')), new Http\Response);
+$presenter->injectPrimary(new Http\Request(new Http\UrlScript('/')), new Http\Response);
 $presenter->snippetMode = true;
 $presenter->redrawControl('foo');
 $presenter->render();

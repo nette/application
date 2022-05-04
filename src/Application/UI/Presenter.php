@@ -1349,11 +1349,10 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 
 	final public function injectPrimary(
-		?Nette\DI\Container $context,
-		?Application\IPresenterFactory $presenterFactory,
-		?Nette\Routing\Router $router,
 		Http\IRequest $httpRequest,
 		Http\IResponse $httpResponse,
+		?Application\IPresenterFactory $presenterFactory = null,
+		?Nette\Routing\Router $router = null,
 		?Http\Session $session = null,
 		?Nette\Security\User $user = null,
 		?TemplateFactory $templateFactory = null,

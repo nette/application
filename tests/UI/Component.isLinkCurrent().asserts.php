@@ -31,11 +31,10 @@ function callIsComponentLinkCurrent(
 	$presenterFactory->shouldReceive('getPresenterClass')->andReturn('TestPresenter');
 
 	$presenter->injectPrimary(
-		null,
-		$presenterFactory,
-		new Application\Routers\SimpleRouter,
 		new Http\Request($url),
 		new Http\Response,
+		$presenterFactory,
+		new Application\Routers\SimpleRouter,
 	);
 	$presenter->onStartup[] = function () use (&$res, $component,  $destination, $args) {
 		$res = $component->isLinkCurrent($destination, $args);

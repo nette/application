@@ -338,8 +338,8 @@ Assert::noError(function () use ($httpRequest, $httpResponse) {
 
 	$errors = [];
 
-	$presenter->injectPrimary(null, $presenterFactory, $router, $httpRequest, $httpResponse);
-	$errorPresenter->injectPrimary(null, $presenterFactory, $router, $httpRequest, $httpResponse);
+	$presenter->injectPrimary($httpRequest, $httpResponse, $presenterFactory, $router);
+	$errorPresenter->injectPrimary($httpRequest, $httpResponse, $presenterFactory, $router);
 
 	$app = new Application($presenterFactory, $router, $httpRequest, $httpResponse);
 	$app->catchExceptions = true;
