@@ -28,11 +28,10 @@ function testLink($domain)
 
 	$presenter = new TestPresenter;
 	$presenter->injectPrimary(
-		null,
-		Mockery::mock(Nette\Application\IPresenterFactory::class),
-		new Application\Routers\SimpleRouter,
 		new Http\Request($url),
 		new Http\Response,
+		Mockery::mock(Nette\Application\IPresenterFactory::class),
+		new Application\Routers\SimpleRouter,
 	);
 
 	$request = new Application\Request('Test', Http\Request::Get, []);

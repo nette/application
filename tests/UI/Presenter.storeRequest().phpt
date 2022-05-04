@@ -120,11 +120,10 @@ class MockUser extends Security\User
 test('', function () {
 	$presenter = new TestPresenter;
 	$presenter->injectPrimary(
-		null,
-		null,
-		new Application\Routers\SimpleRouter,
 		new Http\Request(new Http\UrlScript),
 		new Http\Response,
+		null,
+		new Application\Routers\SimpleRouter,
 		$session = new MockSession,
 		$user = new MockUser,
 	);
@@ -147,11 +146,10 @@ test('', function () {
 test('', function () {
 	$presenter = new TestPresenter;
 	$presenter->injectPrimary(
-		null,
-		null,
-		new Application\Routers\SimpleRouter,
 		new Http\Request(new Http\UrlScript),
 		new Http\Response,
+		null,
+		new Application\Routers\SimpleRouter,
 		$session = new MockSession,
 	);
 
