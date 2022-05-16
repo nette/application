@@ -9,14 +9,16 @@ declare(strict_types=1);
 
 namespace Nette\Bridges\ApplicationLatte\Nodes;
 
+use Latte\Compiler\NodeHelpers;
 use Latte\Compiler\Nodes\AreaNode;
 use Latte\Compiler\Nodes\NopNode;
 use Latte\Compiler\Nodes\Php;
 use Latte\Compiler\Nodes\Php\ModifierNode;
 use Latte\Compiler\Nodes\StatementNode;
+use Latte\Compiler\Nodes\TextNode;
 use Latte\Compiler\PrintContext;
 use Latte\Compiler\Tag;
-use Latte\Helpers;
+use Nette\Localization\Translator;
 
 
 /**
@@ -29,7 +31,7 @@ class TranslateNode extends StatementNode
 
 
 	/** @return \Generator<int, ?array, array{AreaNode, ?Tag}, static|NopNode> */
-	public static function create(Tag $tag): \Generator
+	public static function create(Tag $tag, ?Translator $translator): \Generator
 	{
 		$tag->outputMode = $tag::OutputKeepIndentation;
 
@@ -42,14 +44,30 @@ class TranslateNode extends StatementNode
 		}
 
 		[$node->content] = yield;
+
+		if ($text = NodeHelpers::toText($node->content)) {
+			$node->content = new TextNode($text);
+			if ($translator) {
+				try {
+					$translation = $translator->translate($text, ...NodeHelpers::toValue($args, constants: true));
+					if (is_string($translation)) {
+						$node->content = new TextNode($translation);
+						return $node;
+					}
+				} catch (\InvalidArgumentException) {
+				}
+			}
+		}
+
 		array_unshift($node->modifier->filters, new Php\FilterNode(new Php\IdentifierNode('translate'), $args->toArguments()));
+
 		return $node;
 	}
 
 
 	public function print(PrintContext $context): string
 	{
-		if ($text = Helpers::toTextualContent($this->content)) {
+		if ($this->content instanceof TextNode) {
 			return $context->format(
 				<<<'XX'
 					$ʟ_fi = new LR\FilterInfo(%dump);
@@ -57,7 +75,7 @@ class TranslateNode extends StatementNode
 					XX,
 				$context->getEscaper()->export(),
 				$this->modifier,
-				$text,
+				$this->content->content,
 				$this->position,
 			);
 

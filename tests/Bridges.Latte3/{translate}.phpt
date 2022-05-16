@@ -4,6 +4,7 @@
 
 declare(strict_types=1);
 
+use Nette\Localization\Translator;
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
@@ -64,4 +65,36 @@ Assert::match(
 Assert::notContains(
 	"'translate'",
 	$latte->compile('{translate /}'),
+);
+
+
+class MyTranslator implements Translator
+{
+	public function translate($message, ...$parameters): string
+	{
+		return strrev($message) . implode(',', $parameters);
+	}
+}
+
+$latte = new Latte\Engine;
+$latte->setLoader(new Latte\Loaders\StringLoader);
+$latte->addExtension(new Nette\Bridges\ApplicationLatte\TranslatorExtension(new MyTranslator));
+Assert::contains(
+	'echo LR\Filters::convertTo($ʟ_fi, \'html\', $this->filters->filterContent(\'translate\', $ʟ_fi, \'a&b\', 1, 2))',
+	$latte->compile('{translate 1,2}a&b{/translate}'),
+);
+Assert::same(
+	'b&a1,2',
+	$latte->renderToString('{translate 1,2}a&b{/translate}'),
+);
+
+
+$latte->addExtension(new Nette\Bridges\ApplicationLatte\TranslatorExtension(new MyTranslator, 'en'));
+Assert::contains(
+	'echo LR\Filters::convertTo($ʟ_fi, \'html\', \'b&a1,2\')',
+	$latte->compile('{translate 1,2}a&b{/translate}'),
+);
+Assert::same(
+	'b&a1,2',
+	$latte->renderToString('{translate 1,2}a&b{/translate}'),
 );
