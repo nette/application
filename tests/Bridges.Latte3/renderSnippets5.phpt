@@ -2,7 +2,6 @@
 
 /**
  * Test: n:snippet
- * @phpVersion 8.0
  */
 
 declare(strict_types=1);
