@@ -51,7 +51,7 @@ final class ComponentReflection extends \ReflectionClass
 			foreach ($defaults as $name => $default) {
 				$rp = new \ReflectionProperty($class, $name);
 				if (!$rp->isStatic()
-					&& ((PHP_VERSION_ID >= 80000 && $rp->getAttributes(Nette\Application\Attributes\Persistent::class))
+					&& ($rp->getAttributes(Nette\Application\Attributes\Persistent::class)
 						|| self::parseAnnotation($rp, 'persistent'))
 				) {
 					$params[$name] = [
@@ -298,7 +298,7 @@ final class ComponentReflection extends \ReflectionClass
 
 	public static function getPropertyType(\ReflectionProperty $prop, $default): string
 	{
-		$type = PHP_VERSION_ID < 70400 ? null : $prop->getType();
+		$type = $prop->getType();
 		return $type
 			? ($type instanceof \ReflectionNamedType ? $type->getName() : (string) $type)
 			: ($default === null ? 'scalar' : gettype($default));

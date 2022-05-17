@@ -2,7 +2,6 @@
 
 /**
  * Test: renderSnippets and control wrapped in a snippet
- * @phpVersion 8.0
  */
 
 declare(strict_types=1);

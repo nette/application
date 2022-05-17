@@ -2,7 +2,6 @@
 
 /**
  * Test: TemplateFactory in Bridge properly handles TemplateFactory::onCreate
- * @phpVersion 8.0
  */
 
 declare(strict_types=1);
