@@ -111,9 +111,9 @@ Assert::match(<<<'EOD'
 
 	{link  $action}
 
-	<a href="{plink $arr['link'], $arr['param']|nocheck}"></a>
+	<a href="{plink $arr['link'], $arr['param']}"></a>
 
-	<a href="{link default! 10, 'a' => 20, 'b' => 30|nocheck}"></a>
+	<a href="{link default! 10, 'a' => 20, 'b' => 30}"></a>
 
 	<a n:href="Homepage:"></a>
 

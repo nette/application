@@ -40,6 +40,7 @@ class LinkNode extends StatementNode
 		$node->args = $tag->parser->parseArguments();
 		$node->modifier = $tag->parser->parseModifier();
 		$node->modifier->escape = true;
+		$node->modifier->check = false;
 		$node->mode = $tag->name;
 
 		if ($tag->isNAttribute()) {
