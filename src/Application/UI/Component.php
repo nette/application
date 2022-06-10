@@ -304,6 +304,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	 * Redirect to another presenter, action or signal.
 	 * @param  string   $destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
 	 * @param  mixed  ...$args
+	 * @return never
 	 * @throws Nette\Application\AbortException
 	 */
 	public function redirect(string $destination, ...$args): void
@@ -320,6 +321,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	 * Permanently redirects to presenter, action or signal.
 	 * @param  string   $destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
 	 * @param  mixed  ...$args
+	 * @return never
 	 * @throws Nette\Application\AbortException
 	 */
 	public function redirectPermanent(string $destination, ...$args): void
