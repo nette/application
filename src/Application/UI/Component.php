@@ -196,9 +196,12 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	 * Returns component param.
 	 * @return mixed
 	 */
-	final public function getParameter(string $name, $default = null)
+	final public function getParameter(string $name)
 	{
-		return $this->params[$name] ?? $default;
+		if (func_num_args() > 1) {
+			$default = func_get_arg(1);
+		}
+		return $this->params[$name] ?? $default ?? null;
 	}
 
 
