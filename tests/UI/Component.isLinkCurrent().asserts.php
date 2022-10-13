@@ -24,7 +24,8 @@ function callIsComponentLinkCurrent(
 	Application\Request $request,
 	$destination,
 	array $args
-): bool {
+): bool
+{
 	$url = new Http\UrlScript('http://localhost/index.php', '/index.php');
 	$presenterFactory = Mockery::mock(Nette\Application\IPresenterFactory::class);
 	$presenterFactory->shouldReceive('getPresenterClass')->andReturn('TestPresenter');

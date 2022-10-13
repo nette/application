@@ -132,7 +132,8 @@ class TemplateFactory implements UI\TemplateFactory
 		?UI\Control $control,
 		?UI\Presenter $presenter,
 		Template $template
-	): void {
+	): void
+	{
 		if ($latte->onCompile instanceof \Traversable) {
 			$latte->onCompile = iterator_to_array($latte->onCompile);
 		}

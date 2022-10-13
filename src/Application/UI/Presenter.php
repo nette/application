@@ -780,7 +780,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 		string $destination,
 		array $args,
 		string $mode
-	): ?string {
+	): ?string
+	{
 		// note: createRequest supposes that saveState(), run() & tryCall() behaviour is final
 
 		$this->lastCreatedRequest = $this->lastCreatedRequestFlag = null;
@@ -1034,7 +1035,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 		array &$args,
 		array $supplemental = [],
 		?array &$missing = null
-	): void {
+	): void
+	{
 		$i = 0;
 		$rm = new \ReflectionMethod($class, $method);
 		foreach ($rm->getParameters() as $param) {
