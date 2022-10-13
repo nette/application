@@ -211,7 +211,8 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 	public static function initializeBlueScreenPanel(
 		Tracy\BlueScreen $blueScreen,
 		Nette\Application\Application $application
-	): void {
+	): void
+	{
 		$blueScreen->addPanel(function (?\Throwable $e) use ($application, $blueScreen): ?array {
 			$dumper = $blueScreen->getDumper();
 			return $e ? null : [

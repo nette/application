@@ -51,7 +51,7 @@ Assert::match(
 				$ʟ_tmp->renderType() /* line 1 */;
 		%A%
 		XX
-,
+	,
 	$latte->compile('{control form:type}'),
 );
 

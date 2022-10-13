@@ -92,7 +92,8 @@ final class RoutingPanel implements Tracy\IBarPanel
 		?string $path = null,
 		int $level = -1,
 		int $flag = 0
-	): void {
+	): void
+	{
 		if ($router instanceof Routing\RouteList) {
 			if ($httpRequest) {
 				try {
