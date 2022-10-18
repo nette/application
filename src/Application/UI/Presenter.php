@@ -15,6 +15,7 @@ use Nette\Application\Helpers;
 use Nette\Application\Responses;
 use Nette\Http;
 use Nette\Utils\Arrays;
+use Throwable;
 
 
 /**
@@ -51,6 +52,9 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/** @var array<callable(self): void>  Occurs when the presenter is starting */
 	public $onStartup = [];
+
+	/** @var array<callable(self, Throwable|null): void>  Occurs after presenter processed a signal */
+	public $onAfterSignal = [];
 
 	/** @var array<callable(self): void>  Occurs when the presenter is rendering after beforeRender */
 	public $onRender = [];
@@ -230,7 +234,17 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 			// SIGNAL HANDLING
 			// calls $this->handle<Signal>()
-			$this->processSignal();
+			$signalException = null;
+			try {
+				$this->processSignal();
+			} catch (Throwable $signalException) {
+				// Handled bellow
+			} finally {
+				Arrays::invoke($this->onAfterSignal, $this, $signalException);
+				if ($signalException !== null) {
+					throw $signalException;
+				}
+			}
 
 			// RENDERING VIEW
 			$this->beforeRender();
