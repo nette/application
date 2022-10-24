@@ -164,12 +164,15 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 					));
 				}
 
-				$this->$name = $params[$name];
+				$this->$name = &$params[$name];
 
-			} elseif (isset($this->$name) || array_key_exists('since', $meta)) {
-				$params[$name] = $this->$name ?? null;
+			} elseif (
+				isset($this->$name)
+				|| (new \ReflectionProperty($this, $name)->getType()?->allowsNull() ?? true)
+			) {
+				$params[$name] = &$this->$name;
 
-			} elseif ($meta['required']) {
+			} elseif ($meta['required'] ?? true) {
 				$this->error(sprintf(
 					"Missing parameter '%s' required by %s.",
 					$name,
@@ -177,7 +180,8 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 				));
 
 			} else {
-				$params[$name] = $this->$name = $meta['def'];
+				$this->$name = $meta['def'];
+				$params[$name] = &$this->$name;
 			}
 		}
 
@@ -265,7 +269,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	 */
 	final public function getParameters(): array
 	{
-		return $this->params;
+		return array_map(fn($item) => $item, $this->params);
 	}
 
 
