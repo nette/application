@@ -23,7 +23,14 @@ class TestPresenter extends Application\UI\Presenter
 	public string $default = 'def';
 
 	#[Persistent]
-	public int $persistent;
+	public ?int $persistent;
+}
+
+
+class RequiredPersistentPresenter extends Application\UI\Presenter
+{
+	#[Persistent]
+	public int $page;
 }
 
 
@@ -53,4 +60,17 @@ test('initialized property', function () {
 	$presenter->required = 'xyz';
 	$presenter->loadState([]);
 	Assert::same('xyz', $presenter->required);
+});
+
+
+test('missing persistent parameter without default value', function () {
+	$presenter = new RequiredPersistentPresenter;
+	Assert::exception(
+		fn() => $presenter->loadState([]),
+		Application\BadRequestException::class,
+		"Missing parameter 'page' required by presenter .",
+	);
+
+	$presenter->loadState(['page' => '2']);
+	Assert::same(2, $presenter->page);
 });

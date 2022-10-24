@@ -164,13 +164,13 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 					));
 				}
 
-				$this->$name = $params[$name];
+				$this->$name = &$params[$name];
 
-			} elseif (isset($this->$name) || array_key_exists('since', $meta)) {
-				$params[$name] = $this->$name ?? null;
-
-			} elseif ((new \ReflectionProperty($this, $name))->getType()?->allowsNull() ?? true) {
-				$params[$name] = $this->$name = null;
+			} elseif (
+				isset($this->$name)
+				|| ((new \ReflectionProperty($this, $name))->getType()?->allowsNull() ?? true)
+			) {
+				$params[$name] = &$this->$name;
 
 			} else {
 				$this->error(sprintf(
@@ -254,7 +254,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	 */
 	final public function getParameters(): array
 	{
-		return $this->params;
+		return array_map(fn($item) => $item, $this->params);
 	}
 
 
