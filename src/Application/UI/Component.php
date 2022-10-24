@@ -160,9 +160,9 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 					));
 				}
 
-				$this->$name = $params[$name];
+				$this->$name = &$params[$name];
 			} else {
-				$params[$name] = $this->$name ?? null;
+				$params[$name] = &$this->$name;
 			}
 		}
 
