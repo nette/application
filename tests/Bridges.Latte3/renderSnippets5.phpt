@@ -48,7 +48,7 @@ $presenter->redrawControl('foo');
 Assert::exception(
 	fn() => $presenter->render('<div id="x" n:snippet=foo>Hello</div>'),
 	Latte\CompileException::class,
-	'Cannot combine HTML attribute id with n:snippet (at column 13)',
+	'Cannot combine HTML attribute id with n:snippet (on line 1 at column 13)',
 );
 
 
@@ -60,5 +60,5 @@ $presenter->redrawControl('foo');
 Assert::exception(
 	fn() => $presenter->render('<div n:snippet="foo"><div id="x" n:snippet="$foo">Hello</div></div>'),
 	Latte\CompileException::class,
-	'Cannot combine HTML attribute id with n:snippet (at column 34)',
+	'Cannot combine HTML attribute id with n:snippet (on line 1 at column 34)',
 );

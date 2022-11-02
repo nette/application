@@ -43,5 +43,5 @@ $presenter->injectPrimary(null, null, null, new Http\Request(new Http\UrlScript(
 Assert::exception(
 	fn() => $presenter->render('<div n:snippet=test data-snippet>hello</div>'),
 	Latte\CompileException::class,
-	'Cannot combine HTML attribute data-snippet with n:snippet (at column 6)',
+	'Cannot combine HTML attribute data-snippet with n:snippet (on line 1 at column 6)',
 );
