@@ -57,7 +57,7 @@ final class MicroPresenter implements Application\IPresenter
 			$refUrl = $this->httpRequest->getUrl()->withoutUserInfo();
 			$url = $this->router->constructUrl($request->toArray(), $refUrl);
 			if ($url !== null && !$refUrl->isEqual($url)) {
-				return new Responses\RedirectResponse($url, Http\IResponse::S301_MOVED_PERMANENTLY);
+				return new Responses\RedirectResponse($url, Http\IResponse::S301_MovedPermanently);
 			}
 		}
 
@@ -136,7 +136,7 @@ final class MicroPresenter implements Application\IPresenter
 	/**
 	 * Redirects to another URL.
 	 */
-	public function redirectUrl(string $url, int $httpCode = Http\IResponse::S302_FOUND): Responses\RedirectResponse
+	public function redirectUrl(string $url, int $httpCode = Http\IResponse::S302_Found): Responses\RedirectResponse
 	{
 		return new Responses\RedirectResponse($url, $httpCode);
 	}
@@ -146,7 +146,7 @@ final class MicroPresenter implements Application\IPresenter
 	 * Throws HTTP error.
 	 * @throws Nette\Application\BadRequestException
 	 */
-	public function error(string $message = '', int $httpCode = Http\IResponse::S404_NOT_FOUND): void
+	public function error(string $message = '', int $httpCode = Http\IResponse::S404_NotFound): void
 	{
 		throw new Application\BadRequestException($message, $httpCode);
 	}

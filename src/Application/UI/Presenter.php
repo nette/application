@@ -649,8 +649,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 		} elseif (!$httpCode) {
 			$httpCode = $this->httpRequest->isMethod('post')
-				? Http\IResponse::S303_POST_GET
-				: Http\IResponse::S302_FOUND;
+				? Http\IResponse::S303_PostGet
+				: Http\IResponse::S302_Found;
 		}
 
 		$this->sendResponse(new Responses\RedirectResponse($url, $httpCode));
@@ -707,8 +707,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 		}
 
 		$code = $request->hasFlag($request::VARYING)
-			? Http\IResponse::S302_FOUND
-			: Http\IResponse::S301_MOVED_PERMANENTLY;
+			? Http\IResponse::S302_Found
+			: Http\IResponse::S301_MovedPermanently;
 		$this->sendResponse(new Responses\RedirectResponse($url, $code));
 	}
 
@@ -808,7 +808,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 				if (array_key_exists(0, $args)) {
 					throw new InvalidLinkException("Unable to pass parameters to 'this!' signal.");
 				}
-			} elseif (!str_contains($signal, self::NAME_SEPARATOR)) {
+			} elseif (!str_contains($signal, self::NameSeparator)) {
 				// counterpart of signalReceived() & tryCall()
 				$method = $component->formatSignalMethod($signal);
 				if (!$reflection->hasCallableMethod($method)) {
@@ -832,7 +832,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			}
 
 			if ($args && $component !== $this) {
-				$prefix = $component->getUniqueId() . self::NAME_SEPARATOR;
+				$prefix = $component->getUniqueId() . self::NameSeparator;
 				foreach ($args as $key => $val) {
 					unset($args[$key]);
 					$args[$prefix . $key] = $val;
@@ -1150,7 +1150,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		if (!isset($this->globalState)) {
 			$state = [];
 			foreach ($this->globalParams as $id => $params) {
-				$prefix = $id . self::NAME_SEPARATOR;
+				$prefix = $id . self::NameSeparator;
 				foreach ($params as $key => $val) {
 					$state[$prefix . $key] = $val;
 				}
@@ -1178,7 +1178,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 					continue;
 				}
 
-				$prefix = $component->getUniqueId() . self::NAME_SEPARATOR;
+				$prefix = $component->getUniqueId() . self::NameSeparator;
 				$params = [];
 				$component->saveState($params);
 				foreach ($params as $key => $val) {
@@ -1195,7 +1195,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			$since = null;
 			foreach ($state as $key => $foo) {
 				if (!isset($sinces[$key])) {
-					$x = strpos($key, self::NAME_SEPARATOR);
+					$x = strpos($key, self::NameSeparator);
 					$x = $x === false ? $key : substr($key, 0, $x);
 					$sinces[$key] = $sinces[$x] ?? false;
 				}
