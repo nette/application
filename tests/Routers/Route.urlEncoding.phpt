@@ -28,7 +28,7 @@ testRouteIn($route, '/a%3A%25%2Fb', [
 $route = new Route('<param .*>', [
 	'presenter' => 'Presenter',
 	'param' => [
-		Route::FILTER_OUT => 'rawurlencode',
+		Route::FilterOut => 'rawurlencode',
 	],
 ]);
 
