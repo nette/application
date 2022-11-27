@@ -35,7 +35,7 @@ function testLink($domain)
 		new Http\Response,
 	);
 
-	$request = new Application\Request('Test', Http\Request::GET, []);
+	$request = new Application\Request('Test', Http\Request::Get, []);
 	$presenter->run($request);
 
 	Assert::same('http://' . $domain . '/index.php?action=default&presenter=Test', $presenter->link('//this'));

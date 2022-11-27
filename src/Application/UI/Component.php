@@ -206,7 +206,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	final public function getParameterId(string $name): string
 	{
 		$uid = $this->getUniqueId();
-		return $uid === '' ? $name : $uid . self::NAME_SEPARATOR . $name;
+		return $uid === '' ? $name : $uid . self::NameSeparator . $name;
 	}
 
 
@@ -323,7 +323,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 		$presenter = $this->getPresenter();
 		$presenter->redirectUrl(
 			$presenter->createRequest($this, $destination, $args, 'redirect'),
-			Nette\Http\IResponse::S301_MOVED_PERMANENTLY,
+			Nette\Http\IResponse::S301_MovedPermanently,
 		);
 	}
 
@@ -332,7 +332,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	 * Throws HTTP error.
 	 * @throws Nette\Application\BadRequestException
 	 */
-	public function error(string $message = '', int $httpCode = Nette\Http\IResponse::S404_NOT_FOUND): void
+	public function error(string $message = '', int $httpCode = Nette\Http\IResponse::S404_NotFound): void
 	{
 		throw new Nette\Application\BadRequestException($message, $httpCode);
 	}

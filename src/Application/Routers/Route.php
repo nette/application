@@ -24,19 +24,19 @@ class Route extends Nette\Routing\Route implements Nette\Routing\Router
 
 	private const UIMeta = [
 		'module' => [
-			self::PATTERN => '[a-z][a-z0-9.-]*',
-			self::FILTER_IN => [self::class, 'path2presenter'],
-			self::FILTER_OUT => [self::class, 'presenter2path'],
+			self::Pattern => '[a-z][a-z0-9.-]*',
+			self::FilterIn => [self::class, 'path2presenter'],
+			self::FilterOut => [self::class, 'presenter2path'],
 		],
 		'presenter' => [
-			self::PATTERN => '[a-z][a-z0-9.-]*',
-			self::FILTER_IN => [self::class, 'path2presenter'],
-			self::FILTER_OUT => [self::class, 'presenter2path'],
+			self::Pattern => '[a-z][a-z0-9.-]*',
+			self::FilterIn => [self::class, 'path2presenter'],
+			self::FilterOut => [self::class, 'presenter2path'],
 		],
 		'action' => [
-			self::PATTERN => '[a-z][a-z0-9-]*',
-			self::FILTER_IN => [self::class, 'path2action'],
-			self::FILTER_OUT => [self::class, 'action2path'],
+			self::Pattern => '[a-z][a-z0-9-]*',
+			self::FilterIn => [self::class, 'path2action'],
+			self::FilterOut => [self::class, 'action2path'],
 		],
 	];
 
@@ -104,12 +104,12 @@ class Route extends Nette\Routing\Route implements Nette\Routing\Router
 		if (isset($metadata[self::ModuleKey])) { // try split into module and [submodule:]presenter parts
 			$presenter = $params[self::PresenterKey];
 			$module = $metadata[self::ModuleKey];
-			$a = isset($module['fixity'], $module[self::VALUE])
-				&& strncmp($presenter, $module[self::VALUE] . ':', strlen($module[self::VALUE]) + 1) === 0
-				? strlen($module[self::VALUE])
+			$a = isset($module['fixity'], $module[self::Value])
+				&& strncmp($presenter, $module[self::Value] . ':', strlen($module[self::Value]) + 1) === 0
+				? strlen($module[self::Value])
 				: strrpos($presenter, ':');
 			if ($a === false) {
-				$params[self::ModuleKey] = isset($module[self::VALUE]) ? '' : null;
+				$params[self::ModuleKey] = isset($module[self::Value]) ? '' : null;
 			} else {
 				$params[self::ModuleKey] = substr($presenter, 0, $a);
 				$params[self::PresenterKey] = substr($presenter, $a + 1);
