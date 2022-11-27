@@ -46,37 +46,37 @@ function callIsComponentLinkCurrent(
 
 
 Assert::true(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, ['int' => 1, 'bool' => true]),
+	new Application\Request('Test', Http\Request::Get, ['int' => 1, 'bool' => true]),
 	'Test:default',
 	[],
 ));
 
 Assert::false(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, ['int' => 1, 'bool' => true]),
+	new Application\Request('Test', Http\Request::Get, ['int' => 1, 'bool' => true]),
 	'Test:default',
 	['int' => 2],
 ));
 
 Assert::false(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, [Application\UI\Presenter::ActionKey => 'otherAction']),
+	new Application\Request('Test', Http\Request::Get, [Application\UI\Presenter::ActionKey => 'otherAction']),
 	'Test:default',
 	[],
 ));
 
 Assert::true(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, [Application\UI\Presenter::ActionKey => 'otherAction']),
+	new Application\Request('Test', Http\Request::Get, [Application\UI\Presenter::ActionKey => 'otherAction']),
 	'Test:otherAction',
 	[],
 ));
 
 Assert::true(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, ['int' => 1, 'bool' => true]),
+	new Application\Request('Test', Http\Request::Get, ['int' => 1, 'bool' => true]),
 	'Test:default',
 	['bool' => true],
 ));
 
 Assert::true(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, ['int' => 1, 'bool' => true]),
+	new Application\Request('Test', Http\Request::Get, ['int' => 1, 'bool' => true]),
 	'Test:default',
 	[
 		'bool' => true,
@@ -85,7 +85,7 @@ Assert::true(callIsLinkCurrent(
 ));
 
 Assert::false(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, ['int' => 1, 'bool' => true]),
+	new Application\Request('Test', Http\Request::Get, ['int' => 1, 'bool' => true]),
 	'Test:default',
 	[
 		'bool' => false,
@@ -94,7 +94,7 @@ Assert::false(callIsLinkCurrent(
 ));
 
 Assert::false(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, ['int' => 1, 'bool' => true]),
+	new Application\Request('Test', Http\Request::Get, ['int' => 1, 'bool' => true]),
 	'Test:default',
 	[
 		'bool' => false,
@@ -103,7 +103,7 @@ Assert::false(callIsLinkCurrent(
 ));
 
 Assert::false(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, ['int' => 1, 'bool' => true, Application\UI\Presenter::ActionKey => 'otherAction']),
+	new Application\Request('Test', Http\Request::Get, ['int' => 1, 'bool' => true, Application\UI\Presenter::ActionKey => 'otherAction']),
 	'Test:default',
 	[
 		'bool' => true,
@@ -112,7 +112,7 @@ Assert::false(callIsLinkCurrent(
 ));
 
 Assert::true(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, ['int' => 1, 'bool' => true, Application\UI\Presenter::ActionKey => 'otherAction']),
+	new Application\Request('Test', Http\Request::Get, ['int' => 1, 'bool' => true, Application\UI\Presenter::ActionKey => 'otherAction']),
 	'Test:otherAction',
 	[
 		'bool' => true,
@@ -121,31 +121,31 @@ Assert::true(callIsLinkCurrent(
 ));
 
 Assert::true(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, ['int' => 1, 'bool' => true]),
+	new Application\Request('Test', Http\Request::Get, ['int' => 1, 'bool' => true]),
 	'Test:*',
 	[],
 ));
 
 Assert::false(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, ['int' => 1, 'bool' => true]),
+	new Application\Request('Test', Http\Request::Get, ['int' => 1, 'bool' => true]),
 	'Test:*',
 	['float' => 1.0],
 ));
 
 Assert::true(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, ['int' => 1, 'bool' => true, 'float' => 1.0]),
+	new Application\Request('Test', Http\Request::Get, ['int' => 1, 'bool' => true, 'float' => 1.0]),
 	'Test:*',
 	['float' => 1.0],
 ));
 
 Assert::false(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, ['int' => 1, 'bool' => true, 'float' => 1.0]),
+	new Application\Request('Test', Http\Request::Get, ['int' => 1, 'bool' => true, 'float' => 1.0]),
 	'Test:*',
 	['float' => 2.0],
 ));
 
 Assert::true(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, ['int' => 1, Application\UI\Presenter::ActionKey => 'otherAction']),
+	new Application\Request('Test', Http\Request::Get, ['int' => 1, Application\UI\Presenter::ActionKey => 'otherAction']),
 	'Test:*',
 	[
 		'int' => 1,
@@ -153,7 +153,7 @@ Assert::true(callIsLinkCurrent(
 ));
 
 Assert::false(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, ['int' => 2, Application\UI\Presenter::ActionKey => 'otherAction']),
+	new Application\Request('Test', Http\Request::Get, ['int' => 2, Application\UI\Presenter::ActionKey => 'otherAction']),
 	'Test:*',
 	[
 		'int' => 1,
@@ -161,7 +161,7 @@ Assert::false(callIsLinkCurrent(
 ));
 
 Assert::true(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, [
+	new Application\Request('Test', Http\Request::Get, [
 		Application\UI\Presenter::SignalKey => 'signal',
 		'int' => 1,
 		'bool' => true,
@@ -171,7 +171,7 @@ Assert::true(callIsLinkCurrent(
 ));
 
 Assert::true(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, [
+	new Application\Request('Test', Http\Request::Get, [
 		Application\UI\Presenter::SignalKey => 'signal',
 		'int' => 1,
 		'bool' => true,
@@ -181,7 +181,7 @@ Assert::true(callIsLinkCurrent(
 ));
 
 Assert::false(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, [
+	new Application\Request('Test', Http\Request::Get, [
 		Application\UI\Presenter::SignalKey => 'signal',
 		'int' => 1,
 		'bool' => true,
@@ -193,7 +193,7 @@ Assert::false(callIsLinkCurrent(
 
 // conflicting action in destination string and args
 Assert::false(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, [
+	new Application\Request('Test', Http\Request::Get, [
 		Application\UI\Presenter::ActionKey => 'default',
 		'int' => 1,
 		'bool' => true,
@@ -205,7 +205,7 @@ Assert::false(callIsLinkCurrent(
 ));
 
 Assert::false(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, [
+	new Application\Request('Test', Http\Request::Get, [
 		Application\UI\Presenter::ActionKey => 'default',
 		'int' => 1,
 		'bool' => true,
@@ -219,7 +219,7 @@ Assert::false(callIsLinkCurrent(
 
 // conflicting signal in destination string and args
 Assert::false(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, [
+	new Application\Request('Test', Http\Request::Get, [
 		Application\UI\Presenter::SignalKey => 'signal',
 		'int' => 1,
 		'bool' => true,
@@ -231,7 +231,7 @@ Assert::false(callIsLinkCurrent(
 ));
 
 Assert::false(callIsLinkCurrent(
-	new Application\Request('Test', Http\Request::GET, [
+	new Application\Request('Test', Http\Request::Get, [
 		Application\UI\Presenter::SignalKey => 'signal',
 		'int' => 1,
 		'bool' => true,
@@ -250,7 +250,7 @@ $testPresenter['test'] = $testControl;
 Assert::true(callIsComponentLinkCurrent(
 	$testPresenter,
 	$testControl,
-	new Application\Request('Test', Http\Request::GET, [
+	new Application\Request('Test', Http\Request::Get, [
 		Application\UI\Presenter::SignalKey => 'test-click',
 		'int' => 1,
 		'bool' => true,
@@ -265,7 +265,7 @@ $testPresenter['test'] = $testControl;
 Assert::false(callIsComponentLinkCurrent(
 	$testPresenter,
 	$testControl,
-	new Application\Request('Test', Http\Request::GET, [
+	new Application\Request('Test', Http\Request::Get, [
 		Application\UI\Presenter::SignalKey => 'test-click',
 		'int' => 1,
 		'bool' => true,
@@ -280,7 +280,7 @@ $testPresenter['test'] = $testControl;
 Assert::true(callIsComponentLinkCurrent(
 	$testPresenter,
 	$testControl,
-	new Application\Request('Test', Http\Request::GET, [
+	new Application\Request('Test', Http\Request::Get, [
 		Application\UI\Presenter::SignalKey => 'test-click',
 		'int' => 1,
 		'bool' => true,
@@ -298,7 +298,7 @@ $testPresenter['test'] = $testControl;
 Assert::false(callIsComponentLinkCurrent(
 	$testPresenter,
 	$testControl,
-	new Application\Request('Test', Http\Request::GET, [
+	new Application\Request('Test', Http\Request::Get, [
 		Application\UI\Presenter::SignalKey => 'test-click',
 		'int' => 1,
 		'bool' => true,
@@ -317,7 +317,7 @@ $testControlWithAnotherTestControl['test'] = new TestControl;
 Assert::true(callIsComponentLinkCurrent(
 	$testPresenter,
 	$testControlWithAnotherTestControl,
-	new Application\Request('Test', Http\Request::GET, [
+	new Application\Request('Test', Http\Request::Get, [
 		Application\UI\Presenter::SignalKey => 'test-test-click',
 		'int' => 1,
 		'bool' => true,
@@ -336,7 +336,7 @@ $testControlWithAnotherTestControl['test'] = new TestControl;
 Assert::false(callIsComponentLinkCurrent(
 	$testPresenter,
 	$testControlWithAnotherTestControl,
-	new Application\Request('Test', Http\Request::GET, [
+	new Application\Request('Test', Http\Request::Get, [
 		Application\UI\Presenter::SignalKey => 'test-test-click',
 		'int' => 1,
 		'bool' => true,
