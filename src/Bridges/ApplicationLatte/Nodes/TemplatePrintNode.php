@@ -59,16 +59,10 @@ class TemplatePrintNode extends Latte\Essential\Nodes\TemplatePrintNode
 			$class->addTrait(Nette\SmartObject::class);
 		}
 
-		$blueprint->addProperties($class, $params, true);
+		$blueprint->addProperties($class, $params);
 		$blueprint->addFunctions($class, $funcs);
 
 		$end = $blueprint->printCanvas();
-		$blueprint->printHeader('Native types');
-		$blueprint->printCode((string) $namespace);
-
-		$blueprint->addProperties($class, $params, false);
-
-		$blueprint->printHeader('phpDoc types');
 		$blueprint->printCode((string) $namespace);
 		echo $end;
 	}
