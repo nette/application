@@ -28,6 +28,6 @@ $template = <<<'EOD'
 	EOD;
 
 Assert::matchFile(
-	__DIR__ . '/expected/n-snippet.dynamic.phtml',
+	__DIR__ . '/expected/n-snippet.dynamic.php',
 	$latte->compile($template),
 );

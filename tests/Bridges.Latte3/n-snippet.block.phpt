@@ -33,6 +33,6 @@ $template = <<<'EOD'
 	EOD;
 
 Assert::matchFile(
-	__DIR__ . '/expected/n-snippet.block.phtml',
+	__DIR__ . '/expected/n-snippet.block.php',
 	$latte->compile($template),
 );

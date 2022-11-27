@@ -30,7 +30,7 @@ $factory->createTemplate($presenter);
 $latte->setLoader(new Latte\Loaders\StringLoader);
 
 Assert::matchFile(
-	__DIR__ . '/expected/ifCurrent.phtml',
+	__DIR__ . '/expected/ifCurrent.php',
 	@$latte->compile( // is deprecated
 		<<<'XX'
 			{ifCurrent}empty{/ifCurrent}

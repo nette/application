@@ -32,7 +32,7 @@ $factory->createTemplate($presenter);
 $latte->setLoader(new Latte\Loaders\StringLoader);
 
 Assert::matchFile(
-	__DIR__ . '/expected/UIMacros.isLinkCurrent.phtml',
+	__DIR__ . '/expected/UIMacros.isLinkCurrent.php',
 	$latte->compile(
 		<<<'XX'
 <a n:href="default" n:class="$presenter->isLinkCurrent() ? current">n:href before n:class</a>
