@@ -28,4 +28,10 @@ class NNonceNode extends StatementNode
 	{
 		return 'echo $this->global->uiNonce ? " nonce=\"{$this->global->uiNonce}\"" : "";';
 	}
+
+
+	public function &getIterator(): \Generator
+	{
+		false && yield;
+	}
 }
