@@ -74,7 +74,7 @@ class TestPresenter extends Application\UI\Presenter
 	{
 		parent::startup();
 		$this['mycontrol'] = new TestControl;
-		$this->invalidLinkMode = self::INVALID_LINK_TEXTUAL;
+		$this->invalidLinkMode = self::InvalidLinkTextual;
 
 		// standard
 		Assert::same("#error: Invalid destination ''.", $this->link(''));
@@ -222,17 +222,17 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same('#error: Argument $req passed to TestPresenter::actionObjects() must be stdClass, array given.', $this->link('objects', ['req' => []]));
 
 		// silent invalid link mode
-		$this->invalidLinkMode = self::INVALID_LINK_SILENT;
+		$this->invalidLinkMode = self::InvalidLinkSilent;
 		Assert::same('#', $this->link('params', ['p' => null, 'pbool' => 'a']));
 
 		// warning invalid link mode
-		$this->invalidLinkMode = self::INVALID_LINK_WARNING;
+		$this->invalidLinkMode = self::InvalidLinkWarning;
 		Assert::error(function () {
 			$this->link('params', ['p' => null, 'pbool' => 'a']);
 		}, E_USER_WARNING, "Invalid link: Value passed to persistent parameter 'pbool' in presenter Test must be boolean, string given.");
 
 		// exception invalid link mode
-		$this->invalidLinkMode = self::INVALID_LINK_EXCEPTION;
+		$this->invalidLinkMode = self::InvalidLinkException;
 		Assert::exception(function () {
 			$this->link('params', ['p' => null, 'pbool' => 'a']);
 		}, Nette\Application\UI\InvalidLinkException::class, "Value passed to persistent parameter 'pbool' in presenter Test must be boolean, string given.");
@@ -313,7 +313,7 @@ $presenter->injectPrimary(
 	new Http\Response
 );
 
-$presenter->invalidLinkMode = TestPresenter::INVALID_LINK_WARNING;
+$presenter->invalidLinkMode = TestPresenter::InvalidLinkWarning;
 $presenter->autoCanonicalize = false;
 
 $request = new Application\Request('Test', Http\Request::GET, []);

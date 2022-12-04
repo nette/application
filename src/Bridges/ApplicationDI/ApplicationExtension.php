@@ -76,8 +76,8 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 		$builder->addExcludedClasses([UI\Presenter::class]);
 
 		$this->invalidLinkMode = $this->debugMode
-			? UI\Presenter::INVALID_LINK_TEXTUAL | ($config->silentLinks ? 0 : UI\Presenter::INVALID_LINK_WARNING)
-			: UI\Presenter::INVALID_LINK_WARNING;
+			? UI\Presenter::InvalidLinkTextual | ($config->silentLinks ? 0 : UI\Presenter::InvalidLinkWarning)
+			: UI\Presenter::InvalidLinkWarning;
 
 		$builder->addDefinition($this->prefix('application'))
 			->setFactory(Nette\Application\Application::class)

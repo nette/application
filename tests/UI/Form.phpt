@@ -30,5 +30,5 @@ test('compatibility with 2.0', function () {
 	$form = new UI\Form;
 	$form->setAction('action');
 	$presenter['name'] = $form;
-	Assert::false(isset($form[TestPresenter::SIGNAL_KEY]));
+	Assert::false(isset($form[TestPresenter::SignalKey]));
 });

@@ -151,7 +151,7 @@ $presenter->injectPrimary(
 	new Http\Response
 );
 
-$presenter->invalidLinkMode = TestPresenter::INVALID_LINK_WARNING;
+$presenter->invalidLinkMode = TestPresenter::InvalidLinkWarning;
 $presenter->autoCanonicalize = false;
 
 $request = new Application\Request('Test', Http\Request::GET, []);

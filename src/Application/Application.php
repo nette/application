@@ -112,7 +112,7 @@ class Application
 	public function createInitialRequest(): Request
 	{
 		$params = $this->router->match($this->httpRequest);
-		$presenter = $params[UI\Presenter::PRESENTER_KEY] ?? null;
+		$presenter = $params[UI\Presenter::PresenterKey] ?? null;
 
 		if ($params === null) {
 			throw new BadRequestException('No route for HTTP request.');
@@ -122,7 +122,7 @@ class Application
 			throw new BadRequestException('Invalid request. Presenter is not achievable.');
 		}
 
-		unset($params[UI\Presenter::PRESENTER_KEY]);
+		unset($params[UI\Presenter::PresenterKey]);
 		return new Request(
 			$presenter,
 			$this->httpRequest->getMethod(),

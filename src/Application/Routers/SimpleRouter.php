@@ -36,7 +36,7 @@ final class SimpleRouter extends Nette\Routing\SimpleRouter implements Nette\Rou
 
 			$defaults = [
 				self::PresenterKey => $presenter,
-				'action' => $action === '' ? Application\UI\Presenter::DEFAULT_ACTION : $action,
+				'action' => $action === '' ? Application\UI\Presenter::DefaultAction : $action,
 			];
 		}
 

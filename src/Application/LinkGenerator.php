@@ -62,7 +62,7 @@ final class LinkGenerator
 
 		if (is_subclass_of($class, UI\Presenter::class)) {
 			if ($action === '') {
-				$action = UI\Presenter::DEFAULT_ACTION;
+				$action = UI\Presenter::DefaultAction;
 			}
 
 			if (
@@ -80,14 +80,14 @@ final class LinkGenerator
 		}
 
 		if ($action !== '') {
-			$params[UI\Presenter::ACTION_KEY] = $action;
+			$params[UI\Presenter::ActionKey] = $action;
 		}
 
-		$params[UI\Presenter::PRESENTER_KEY] = $presenter;
+		$params[UI\Presenter::PresenterKey] = $presenter;
 
 		$url = $this->router->constructUrl($params, $this->refUrl);
 		if ($url === null) {
-			unset($params[UI\Presenter::ACTION_KEY], $params[UI\Presenter::PRESENTER_KEY]);
+			unset($params[UI\Presenter::ActionKey], $params[UI\Presenter::PresenterKey]);
 			$paramsDecoded = urldecode(http_build_query($params, '', ', '));
 			throw new UI\InvalidLinkException("No route for $dest($paramsDecoded)");
 		}
