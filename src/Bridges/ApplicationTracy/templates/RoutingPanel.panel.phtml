@@ -56,8 +56,8 @@ use Tracy\Helpers;
 <h1>
 <?php if ($matched === null): ?>
 	no route
-<?php elseif (isset($matched[Presenter::PRESENTER_KEY])): ?>
-	<?= Helpers::escapeHtml($matched[Presenter::PRESENTER_KEY] . ':' . (isset($matched[Presenter::ACTION_KEY]) ? $matched[Presenter::ACTION_KEY] : Presenter::DEFAULT_ACTION) . (isset($matched[Presenter::SIGNAL_KEY]) ? " {$matched[Presenter::SIGNAL_KEY]}!" : '')) ?>
+<?php elseif (isset($matched[Presenter::PresenterKey])): ?>
+	<?= Helpers::escapeHtml($matched[Presenter::PresenterKey] . ':' . (isset($matched[Presenter::ActionKey]) ? $matched[Presenter::ActionKey] : Presenter::DefaultAction) . (isset($matched[Presenter::SignalKey]) ? " {$matched[Presenter::SignalKey]}!" : '')) ?>
 <?php endif ?>
 </h1>
 
@@ -99,9 +99,9 @@ use Tracy\Helpers;
 
 		<td><?php if ($router->params): ?><code>
 		<?php $params = $router->params; ?>
-		<?php if (isset($params[Presenter::PRESENTER_KEY])): ?>
-		<strong><?= Helpers::escapeHtml($params['presenter'] . ':' . (isset($params[Presenter::ACTION_KEY]) ? $params[Presenter::ACTION_KEY] : Presenter::DEFAULT_ACTION)) ?></strong><br />
-		<?php unset($params[Presenter::PRESENTER_KEY], $params[Presenter::ACTION_KEY]) ?>
+		<?php if (isset($params[Presenter::PresenterKey])): ?>
+		<strong><?= Helpers::escapeHtml($params['presenter'] . ':' . (isset($params[Presenter::ActionKey]) ? $params[Presenter::ActionKey] : Presenter::DefaultAction)) ?></strong><br />
+		<?php unset($params[Presenter::PresenterKey], $params[Presenter::ActionKey]) ?>
 		<?php endif ?>
 		<?php foreach ($params as $key => $value): ?>
 			<?= Helpers::escapeHtml($key), '&nbsp;=&nbsp;', is_string($value) ? Helpers::escapeHtml($value) . '<br />' : Dumper::toHtml($value, [Dumper::COLLAPSE => true, Dumper::LIVE => true]) ?>
