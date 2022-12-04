@@ -45,14 +45,31 @@ abstract class Presenter extends Control implements Application\IPresenter
 		FlashKey = '_fid',
 		DefaultAction = 'default';
 
+	/** @deprecated use Presenter::InvalidLinkSilent */
 	public const INVALID_LINK_SILENT = self::InvalidLinkSilent;
+
+	/** @deprecated use Presenter::InvalidLinkWarning */
 	public const INVALID_LINK_WARNING = self::InvalidLinkWarning;
+
+	/** @deprecated use Presenter::InvalidLinkException */
 	public const INVALID_LINK_EXCEPTION = self::InvalidLinkException;
+
+	/** @deprecated use Presenter::InvalidLinkTextual */
 	public const INVALID_LINK_TEXTUAL = self::InvalidLinkTextual;
+
+	/** @deprecated use Presenter::PresenterKey */
 	public const PRESENTER_KEY = self::PresenterKey;
+
+	/** @deprecated use Presenter::SignalKey */
 	public const SIGNAL_KEY = self::SignalKey;
+
+	/** @deprecated use Presenter::ActionKey */
 	public const ACTION_KEY = self::ActionKey;
+
+	/** @deprecated use Presenter::FlashKey */
 	public const FLASH_KEY = self::FlashKey;
+
+	/** @deprecated use Presenter::DefaultAction */
 	public const DEFAULT_ACTION = self::DefaultAction;
 
 	public int $invalidLinkMode = 0;
