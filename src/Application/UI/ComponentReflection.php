@@ -365,6 +365,3 @@ final class ComponentReflection extends \ReflectionClass
 		return $res;
 	}
 }
-
-
-class_exists(PresenterComponentReflection::class);
