@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Nette\Bridges\ApplicationDI\ApplicationExtension;
 use Nette\DI;
+use Nette\DI\Definitions\Statement;
 use Tester\Assert;
 
 
@@ -17,7 +18,7 @@ test('', function () {
 
 	$builder = $compiler->getContainerBuilder();
 	$builder->addDefinition('myRouter')->setFactory(Nette\Application\Routers\SimpleRouter::class);
-	$builder->addDefinition('myHttpRequest')->setFactory(Nette\Http\Request::class, [new DI\Statement(Nette\Http\UrlScript::class)]);
+	$builder->addDefinition('myHttpRequest')->setFactory(Nette\Http\Request::class, [new Statement(Nette\Http\UrlScript::class)]);
 	$builder->addDefinition('myHttpResponse')->setFactory(Nette\Http\Response::class);
 	$code = $compiler->setClassName('Container1')->compile();
 	eval($code);
@@ -35,7 +36,7 @@ test('', function () {
 
 	$builder = $compiler->getContainerBuilder();
 	$builder->addDefinition('myRouter')->setFactory(Nette\Application\Routers\SimpleRouter::class);
-	$builder->addDefinition('myHttpRequest')->setFactory(Nette\Http\Request::class, [new DI\Statement(Nette\Http\UrlScript::class)]);
+	$builder->addDefinition('myHttpRequest')->setFactory(Nette\Http\Request::class, [new Statement(Nette\Http\UrlScript::class)]);
 	$builder->addDefinition('myHttpResponse')->setFactory(Nette\Http\Response::class);
 	$code = $compiler->addConfig([
 		'application' => [
@@ -58,7 +59,7 @@ test('', function () {
 
 	$builder = $compiler->getContainerBuilder();
 	$builder->addDefinition('myRouter')->setFactory(Nette\Application\Routers\SimpleRouter::class);
-	$builder->addDefinition('myHttpRequest')->setFactory(Nette\Http\Request::class, [new DI\Statement(Nette\Http\UrlScript::class)]);
+	$builder->addDefinition('myHttpRequest')->setFactory(Nette\Http\Request::class, [new Statement(Nette\Http\UrlScript::class)]);
 	$builder->addDefinition('myHttpResponse')->setFactory(Nette\Http\Response::class);
 	$loader = new DI\Config\Loader;
 	$config = $loader->load(Tester\FileMock::create('
@@ -94,7 +95,7 @@ test('', function () {
 
 	$builder = $compiler->getContainerBuilder();
 	$builder->addDefinition('myRouter')->setFactory(Nette\Application\Routers\SimpleRouter::class);
-	$builder->addDefinition('myHttpRequest')->setFactory(Nette\Http\Request::class, [new DI\Statement(Nette\Http\UrlScript::class)]);
+	$builder->addDefinition('myHttpRequest')->setFactory(Nette\Http\Request::class, [new Statement(Nette\Http\UrlScript::class)]);
 	$builder->addDefinition('myHttpResponse')->setFactory(Nette\Http\Response::class);
 	$code = $compiler->setClassName('Container4')->compile();
 	eval($code);

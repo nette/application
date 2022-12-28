@@ -16,7 +16,7 @@ test('', function () {
 
 	$builder = $compiler->getContainerBuilder();
 	$builder->addDefinition('myRouter')->setFactory(Nette\Application\Routers\SimpleRouter::class);
-	$builder->addDefinition('myHttpRequest')->setFactory(Nette\Http\Request::class, [new DI\Statement(Nette\Http\UrlScript::class)]);
+	$builder->addDefinition('myHttpRequest')->setFactory(Nette\Http\Request::class, [new DI\Definitions\Statement(Nette\Http\UrlScript::class)]);
 	$builder->addDefinition('myHttpResponse')->setFactory(Nette\Http\Response::class);
 
 	$code = $compiler->setClassName('Container1')->compile();
