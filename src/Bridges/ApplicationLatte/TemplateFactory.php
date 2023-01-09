@@ -28,6 +28,7 @@ class TemplateFactory implements UI\TemplateFactory
 		private readonly ?Nette\Http\IRequest $httpRequest = null,
 		private readonly ?Nette\Security\User $user = null,
 		$templateClass = null,
+		private array $configVars = [],
 	) {
 		if ($templateClass && (!class_exists($templateClass) || !is_a($templateClass, Template::class, true))) {
 			throw new Nette\InvalidArgumentException("Class $templateClass does not implement " . Template::class . ' or it does not exist.');
@@ -63,6 +64,7 @@ class TemplateFactory implements UI\TemplateFactory
 			'flashes' => $flashes,
 			'control' => $control,
 			'presenter' => $presenter,
+			'config' => $control instanceof UI\Presenter && $this->configVars ? (object) $this->configVars : null,
 		];
 
 		foreach ($params as $key => $value) {
