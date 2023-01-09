@@ -74,6 +74,9 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @var bool  use absolute Urls or paths? */
 	public $absoluteUrls = false;
 
+	/** @var string[] */
+	public $allowedMethods = ['GET', 'POST', 'HEAD', 'PUT', 'DELETE'];
+
 	/** @var Nette\Application\Request|null */
 	private $request;
 
@@ -215,6 +218,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		try {
 			// STARTUP
 			$this->checkRequirements(static::getReflection());
+			$this->checkHttpMethod();
 			Arrays::invoke($this->onStartup, $this);
 			$this->startup();
 			if (!$this->startupCheck) {
@@ -329,6 +333,17 @@ abstract class Presenter extends Control implements Application\IPresenter
 			$this->redirect('this');
 		} catch (InvalidLinkException $e) {
 			throw new Nette\Application\BadRequestException($e->getMessage());
+		}
+	}
+
+
+	protected function checkHttpMethod(): void
+	{
+		if ($this->allowedMethods &&
+			!in_array($method = $this->httpRequest->getMethod(), $this->allowedMethods, true)
+		) {
+			$this->httpResponse->setHeader('Allow', implode(',', $this->allowedMethods));
+			$this->error("Method $method is not allowed", Nette\Http\IResponse::S405_MethodNotAllowed);
 		}
 	}
 
