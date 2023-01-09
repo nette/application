@@ -66,9 +66,10 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 				->addSetup('setStrictTypes', [$config->strictTypes]);
 
 		if (version_compare(Latte\Engine::VERSION, '3', '<')) {
-			$latteFactory
-				->addSetup('setContentType', [$config->xhtml ? Latte\Compiler::CONTENT_XHTML : Latte\Compiler::CONTENT_HTML])
-				->addSetup('Nette\Utils\Html::$xhtml = ?', [$config->xhtml]);
+			$latteFactory->addSetup('setContentType', [$config->xhtml ? Latte\Compiler::CONTENT_XHTML : Latte\Compiler::CONTENT_HTML]);
+			if ($config->xhtml) {
+				$latteFactory->addSetup('Nette\Utils\Html::$xhtml = ?', [true]);
+			}
 			foreach ($config->macros as $macro) {
 				$this->addMacro($macro);
 			}
