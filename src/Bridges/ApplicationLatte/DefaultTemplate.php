@@ -30,6 +30,9 @@ final class DefaultTemplate extends Template
 	/** @var \stdClass[] */
 	public array $flashes = [];
 
+	/** @var \stdClass */
+	public mixed $config;
+
 
 	/**
 	 * Adds new template parameter.
