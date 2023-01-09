@@ -42,6 +42,7 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 			'strictTypes' => Expect::bool(false),
 			'strictParsing' => Expect::bool(false),
 			'phpLinter' => Expect::string(),
+			'variables' => Expect::array([]),
 		]);
 	}
 
@@ -70,8 +71,10 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 		}
 
 		$builder->addDefinition($this->prefix('templateFactory'))
-			->setFactory(ApplicationLatte\TemplateFactory::class)
-			->setArguments(['templateClass' => $config->templateClass]);
+			->setFactory(ApplicationLatte\TemplateFactory::class, [
+				'templateClass' => $config->templateClass,
+				'configVars' => $config->variables,
+			]);
 
 		if ($this->name === 'latte') {
 			$builder->addAlias('nette.latteFactory', $this->prefix('latteFactory'));
