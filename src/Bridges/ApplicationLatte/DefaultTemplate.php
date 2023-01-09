@@ -29,6 +29,7 @@ final class DefaultTemplate extends Template
 
 	/** @var \stdClass[] */
 	public array $flashes = [];
+	public \stdClass $config;
 
 
 	/**
