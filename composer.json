@@ -34,7 +34,8 @@
 		"latte/latte": "^2.10.2 || ^3.0.3",
 		"tracy/tracy": "^2.6",
 		"mockery/mockery": "^1.0",
-		"phpstan/phpstan-nette": "^0.12"
+		"phpstan/phpstan-nette": "^0.12",
+		"jetbrains/phpstorm-attributes": "dev-master"
 	},
 	"conflict": {
 		"nette/caching": "<3.1",

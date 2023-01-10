@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Nette\Application\Routers;
 
+use JetBrains\PhpStorm\Language;
 use Nette;
 
 
@@ -64,12 +65,15 @@ class RouteList extends Nette\Routing\RouteList implements Nette\Routing\Router,
 
 
 	/**
-	 * @param  string  $mask  e.g. '<presenter>/<action>/<id \d{1,3}>'
 	 * @param  array|string|\Closure  $metadata  default values or metadata or callback for NetteModule\MicroPresenter
 	 * @return static
 	 */
-	public function addRoute(string $mask, $metadata = [], int $flags = 0)
-	{
+	public function addRoute(
+		#[Language('TEXT')]
+		string $mask,
+		$metadata = [],
+		int $flags = 0
+	) {
 		$this->add(new Route($mask, $metadata), $flags);
 		return $this;
 	}
