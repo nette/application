@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace PHPSTORM_META;
 
-expectedArguments(\Nette\Application\Routers\Route::__construct(), 2, \Nette\Routing\Router::ONE_WAY);
-expectedArguments(\Nette\Application\Routers\SimpleRouter::__construct(), 1, \Nette\Routing\Router::ONE_WAY);
-
 registerArgumentsSet('nette_http_codes_3xx',
 	\Nette\Http\IResponse::S300_MultipleChoices,
 	\Nette\Http\IResponse::S301_MovedPermanently,
