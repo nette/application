@@ -315,7 +315,11 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function detectedCsrf(): void
 	{
-		$this->redirect('this');
+		try {
+			$this->redirect('this');
+		} catch (InvalidLinkException $e) {
+			throw new Nette\Application\BadRequestException($e->getMessage());
+		}
 	}
 
 
