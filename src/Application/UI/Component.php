@@ -103,26 +103,22 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	protected function tryCall(string $method, array $params): bool
 	{
 		$rc = $this->getReflection();
-		if ($rc->hasMethod($method)) {
-			$rm = $rc->getMethod($method);
-			if ($rm->isPrivate()) {
-				throw new Nette\InvalidStateException('Method ' . $rm->getName() . '() can not be called because it is private.');
-			}
-
-			if (!$rm->isAbstract() && !$rm->isStatic()) {
-				$this->checkRequirements($rm);
-				try {
-					$args = $rc->combineArgs($rm, $params);
-				} catch (Nette\InvalidArgumentException $e) {
-					throw new Nette\Application\BadRequestException($e->getMessage());
-				}
-
-				$rm->invokeArgs($this, $args);
-				return true;
-			}
+		if (!$rc->hasMethod($method)) {
+			return false;
+		} elseif (!$rc->hasCallableMethod($method)) {
+			throw new Nette\InvalidStateException('Method ' . Nette\Utils\Reflection::toString($rc->getMethod($method)) . ' is not callable.');
 		}
 
-		return false;
+		$rm = $rc->getMethod($method);
+		$this->checkRequirements($rm);
+		try {
+			$args = $rc->combineArgs($rm, $params);
+		} catch (Nette\InvalidArgumentException $e) {
+			throw new Nette\Application\BadRequestException($e->getMessage());
+		}
+
+		$rm->invokeArgs($this, $args);
+		return true;
 	}
 
 
