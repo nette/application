@@ -52,7 +52,7 @@ final class MicroPresenter implements Application\IPresenter
 			&& !$this->httpRequest->isAjax()
 			&& ($request->isMethod('get') || $request->isMethod('head'))
 		) {
-			$refUrl = $this->httpRequest->getUrl()->withoutUserInfo();
+			$refUrl = $this->httpRequest->getUrl();
 			$url = $this->router->constructUrl($request->toArray(), $refUrl);
 			if ($url !== null && !$refUrl->isEqual($url)) {
 				return new Responses\RedirectResponse($url, Http\IResponse::S301_MovedPermanently);
@@ -123,7 +123,7 @@ final class MicroPresenter implements Application\IPresenter
 		$template->presenter = $this;
 		$template->context = $this->context;
 		if ($this->httpRequest) {
-			$url = $this->httpRequest->getUrl()->withoutUserInfo();
+			$url = $this->httpRequest->getUrl();
 			$template->baseUrl = rtrim($url->getBaseUrl(), '/');
 			$template->basePath = rtrim($url->getBasePath(), '/');
 		}
