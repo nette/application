@@ -712,7 +712,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		} catch (InvalidLinkException $e) {
 		}
 
-		if (!isset($url) || $this->httpRequest->getUrl()->withoutUserInfo()->isEqual($url)) {
+		if (!isset($url) || $this->httpRequest->getUrl()->isEqual($url)) {
 			return;
 		}
 
@@ -975,7 +975,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	{
 		if (!isset($this->refUrlCache)) {
 			$url = $this->httpRequest->getUrl();
-			$this->refUrlCache = new Http\UrlScript($url->withoutUserInfo()->getHostUrl() . $url->getScriptPath());
+			$this->refUrlCache = new Http\UrlScript($url->getHostUrl() . $url->getScriptPath());
 		}
 
 		if (!$this->router) {
