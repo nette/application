@@ -28,22 +28,22 @@ class Application
 	public ?string $errorPresenter = null;
 
 	/** @var array<callable(self): void>  Occurs before the application loads presenter */
-	public iterable $onStartup = [];
+	public array $onStartup = [];
 
 	/** @var array<callable(self, ?\Throwable): void>  Occurs before the application shuts down */
-	public iterable $onShutdown = [];
+	public array $onShutdown = [];
 
 	/** @var array<callable(self, Request): void>  Occurs when a new request is received */
-	public iterable $onRequest = [];
+	public array $onRequest = [];
 
 	/** @var array<callable(self, IPresenter): void>  Occurs when a presenter is created */
-	public iterable $onPresenter = [];
+	public array $onPresenter = [];
 
 	/** @var array<callable(self, Response): void>  Occurs when a new response is ready for dispatch */
-	public iterable $onResponse = [];
+	public array $onResponse = [];
 
 	/** @var array<callable(self, \Throwable): void>  Occurs when an unhandled exception occurs in the application */
-	public iterable $onError = [];
+	public array $onError = [];
 
 	/** @var Request[] */
 	private array $requests = [];

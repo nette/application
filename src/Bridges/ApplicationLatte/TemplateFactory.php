@@ -22,7 +22,7 @@ class TemplateFactory implements UI\TemplateFactory
 	use Nette\SmartObject;
 
 	/** @var array<callable(Template): void>  Occurs when a new template is created */
-	public iterable $onCreate = [];
+	public array $onCreate = [];
 	private string $templateClass;
 
 
