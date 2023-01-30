@@ -1,12 +1,12 @@
 %A%
 		echo '<a href="';
-		echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link('default'));
+		echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link('default')) /* line 1 */;
 		echo '"';
 		echo ($ʟ_tmp = array_filter([$presenter->isLinkCurrent() ? 'current' : null])) ? ' class="' . LR\Filters::escapeHtmlAttr(implode(" ", array_unique($ʟ_tmp))) . '"' : "" /* line 1 */;
 		echo '>n:href before n:class</a>
 
 <a href="';
-		echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link('default'));
+		echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link('default')) /* line 3 */;
 		echo '"';
 		echo ($ʟ_tmp = array_filter([$presenter->isLinkCurrent() ? 'current' : null])) ? ' class="' . LR\Filters::escapeHtmlAttr(implode(" ", array_unique($ʟ_tmp))) . '"' : "" /* line 3 */;
 		echo '>n:href after n:class</a>
@@ -24,7 +24,7 @@
 		echo '">href after n:class</a>
 
 <a href="';
-		echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link('default'));
+		echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link('default')) /* line 9 */;
 		echo '"';
 		echo ($ʟ_tmp = array_filter([($this->global->fn->isLinkCurrent)('default') ? 'current' : null])) ? ' class="' . LR\Filters::escapeHtmlAttr(implode(" ", array_unique($ʟ_tmp))) . '"' : "" /* line 9 */;
 		echo '>custom function</a>

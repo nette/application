@@ -45,6 +45,7 @@ class LinkNode extends StatementNode
 
 		if ($tag->isNAttribute()) {
 			// move at the beginning
+			$node->position = $tag->position;
 			array_unshift($tag->htmlElement->attributes->children, $node);
 			return null;
 		}
