@@ -452,7 +452,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			}
 		}
 
-		$this->sendResponse(new Responses\TextResponse($template));
+		$this->sendResponse(new Nette\Application\Responses\TextResponse($template));
 	}
 
 
