@@ -11,7 +11,7 @@ namespace Nette\Bridges\ApplicationLatte\Nodes;
 
 use Latte;
 use Latte\Compiler\Escaper;
-use Latte\Compiler\Nodes\Php\Expression\ArrayItemNode;
+use Latte\Compiler\Nodes\Php\ArrayItemNode;
 use Latte\Compiler\Nodes\Php\Expression\ArrayNode;
 use Latte\Compiler\Nodes\Php\ExpressionNode;
 use Latte\Compiler\Nodes\Php\ModifierNode;

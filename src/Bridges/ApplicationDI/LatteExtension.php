@@ -44,6 +44,8 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 			'extensions' => Expect::arrayOf('string|Nette\DI\Definitions\Statement'),
 			'templateClass' => Expect::string(),
 			'strictTypes' => Expect::bool(false),
+			'strictParsing' => Expect::bool(false),
+			'phpLinter' => Expect::string(),
 		]);
 	}
 
@@ -74,6 +76,9 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 				$this->addMacro($macro);
 			}
 		} else {
+			$latteFactory->addSetup('setStrictParsing', [$config->strictParsing])
+				->addSetup('enablePhpLinter', [$config->phpLinter]);
+
 			foreach ($config->extensions as $extension) {
 				$this->addExtension($extension);
 			}
