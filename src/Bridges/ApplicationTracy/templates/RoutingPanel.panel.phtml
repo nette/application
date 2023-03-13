@@ -63,6 +63,15 @@ use Tracy\Helpers;
 
 <div class="tracy-inner nette-RoutingPanel">
 <div class="tracy-inner-container">
+	<p><code><?= Helpers::escapeHtml($method) ?></code>
+	<code><?= Helpers::escapeHtml($url->getBaseUrl()) ?><wbr><span class="nette-RoutingPanel-rel"><?= str_replace(['&amp;', '?'], ['<wbr>&amp;', '<wbr>?'], Helpers::escapeHtml($url->getRelativeUrl())) ?></span></code></p>
+
+	<?php if ($source): ?>
+	<p><a href="<?= Helpers::escapeHtml(Tracy\Helpers::editorUri($source->getFileName(), $source->getStartLine())) ?>"><?= $source instanceof \ReflectionClass ? $source->getName() : $source->getDeclaringClass()->getName() . '::' . $source->getName() . '()' ?></a></p>
+	<?php endif ?>
+</div>
+
+<div class="tracy-inner-container">
 <?php if (empty($routers)): ?>
 	<p>No routers defined.</p>
 
@@ -112,14 +121,5 @@ use Tracy\Helpers;
 	</tbody>
 	</table>
 <?php endif ?>
-</div>
-
-<div class="tracy-inner-container">
-	<p><code><?= Helpers::escapeHtml($method) ?></code>
-	<code><?= Helpers::escapeHtml($url->getBaseUrl()) ?><wbr><span class="nette-RoutingPanel-rel"><?= str_replace(['&amp;', '?'], ['<wbr>&amp;', '<wbr>?'], Helpers::escapeHtml($url->getRelativeUrl())) ?></span></code></p>
-
-	<?php if ($source): ?>
-	<p><a href="<?= Helpers::escapeHtml(Tracy\Helpers::editorUri($source->getFileName(), $source->getStartLine())) ?>"><?= $source instanceof \ReflectionClass ? $source->getName() : $source->getDeclaringClass()->getName() . '::' . $source->getName() . '()' ?></a></p>
-	<?php endif ?>
 </div>
 </div>
