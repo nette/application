@@ -1332,7 +1332,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			$pos = strrpos($param, '-');
 			if ($pos) {
 				$this->signalReceiver = substr($param, 0, $pos);
-				$this->signal = (string) substr($param, $pos + 1);
+				$this->signal = substr($param, $pos + 1);
 			} else {
 				$this->signalReceiver = $this->getUniqueId();
 				$this->signal = $param;
