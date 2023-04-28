@@ -85,12 +85,32 @@ class SnippetNode extends StatementNode
 
 	public function print(PrintContext $context): string
 	{
-		$dynamic = $this->block->isDynamic();
-		if (!$dynamic) {
+		if (!$this->block->isDynamic()) {
 			$context->addBlock($this->block);
 		}
 
-		$snippetContent = $context->format(
+		if ($this->htmlElement) {
+			try {
+				$inner = $this->htmlElement->content;
+				$this->htmlElement->content = new AuxiliaryNode(fn() => $this->printContent($context, $inner));
+				return $this->content->print($context);
+			} finally {
+				$this->htmlElement->content = $inner;
+			}
+		} else {
+			return <<<XX
+				echo '<div {$this->printAttribute($context)}>';
+				{$this->printContent($context, $this->content)}
+				echo '</div>';
+				XX;
+		}
+	}
+
+
+	private function printContent(PrintContext $context, AreaNode $inner): string
+	{
+		$dynamic = $this->block->isDynamic();
+		$res = $context->format(
 			<<<'XX'
 				$this->global->snippetDriver->enter(%node, %dump) %line;
 				try {
@@ -103,34 +123,20 @@ class SnippetNode extends StatementNode
 			$dynamic ? new AuxiliaryNode(fn() => '$ʟ_nm') : $this->block->name,
 			$dynamic ? SnippetDriver::TypeDynamic : SnippetDriver::TypeStatic,
 			$this->position,
-			$this->htmlElement->content ?? $this->content,
+			$inner,
 		);
 
-		if (!$dynamic) {
-			$this->block->content = $snippetContent;
-			$snippetContent = $context->format(
-				'$this->renderBlock(%node, [], null, %dump) %line;',
-				$this->block->name,
-				Template::LayerSnippet,
-				$this->position,
-			);
+		if ($dynamic) {
+			return $res;
 		}
 
-		if ($this->htmlElement) {
-			try {
-				$saved = $this->htmlElement->content;
-				$this->htmlElement->content = new AuxiliaryNode(fn() => $snippetContent);
-				return $this->content->print($context);
-			} finally {
-				$this->htmlElement->content = $saved;
-			}
-		} else {
-			return <<<XX
-				echo '<div {$this->printAttribute($context)}>';
-				{$snippetContent}
-				echo '</div>';
-				XX;
-		}
+		$this->block->content = $res;
+		return $context->format(
+			'$this->renderBlock(%node, [], null, %dump) %line;',
+			$this->block->name,
+			Template::LayerSnippet,
+			$this->position,
+		);
 	}
 
 

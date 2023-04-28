@@ -3,7 +3,7 @@
 final class Template%a% extends Latte\Runtime\Template
 {
 	public const Blocks = [
-		'snippet' => ['outer' => 'blockOuter', 'gallery' => 'blockGallery'],
+		'snippet' => ['outer' => 'blockOuter', 'gallery' => 'blockGallery', 'script' => 'blockScript'],
 	];
 
 
@@ -23,6 +23,12 @@ final class Template%a% extends Latte\Runtime\Template
 		echo '">';
 		$this->renderBlock('gallery', [], null, 'snippet') /* line %d% */;
 		echo '</div>
+
+	<script';
+		echo ' id="', htmlspecialchars($this->global->snippetDriver->getHtmlId('script')), '"';
+		echo '>';
+		$this->renderBlock('script', [], null, 'snippet') /* line %d% */;
+		echo '</script>
 ';
 	}
 
@@ -55,6 +61,23 @@ final class Template%a% extends Latte\Runtime\Template
 
 		$this->global->snippetDriver->enter('gallery', 'static') /* line %d% */;
 		try {
+		} finally {
+			$this->global->snippetDriver->leave();
+		}
+	}
+
+
+	/** n:snippet="script" on line %d% */
+	public function blockScript(array $ʟ_args): void
+	{
+		extract($this->params);
+		extract($ʟ_args);
+		unset($ʟ_args);
+
+		$this->global->snippetDriver->enter('script', 'static') /* line %d% */;
+		try {
+			echo LR\Filters::escapeJs('x') /* line 7 */;
+
 		} finally {
 			$this->global->snippetDriver->leave();
 		}

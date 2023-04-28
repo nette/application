@@ -24,6 +24,8 @@ $template = <<<'EOD'
 
 		<div n:snippet="gallery" class="{=class}"></div>
 
+		<script n:snippet="script">{='x'}</script>
+
 	EOD;
 
 Assert::matchFile(
