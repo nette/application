@@ -469,21 +469,26 @@ abstract class Presenter extends Control implements Application\IPresenter
 	{
 		$template = $template ?? $this->getTemplate();
 		if (!$template->getFile()) {
-			$files = $this->formatTemplateFiles();
-			foreach ($files as $file) {
-				if (is_file($file)) {
-					$template->setFile($file);
-					break;
-				}
-			}
+			$template->setFile($this->findTemplateFile());
+		}
+		$this->sendResponse(new Responses\TextResponse($template));
+	}
 
-			if (!$template->getFile()) {
-				$file = strtr(Arrays::first($files), '/', DIRECTORY_SEPARATOR);
-				$this->error("Page not found. Missing template '$file'.");
+
+	/**
+	 * Finds template file name.
+	 */
+	public function findTemplateFile(): string
+	{
+		$files = $this->formatTemplateFiles();
+		foreach ($files as $file) {
+			if (is_file($file)) {
+				return $file;
 			}
 		}
 
-		$this->sendResponse(new Responses\TextResponse($template));
+		$file = strtr(Arrays::first($files), '/', DIRECTORY_SEPARATOR);
+		$this->error("Page not found. Missing template '$file'.");
 	}
 
 
