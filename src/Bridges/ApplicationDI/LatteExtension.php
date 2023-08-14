@@ -37,7 +37,6 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 	{
 		return Expect::structure([
 			'debugger' => Expect::anyOf(true, false, 'all'),
-			'macros' => Expect::arrayOf('string'),
 			'extensions' => Expect::arrayOf('string|Nette\DI\Definitions\Statement'),
 			'templateClass' => Expect::string(),
 			'strictTypes' => Expect::bool(false),
@@ -62,19 +61,12 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 				->setFactory(Latte\Engine::class)
 				->addSetup('setTempDirectory', [$this->tempDir])
 				->addSetup('setAutoRefresh', [$this->debugMode])
-				->addSetup('setStrictTypes', [$config->strictTypes]);
-
-		if (version_compare(Latte\Engine::VERSION, '3', '<')) {
-			foreach ($config->macros as $macro) {
-				$this->addMacro($macro);
-			}
-		} else {
-			$latteFactory->addSetup('setStrictParsing', [$config->strictParsing])
+				->addSetup('setStrictTypes', [$config->strictTypes])
+				->addSetup('setStrictParsing', [$config->strictParsing])
 				->addSetup('enablePhpLinter', [$config->phpLinter]);
 
-			foreach ($config->extensions as $extension) {
-				$this->addExtension($extension);
-			}
+		foreach ($config->extensions as $extension) {
+			$this->addExtension($extension);
 		}
 
 		$builder->addDefinition($this->prefix('templateFactory'))
@@ -116,37 +108,9 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 			$control = $template->getLatte()->getProviders()['uiControl'] ?? null;
 			if ($all || $control instanceof Nette\Application\UI\Presenter) {
 				$name = $all && $control ? (new \ReflectionObject($control))->getShortName() : '';
-				if (version_compare(Latte\Engine::VERSION, '3', '<')) {
-					$bar->addPanel(new Latte\Bridges\Tracy\LattePanel($template->getLatte(), $name));
-				} else {
-					$template->getLatte()->addExtension(new Latte\Bridges\Tracy\TracyExtension($name));
-				}
+				$template->getLatte()->addExtension(new Latte\Bridges\Tracy\TracyExtension($name));
 			}
 		};
-	}
-
-
-	public function addMacro(string $macro): void
-	{
-		$builder = $this->getContainerBuilder();
-		$definition = $builder->getDefinition($this->prefix('latteFactory'))->getResultDefinition();
-
-		if (($macro[0] ?? null) === '@') {
-			if (str_contains($macro, '::')) {
-				[$macro, $method] = explode('::', $macro);
-			} else {
-				$method = 'install';
-			}
-
-			$definition->addSetup('?->onCompile[] = function ($engine) { ?->' . $method . '($engine->getCompiler()); }', ['@self', $macro]);
-
-		} else {
-			if (!str_contains($macro, '::') && class_exists($macro)) {
-				$macro .= '::install';
-			}
-
-			$definition->addSetup('?->onCompile[] = function ($engine) { ' . $macro . '($engine->getCompiler()); }', ['@self']);
-		}
 	}
 
 
