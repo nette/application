@@ -9,10 +9,6 @@ Tester\Environment::bypassFinals();
 
 require __DIR__ . '/ControlMock.php';
 
-if (version_compare(Latte\Engine::VERSION, '3', '<')) {
-	Tester\Environment::skip('Test for Latte 3');
-}
-
 
 $dataSets = [
 

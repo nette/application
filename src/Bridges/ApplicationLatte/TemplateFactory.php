@@ -50,19 +50,14 @@ class TemplateFactory implements UI\TemplateFactory
 		$template = new $class($latte);
 		$presenter = $control ? $control->getPresenterIfExists() : null;
 
-		if (version_compare(Latte\Engine::VERSION, '3', '<')) {
-			$this->setupLatte2($latte, $control, $presenter, $template);
+		$latte->addExtension(new UIExtension($control));
 
-		} else {
-			$latte->addExtension(new UIExtension($control));
+		if ($this->cacheStorage && class_exists(Nette\Bridges\CacheLatte\CacheExtension::class)) {
+			$latte->addExtension(new Nette\Bridges\CacheLatte\CacheExtension($this->cacheStorage));
+		}
 
-			if ($this->cacheStorage && class_exists(Nette\Bridges\CacheLatte\CacheExtension::class)) {
-				$latte->addExtension(new Nette\Bridges\CacheLatte\CacheExtension($this->cacheStorage));
-			}
-
-			if (class_exists(Nette\Bridges\FormsLatte\FormsExtension::class)) {
-				$latte->addExtension(new Nette\Bridges\FormsLatte\FormsExtension);
-			}
+		if (class_exists(Nette\Bridges\FormsLatte\FormsExtension::class)) {
+			$latte->addExtension(new Nette\Bridges\FormsLatte\FormsExtension);
 		}
 
 		$latte->addFilter('modifyDate', fn($time, $delta, $unit = null) => $time
@@ -101,53 +96,5 @@ class TemplateFactory implements UI\TemplateFactory
 		Nette\Utils\Arrays::invoke($this->onCreate, $template);
 
 		return $template;
-	}
-
-
-	private function setupLatte2(
-		Latte\Engine $latte,
-		?UI\Control $control,
-		?UI\Presenter $presenter,
-		Template $template,
-	): void
-	{
-		if ($latte->onCompile instanceof \Traversable) {
-			$latte->onCompile = iterator_to_array($latte->onCompile);
-		}
-
-		array_unshift($latte->onCompile, function (Latte\Engine $latte) use ($control, $template): void {
-			if ($this->cacheStorage) {
-				$latte->getCompiler()->addMacro('cache', new Nette\Bridges\CacheLatte\CacheMacro);
-			}
-
-			UIMacros::install($latte->getCompiler());
-			if (class_exists(Nette\Bridges\FormsLatte\FormMacros::class)) {
-				Nette\Bridges\FormsLatte\FormMacros::install($latte->getCompiler());
-			}
-
-			if ($control) {
-				$control->templatePrepareFilters($template);
-			}
-		});
-
-		$latte->addProvider('cacheStorage', $this->cacheStorage);
-
-		if ($control) {
-			$latte->addProvider('uiControl', $control);
-			$latte->addProvider('uiPresenter', $presenter);
-			$latte->addProvider('snippetBridge', new SnippetBridge($control));
-			if ($presenter) {
-				$header = $presenter->getHttpResponse()->getHeader('Content-Security-Policy')
-					?: $presenter->getHttpResponse()->getHeader('Content-Security-Policy-Report-Only');
-			}
-
-			$nonce = $presenter && preg_match('#\s\'nonce-([\w+/]+=*)\'#', (string) $header, $m) ? $m[1] : null;
-			$latte->addProvider('uiNonce', $nonce);
-		}
-
-		if ($presenter) {
-			$latte->addFunction('isLinkCurrent', [$presenter, 'isLinkCurrent']);
-			$latte->addFunction('isModuleCurrent', [$presenter, 'isModuleCurrent']);
-		}
 	}
 }
