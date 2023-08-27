@@ -57,7 +57,7 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 		$builder = $this->getContainerBuilder();
 
 		$builder->addFactoryDefinition($this->prefix('latteFactory'))
-			->setImplement(ApplicationLatte\LatteFactory::class)
+			->setImplement(Latte\Bridges\DI\LatteFactory::class)
 			->getResultDefinition()
 				->setFactory(Latte\Engine::class)
 				->addSetup('setTempDirectory', [$this->tempDir])

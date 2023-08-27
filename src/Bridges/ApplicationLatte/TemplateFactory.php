@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Nette\Bridges\ApplicationLatte;
 
 use Latte;
+use Latte\Bridges\DI\LatteFactory;
 use Nette;
 use Nette\Application\UI;
 

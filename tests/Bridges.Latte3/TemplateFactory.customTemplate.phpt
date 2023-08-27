@@ -6,8 +6,8 @@
 
 declare(strict_types=1);
 
+use Latte\Bridges\DI\LatteFactory;
 use Nette\Application\UI;
-use Nette\Bridges\ApplicationLatte\LatteFactory;
 use Nette\Bridges\ApplicationLatte\Template;
 use Nette\Bridges\ApplicationLatte\TemplateFactory;
 use Tester\Assert;

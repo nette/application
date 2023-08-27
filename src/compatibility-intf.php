@@ -67,11 +67,22 @@ if (false) {
 
 namespace Nette\Bridges\ApplicationLatte;
 
+use Latte;
+
 if (false) {
-	/** @deprecated use Nette\Bridges\ApplicationLatte\LatteFactory */
-	interface ILatteFactory extends LatteFactory
+	/** @deprecated use Latte\Bridges\DI\LatteFactory */
+	interface LatteFactory
+	{
+	}
+} elseif (!interface_exists(LatteFactory::class)) {
+	class_alias(Latte\Bridges\DI\LatteFactory::class, LatteFactory::class);
+}
+
+if (false) {
+	/** @deprecated use Latte\Bridges\DI\LatteFactory */
+	interface ILatteFactory
 	{
 	}
 } elseif (!interface_exists(ILatteFactory::class)) {
-	class_alias(LatteFactory::class, ILatteFactory::class);
+	class_alias(Latte\Bridges\DI\LatteFactory::class, ILatteFactory::class);
 }

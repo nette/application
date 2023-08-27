@@ -6,6 +6,7 @@
 
 declare(strict_types=1);
 
+use Latte\Bridges\DI\LatteFactory;
 use Nette\DI;
 use Tester\Assert;
 
@@ -55,7 +56,7 @@ eval($code);
 $container = new Container;
 
 
-Assert::type(Nette\Bridges\ApplicationLatte\LatteFactory::class, $container->getService('nette.latteFactory'));
+Assert::type(LatteFactory::class, $container->getService('nette.latteFactory'));
 $latte = $container->getService('nette.latteFactory')->create();
 $extensions = Assert::with($latte, fn() => $this->extensions);
 

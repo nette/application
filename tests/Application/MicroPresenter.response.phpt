@@ -6,6 +6,7 @@
 
 declare(strict_types=1);
 
+use Latte\Bridges\DI\LatteFactory;
 use Nette\Application\Request;
 use Nette\Http;
 use Tester\Assert;
@@ -29,10 +30,10 @@ function renderResponse(Nette\Application\Responses\TextResponse $response)
 
 function createContainer()
 {
-	$latteFactory = Mockery::mock(Nette\Bridges\ApplicationLatte\LatteFactory::class);
+	$latteFactory = Mockery::mock(LatteFactory::class);
 	$latteFactory->shouldReceive('create')->andReturn(new Latte\Engine);
 	$container = Mockery::mock(Nette\DI\Container::class);
-	$container->shouldReceive('getByType')->with('Nette\Bridges\ApplicationLatte\LatteFactory')->andReturn($latteFactory);
+	$container->shouldReceive('getByType')->with(LatteFactory::class)->andReturn($latteFactory);
 	return $container;
 }
 

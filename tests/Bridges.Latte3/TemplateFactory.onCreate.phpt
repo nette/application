@@ -6,7 +6,7 @@
 
 declare(strict_types=1);
 
-use Nette\Bridges\ApplicationLatte\LatteFactory;
+use Latte\Bridges\DI\LatteFactory;
 use Nette\Bridges\ApplicationLatte\Template;
 use Nette\Bridges\ApplicationLatte\TemplateFactory;
 use Nette\Http;

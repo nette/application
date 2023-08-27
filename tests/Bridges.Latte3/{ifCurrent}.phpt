@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Latte\Bridges\DI\LatteFactory;
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
@@ -10,7 +11,7 @@ Tester\Environment::bypassFinals();
 
 $latte = new Latte\Engine;
 
-$latteFactory = Mockery::mock(Nette\Bridges\ApplicationLatte\LatteFactory::class);
+$latteFactory = Mockery::mock(LatteFactory::class);
 $latteFactory->shouldReceive('create')->andReturn($latte);
 
 $presenter = Mockery::mock(Nette\Application\UI\Presenter::class);

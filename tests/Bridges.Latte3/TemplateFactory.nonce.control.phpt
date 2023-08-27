@@ -6,6 +6,7 @@
 
 declare(strict_types=1);
 
+use Latte\Bridges\DI\LatteFactory;
 use Nette\Application\UI;
 use Nette\Bridges\ApplicationLatte;
 use Tester\Assert;
@@ -14,7 +15,7 @@ require __DIR__ . '/../bootstrap.php';
 
 $latte = new Latte\Engine;
 
-$latteFactory = Mockery::mock(ApplicationLatte\LatteFactory::class);
+$latteFactory = Mockery::mock(LatteFactory::class);
 $latteFactory->shouldReceive('create')->andReturn($latte);
 
 $response = Mockery::mock(Nette\Http\IResponse::class);
