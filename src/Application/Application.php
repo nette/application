@@ -19,8 +19,6 @@ use Nette\Utils\Arrays;
  */
 class Application
 {
-	use Nette\SmartObject;
-
 	public int $maxLoop = 20;
 
 	/** enable fault barrier? */

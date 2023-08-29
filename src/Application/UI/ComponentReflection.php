@@ -20,8 +20,6 @@ use Nette;
  */
 final class ComponentReflection extends \ReflectionClass
 {
-	use Nette\SmartObject;
-
 	/** getPersistentParams cache */
 	private static array $ppCache = [];
 

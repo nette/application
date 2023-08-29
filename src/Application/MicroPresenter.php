@@ -22,8 +22,6 @@ use Nette\Routing\Router;
  */
 final class MicroPresenter implements Application\IPresenter
 {
-	use Nette\SmartObject;
-
 	private ?Application\Request $request;
 
 
