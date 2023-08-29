@@ -20,8 +20,6 @@ use Tracy;
  */
 final class RoutingPanel implements Tracy\IBarPanel
 {
-	use Nette\SmartObject;
-
 	private Routing\Router $router;
 	private Nette\Http\IRequest $httpRequest;
 	private Nette\Application\IPresenterFactory $presenterFactory;

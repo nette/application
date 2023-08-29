@@ -20,8 +20,6 @@ use Nette\Application\UI\Renderable;
  */
 final class SnippetDriver
 {
-	use Nette\SmartObject;
-
 	public const
 		TypeStatic = 'static',
 		TypeDynamic = 'dynamic',

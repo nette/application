@@ -19,8 +19,6 @@ use Nette\Application\UI;
  */
 class TemplateFactory implements UI\TemplateFactory
 {
-	use Nette\SmartObject;
-
 	/** @var array<callable(Template): void>  Occurs when a new template is created */
 	public array $onCreate = [];
 	private string $templateClass;

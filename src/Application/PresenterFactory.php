@@ -17,8 +17,6 @@ use Nette;
  */
 class PresenterFactory implements IPresenterFactory
 {
-	use Nette\SmartObject;
-
 	/** @var array[] of module => splited mask */
 	private array $mapping = [
 		'*' => ['', '*Module\\', '*Presenter'],

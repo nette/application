@@ -17,8 +17,6 @@ use Nette;
  */
 final class CallbackResponse implements Nette\Application\Response
 {
-	use Nette\SmartObject;
-
 	/** @var callable */
 	private $callback;
 

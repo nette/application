@@ -17,8 +17,6 @@ use Nette;
  */
 final class CliRouter implements Nette\Routing\Router
 {
-	use Nette\SmartObject;
-
 	private const PresenterKey = 'action';
 
 	private array $defaults;
