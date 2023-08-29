@@ -88,7 +88,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/** use absolute Urls or paths? */
 	public bool $absoluteUrls = false;
-	public array $allowedMethods = ['GET', 'POST', 'HEAD', 'PUT', 'DELETE'];
+	public array $allowedMethods = ['GET', 'POST', 'HEAD', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'];
 	private ?Nette\Application\Request $request = null;
 	private ?Nette\Application\Response $response = null;
 	private array $globalParams = [];
