@@ -20,8 +20,6 @@ use Nette;
  */
 final class ComponentReflection extends \ReflectionClass
 {
-	use Nette\SmartObject;
-
 	private static array $ppCache = [];
 	private static array $pcCache = [];
 	private static array $mcCache = [];

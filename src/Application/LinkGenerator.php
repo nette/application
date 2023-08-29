@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace Nette\Application;
 
-use Nette;
 use Nette\Http\UrlScript;
 use Nette\Routing\Router;
 
@@ -19,8 +18,6 @@ use Nette\Routing\Router;
  */
 final class LinkGenerator
 {
-	use Nette\SmartObject;
-
 	public function __construct(
 		private readonly Router $router,
 		private readonly UrlScript $refUrl,

@@ -9,8 +9,6 @@ declare(strict_types=1);
 
 namespace Nette\Application\UI;
 
-use Nette;
-
 
 /**
  * Lazy encapsulation of Component::link().
@@ -18,8 +16,6 @@ use Nette;
  */
 final class Link
 {
-	use Nette\SmartObject;
-
 	private Component $component;
 	private string $destination;
 	private array $params;

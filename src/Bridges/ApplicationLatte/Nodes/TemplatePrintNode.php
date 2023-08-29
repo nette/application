@@ -12,7 +12,6 @@ namespace Nette\Bridges\ApplicationLatte\Nodes;
 use Latte;
 use Latte\Compiler\PhpHelpers;
 use Latte\Compiler\PrintContext;
-use Nette;
 use Nette\Application\UI\Presenter;
 use Nette\Bridges\ApplicationLatte\Template;
 use Nette\PhpGenerator as Php;
@@ -55,9 +54,6 @@ class TemplatePrintNode extends Latte\Essential\Nodes\TemplatePrintNode
 		$namespace = new Php\PhpNamespace(Php\Helpers::extractNamespace($name));
 		$class = $namespace->addClass(Php\Helpers::extractShortName($name));
 		$class->setExtends($parent ?: Template::class);
-		if (!$parent) {
-			$class->addTrait(Nette\SmartObject::class);
-		}
 
 		$blueprint->addProperties($class, $params);
 		$blueprint->addFunctions($class, $funcs);

@@ -17,8 +17,6 @@ use Nette;
  */
 final class ForwardResponse implements Nette\Application\Response
 {
-	use Nette\SmartObject;
-
 	private Nette\Application\Request $request;
 
 

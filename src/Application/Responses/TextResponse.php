@@ -17,8 +17,6 @@ use Nette;
  */
 final class TextResponse implements Nette\Application\Response
 {
-	use Nette\SmartObject;
-
 	private mixed $source;
 
 

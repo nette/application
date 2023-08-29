@@ -17,8 +17,6 @@ use Nette;
  */
 final class FileResponse implements Nette\Application\Response
 {
-	use Nette\SmartObject;
-
 	public bool $resuming = true;
 	private string $file;
 	private string $contentType;

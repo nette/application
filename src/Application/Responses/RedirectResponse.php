@@ -18,8 +18,6 @@ use Nette\Http;
  */
 final class RedirectResponse implements Nette\Application\Response
 {
-	use Nette\SmartObject;
-
 	private string $url;
 	private int $httpCode;
 

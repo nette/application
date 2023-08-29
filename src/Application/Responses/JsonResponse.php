@@ -17,8 +17,6 @@ use Nette;
  */
 final class JsonResponse implements Nette\Application\Response
 {
-	use Nette\SmartObject;
-
 	private mixed $payload;
 	private string $contentType;
 

@@ -9,16 +9,12 @@ declare(strict_types=1);
 
 namespace Nette\Application\UI;
 
-use Nette;
-
 
 /**
  * @internal
  */
 final class MethodReflection extends \ReflectionMethod
 {
-	use Nette\SmartObject;
-
 	/**
 	 * Has method specified annotation?
 	 */

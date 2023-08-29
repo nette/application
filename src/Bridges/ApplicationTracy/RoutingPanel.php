@@ -20,8 +20,6 @@ use Tracy;
  */
 final class RoutingPanel implements Tracy\IBarPanel
 {
-	use Nette\SmartObject;
-
 	private array $routes;
 	private ?array $matched = null;
 

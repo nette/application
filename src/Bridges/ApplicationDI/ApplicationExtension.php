@@ -205,8 +205,8 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 			];
 		});
 		if (
-			version_compare(Tracy\Debugger::VERSION, '2.9.0', '>=')
-			&& version_compare(Tracy\Debugger::VERSION, '3.0', '<')
+			version_compare(Tracy\Debugger::Version, '2.9.0', '>=')
+			&& version_compare(Tracy\Debugger::Version, '3.0', '<')
 		) {
 			$blueScreen->addFileGenerator(self::generateNewPresenterFileContents(...));
 		}
