@@ -84,8 +84,9 @@ final class MicroPresenter implements Application\IPresenter
 
 		if ($this->context) {
 			foreach ($reflection->getParameters() as $param) {
-				if ($param->getType()) {
-					$params[$param->getName()] = $this->context->getByType($param->getType()->getName(), false);
+				$type = $param->getType();
+				if ($type instanceof \ReflectionNamedType && !$type->isBuiltin()) {
+					$params[$param->getName()] = $this->context->getByType($type->getName(), false);
 				}
 			}
 		}
