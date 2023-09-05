@@ -75,7 +75,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	public $absoluteUrls = false;
 
 	/** @var string[] */
-	public $allowedMethods = ['GET', 'POST', 'HEAD', 'PUT', 'DELETE'];
+	public $allowedMethods = ['GET', 'POST', 'HEAD', 'PUT', 'DELETE', 'PATCH'];
 
 	/** @var Nette\Application\Request|null */
 	private $request;
