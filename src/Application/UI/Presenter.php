@@ -1285,7 +1285,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 
 	/**
-	 * Saves state informations for next request.
+	 * Saves state information for next request.
 	 */
 	public function saveState(array &$params, ?ComponentReflection $reflection = null): void
 	{

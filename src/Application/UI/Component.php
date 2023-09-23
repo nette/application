@@ -152,7 +152,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 
 
 	/**
-	 * Loads state informations.
+	 * Loads state information.
 	 */
 	public function loadState(array $params): void
 	{
@@ -180,7 +180,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 
 
 	/**
-	 * Saves state informations for next request.
+	 * Saves state information for next request.
 	 */
 	public function saveState(array &$params): void
 	{

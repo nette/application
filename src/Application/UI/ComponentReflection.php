@@ -101,7 +101,7 @@ final class ComponentReflection extends \ReflectionClass
 
 
 	/**
-	 * Saves state informations for next request.
+	 * Saves state information for next request.
 	 */
 	public function saveState(Component $component, array &$params): void
 	{

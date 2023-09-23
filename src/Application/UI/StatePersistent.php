@@ -16,12 +16,12 @@ namespace Nette\Application\UI;
 interface StatePersistent
 {
 	/**
-	 * Loads state informations.
+	 * Loads state information.
 	 */
 	function loadState(array $params): void;
 
 	/**
-	 * Saves state informations for next request.
+	 * Saves state information for next request.
 	 */
 	function saveState(array &$params): void;
 }
