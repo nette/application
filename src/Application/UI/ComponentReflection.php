@@ -33,40 +33,39 @@ final class ComponentReflection extends \ReflectionClass
 
 
 	/**
-	 * Returns array of classes persistent parameters. They have public visibility,
-	 * are non-static and have annotation @persistent.
+	 * Returns array of persistent properties. They are public and have attribute #[Persistent] or annotation @persistent.
 	 */
-	public function getPersistentParams(?string $class = null): array
+	public function getPersistentParams(): array
 	{
-		$class = $class ?? $this->getName();
-		$params = &self::$ppCache[$class];
+		$params = &self::$ppCache[$this->getName()];
 		if ($params !== null) {
 			return $params;
 		}
 
 		$params = [];
-		if (is_subclass_of($class, Component::class)) {
-			$isPresenter = is_subclass_of($class, Presenter::class);
-			$defaults = get_class_vars($class);
-			foreach ($defaults as $name => $default) {
-				$rp = new \ReflectionProperty($class, $name);
-				if (!$rp->isStatic()
-					&& ((PHP_VERSION_ID >= 80000 && $rp->getAttributes(Nette\Application\Attributes\Persistent::class))
-						|| self::parseAnnotation($rp, 'persistent'))
-				) {
-					$params[$name] = [
-						'def' => $default,
-						'type' => self::getPropertyType($rp, $default),
-						'since' => $isPresenter ? Nette\Utils\Reflection::getPropertyDeclaringClass($rp)->getName() : null,
-					];
-				}
+		$isPresenter = $this->isSubclassOf(Presenter::class);
+		$defaults = $this->getDefaultProperties();
+		foreach ($this->getProperties(\ReflectionProperty::IS_PUBLIC) as $prop) {
+			if (!$prop->isStatic()
+				&& (self::parseAnnotation($prop, 'persistent')
+					|| (PHP_VERSION_ID >= 80000 && $prop->getAttributes(Nette\Application\Attributes\Persistent::class)))
+			) {
+				$default = $defaults[$prop->getName()] ?? null;
+				$params[$prop->getName()] = [
+					'def' => $default,
+					'type' => self::getPropertyType($prop, $default),
+					'since' => $isPresenter ? Nette\Utils\Reflection::getPropertyDeclaringClass($prop)->getName() : null,
+				];
 			}
+		}
 
-			foreach ($this->getPersistentParams(get_parent_class($class)) as $name => $param) {
+		if ($this->getParentClass()->isSubclassOf(Component::class)) {
+			$parent = new self($this->getParentClass()->getName());
+			foreach ($parent->getPersistentParams() as $name => $meta) {
 				if (isset($params[$name])) {
-					$params[$name]['since'] = $param['since'];
+					$params[$name]['since'] = $meta['since'];
 				} else {
-					$params[$name] = $param;
+					$params[$name] = $meta;
 				}
 			}
 		}
@@ -75,25 +74,22 @@ final class ComponentReflection extends \ReflectionClass
 	}
 
 
-	public function getPersistentComponents(?string $class = null): array
+	public function getPersistentComponents(): array
 	{
-		$class = $class ?? $this->getName();
+		$class = $this->getName();
 		$components = &self::$pcCache[$class];
 		if ($components !== null) {
 			return $components;
 		}
 
 		$components = [];
-		if (is_subclass_of($class, Presenter::class)) {
+		if ($this->isSubclassOf(Presenter::class)) {
 			foreach ($class::getPersistentComponents() as $name => $meta) {
-				if (is_string($meta)) {
-					$name = $meta;
-				}
-
-				$components[$name] = ['since' => $class];
+				$components[is_string($meta) ? $meta : $name] = ['since' => $class];
 			}
 
-			$components = $this->getPersistentComponents(get_parent_class($class)) + $components;
+			$parent = new self($this->getParentClass()->getName());
+			$components = $parent->getPersistentComponents() + $components;
 		}
 
 		return $components;
@@ -197,12 +193,28 @@ final class ComponentReflection extends \ReflectionClass
 
 
 	/**
-	 * Non data-loss type conversion.
+	 * Lossless type conversion.
 	 */
 	public static function convertType(&$val, string $types): bool
 	{
+		$scalars = ['string' => 1, 'int' => 1, 'float' => 1, 'bool' => 1, 'boolean' => 1, 'double' => 1, 'integer' => 1];
+		$testable = ['iterable' => 1, 'object' => 1, 'array' => 1, 'null' => 1];
+
 		foreach (explode('|', $types) as $type) {
-			if (self::convertSingleType($val, $type)) {
+			if (isset($scalars[$type])) {
+				$ok = self::castScalar($val, $type);
+			} elseif (isset($testable[$type])) {
+				$ok = call_user_func("is_$type", $val);
+			} elseif ($type === 'scalar') { // special type due to historical reasons
+				$ok = !is_array($val);
+			} elseif ($type === 'mixed') {
+				$ok = true;
+			} elseif ($type === 'callable') { // intentionally disabled for security reasons
+				$ok = false;
+			} else {
+				$ok = $val instanceof $type;
+			}
+			if ($ok) {
 				return true;
 			}
 		}
@@ -212,52 +224,26 @@ final class ComponentReflection extends \ReflectionClass
 
 
 	/**
-	 * Non data-loss type conversion.
+	 * Lossless type casting.
 	 */
-	private static function convertSingleType(&$val, string $type): bool
+	private static function castScalar(&$val, string $type): bool
 	{
-		$builtin = [
-			'string' => 1, 'int' => 1, 'float' => 1, 'bool' => 1, 'array' => 1, 'object' => 1,
-			'callable' => 1, 'iterable' => 1, 'void' => 1, 'null' => 1, 'mixed' => 1,
-			'boolean' => 1, 'integer' => 1, 'double' => 1, 'scalar' => 1,
-		];
-
-		if (empty($builtin[$type])) {
-			return $val instanceof $type;
-
-		} elseif ($type === 'object') {
-			return is_object($val);
-
-		} elseif ($type === 'callable') {
+		if (!is_scalar($val)) {
 			return false;
-
-		} elseif ($type === 'scalar') {
-			return !is_array($val);
-
-		} elseif ($type === 'array' || $type === 'iterable') {
-			return is_array($val);
-
-		} elseif ($type === 'mixed') {
-			return true;
-
-		} elseif (!is_scalar($val)) { // array, resource, null, etc.
-			return false;
-
-		} else {
-			$tmp = ($val === false ? '0' : (string) $val);
-			if ($type === 'double' || $type === 'float') {
-				$tmp = preg_replace('#\.0*$#D', '', $tmp);
-			}
-
-			$orig = $tmp;
-			settype($tmp, $type);
-			if ($orig !== ($tmp === false ? '0' : (string) $tmp)) {
-				return false; // data-loss occurs
-			}
-
-			$val = $tmp;
 		}
 
+		$tmp = ($val === false ? '0' : (string) $val);
+		if ($type === 'double' || $type === 'float') {
+			$tmp = preg_replace('#\.0*$#D', '', $tmp);
+		}
+
+		$orig = $tmp;
+		settype($tmp, $type);
+		if ($orig !== ($tmp === false ? '0' : (string) $tmp)) {
+			return false; // data-loss occurs
+		}
+
+		$val = $tmp;
 		return true;
 	}
 
