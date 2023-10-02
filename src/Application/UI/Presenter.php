@@ -1200,9 +1200,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	public static function getPersistentComponents(): array
 	{
 		$rc = new \ReflectionClass(static::class);
-		$attrs = PHP_VERSION_ID >= 80000
-			? $rc->getAttributes(Application\Attributes\Persistent::class)
-			: null;
+		$attrs = $rc->getAttributes(Application\Attributes\Persistent::class);
 		return $attrs
 			? $attrs[0]->getArguments()
 			: (array) ComponentReflection::parseAnnotation($rc, 'persistent');

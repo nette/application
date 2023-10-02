@@ -42,66 +42,41 @@ class TwoPresenter extends OnePresenter
 }
 
 
-if (PHP_VERSION_ID < 80000) {
-	Assert::same(
-		[
-			'yes1' => [
-				'def' => null,
-				'type' => 'scalar',
-				'since' => 'OnePresenter',
-			],
+Assert::same(
+	[
+		'yes1' => [
+			'def' => null,
+			'type' => 'scalar',
+			'since' => 'OnePresenter',
 		],
-		(new ComponentReflection(OnePresenter::class))->getParameters()
-	);
+		'yes2' => [
+			'def' => null,
+			'type' => 'scalar',
+			'since' => 'OnePresenter',
+		],
+		'yes3' => [
+			'type' => 'mixed',
+		],
+	],
+	(new ComponentReflection(OnePresenter::class))->getParameters(),
+);
 
-	Assert::same(
-		[
-			'yes1' => [
-				'def' => null,
-				'type' => 'scalar',
-				'since' => 'OnePresenter',
-			],
+Assert::same(
+	[
+		'yes2' => [
+			'type' => 'mixed',
 		],
-		(new ComponentReflection(TwoPresenter::class))->getParameters()
-	);
-
-} else {
-	Assert::same(
-		[
-			'yes1' => [
-				'def' => null,
-				'type' => 'scalar',
-				'since' => 'OnePresenter',
-			],
-			'yes2' => [
-				'def' => null,
-				'type' => 'scalar',
-				'since' => 'OnePresenter',
-			],
-			'yes3' => [
-				'type' => 'mixed',
-			],
+		'yes4' => [
+			'type' => 'mixed',
 		],
-		(new ComponentReflection(OnePresenter::class))->getParameters()
-	);
-
-	Assert::same(
-		[
-			'yes2' => [
-				'type' => 'mixed',
-			],
-			'yes4' => [
-				'type' => 'mixed',
-			],
-			'yes1' => [
-				'def' => null,
-				'type' => 'scalar',
-				'since' => 'OnePresenter',
-			],
-			'yes3' => [
-				'type' => 'mixed',
-			],
+		'yes1' => [
+			'def' => null,
+			'type' => 'scalar',
+			'since' => 'OnePresenter',
 		],
-		(new ComponentReflection(TwoPresenter::class))->getParameters()
-	);
-}
+		'yes3' => [
+			'type' => 'mixed',
+		],
+	],
+	(new ComponentReflection(TwoPresenter::class))->getParameters(),
+);

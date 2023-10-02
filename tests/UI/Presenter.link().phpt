@@ -62,6 +62,12 @@ class TestPresenter extends Application\UI\Presenter
 	/** @persistent */
 	public $pbool = true;
 
+	/** @persistent */
+	public array $parrn;
+
+	/** @persistent */
+	public ?bool $pbooln = null;
+
 
 	protected function startup()
 	{
@@ -104,6 +110,13 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same("#error: Value passed to persistent parameter 'pbool' in presenter Test must be boolean, string given.", $this->link('this', ['p' => null, 'pbool' => 'a']));
 		Assert::same("#error: Value passed to persistent parameter 'p' in presenter Test must be scalar, array given.", $this->link('this', ['p' => [1], 'pbool' => false]));
 		Assert::same('/index.php?action=persistent&presenter=Test', $this->link('persistent'));
+
+		Assert::same('/index.php?pbooln=1&parrn%5B0%5D=1&action=params&presenter=Test', $this->link('params', ['pbooln' => true, 'parrn' => [1]]));
+		Assert::same(['pbooln' => true, 'parrn' => [1], 'pint' => null, 'parr' => null, 'pbool' => null, 'action' => 'params'], $this->getLastCreatedRequest()->getParameters());
+		Assert::same('/index.php?pbooln=0&action=params&presenter=Test', $this->link('params', ['pbooln' => '0', 'parrn' => []]));
+		Assert::same(['pbooln' => false, 'parrn' => [], 'pint' => null, 'parr' => null, 'pbool' => null, 'action' => 'params'], $this->getLastCreatedRequest()->getParameters());
+		Assert::same("#error: Value passed to persistent parameter 'pbooln' in presenter Test must be bool, string given.", $this->link('params', ['pbooln' => 'a']));
+		Assert::same("#error: Value passed to persistent parameter 'parrn' in presenter Test must be array, string given.", $this->link('params', ['parrn' => 'a']));
 
 		// Other presenter & action link
 		Assert::same('/index.php?action=product&presenter=Other', $this->link('Other:product', ['p' => $this->p]));

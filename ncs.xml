@@ -6,8 +6,4 @@
 		<exclude-pattern>./src/Application/UI/Control.php</exclude-pattern>
 		<exclude-pattern>./src/Application/UI/Presenter.php</exclude-pattern>
 	</rule>
-
-	<rule ref="Squiz.Commenting.VariableComment.WrongStyle">
-		<exclude-pattern>./tests/UI/Presenter.getParameters.phpt</exclude-pattern>
-	</rule>
 </ruleset>

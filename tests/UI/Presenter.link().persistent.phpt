@@ -127,12 +127,10 @@ Assert::same([
 	't2' => ['def' => null, 'type' => 'scalar', 'since' => 'PersistentParam2A'],
 ], ThirdPresenter::getReflection()->getPersistentParams());
 
-if (PHP_VERSION_ID >= 80000) {
-	Assert::same([
-		'p1' => ['def' => null, 'type' => 'scalar', 'since' => 'BasePresenter'],
-		't1' => ['def' => null, 'type' => 'scalar', 'since' => 'PersistentParam1'],
-	], FourthPresenter::getReflection()->getPersistentParams());
-}
+Assert::same([
+	'p1' => ['def' => null, 'type' => 'scalar', 'since' => 'BasePresenter'],
+	't1' => ['def' => null, 'type' => 'scalar', 'since' => 'PersistentParam1'],
+], FourthPresenter::getReflection()->getPersistentParams());
 
 $url = new Http\UrlScript('http://localhost/index.php', '/index.php');
 

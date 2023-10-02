@@ -131,7 +131,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 			$element instanceof \ReflectionMethod
 			&& substr($element->getName(), 0, 6) === 'handle'
 			&& !ComponentReflection::parseAnnotation($element, 'crossOrigin')
-			&& (PHP_VERSION_ID < 80000 || !$element->getAttributes(Nette\Application\Attributes\CrossOrigin::class))
+			&& !$element->getAttributes(Nette\Application\Attributes\CrossOrigin::class)
 			&& !$this->getPresenter()->getHttpRequest()->isSameSite()
 		) {
 			$this->getPresenter()->detectedCsrf();
