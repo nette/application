@@ -14,8 +14,8 @@ use Latte\Compiler\Block;
 use Latte\Compiler\Nodes\AreaNode;
 use Latte\Compiler\Nodes\AuxiliaryNode;
 use Latte\Compiler\Nodes\Html\ElementNode;
-use Latte\Compiler\Nodes\Php\Expression\AssignNode;
-use Latte\Compiler\Nodes\Php\Expression\VariableNode;
+use Latte\Compiler\Nodes\Php;
+use Latte\Compiler\Nodes\Php\Expression;
 use Latte\Compiler\Nodes\Php\Scalar;
 use Latte\Compiler\Nodes\StatementNode;
 use Latte\Compiler\PrintContext;
@@ -49,6 +49,13 @@ class SnippetNode extends StatementNode
 			$node->block = new Block(new Scalar\StringNode(''), Template::LayerSnippet, $tag);
 		} else {
 			$name = $tag->parser->parseUnquotedStringOrExpression();
+			if (
+				$name instanceof Expression\ClassConstantFetchNode
+				&& $name->class instanceof Php\NameNode
+				&& $name->name instanceof Php\IdentifierNode
+			) {
+				$name = new Scalar\StringNode(constant($name->class . '::' . $name->name), $name->position);
+			}
 			$node->block = new Block($name, Template::LayerSnippet, $tag);
 			if (!$node->block->isDynamic()) {
 				$parser->checkBlockIsUnique($node->block);
@@ -148,7 +155,7 @@ class SnippetNode extends StatementNode
 				XX,
 			self::$snippetAttribute,
 			$this->block->isDynamic()
-				? new AssignNode(new VariableNode('ʟ_nm'), $this->block->name)
+				? new Expression\AssignNode(new Expression\VariableNode('ʟ_nm'), $this->block->name)
 				: $this->block->name,
 		);
 	}

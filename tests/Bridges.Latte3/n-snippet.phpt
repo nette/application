@@ -12,6 +12,11 @@ if (version_compare(Latte\Engine::VERSION, '3', '<')) {
 	Tester\Environment::skip('Test for Latte 3');
 }
 
+class Test
+{
+	public const Foo = 'hello';
+}
+
 
 $latte = new Latte\Engine;
 $latte->setLoader(new Latte\Loaders\StringLoader);
@@ -25,6 +30,8 @@ $template = <<<'EOD'
 		<div n:snippet="gallery" class="{=class}"></div>
 
 		<script n:snippet="script">{='x'}</script>
+
+		<script n:snippet="Test::Foo">{='y'}</script>
 
 	EOD;
 
