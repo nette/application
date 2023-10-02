@@ -143,31 +143,31 @@ test('', function () {
 	Assert::exception(
 		fn() => Reflection::combineArgs($method, ['int' => '']),
 		Nette\InvalidArgumentException::class,
-		'Argument $int passed to MyPresenter::hintsNulls() must be int, string given.',
+		'Argument $int passed to MyPresenter::hintsNulls() must be ?int, string given.',
 	);
 
 	Assert::exception(
 		fn() => Reflection::combineArgs($method, ['int' => new stdClass]),
 		Nette\InvalidArgumentException::class,
-		'Argument $int passed to MyPresenter::hintsNulls() must be int, stdClass given.',
+		'Argument $int passed to MyPresenter::hintsNulls() must be ?int, stdClass given.',
 	);
 
 	Assert::exception(
 		fn() => Reflection::combineArgs($method, ['int' => []]),
 		Nette\InvalidArgumentException::class,
-		'Argument $int passed to MyPresenter::hintsNulls() must be int, array given.',
+		'Argument $int passed to MyPresenter::hintsNulls() must be ?int, array given.',
 	);
 
 	Assert::exception(
 		fn() => Reflection::combineArgs($method, ['int' => '1', 'bool' => '']),
 		Nette\InvalidArgumentException::class,
-		'Argument $bool passed to MyPresenter::hintsNulls() must be bool, string given.',
+		'Argument $bool passed to MyPresenter::hintsNulls() must be ?bool, string given.',
 	);
 
 	Assert::exception(
 		fn() => Reflection::combineArgs($method, ['int' => '1', 'bool' => '1', 'str' => '', 'arr' => '']),
 		Nette\InvalidArgumentException::class,
-		'Argument $arr passed to MyPresenter::hintsNulls() must be array, string given.',
+		'Argument $arr passed to MyPresenter::hintsNulls() must be ?array, string given.',
 	);
 });
 
@@ -183,31 +183,31 @@ test('', function () {
 	Assert::exception(
 		fn() => Reflection::combineArgs($method, ['int' => '']),
 		Nette\InvalidArgumentException::class,
-		'Argument $int passed to MyPresenter::hintsNullable() must be int, string given.',
+		'Argument $int passed to MyPresenter::hintsNullable() must be ?int, string given.',
 	);
 
 	Assert::exception(
 		fn() => Reflection::combineArgs($method, ['int' => new stdClass]),
 		Nette\InvalidArgumentException::class,
-		'Argument $int passed to MyPresenter::hintsNullable() must be int, stdClass given.',
+		'Argument $int passed to MyPresenter::hintsNullable() must be ?int, stdClass given.',
 	);
 
 	Assert::exception(
 		fn() => Reflection::combineArgs($method, ['int' => []]),
 		Nette\InvalidArgumentException::class,
-		'Argument $int passed to MyPresenter::hintsNullable() must be int, array given.',
+		'Argument $int passed to MyPresenter::hintsNullable() must be ?int, array given.',
 	);
 
 	Assert::exception(
 		fn() => Reflection::combineArgs($method, ['int' => '1', 'bool' => '']),
 		Nette\InvalidArgumentException::class,
-		'Argument $bool passed to MyPresenter::hintsNullable() must be bool, string given.',
+		'Argument $bool passed to MyPresenter::hintsNullable() must be ?bool, string given.',
 	);
 
 	Assert::exception(
 		fn() => Reflection::combineArgs($method, ['int' => '1', 'bool' => '1', 'str' => '', 'arr' => '']),
 		Nette\InvalidArgumentException::class,
-		'Argument $arr passed to MyPresenter::hintsNullable() must be array, string given.',
+		'Argument $arr passed to MyPresenter::hintsNullable() must be ?array, string given.',
 	);
 });
 

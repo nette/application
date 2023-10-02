@@ -37,7 +37,6 @@ final class ComponentReflection extends \ReflectionClass
 
 		$params = [];
 		$isPresenter = $this->isSubclassOf(Presenter::class);
-		$defaults = $this->getDefaultProperties();
 		foreach ($this->getProperties(\ReflectionProperty::IS_PUBLIC) as $prop) {
 			if ($prop->isStatic()) {
 				continue;
@@ -45,10 +44,9 @@ final class ComponentReflection extends \ReflectionClass
 				self::parseAnnotation($prop, 'persistent')
 				|| $prop->getAttributes(Nette\Application\Attributes\Persistent::class)
 			) {
-				$default = $defaults[$prop->getName()] ?? null;
 				$params[$prop->getName()] = [
-					'def' => $default,
-					'type' => self::getPropertyType($prop, $default),
+					'def' => $prop->getDefaultValue(),
+					'type' => self::getType($prop),
 					'since' => $isPresenter ? Nette\Utils\Reflection::getPropertyDeclaringClass($prop)->getName() : null,
 				];
 			} elseif ($prop->getAttributes(Nette\Application\Attributes\Parameter::class)) {
@@ -169,7 +167,7 @@ final class ComponentReflection extends \ReflectionClass
 		$res = [];
 		foreach ($method->getParameters() as $i => $param) {
 			$name = $param->getName();
-			$type = self::getParameterType($param);
+			$type = self::getType($param);
 			if (isset($args[$name])) {
 				$res[$i] = $args[$name];
 				if (!self::convertType($res[$i], $type)) {
@@ -274,22 +272,15 @@ final class ComponentReflection extends \ReflectionClass
 	}
 
 
-	public static function getParameterType(\ReflectionParameter $param): string
+	public static function getType(\ReflectionParameter|\ReflectionProperty $item): string
 	{
-		$default = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null;
-		$type = $param->getType();
-		return $type
-			? ($type instanceof \ReflectionNamedType ? $type->getName() : (string) $type)
-			: ($default === null ? 'scalar' : get_debug_type($default));
-	}
-
-
-	public static function getPropertyType(\ReflectionProperty $prop, mixed $default): string
-	{
-		$type = $prop->getType();
-		return $type
-			? ($type instanceof \ReflectionNamedType ? $type->getName() : (string) $type)
-			: ($default === null ? 'scalar' : get_debug_type($default));
+		if ($type = $item->getType()) {
+			return (string) $type;
+		}
+		$default = $item instanceof \ReflectionProperty || $item->isDefaultValueAvailable()
+			? $item->getDefaultValue()
+			: null;
+		return $default === null ? 'scalar' : get_debug_type($default);
 	}
 
 

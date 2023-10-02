@@ -57,7 +57,7 @@ Assert::exception(function () use ($presenter) {
 Assert::exception(function () use ($presenter) {
 	$request = new Application\Request('Test', Http\Request::Get, ['d' => 1]);
 	$presenter->run($request);
-}, Nette\Application\BadRequestException::class, 'Argument $d passed to ParamPresenter::actionDefault() must be array, int given.');
+}, Nette\Application\BadRequestException::class, 'Argument $d passed to ParamPresenter::actionDefault() must be ?array, int given.');
 
 
 Assert::exception(function () use ($presenter) {
