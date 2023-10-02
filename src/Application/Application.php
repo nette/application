@@ -21,50 +21,37 @@ class Application
 {
 	use Nette\SmartObject;
 
-	/** @var int */
-	public $maxLoop = 20;
+	public int $maxLoop = 20;
 
-	/** @var bool enable fault barrier? */
-	public $catchExceptions;
-
-	/** @var string|null */
-	public $errorPresenter;
+	/** enable fault barrier? */
+	public bool $catchExceptions = false;
+	public ?string $errorPresenter = null;
 
 	/** @var array<callable(self): void>  Occurs before the application loads presenter */
-	public $onStartup = [];
+	public array $onStartup = [];
 
 	/** @var array<callable(self, ?\Throwable): void>  Occurs before the application shuts down */
-	public $onShutdown = [];
+	public array $onShutdown = [];
 
 	/** @var array<callable(self, Request): void>  Occurs when a new request is received */
-	public $onRequest = [];
+	public array $onRequest = [];
 
 	/** @var array<callable(self, IPresenter): void>  Occurs when a presenter is created */
-	public $onPresenter = [];
+	public array $onPresenter = [];
 
 	/** @var array<callable(self, Response): void>  Occurs when a new response is ready for dispatch */
-	public $onResponse = [];
+	public array $onResponse = [];
 
 	/** @var array<callable(self, \Throwable): void>  Occurs when an unhandled exception occurs in the application */
-	public $onError = [];
+	public array $onError = [];
 
 	/** @var Request[] */
-	private $requests = [];
-
-	/** @var IPresenter|null */
-	private $presenter;
-
-	/** @var Nette\Http\IRequest */
-	private $httpRequest;
-
-	/** @var Nette\Http\IResponse */
-	private $httpResponse;
-
-	/** @var IPresenterFactory */
-	private $presenterFactory;
-
-	/** @var Router */
-	private $router;
+	private array $requests = [];
+	private ?IPresenter $presenter = null;
+	private Nette\Http\IRequest $httpRequest;
+	private Nette\Http\IResponse $httpResponse;
+	private IPresenterFactory $presenterFactory;
+	private Router $router;
 
 
 	public function __construct(

@@ -22,22 +22,12 @@ class TemplateFactory implements UI\TemplateFactory
 	use Nette\SmartObject;
 
 	/** @var array<callable(Template): void>  Occurs when a new template is created */
-	public $onCreate = [];
-
-	/** @var LatteFactory */
-	private $latteFactory;
-
-	/** @var Nette\Http\IRequest|null */
-	private $httpRequest;
-
-	/** @var Nette\Security\User|null */
-	private $user;
-
-	/** @var Nette\Caching\Storage|null */
-	private $cacheStorage;
-
-	/** @var string */
-	private $templateClass;
+	public array $onCreate = [];
+	private LatteFactory $latteFactory;
+	private ?Nette\Http\IRequest $httpRequest;
+	private ?Nette\Security\User $user;
+	private ?Nette\Caching\Storage $cacheStorage;
+	private string $templateClass;
 
 
 	public function __construct(
