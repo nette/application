@@ -2,7 +2,6 @@
 
 /**
  * Test: renderSnippets and control with two templates.
- * @phpVersion 8.0
  */
 
 declare(strict_types=1);

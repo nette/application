@@ -48,8 +48,9 @@ final class ComponentReflection extends \ReflectionClass
 		foreach ($this->getProperties(\ReflectionProperty::IS_PUBLIC) as $prop) {
 			if ($prop->isStatic()) {
 				continue;
-			} elseif (self::parseAnnotation($prop, 'persistent')
-				|| (PHP_VERSION_ID >= 80000 && $prop->getAttributes(Nette\Application\Attributes\Persistent::class))
+			} elseif (
+				self::parseAnnotation($prop, 'persistent')
+				|| $prop->getAttributes(Nette\Application\Attributes\Persistent::class)
 			) {
 				$default = $defaults[$prop->getName()] ?? null;
 				$params[$prop->getName()] = [
@@ -57,7 +58,7 @@ final class ComponentReflection extends \ReflectionClass
 					'type' => self::getPropertyType($prop, $default),
 					'since' => $isPresenter ? Nette\Utils\Reflection::getPropertyDeclaringClass($prop)->getName() : null,
 				];
-			} elseif (PHP_VERSION_ID >= 80000 && $prop->getAttributes(Nette\Application\Attributes\Parameter::class)) {
+			} elseif ($prop->getAttributes(Nette\Application\Attributes\Parameter::class)) {
 				$params[$prop->getName()] = [
 					'type' => (string) ($prop->getType() ?? 'mixed'),
 				];
@@ -299,7 +300,7 @@ final class ComponentReflection extends \ReflectionClass
 
 	public static function getPropertyType(\ReflectionProperty $prop, $default): string
 	{
-		$type = PHP_VERSION_ID < 70400 ? null : $prop->getType();
+		$type = $prop->getType();
 		return $type
 			? ($type instanceof \ReflectionNamedType ? $type->getName() : (string) $type)
 			: ($default === null ? 'scalar' : gettype($default));
