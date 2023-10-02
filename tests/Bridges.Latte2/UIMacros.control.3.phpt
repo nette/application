@@ -38,12 +38,12 @@ Assert::exception(function () use ($latte) {
 
 Assert::same(
 	'<div <>&amp;',
-	$latte->renderToString('<div {control x|noescape}')
+	$latte->renderToString('<div {control x|noescape}'),
 );
 
 Assert::same(
 	'<div title="&lt;&gt;&amp;">',
-	$latte->renderToString('<div title="{control x}">')
+	$latte->renderToString('<div title="{control x}">'),
 );
 
 Assert::exception(function () use ($latte) {

@@ -24,7 +24,7 @@ testRouteIn(
 	$list,
 	'/hello',
 	['presenter' => 'hello', 'test' => 'testvalue'],
-	'/hello?test=testvalue'
+	'/hello?test=testvalue',
 );
 
 testRouteIn($list, '/none');

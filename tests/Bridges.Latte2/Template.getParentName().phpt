@@ -43,7 +43,7 @@ Assert::same('file.latte', $template->getParentName());
 
 $template = $latte->createTemplate(
 	'{extends $file} {block name}...{/block}',
-	['file' => 'file.latte']
+	['file' => 'file.latte'],
 );
 $template->prepare();
 Assert::same('file.latte', $template->getParentName());

@@ -35,5 +35,5 @@ $latte->setLoader(new Latte\Loaders\StringLoader);
 
 Assert::match(
 	'<script></script>',
-	$latte->renderToString('<script n:nonce></script>')
+	$latte->renderToString('<script n:nonce></script>'),
 );

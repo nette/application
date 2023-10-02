@@ -22,7 +22,7 @@ class LoremIpsumMacros extends Latte\Macros\MacroSet
 	{
 		$me = new static($compiler);
 		$me->addMacro('lorem', 'lorem');
-		Notes::add(get_class($me));
+		Notes::add($me::class);
 	}
 }
 
@@ -33,7 +33,7 @@ class IpsumLoremMacros extends Latte\Macros\MacroSet
 	{
 		$me = new static($compiler);
 		$me->addMacro('ipsum', 'ipsum');
-		Notes::add(get_class($me));
+		Notes::add($me::class);
 	}
 }
 
@@ -44,7 +44,7 @@ class FooMacros extends Latte\Macros\MacroSet
 	{
 		$me = new static($compiler);
 		$me->addMacro('foo', 'foo');
-		Notes::add(get_class($me));
+		Notes::add($me::class);
 	}
 }
 

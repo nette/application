@@ -35,20 +35,20 @@ Assert::matchFile(
 	__DIR__ . '/expected/UIMacros.isLinkCurrent.php',
 	$latte->compile(
 		<<<'XX'
-<a n:href="default" n:class="$presenter->isLinkCurrent() ? current">n:href before n:class</a>
+			<a n:href="default" n:class="$presenter->isLinkCurrent() ? current">n:href before n:class</a>
 
-<a n:class="$presenter->isLinkCurrent() ? current" n:href="default">n:href after n:class</a>
+			<a n:class="$presenter->isLinkCurrent() ? current" n:href="default">n:href after n:class</a>
 
-<a href="{link default}" n:class="$presenter->isLinkCurrent() ? current">href before n:class</a>
+			<a href="{link default}" n:class="$presenter->isLinkCurrent() ? current">href before n:class</a>
 
-<a n:class="$presenter->isLinkCurrent() ? current" href="{link default}">href after n:class</a>
+			<a n:class="$presenter->isLinkCurrent() ? current" href="{link default}">href after n:class</a>
 
-{ifCurrent}empty{/ifCurrent}
+			{ifCurrent}empty{/ifCurrent}
 
-{ifCurrent default}default{/ifCurrent}
+			{ifCurrent default}default{/ifCurrent}
 
-<a n:class="isLinkCurrent(default) ? current" n:href="default">custom function</a>
+			<a n:class="isLinkCurrent(default) ? current" n:href="default">custom function</a>
 
-XX
-	)
+			XX,
+	),
 );

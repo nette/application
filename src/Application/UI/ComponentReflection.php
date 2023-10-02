@@ -84,9 +84,7 @@ final class ComponentReflection extends \ReflectionClass
 	 */
 	public function getPersistentParams(): array
 	{
-		return array_filter($this->getParameters(), function ($param) {
-			return array_key_exists('since', $param);
-		});
+		return array_filter($this->getParameters(), fn($param) => array_key_exists('since', $param));
 	}
 
 
@@ -117,7 +115,7 @@ final class ComponentReflection extends \ReflectionClass
 	 */
 	public function saveState(Component $component, array &$params): void
 	{
-		$tree = self::getClassesAndTraits(get_class($component));
+		$tree = self::getClassesAndTraits($component::class);
 
 		foreach ($this->getPersistentParams() as $name => $meta) {
 			if (isset($params[$name])) {
@@ -140,7 +138,7 @@ final class ComponentReflection extends \ReflectionClass
 					$name,
 					$component instanceof Presenter ? 'presenter ' . $component->getName() : "component '{$component->getUniqueId()}'",
 					$meta['type'],
-					is_object($params[$name]) ? get_class($params[$name]) : gettype($params[$name])
+					is_object($params[$name]) ? get_class($params[$name]) : gettype($params[$name]),
 				));
 			}
 
@@ -186,7 +184,7 @@ final class ComponentReflection extends \ReflectionClass
 						$name,
 						($method instanceof \ReflectionMethod ? $method->getDeclaringClass()->getName() . '::' : '') . $method->getName(),
 						$type,
-						is_object($args[$name]) ? get_class($args[$name]) : gettype($args[$name])
+						is_object($args[$name]) ? get_class($args[$name]) : gettype($args[$name]),
 					));
 				}
 			} elseif ($param->isDefaultValueAvailable()) {
@@ -199,7 +197,7 @@ final class ComponentReflection extends \ReflectionClass
 				throw new Nette\InvalidArgumentException(sprintf(
 					'Missing parameter $%s required by %s()',
 					$name,
-					($method instanceof \ReflectionMethod ? $method->getDeclaringClass()->getName() . '::' : '') . $method->getName()
+					($method instanceof \ReflectionMethod ? $method->getDeclaringClass()->getName() . '::' : '') . $method->getName(),
 				));
 			}
 		}
@@ -230,25 +228,14 @@ final class ComponentReflection extends \ReflectionClass
 	{
 		$scalars = ['string' => 1, 'int' => 1, 'float' => 1, 'bool' => 1, 'true' => 1, 'false' => 1, 'boolean' => 1, 'double' => 1, 'integer' => 1];
 		$tests = ['iterable' => 1, 'object' => 1, 'array' => 1, 'null' => 1];
-
-		if (isset($scalars[$type])) {
-			return self::dataLossConvert($val, $type);
-
-		} elseif (isset($tests[$type])) {
-			return "is_$type"($val);
-
-		} elseif ($type === 'scalar') { // special historical type
-			return !is_array($val);
-
-		} elseif ($type === 'mixed') {
-			return true;
-
-		} elseif ($type === 'callable') {
-			return false;
-
-		} else {
-			return $val instanceof $type;
-		}
+		return match (true) {
+			isset($scalars[$type]) => self::dataLossConvert($val, $type),
+			isset($tests[$type]) => "is_$type"($val),
+			$type === 'scalar' => !is_array($val), // special historical type
+			$type === 'mixed' => true,
+			$type === 'callable' => false,
+			default => $val instanceof $type,
+		};
 	}
 
 

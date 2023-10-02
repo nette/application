@@ -44,7 +44,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 	public function __construct(
 		Routing\Router $router,
 		Nette\Http\IRequest $httpRequest,
-		Nette\Application\IPresenterFactory $presenterFactory
+		Nette\Application\IPresenterFactory $presenterFactory,
 	) {
 		$this->router = $router;
 		$this->httpRequest = $httpRequest;
@@ -74,7 +74,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 			$matched = $this->matched;
 			$routers = $this->routers;
 			$source = $this->source;
-			$hasModule = (bool) array_filter($routers, function (\stdClass $rq): string { return $rq->module; });
+			$hasModule = (bool) array_filter($routers, fn(\stdClass $rq): string => $rq->module);
 			$url = $this->httpRequest->getUrl();
 			$method = $this->httpRequest->getMethod();
 			require __DIR__ . '/templates/RoutingPanel.panel.phtml';
@@ -91,7 +91,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 		string $module = '',
 		?string $path = null,
 		int $level = -1,
-		int $flag = 0
+		int $flag = 0,
 	): void
 	{
 		if ($router instanceof Routing\RouteList) {
@@ -156,7 +156,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 		$this->routers[] = (object) [
 			'level' => max(0, $level),
 			'matched' => $matched,
-			'class' => get_class($router),
+			'class' => $router::class,
 			'defaults' => $router instanceof Routing\Route || $router instanceof Routing\SimpleRouter ? $router->getDefaults() : [],
 			'mask' => $router instanceof Routing\Route ? $router->getMask() : null,
 			'params' => $params,

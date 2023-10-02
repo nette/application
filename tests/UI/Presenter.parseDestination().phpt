@@ -58,6 +58,7 @@ Assert::same([
 	'fragment' => '#fragment',
 ], Presenter::parseDestination('a:b?a=b&c=d#fragment'));
 
-Assert::exception(function () {
-	Presenter::parseDestination('');
-}, InvalidLinkException::class);
+Assert::exception(
+	fn() => Presenter::parseDestination(''),
+	InvalidLinkException::class,
+);
