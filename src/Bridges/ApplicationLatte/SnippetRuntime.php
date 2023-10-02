@@ -18,7 +18,7 @@ use Nette\Application\UI\Renderable;
  * Latte v3 snippet driver
  * @internal
  */
-final class SnippetDriver
+final class SnippetRuntime
 {
 	use Nette\SmartObject;
 

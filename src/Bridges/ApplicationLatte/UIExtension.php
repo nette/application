@@ -46,7 +46,7 @@ final class UIExtension extends Latte\Extension
 			'coreParentFinder' => [$this, 'findLayoutTemplate'],
 			'uiControl' => $this->control,
 			'uiPresenter' => $presenter,
-			'snippetDriver' => $this->control ? new SnippetDriver($this->control) : null,
+			'snippetDriver' => $this->control ? new SnippetRuntime($this->control) : null,
 			'uiNonce' => $httpResponse ? $this->findNonce($httpResponse) : null,
 		];
 	}

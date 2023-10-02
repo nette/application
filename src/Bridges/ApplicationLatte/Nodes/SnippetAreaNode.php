@@ -19,7 +19,7 @@ use Latte\Compiler\PrintContext;
 use Latte\Compiler\Tag;
 use Latte\Compiler\TemplateParser;
 use Latte\Runtime\Template;
-use Nette\Bridges\ApplicationLatte\SnippetDriver;
+use Nette\Bridges\ApplicationLatte\SnippetRuntime;
 
 
 /**
@@ -67,7 +67,7 @@ class SnippetAreaNode extends StatementNode
 
 				XX,
 			$this->block->name,
-			SnippetDriver::TypeArea,
+			SnippetRuntime::TypeArea,
 			$this->content,
 		);
 
