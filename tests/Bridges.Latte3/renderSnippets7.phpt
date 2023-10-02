@@ -195,7 +195,7 @@ foreach ($dataSets as $data) {
 	$engine = new Latte\Engine;
 	$engine->setLoader(new Latte\Loaders\StringLoader($data[0]));
 	$engine->addExtension(new Nette\Bridges\ApplicationLatte\UIExtension(null));
-	$engine->addProvider('snippetDriver', new Nette\Bridges\ApplicationLatte\SnippetDriver($control));
+	$engine->addProvider('snippetDriver', new Nette\Bridges\ApplicationLatte\SnippetRuntime($control));
 	$engine->render('main');
 
 	Assert::same($data[1], $control->payload);
@@ -208,7 +208,7 @@ foreach ($dataSets as $data) {
 	$engine = new Latte\Engine;
 	$engine->setLoader(new Latte\Loaders\StringLoader($data[0]));
 	$engine->addExtension(new Nette\Bridges\ApplicationLatte\UIExtension(null));
-	$engine->addProvider('snippetDriver', new Nette\Bridges\ApplicationLatte\SnippetDriver($control));
+	$engine->addProvider('snippetDriver', new Nette\Bridges\ApplicationLatte\SnippetRuntime($control));
 
 	$result = $engine->renderToString('main');
 
