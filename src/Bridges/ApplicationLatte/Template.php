@@ -63,16 +63,7 @@ class Template implements Nette\Application\UI\Template
 	 */
 	public function __toString(): string
 	{
-		try {
-			return $this->latte->renderToString($this->file, $this->getParameters());
-		} catch (\Throwable $e) {
-			if (func_num_args() || PHP_VERSION_ID >= 70400) {
-				throw $e;
-			}
-
-			trigger_error('Exception in ' . __METHOD__ . "(): {$e->getMessage()} in {$e->getFile()}:{$e->getLine()}", E_USER_ERROR);
-			return '';
-		}
+		return $this->latte->renderToString($this->file, $this->getParameters());
 	}
 
 
@@ -148,7 +139,7 @@ class Template implements Nette\Application\UI\Template
 	{
 		$res = [];
 		foreach ((new \ReflectionObject($this))->getProperties(\ReflectionProperty::IS_PUBLIC) as $prop) {
-			if (PHP_VERSION_ID < 70400 || $prop->isInitialized($this)) {
+			if ($prop->isInitialized($this)) {
 				$res[$prop->getName()] = $prop->getValue($this);
 			}
 		}

@@ -2,7 +2,6 @@
 
 /**
  * Test: n:snippet and custom HTML attribute.
- * @phpVersion 8.0
  */
 
 declare(strict_types=1);
