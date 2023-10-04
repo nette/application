@@ -212,7 +212,7 @@ final class ComponentReflection extends \ReflectionClass
 	 */
 	private static function convertSingleType(&$val, string $type): bool
 	{
-		$scalars = ['string' => 1, 'int' => 1, 'float' => 1, 'bool' => 1, 'boolean' => 1, 'double' => 1, 'integer' => 1];
+		$scalars = ['string' => 1, 'int' => 1, 'float' => 1, 'bool' => 1, 'true' => 1, 'false' => 1, 'boolean' => 1, 'double' => 1, 'integer' => 1];
 		$tests = ['iterable' => 1, 'object' => 1, 'array' => 1, 'null' => 1];
 
 		if (isset($scalars[$type])) {
@@ -248,7 +248,8 @@ final class ComponentReflection extends \ReflectionClass
 		}
 
 		$orig = $tmp;
-		settype($tmp, $type);
+		$spec = ['true' => true, 'false' => false];
+		isset($spec[$type]) ? $tmp = $spec[$type] : settype($tmp, $type);
 		if ($orig !== ($tmp === false ? '0' : (string) $tmp)) {
 			return false; // data-loss occurs
 		}
