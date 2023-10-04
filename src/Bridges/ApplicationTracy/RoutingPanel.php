@@ -76,7 +76,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 		Routing\Router $router,
 		?Nette\Http\IRequest $httpRequest,
 		?\Closure $afterMatch = null,
-		int $flag = 0,
+		array $flag = [],
 	) {
 		$afterMatch ??= fn($params) => $params;
 
@@ -107,7 +107,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 			return $info;
 		}
 
-		$matched = $flag & Routing\RouteList::ONE_WAY ? 'oneway' : 'no';
+		$matched = empty($flag['oneWay']) ? 'no' : 'oneway';
 		$params = $e = null;
 		try {
 			$params = $httpRequest ? $afterMatch($router->match($httpRequest)) : null;
