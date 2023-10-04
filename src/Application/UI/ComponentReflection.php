@@ -33,9 +33,9 @@ final class ComponentReflection extends \ReflectionClass
 
 
 	/**
-	 * Returns array of persistent properties. They are public and have attribute #[Persistent] or annotation @persistent.
+	 * Returns array of class properties that are public and have attribute #[Persistent] or #[Parameter] or annotation @persistent.
 	 */
-	public function getPersistentParams(): array
+	public function getParameters(): array
 	{
 		$params = &self::$ppCache[$this->getName()];
 		if ($params !== null) {
@@ -46,9 +46,10 @@ final class ComponentReflection extends \ReflectionClass
 		$isPresenter = $this->isSubclassOf(Presenter::class);
 		$defaults = $this->getDefaultProperties();
 		foreach ($this->getProperties(\ReflectionProperty::IS_PUBLIC) as $prop) {
-			if (!$prop->isStatic()
-				&& (self::parseAnnotation($prop, 'persistent')
-					|| (PHP_VERSION_ID >= 80000 && $prop->getAttributes(Nette\Application\Attributes\Persistent::class)))
+			if ($prop->isStatic()) {
+				continue;
+			} elseif (self::parseAnnotation($prop, 'persistent')
+				|| (PHP_VERSION_ID >= 80000 && $prop->getAttributes(Nette\Application\Attributes\Persistent::class))
 			) {
 				$default = $defaults[$prop->getName()] ?? null;
 				$params[$prop->getName()] = [
@@ -56,21 +57,36 @@ final class ComponentReflection extends \ReflectionClass
 					'type' => self::getPropertyType($prop, $default),
 					'since' => $isPresenter ? Nette\Utils\Reflection::getPropertyDeclaringClass($prop)->getName() : null,
 				];
+			} elseif (PHP_VERSION_ID >= 80000 && $prop->getAttributes(Nette\Application\Attributes\Parameter::class)) {
+				$params[$prop->getName()] = [
+					'type' => (string) ($prop->getType() ?? 'mixed'),
+				];
 			}
 		}
 
 		if ($this->getParentClass()->isSubclassOf(Component::class)) {
 			$parent = new self($this->getParentClass()->getName());
-			foreach ($parent->getPersistentParams() as $name => $meta) {
-				if (isset($params[$name])) {
-					$params[$name]['since'] = $meta['since'];
-				} else {
+			foreach ($parent->getParameters() as $name => $meta) {
+				if (!isset($params[$name])) {
 					$params[$name] = $meta;
+				} elseif (array_key_exists('since', $params[$name])) {
+					$params[$name]['since'] = $meta['since'];
 				}
 			}
 		}
 
 		return $params;
+	}
+
+
+	/**
+	 * Returns array of persistent properties. They are public and have attribute #[Persistent] or annotation @persistent.
+	 */
+	public function getPersistentParams(): array
+	{
+		return array_filter($this->getParameters(), function ($param) {
+			return array_key_exists('since', $param);
+		});
 	}
 
 
@@ -200,7 +216,7 @@ final class ComponentReflection extends \ReflectionClass
 		$scalars = ['string' => 1, 'int' => 1, 'float' => 1, 'bool' => 1, 'true' => 1, 'false' => 1, 'boolean' => 1, 'double' => 1, 'integer' => 1];
 		$testable = ['iterable' => 1, 'object' => 1, 'array' => 1, 'null' => 1];
 
-		foreach (explode('|', $types) as $type) {
+		foreach (explode('|', ltrim($types, '?')) as $type) {
 			if (isset($scalars[$type])) {
 				$ok = self::castScalar($val, $type);
 			} elseif (isset($testable[$type])) {
