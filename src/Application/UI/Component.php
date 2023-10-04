@@ -157,7 +157,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	public function loadState(array $params): void
 	{
 		$reflection = $this->getReflection();
-		foreach ($reflection->getPersistentParams() as $name => $meta) {
+		foreach ($reflection->getParameters() as $name => $meta) {
 			if (isset($params[$name])) { // nulls are ignored
 				if (!$reflection->convertType($params[$name], $meta['type'])) {
 					throw new Nette\Application\BadRequestException(sprintf(
