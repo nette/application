@@ -208,31 +208,24 @@ final class ComponentReflection extends \ReflectionClass
 	 */
 	public static function convertType(&$val, string $types): bool
 	{
+		$scalars = ['string' => 1, 'int' => 1, 'float' => 1, 'bool' => 1, 'true' => 1, 'false' => 1];
+		$tests = ['iterable' => 1, 'object' => 1, 'array' => 1, 'null' => 1];
+
 		foreach (explode('|', ltrim($types, '?')) as $type) {
-			if (self::convertSingleType($val, $type)) {
+			$ok = match (true) {
+				isset($scalars[$type]) => self::dataLossConvert($val, $type),
+				isset($tests[$type]) => "is_$type"($val),
+				$type === 'scalar' => !is_array($val), // special historical type
+				$type === 'mixed' => true,
+				$type === 'callable' => false,
+				default => $val instanceof $type,
+			};
+			if ($ok) {
 				return true;
 			}
 		}
 
 		return false;
-	}
-
-
-	/**
-	 * Non data-loss type conversion.
-	 */
-	private static function convertSingleType(&$val, string $type): bool
-	{
-		$scalars = ['string' => 1, 'int' => 1, 'float' => 1, 'bool' => 1, 'true' => 1, 'false' => 1];
-		$tests = ['iterable' => 1, 'object' => 1, 'array' => 1, 'null' => 1];
-		return match (true) {
-			isset($scalars[$type]) => self::dataLossConvert($val, $type),
-			isset($tests[$type]) => "is_$type"($val),
-			$type === 'scalar' => !is_array($val), // special historical type
-			$type === 'mixed' => true,
-			$type === 'callable' => false,
-			default => $val instanceof $type,
-		};
 	}
 
 
