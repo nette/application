@@ -80,7 +80,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 		string $module = '',
 		?string $path = null,
 		int $level = -1,
-		int $flag = 0,
+		array $flag = [],
 	): void
 	{
 		if ($router instanceof Routing\RouteList) {
@@ -119,7 +119,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 			return;
 		}
 
-		$matched = $flag & Routing\RouteList::ONE_WAY ? 'oneway' : 'no';
+		$matched = empty($flag['oneWay']) ? 'no' : 'oneway';
 		$params = $e = null;
 		try {
 			$params = $httpRequest
