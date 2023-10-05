@@ -10,36 +10,70 @@ use Tracy\Helpers;
 
 ?>
 <style class="tracy-debug">
-	#tracy-debug .nette-RoutingPanel table {
-		font: 9pt/1.5 Consolas, monospace;
+	#tracy-debug .nette-RoutingPanel-grid {
+		background: #FDF5CE;
+		display: grid;
+		grid-template-columns: auto 1fr auto auto;
+		border: 1px solid #E6DFBF;
 	}
 
-	#tracy-debug .nette-RoutingPanel tr {
-		border: #d6ceb0 0 solid;
+	#tracy-debug .nette-RoutingPanel-grid-inner,
+	#tracy-debug .nette-RoutingPanel-grid-columns {
+		grid-column: 1 / span 4;
+		display: grid;
+		grid-template-columns: subgrid;
 	}
 
-	#tracy-debug .nette-RoutingPanel .yes td {
-		background: #BDE678 !important;
+	#tracy-debug .nette-RoutingPanel-grid-columns:nth-child(2n) {
+		background: rgba(0,0,0,0.02);
 	}
 
-	#tracy-debug .nette-RoutingPanel .may td {
-		background: #C1D3FF !important;
+	#tracy-debug .nette-RoutingPanel-grid-header {
+		color: #655E5E;
+		background: #F4F3F1;
+		font-size: 90%;
+		font-weight: bold;
 	}
 
-	#tracy-debug .nette-RoutingPanel .error td {
-		background: #ffd2c3 !important;
-	}
-
-	#tracy-debug .nette-RoutingPanel td.symbol {
+	#tracy-debug .nette-RoutingPanel-grid-group-header {
+		grid-column: 1 / span 4;
+		font-size: 90%;
+		font-weight: bold;
 		text-align: center;
 	}
 
-	#tracy-debug .nette-RoutingPanel td:first-child {
-		width: 20px;
+	#tracy-debug .nette-RoutingPanel-grid-inner .nette-RoutingPanel-grid-inner {
+		background: #23180007;
+		box-shadow: 0 1px 20px 0px #00000040;
+		border-right: 8px solid #0000002e;
 	}
 
-	#tracy-debug .nette-RoutingPanel td:nth-child(2) {
-		white-space: nowrap;
+	#tracy-debug .nette-RoutingPanel-grid-columns > div {
+		border-bottom: 1px solid #95770026;
+		border-right: 1px solid #95770026;
+		padding: 2px 5px;
+	}
+
+	#tracy-debug .nette-RoutingPanel-status-yes {
+		background: #BDE678 !important;
+	}
+
+	#tracy-debug .nette-RoutingPanel-status-may {
+		background: #C1D3FF !important;
+	}
+
+	#tracy-debug .nette-RoutingPanel-status-error {
+		background: #ffd2c3 !important;
+	}
+
+	#tracy-debug .nette-RoutingPanel-symbol {
+		text-align: right;
+	}
+
+	#tracy-debug .nette-RoutingPanel .tracy-dump.tracy-dump {
+		padding: 0;
+	    margin: 0;
+	    border: none;
 	}
 
 	#tracy-debug .nette-RoutingPanel pre, #tracy-debug .nette-RoutingPanel code {
@@ -72,54 +106,75 @@ use Tracy\Helpers;
 </div>
 
 <div class="tracy-inner-container">
-<?php if (empty($routers)): ?>
-	<p>No routers defined.</p>
+<?php if (empty($routes)): ?>
+	<p>No routes defined.</p>
 
 <?php else: ?>
-	<table>
-	<thead>
-	<tr>
-		<th></th>
-		<th>Mask / Class</th>
-		<th>Defaults</th>
-		<?php if ($hasModule): ?><th>Module</th><?php endif ?>
-		<th>Matched as</th>
-	</tr>
-	</thead>
+	<div class="nette-RoutingPanel-grid">
+		<div class="nette-RoutingPanel-grid-columns nette-RoutingPanel-grid-header">
+			<div></div>
+			<div>Mask / Class</div>
+			<div>Defaults</div>
+			<div>Matched as</div>
+		</div>
+<?php
 
-	<tbody>
-	<?php foreach ($routers as $router): ?>
-	<tr class="<?= $router->matched ?>" style="border-width: <?=($router->gutterTop ?? 0) * 3?>px 0 <?=($router->gutterBottom ?? 0) * 3?>px <?=$router->level * 6?>px">
-		<td class="symbol" title="<?= Helpers::escapeHtml(['yes' => 'matched as first', 'may' => 'suitable but not matched as first', 'no' => '', 'oneway' => 'one-way', 'error' => 'error'][$router->matched]) ?>"
-			><?= ['yes' => '✓', 'may' => '≈', 'no' => '', 'oneway' => '⛔', 'error' => '❌'][$router->matched] ?></td>
+$show = function ($info, $path = '') use (&$show) {
+	if (is_array($info)) {
+?>
+		<div class="nette-RoutingPanel-grid-inner">
+		<?php if ($info['domain'] || $info['module']): ?>
+			<div class="nette-RoutingPanel-grid-group-header">
+			<?= $info['domain'] ? 'domain = ' . Helpers::escapeHtml($info['domain']) : '' ?>
+			<?= $info['module'] ? ' module = ' . Helpers::escapeHtml($info['module']) : '' ?>
+			</div>
+		<?php endif ?>
+		<?php
+		$path .= $info['path'];
+		foreach ($info['routes'] as $route) {
+			$show($route, $path);
+		}
+		?>
+		</div>
+<?php
+		return;
+	}
 
-		<td><code title="<?= Helpers::escapeHtml($router->class) ?>"><?=
-			$router->path === '' ? '' : '<small>' . Helpers::escapeHtml($router->path) . '</small>',
-			isset($router->mask) ? str_replace(['/', '-'], ['<wbr>/', '<wbr>-'], Helpers::escapeHtml($router->mask)) : str_replace('\\', '<wbr>\\', Helpers::escapeHtml($router->class))
-		?></code></td>
+	$route = $info;
+?>
+	<div class="nette-RoutingPanel-grid-columns nette-RoutingPanel-status-<?= $route->matched ?>">
+		<div class="nette-RoutingPanel-symbol" title="<?= Helpers::escapeHtml(['yes' => 'matched as first', 'may' => 'suitable but not matched as first', 'no' => '', 'oneway' => 'one-way', 'error' => 'error'][$route->matched]) ?>"
+			><?= ['yes' => '✓', 'may' => '≈', 'no' => '', 'oneway' => '⛔', 'error' => '❌'][$route->matched] ?></div>
 
-		<td><code>
-		<?php foreach ($router->defaults as $key => $value): ?>
-			<?= Helpers::escapeHtml($key), '&nbsp;=&nbsp;', is_string($value) ? Helpers::escapeHtml($value) . '<br />' : Dumper::toHtml($value, [Dumper::COLLAPSE => true, Dumper::LIVE => true]) ?>
+		<div><code title="<?= Helpers::escapeHtml($route->class) ?>"><?=
+			$path === '' ? '' : '<small>' . Helpers::escapeHtml($path) . '</small>',
+			isset($route->mask) ? str_replace(['/', '-'], ['<wbr>/', '<wbr>-'], Helpers::escapeHtml($route->mask)) : str_replace('\\', '<wbr>\\', Helpers::escapeHtml($route->class))
+		?></code></div>
+
+		<div><code>
+		<?php foreach ($route->defaults as $key => $value): ?>
+			<?= Helpers::escapeHtml($key), '&nbsp;=&nbsp;', is_string($value) ? Helpers::escapeHtml($value) . '<br>' : Dumper::toHtml($value, [Dumper::COLLAPSE => true, Dumper::LIVE => true]) ?>
 		<?php endforeach ?>
-		</code></td>
+		</code></div>
 
-		<?php if ($hasModule): ?><td><code><?= Helpers::escapeHtml($router->module) ?></code></td><?php endif ?>
-
-		<td><?php if ($router->params): ?><code>
-		<?php $params = $router->params; ?>
+		<div><?php if ($route->params): ?><code>
+		<?php $params = $route->params; ?>
 		<?php if (isset($params[Presenter::PresenterKey])): ?>
 		<strong><?= Helpers::escapeHtml($params['presenter'] . ':' . (isset($params[Presenter::ActionKey]) ? $params[Presenter::ActionKey] : Presenter::DefaultAction)) ?></strong><br />
 		<?php unset($params[Presenter::PresenterKey], $params[Presenter::ActionKey]) ?>
 		<?php endif ?>
 		<?php foreach ($params as $key => $value): ?>
-			<?= Helpers::escapeHtml($key), '&nbsp;=&nbsp;', is_string($value) ? Helpers::escapeHtml($value) . '<br />' : Dumper::toHtml($value, [Dumper::COLLAPSE => true, Dumper::LIVE => true]) ?>
+			<?= Helpers::escapeHtml($key), '&nbsp;=&nbsp;', is_string($value) ? Helpers::escapeHtml($value) . '<br>' : Dumper::toHtml($value, [Dumper::COLLAPSE => true, Dumper::LIVE => true]) ?>
 		<?php endforeach ?>
-		</code><?php elseif ($router->error): ?><strong><?= Helpers::escapeHtml($router->error->getMessage()) ?></strong><?php endif ?></td>
-	</tr>
-	<?php endforeach ?>
-	</tbody>
-	</table>
+		</code><?php elseif ($route->error): ?><strong><?= Helpers::escapeHtml($route->error->getMessage()) ?></strong><?php endif ?></div>
+	</div>
+<?php
+};
+
+$show($routes);
+
+?>
+	</div>
 <?php endif ?>
 </div>
 </div>
