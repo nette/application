@@ -110,10 +110,10 @@ abstract class Control extends Component implements Renderable
 			'message' => $message,
 			'type' => $type,
 		];
-		$messages = $this->getPresenter()->getFlashSession()->$id;
+		$messages = $this->getPresenter()->getFlashSession()->get($id);
 		$messages[] = $flash;
 		$this->getTemplate()->flashes = $messages;
-		$this->getPresenter()->getFlashSession()->$id = $messages;
+		$this->getPresenter()->getFlashSession()->set($id, $messages);
 		return $flash;
 	}
 
