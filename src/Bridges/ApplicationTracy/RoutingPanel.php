@@ -31,14 +31,11 @@ final class RoutingPanel implements Tracy\IBarPanel
 	/** @var Nette\Application\IPresenterFactory */
 	private $presenterFactory;
 
-	/** @var \stdClass[] */
-	private $routers = [];
+	/** @var (array|\stdClass)[] */
+	private $routes;
 
 	/** @var array|null */
 	private $matched;
-
-	/** @var \ReflectionClass|\ReflectionMethod */
-	private $source;
 
 
 	public function __construct(
@@ -57,7 +54,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 	 */
 	public function getTab(): string
 	{
-		$this->analyse(
+		$this->routes = $this->analyse(
 			$this->router instanceof Routing\RouteList
 				? $this->router
 				: (new Routing\RouteList)->add($this->router),
@@ -77,9 +74,8 @@ final class RoutingPanel implements Tracy\IBarPanel
 	{
 		return Nette\Utils\Helpers::capture(function () {
 			$matched = $this->matched;
-			$routers = $this->routers;
-			$source = $this->source;
-			$hasModule = (bool) array_filter($routers, function (\stdClass $rq): string { return $rq->module; });
+			$routes = $this->routes;
+			$source = $this->matched ? $this->findSource() : null;
 			$url = $this->httpRequest->getUrl();
 			$method = $this->httpRequest->getMethod();
 			require __DIR__ . '/templates/RoutingPanel.panel.phtml';
@@ -87,16 +83,14 @@ final class RoutingPanel implements Tracy\IBarPanel
 	}
 
 
-	private function analyse(
-		Routing\RouteList $router,
-		?Nette\Http\IRequest $httpRequest,
-		string $module = '',
-		string $path = '',
-		int $level = 0
-	): void
+	private function analyse(Routing\RouteList $router, ?Nette\Http\IRequest $httpRequest): array
 	{
-		$path .= $router->getPath();
-		$module .= ($router instanceof Nette\Application\Routers\RouteList ? $router->getModule() : '');
+		$res = [
+			'path' => $router->getPath(),
+			'domain' => $router->getDomain(),
+			'module' => ($router instanceof Nette\Application\Routers\RouteList ? $router->getModule() : ''),
+			'routes' => [],
+		];
 		$httpRequest = $httpRequest
 			? (function () use ($httpRequest) { return $this->prepareRequest($httpRequest); })->bindTo($router, Routing\RouteList::class)()
 			: null;
@@ -104,15 +98,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 
 		foreach ($router->getRouters() as $i => $innerRouter) {
 			if ($innerRouter instanceof Routing\RouteList) {
-				$next = count($this->routers);
-				$this->analyse($innerRouter, $httpRequest, $module, $path, $level + 1);
-				if ($info = $this->routers[$next] ?? null) {
-					$info->gutterTop = abs($level - $info->level);
-				}
-
-				if ($info = end($this->routers)) {
-					$info->gutterBottom = abs($level - $info->level);
-				}
+				$res['routes'][] = $this->analyse($innerRouter, $httpRequest);
 				continue;
 			}
 
@@ -127,7 +113,6 @@ final class RoutingPanel implements Tracy\IBarPanel
 					$matched = 'may';
 					if ($this->matched === null) {
 						$this->matched = $params;
-						$this->findSource();
 						$matched = 'yes';
 					}
 				}
@@ -135,29 +120,28 @@ final class RoutingPanel implements Tracy\IBarPanel
 				$matched = 'error';
 			}
 
-			$this->routers[] = (object) [
-				'level' => $level,
+			$res['routes'][] = (object) [
 				'matched' => $matched,
 				'class' => get_class($innerRouter),
 				'defaults' => $innerRouter instanceof Routing\Route || $innerRouter instanceof Routing\SimpleRouter ? $innerRouter->getDefaults() : [],
 				'mask' => $innerRouter instanceof Routing\Route ? $innerRouter->getMask() : null,
 				'params' => $params,
-				'module' => rtrim($module, ':'),
-				'path' => $path,
 				'error' => $e,
 			];
 		}
+		return $res;
 	}
 
 
-	private function findSource(): void
+	/** @return \ReflectionClass|\ReflectionMethod|null */
+	private function findSource()
 	{
 		$params = $this->matched;
 		$presenter = $params['presenter'] ?? '';
 		try {
 			$class = $this->presenterFactory->getPresenterClass($presenter);
 		} catch (Nette\Application\InvalidPresenterException $e) {
-			return;
+			return null;
 		}
 
 		$rc = new \ReflectionClass($class);
@@ -175,7 +159,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 			}
 		}
 
-		$this->source = isset($method) && $rc->hasMethod($method)
+		return isset($method) && $rc->hasMethod($method)
 			? $rc->getMethod($method)
 			: $rc;
 	}
