@@ -94,7 +94,7 @@ use Tracy\Helpers;
 			><?= ['yes' => '✓', 'may' => '≈', 'no' => '', 'oneway' => '⛔', 'error' => '❌'][$router->matched] ?></td>
 
 		<td><code title="<?= Helpers::escapeHtml($router->class) ?>"><?=
-			isset($router->path) ? '<small>' . Helpers::escapeHtml($router->path) . '</small>' : '',
+			$router->path === '' ? '' : '<small>' . Helpers::escapeHtml($router->path) . '</small>',
 			isset($router->mask) ? str_replace(['/', '-'], ['<wbr>/', '<wbr>-'], Helpers::escapeHtml($router->mask)) : str_replace('\\', '<wbr>\\', Helpers::escapeHtml($router->class))
 		?></code></td>
 

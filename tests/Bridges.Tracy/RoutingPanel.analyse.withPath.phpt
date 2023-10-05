@@ -40,7 +40,7 @@ test('URL: /', function () use ($router) {
 			'mask' => 'sign-in',
 			'params' => null,
 			'module' => '',
-			'path' => null,
+			'path' => '',
 			'error' => null,
 			'gutterTop' => 0,
 		],
@@ -52,7 +52,7 @@ test('URL: /', function () use ($router) {
 			'mask' => '',
 			'params' => null,
 			'module' => '',
-			'path' => null,
+			'path' => 'admin/',
 			'error' => null,
 			'gutterTop' => 1,
 		],
@@ -64,7 +64,7 @@ test('URL: /', function () use ($router) {
 			'mask' => '<presenter>/<action=default>',
 			'params' => null,
 			'module' => '',
-			'path' => null,
+			'path' => 'admin/',
 			'error' => null,
 			'gutterBottom' => 1,
 		],
@@ -76,7 +76,7 @@ test('URL: /', function () use ($router) {
 			'mask' => '',
 			'params' => ['presenter' => 'Article', 'action' => 'homepage'],
 			'module' => '',
-			'path' => null,
+			'path' => '',
 			'error' => null,
 		],
 		(object) [
@@ -87,7 +87,7 @@ test('URL: /', function () use ($router) {
 			'mask' => '<presenter>/<action=default>',
 			'params' => null,
 			'module' => '',
-			'path' => null,
+			'path' => '',
 			'error' => null,
 			'gutterBottom' => 0,
 		],
@@ -114,7 +114,7 @@ test('URL: /foo', function () use ($router) {
 			'mask' => 'sign-in',
 			'params' => null,
 			'module' => '',
-			'path' => null,
+			'path' => '',
 			'error' => null,
 			'gutterTop' => 0,
 		],
@@ -126,7 +126,7 @@ test('URL: /foo', function () use ($router) {
 			'mask' => '',
 			'params' => null,
 			'module' => '',
-			'path' => null,
+			'path' => 'admin/',
 			'error' => null,
 			'gutterTop' => 1,
 		],
@@ -138,7 +138,7 @@ test('URL: /foo', function () use ($router) {
 			'mask' => '<presenter>/<action=default>',
 			'params' => null,
 			'module' => '',
-			'path' => null,
+			'path' => 'admin/',
 			'error' => null,
 			'gutterBottom' => 1,
 		],
@@ -150,7 +150,7 @@ test('URL: /foo', function () use ($router) {
 			'mask' => '',
 			'params' => null,
 			'module' => '',
-			'path' => null,
+			'path' => '',
 			'error' => null,
 		],
 		(object) [
@@ -161,7 +161,7 @@ test('URL: /foo', function () use ($router) {
 			'mask' => '<presenter>/<action=default>',
 			'params' => ['presenter' => 'Foo', 'action' => 'default'],
 			'module' => '',
-			'path' => null,
+			'path' => '',
 			'error' => null,
 			'gutterBottom' => 0,
 		],
@@ -188,81 +188,7 @@ test('URL: /admin', function () use ($router) {
 			'mask' => 'sign-in',
 			'params' => null,
 			'module' => '',
-			'path' => null,
-			'error' => null,
-			'gutterTop' => 0,
-		],
-		(object) [
-			'level' => 1,
-			'matched' => 'no',
-			'class' => 'Nette\Application\Routers\Route',
-			'defaults' => ['presenter' => 'Admin:Home', 'action' => 'default'],
-			'mask' => '',
-			'params' => null,
-			'module' => '',
-			'path' => null,
-			'error' => null,
-			'gutterTop' => 1,
-		],
-		(object) [
-			'level' => 1,
-			'matched' => 'no',
-			'class' => 'Nette\Application\Routers\Route',
-			'defaults' => ['module' => 'Admin', 'action' => 'default'],
-			'mask' => '<presenter>/<action=default>',
-			'params' => null,
-			'module' => '',
-			'path' => null,
-			'error' => null,
-			'gutterBottom' => 1,
-		],
-		(object) [
-			'level' => 0,
-			'matched' => 'no',
-			'class' => 'Nette\Application\Routers\Route',
-			'defaults' => ['presenter' => 'Article', 'action' => 'homepage'],
-			'mask' => '',
-			'params' => null,
-			'module' => '',
-			'path' => null,
-			'error' => null,
-		],
-		(object) [
-			'level' => 0,
-			'matched' => 'yes',
-			'class' => 'Nette\Application\Routers\Route',
-			'defaults' => ['action' => 'default'],
-			'mask' => '<presenter>/<action=default>',
-			'params' => ['presenter' => 'Admin', 'action' => 'default'],
-			'module' => '',
-			'path' => null,
-			'error' => null,
-			'gutterBottom' => 0,
-		],
-	], $res);
-});
-
-
-test('URL: /admin/', function () use ($router) {
-	$httpRequest = new Http\Request(new UrlScript('/admin/', '/'));
-	$panel = new RoutingPanel($router, $httpRequest, new PresenterFactory(function () {}));
-
-	$res = Assert::with($panel, function () use ($httpRequest, $router) {
-		/** @var RoutingPanel $this */
-		$this->analyse($router, $httpRequest);
-		return $this->routers;
-	});
-
-	Assert::equal([
-		(object) [
-			'level' => 0,
-			'matched' => 'no',
-			'class' => 'Nette\Application\Routers\Route',
-			'defaults' => ['presenter' => 'Sign', 'action' => 'in'],
-			'mask' => 'sign-in',
-			'params' => null,
-			'module' => '',
-			'path' => null,
+			'path' => '',
 			'error' => null,
 			'gutterTop' => 0,
 		],
@@ -298,7 +224,7 @@ test('URL: /admin/', function () use ($router) {
 			'mask' => '',
 			'params' => null,
 			'module' => '',
-			'path' => null,
+			'path' => '',
 			'error' => null,
 		],
 		(object) [
@@ -309,7 +235,81 @@ test('URL: /admin/', function () use ($router) {
 			'mask' => '<presenter>/<action=default>',
 			'params' => ['presenter' => 'Admin', 'action' => 'default'],
 			'module' => '',
-			'path' => null,
+			'path' => '',
+			'error' => null,
+			'gutterBottom' => 0,
+		],
+	], $res);
+});
+
+
+test('URL: /admin/', function () use ($router) {
+	$httpRequest = new Http\Request(new UrlScript('/admin/', '/'));
+	$panel = new RoutingPanel($router, $httpRequest, new PresenterFactory(function () {}));
+
+	$res = Assert::with($panel, function () use ($httpRequest, $router) {
+		/** @var RoutingPanel $this */
+		$this->analyse($router, $httpRequest);
+		return $this->routers;
+	});
+
+	Assert::equal([
+		(object) [
+			'level' => 0,
+			'matched' => 'no',
+			'class' => 'Nette\Application\Routers\Route',
+			'defaults' => ['presenter' => 'Sign', 'action' => 'in'],
+			'mask' => 'sign-in',
+			'params' => null,
+			'module' => '',
+			'path' => '',
+			'error' => null,
+			'gutterTop' => 0,
+		],
+		(object) [
+			'level' => 1,
+			'matched' => 'yes',
+			'class' => 'Nette\Application\Routers\Route',
+			'defaults' => ['presenter' => 'Admin:Home', 'action' => 'default'],
+			'mask' => '',
+			'params' => ['presenter' => 'Admin:Home', 'action' => 'default'],
+			'module' => '',
+			'path' => 'admin/',
+			'error' => null,
+			'gutterTop' => 1,
+		],
+		(object) [
+			'level' => 1,
+			'matched' => 'no',
+			'class' => 'Nette\Application\Routers\Route',
+			'defaults' => ['module' => 'Admin', 'action' => 'default'],
+			'mask' => '<presenter>/<action=default>',
+			'params' => null,
+			'module' => '',
+			'path' => 'admin/',
+			'error' => null,
+			'gutterBottom' => 1,
+		],
+		(object) [
+			'level' => 0,
+			'matched' => 'no',
+			'class' => 'Nette\Application\Routers\Route',
+			'defaults' => ['presenter' => 'Article', 'action' => 'homepage'],
+			'mask' => '',
+			'params' => null,
+			'module' => '',
+			'path' => '',
+			'error' => null,
+		],
+		(object) [
+			'level' => 0,
+			'matched' => 'may',
+			'class' => 'Nette\Application\Routers\Route',
+			'defaults' => ['action' => 'default'],
+			'mask' => '<presenter>/<action=default>',
+			'params' => ['presenter' => 'Admin', 'action' => 'default'],
+			'module' => '',
+			'path' => '',
 			'error' => null,
 			'gutterBottom' => 0,
 		],
@@ -336,7 +336,7 @@ test('URL: /admin/foo', function () use ($router) {
 			'mask' => 'sign-in',
 			'params' => null,
 			'module' => '',
-			'path' => null,
+			'path' => '',
 			'error' => null,
 			'gutterTop' => 0,
 		],
@@ -372,7 +372,7 @@ test('URL: /admin/foo', function () use ($router) {
 			'mask' => '',
 			'params' => null,
 			'module' => '',
-			'path' => null,
+			'path' => '',
 			'error' => null,
 		],
 		(object) [
@@ -383,7 +383,7 @@ test('URL: /admin/foo', function () use ($router) {
 			'mask' => '<presenter>/<action=default>',
 			'params' => ['presenter' => 'Admin', 'action' => 'foo'],
 			'module' => '',
-			'path' => null,
+			'path' => '',
 			'error' => null,
 			'gutterBottom' => 0,
 		],

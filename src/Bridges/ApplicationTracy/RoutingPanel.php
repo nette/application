@@ -89,7 +89,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 		Routing\Router $router,
 		?Nette\Http\IRequest $httpRequest,
 		string $module = '',
-		?string $path = null,
+		string $path = '',
 		int $level = -1,
 		int $flag = 0
 	): void
@@ -105,10 +105,13 @@ final class RoutingPanel implements Tracy\IBarPanel
 
 			$prop = (new \ReflectionProperty(Routing\RouteList::class, 'path'));
 			$prop->setAccessible(true);
-			if ($httpRequest && ($pathPrefix = $prop->getValue($router))) {
-				$path .= $pathPrefix;
+			$path .= $pathPrefix = $prop->getValue($router);
+			if ($httpRequest && $pathPrefix) {
 				$url = $httpRequest->getUrl();
-				$httpRequest = $httpRequest->withUrl($url->withPath($url->getPath(), $url->getBasePath() . $pathPrefix));
+				$url = $url->getRelativePath() . '/' === $pathPrefix
+					? $url->withPath($url->getPath() . '/')
+					: $url->withPath($url->getPath(), $url->getBasePath() . $pathPrefix);
+				$httpRequest = $httpRequest->withUrl($url);
 			}
 
 			$module .= ($router instanceof Nette\Application\Routers\RouteList ? $router->getModule() : '');
