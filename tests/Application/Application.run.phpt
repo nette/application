@@ -127,6 +127,7 @@ test('no route with error presenter', function () use ($httpRequest, $httpRespon
 
 	Assert::equal($requests[0], $errorPresenter->request);
 	Assert::null($errorPresenter->request->getParameter('request'));
+	Assert::null($errorPresenter->request->getParameter('previousPresenter'));
 	Assert::type(BadRequestException::class, $errorPresenter->request->getParameter('exception'));
 });
 
@@ -154,6 +155,7 @@ test('route to error presenter', function () use ($httpRequest, $httpResponse) {
 
 	Assert::equal($requests[1], $errorPresenter->request);
 	Assert::equal($requests[0], $errorPresenter->request->getParameter('request'));
+	Assert::null($errorPresenter->request->getParameter('previousPresenter'));
 	Assert::type(BadRequestException::class, $errorPresenter->request->getParameter('exception'));
 });
 
@@ -195,6 +197,7 @@ test('missing presenter with error presenter', function () use ($httpRequest, $h
 
 	Assert::equal($requests[1], $errorPresenter->request);
 	Assert::equal($requests[0], $errorPresenter->request->getParameter('request'));
+	Assert::null($errorPresenter->request->getParameter('previousPresenter'));
 	Assert::type(BadRequestException::class, $errorPresenter->request->getParameter('exception'));
 });
 
@@ -213,10 +216,11 @@ Assert::exception(function () use ($httpRequest, $httpResponse) {
 
 
 test('presenter error with error presenter', function () use ($httpRequest, $httpResponse) {
+	$badPresenter = new BadPresenter;
 	$errorPresenter = new ErrorPresenter;
 
 	$presenterFactory = Mockery::mock(IPresenterFactory::class);
-	$presenterFactory->shouldReceive('createPresenter')->with('Bad')->andReturn(new BadPresenter);
+	$presenterFactory->shouldReceive('createPresenter')->with('Bad')->andReturn($badPresenter);
 	$presenterFactory->shouldReceive('createPresenter')->with('Error')->andReturn($errorPresenter);
 
 	$router = Mockery::mock(Router::class);
@@ -236,6 +240,7 @@ test('presenter error with error presenter', function () use ($httpRequest, $htt
 
 	Assert::equal($requests[1], $errorPresenter->request);
 	Assert::equal($requests[0], $errorPresenter->request->getParameter('request'));
+	Assert::equal($badPresenter, $errorPresenter->request->getParameter('previousPresenter'));
 	Assert::type(BadException::class, $errorPresenter->request->getParameter('exception'));
 });
 
