@@ -244,6 +244,38 @@ testIt('stdClass', 1);
 testIt('stdClass', 1.0);
 testIt('stdClass', 1.2);
 
+testIt('true', null);
+testIt('true', []);
+testIt('true', $obj);
+testIt('true', '');
+testIt('true', 'a');
+testIt('true', '1', true);
+testIt('true', '1.0');
+testIt('true', '1.1');
+testIt('true', '1a');
+testIt('true', true, true);
+testIt('true', false);
+testIt('true', 0);
+testIt('true', 1, true);
+testIt('true', 1.0, true);
+testIt('true', 1.2);
+
+testIt('false', null);
+testIt('false', []);
+testIt('false', $obj);
+testIt('false', '');
+testIt('false', 'a');
+testIt('false', '1');
+testIt('false', '1.0');
+testIt('false', '1.1');
+testIt('false', '1a');
+testIt('false', true);
+testIt('false', false, false);
+testIt('false', 0, false);
+testIt('false', 1);
+testIt('false', 1.0);
+testIt('false', 1.2);
+
 testIt('Closure', $var = function () {}, $var);
 
 
