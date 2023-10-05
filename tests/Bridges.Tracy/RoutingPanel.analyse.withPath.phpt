@@ -42,7 +42,6 @@ test('URL: /', function () use ($router) {
 			'module' => '',
 			'path' => '',
 			'error' => null,
-			'gutterTop' => 0,
 		],
 		(object) [
 			'level' => 1,
@@ -89,7 +88,6 @@ test('URL: /', function () use ($router) {
 			'module' => '',
 			'path' => '',
 			'error' => null,
-			'gutterBottom' => 0,
 		],
 	], $res);
 });
@@ -116,7 +114,6 @@ test('URL: /foo', function () use ($router) {
 			'module' => '',
 			'path' => '',
 			'error' => null,
-			'gutterTop' => 0,
 		],
 		(object) [
 			'level' => 1,
@@ -163,7 +160,6 @@ test('URL: /foo', function () use ($router) {
 			'module' => '',
 			'path' => '',
 			'error' => null,
-			'gutterBottom' => 0,
 		],
 	], $res);
 });
@@ -190,7 +186,6 @@ test('URL: /admin', function () use ($router) {
 			'module' => '',
 			'path' => '',
 			'error' => null,
-			'gutterTop' => 0,
 		],
 		(object) [
 			'level' => 1,
@@ -237,7 +232,6 @@ test('URL: /admin', function () use ($router) {
 			'module' => '',
 			'path' => '',
 			'error' => null,
-			'gutterBottom' => 0,
 		],
 	], $res);
 });
@@ -264,7 +258,6 @@ test('URL: /admin/', function () use ($router) {
 			'module' => '',
 			'path' => '',
 			'error' => null,
-			'gutterTop' => 0,
 		],
 		(object) [
 			'level' => 1,
@@ -311,7 +304,6 @@ test('URL: /admin/', function () use ($router) {
 			'module' => '',
 			'path' => '',
 			'error' => null,
-			'gutterBottom' => 0,
 		],
 	], $res);
 });
@@ -338,7 +330,6 @@ test('URL: /admin/foo', function () use ($router) {
 			'module' => '',
 			'path' => '',
 			'error' => null,
-			'gutterTop' => 0,
 		],
 		(object) [
 			'level' => 1,
@@ -385,7 +376,6 @@ test('URL: /admin/foo', function () use ($router) {
 			'module' => '',
 			'path' => '',
 			'error' => null,
-			'gutterBottom' => 0,
 		],
 	], $res);
 });

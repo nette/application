@@ -32,12 +32,10 @@ class RouteList extends Nette\Routing\RouteList implements Nette\Routing\Router,
 
 
 	/**
-	 * Maps HTTP request to an array.
+	 * Support for modules.
 	 */
-	public function match(Nette\Http\IRequest $httpRequest): ?array
+	protected function completeParameters(array $params): ?array
 	{
-		$params = parent::match($httpRequest);
-
 		$presenter = $params[self::PresenterKey] ?? null;
 		if (is_string($presenter) && strncmp($presenter, 'Nette:', 6)) {
 			$params[self::PresenterKey] = $this->module . $presenter;

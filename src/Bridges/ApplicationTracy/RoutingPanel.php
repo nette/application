@@ -57,7 +57,12 @@ final class RoutingPanel implements Tracy\IBarPanel
 	 */
 	public function getTab(): string
 	{
-		$this->analyse($this->router, $this->httpRequest);
+		$this->analyse(
+			$this->router instanceof Routing\RouteList
+				? $this->router
+				: (new Routing\RouteList)->add($this->router),
+			$this->httpRequest
+		);
 		return Nette\Utils\Helpers::capture(function () {
 			$matched = $this->matched;
 			require __DIR__ . '/templates/RoutingPanel.tab.phtml';
@@ -82,91 +87,66 @@ final class RoutingPanel implements Tracy\IBarPanel
 	}
 
 
-	/**
-	 * Analyses simple route.
-	 */
 	private function analyse(
-		Routing\Router $router,
+		Routing\RouteList $router,
 		?Nette\Http\IRequest $httpRequest,
 		string $module = '',
 		string $path = '',
-		int $level = -1,
-		int $flag = 0
+		int $level = 0
 	): void
 	{
-		if ($router instanceof Routing\RouteList) {
-			if ($httpRequest) {
-				try {
-					$httpRequest = $router->match($httpRequest) === null ? null : $httpRequest;
-				} catch (\Throwable $e) {
-					$httpRequest = null;
+		$path .= $router->getPath();
+		$module .= ($router instanceof Nette\Application\Routers\RouteList ? $router->getModule() : '');
+		$httpRequest = $httpRequest
+			? (function () use ($httpRequest) { return $this->prepareRequest($httpRequest); })->bindTo($router, Routing\RouteList::class)()
+			: null;
+		$flags = $router->getFlags();
+
+		foreach ($router->getRouters() as $i => $innerRouter) {
+			if ($innerRouter instanceof Routing\RouteList) {
+				$next = count($this->routers);
+				$this->analyse($innerRouter, $httpRequest, $module, $path, $level + 1);
+				if ($info = $this->routers[$next] ?? null) {
+					$info->gutterTop = abs($level - $info->level);
 				}
+
+				if ($info = end($this->routers)) {
+					$info->gutterBottom = abs($level - $info->level);
+				}
+				continue;
 			}
 
-			$prop = (new \ReflectionProperty(Routing\RouteList::class, 'path'));
-			$prop->setAccessible(true);
-			$path .= $pathPrefix = $prop->getValue($router);
-			if ($httpRequest && $pathPrefix) {
-				$url = $httpRequest->getUrl();
-				$url = $url->getRelativePath() . '/' === $pathPrefix
-					? $url->withPath($url->getPath() . '/')
-					: $url->withPath($url->getPath(), $url->getBasePath() . $pathPrefix);
-				$httpRequest = $httpRequest->withUrl($url);
+			$matched = $flags[$i] & $router::ONE_WAY ? 'oneway' : 'no';
+			$params = $e = null;
+			try {
+				if (
+					$httpRequest
+					&& ($params = $innerRouter->match($httpRequest)) !== null
+					&& ($params = (function () use ($params) { return $this->completeParameters($params); })->bindTo($router, Routing\RouteList::class)()) !== null
+				) {
+					$matched = 'may';
+					if ($this->matched === null) {
+						$this->matched = $params;
+						$this->findSource();
+						$matched = 'yes';
+					}
+				}
+			} catch (\Throwable $e) {
+				$matched = 'error';
 			}
 
-			$module .= ($router instanceof Nette\Application\Routers\RouteList ? $router->getModule() : '');
-
-			$next = count($this->routers);
-			$flags = $router->getFlags();
-			foreach ($router->getRouters() as $i => $subRouter) {
-				$this->analyse($subRouter, $httpRequest, $module, $path, $level + 1, $flags[$i]);
-			}
-
-			if ($info = $this->routers[$next] ?? null) {
-				$info->gutterTop = abs(max(0, $level) - $info->level);
-			}
-
-			if ($info = end($this->routers)) {
-				$info->gutterBottom = abs(max(0, $level) - $info->level);
-			}
-
-			return;
+			$this->routers[] = (object) [
+				'level' => $level,
+				'matched' => $matched,
+				'class' => get_class($innerRouter),
+				'defaults' => $innerRouter instanceof Routing\Route || $innerRouter instanceof Routing\SimpleRouter ? $innerRouter->getDefaults() : [],
+				'mask' => $innerRouter instanceof Routing\Route ? $innerRouter->getMask() : null,
+				'params' => $params,
+				'module' => rtrim($module, ':'),
+				'path' => $path,
+				'error' => $e,
+			];
 		}
-
-		$matched = $flag & Routing\RouteList::ONE_WAY ? 'oneway' : 'no';
-		$params = $e = null;
-		try {
-			$params = $httpRequest
-				? $router->match($httpRequest)
-				: null;
-		} catch (\Throwable $e) {
-			$matched = 'error';
-		}
-
-		if ($params !== null) {
-			if ($module) {
-				$params['presenter'] = $module . ($params['presenter'] ?? '');
-			}
-
-			$matched = 'may';
-			if ($this->matched === null) {
-				$this->matched = $params;
-				$this->findSource();
-				$matched = 'yes';
-			}
-		}
-
-		$this->routers[] = (object) [
-			'level' => max(0, $level),
-			'matched' => $matched,
-			'class' => get_class($router),
-			'defaults' => $router instanceof Routing\Route || $router instanceof Routing\SimpleRouter ? $router->getDefaults() : [],
-			'mask' => $router instanceof Routing\Route ? $router->getMask() : null,
-			'params' => $params,
-			'module' => rtrim($module, ':'),
-			'path' => $path,
-			'error' => $e,
-		];
 	}
 
 
