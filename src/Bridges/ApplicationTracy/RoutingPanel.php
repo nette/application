@@ -89,34 +89,33 @@ final class RoutingPanel implements Tracy\IBarPanel
 		Routing\Router $router,
 		?Nette\Http\IRequest $httpRequest,
 		string $module = '',
-		?string $path = null,
+		string $path = '',
+		?\Closure $afterMatch = null,
 		int $level = -1,
 		int $flag = 0
 	): void
 	{
+		$afterMatch = $afterMatch ?? function ($params) { return $params; };
+
 		if ($router instanceof Routing\RouteList) {
-			if ($httpRequest) {
-				try {
-					$httpRequest = $router->match($httpRequest) === null ? null : $httpRequest;
-				} catch (\Throwable $e) {
-					$httpRequest = null;
-				}
-			}
-
-			$prop = (new \ReflectionProperty(Routing\RouteList::class, 'path'));
-			$prop->setAccessible(true);
-			if ($httpRequest && ($pathPrefix = $prop->getValue($router))) {
-				$path .= $pathPrefix;
-				$url = $httpRequest->getUrl();
-				$httpRequest = $httpRequest->withUrl($url->withPath($url->getPath(), $url->getBasePath() . $pathPrefix));
-			}
-
+			$path .= $router->getPath();
 			$module .= ($router instanceof Nette\Application\Routers\RouteList ? $router->getModule() : '');
+
+			$httpRequest = $httpRequest
+				? (new \ReflectionMethod($router, 'beforeMatch'))->invoke($router, $httpRequest)
+				: null;
+
+			$afterMatch = function ($params) use ($router, $afterMatch) {
+				$params = $params === null
+					? null
+					: (new \ReflectionMethod($router, 'afterMatch'))->invoke($router, $params);
+				return $afterMatch($params);
+			};
 
 			$next = count($this->routers);
 			$flags = $router->getFlags();
-			foreach ($router->getRouters() as $i => $subRouter) {
-				$this->analyse($subRouter, $httpRequest, $module, $path, $level + 1, $flags[$i]);
+			foreach ($router->getRouters() as $i => $innerRouter) {
+				$this->analyse($innerRouter, $httpRequest, $module, $path, $afterMatch, $level + 1, $flags[$i]);
 			}
 
 			if ($info = $this->routers[$next] ?? null) {
@@ -133,18 +132,12 @@ final class RoutingPanel implements Tracy\IBarPanel
 		$matched = $flag & Routing\RouteList::ONE_WAY ? 'oneway' : 'no';
 		$params = $e = null;
 		try {
-			$params = $httpRequest
-				? $router->match($httpRequest)
-				: null;
+			$params = $httpRequest ? $afterMatch($router->match($httpRequest)) : null;
 		} catch (\Throwable $e) {
 			$matched = 'error';
 		}
 
 		if ($params !== null) {
-			if ($module) {
-				$params['presenter'] = $module . ($params['presenter'] ?? '');
-			}
-
 			$matched = 'may';
 			if ($this->matched === null) {
 				$this->matched = $params;
