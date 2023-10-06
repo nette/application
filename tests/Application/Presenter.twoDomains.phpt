@@ -32,7 +32,7 @@ function testLink($domain)
 		Mockery::mock(Nette\Application\IPresenterFactory::class),
 		new Application\Routers\SimpleRouter,
 		new Http\Request($url),
-		new Http\Response
+		new Http\Response,
 	);
 
 	$request = new Application\Request('Test', Http\Request::GET, []);

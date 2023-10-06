@@ -84,9 +84,7 @@ final class ComponentReflection extends \ReflectionClass
 	 */
 	public function getPersistentParams(): array
 	{
-		return array_filter($this->getParameters(), function ($param) {
-			return array_key_exists('since', $param);
-		});
+		return array_filter($this->getParameters(), fn($param) => array_key_exists('since', $param));
 	}
 
 
@@ -117,7 +115,7 @@ final class ComponentReflection extends \ReflectionClass
 	 */
 	public function saveState(Component $component, array &$params): void
 	{
-		$tree = self::getClassesAndTraits(get_class($component));
+		$tree = self::getClassesAndTraits($component::class);
 
 		foreach ($this->getPersistentParams() as $name => $meta) {
 			if (isset($params[$name])) {
@@ -140,7 +138,7 @@ final class ComponentReflection extends \ReflectionClass
 					$name,
 					$component instanceof Presenter ? 'presenter ' . $component->getName() : "component '{$component->getUniqueId()}'",
 					$meta['type'],
-					is_object($params[$name]) ? get_class($params[$name]) : gettype($params[$name])
+					is_object($params[$name]) ? get_class($params[$name]) : gettype($params[$name]),
 				));
 			}
 
@@ -186,7 +184,7 @@ final class ComponentReflection extends \ReflectionClass
 						$name,
 						($method instanceof \ReflectionMethod ? $method->getDeclaringClass()->getName() . '::' : '') . $method->getName(),
 						$type,
-						is_object($args[$name]) ? get_class($args[$name]) : gettype($args[$name])
+						is_object($args[$name]) ? get_class($args[$name]) : gettype($args[$name]),
 					));
 				}
 			} elseif ($param->isDefaultValueAvailable()) {
@@ -199,7 +197,7 @@ final class ComponentReflection extends \ReflectionClass
 				throw new Nette\InvalidArgumentException(sprintf(
 					'Missing parameter $%s required by %s()',
 					$name,
-					($method instanceof \ReflectionMethod ? $method->getDeclaringClass()->getName() . '::' : '') . $method->getName()
+					($method instanceof \ReflectionMethod ? $method->getDeclaringClass()->getName() . '::' : '') . $method->getName(),
 				));
 			}
 		}

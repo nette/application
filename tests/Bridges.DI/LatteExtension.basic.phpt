@@ -52,7 +52,7 @@ services:
 ', 'neon'));
 
 $compiler = new DI\Compiler;
-$compiler->addExtension('latte', new Nette\Bridges\ApplicationDI\LatteExtension('', false));
+$compiler->addExtension('latte', new Nette\Bridges\ApplicationDI\LatteExtension('', debugMode: false));
 $compiler->addExtension('another', new AnotherExtension);
 $code = $compiler->addConfig($config)->compile();
 eval($code);

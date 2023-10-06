@@ -44,7 +44,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 	public function __construct(
 		Routing\Router $router,
 		Nette\Http\IRequest $httpRequest,
-		Nette\Application\IPresenterFactory $presenterFactory
+		Nette\Application\IPresenterFactory $presenterFactory,
 	) {
 		$this->router = $router;
 		$this->httpRequest = $httpRequest;
@@ -88,9 +88,9 @@ final class RoutingPanel implements Tracy\IBarPanel
 		Routing\Router $router,
 		?Nette\Http\IRequest $httpRequest,
 		?\Closure $afterMatch = null,
-		int $flag = 0
+		int $flag = 0,
 	) {
-		$afterMatch = $afterMatch ?? function ($params) { return $params; };
+		$afterMatch ??= fn($params) => $params;
 
 		if ($router instanceof Routing\RouteList) {
 			$info = [
@@ -138,7 +138,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 
 		return (object) [
 			'matched' => $matched,
-			'class' => get_class($router),
+			'class' => $router::class,
 			'defaults' => $router instanceof Routing\Route || $router instanceof Routing\SimpleRouter ? $router->getDefaults() : [],
 			'mask' => $router instanceof Routing\Route ? $router->getMask() : null,
 			'params' => $params,

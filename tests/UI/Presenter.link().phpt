@@ -213,15 +213,19 @@ class TestPresenter extends Application\UI\Presenter
 
 		// warning invalid link mode
 		$this->invalidLinkMode = self::InvalidLinkWarning;
-		Assert::error(function () {
-			$this->link('params', ['p' => null, 'pbool' => 'a']);
-		}, E_USER_WARNING, "Invalid link: Value passed to persistent parameter 'pbool' in presenter Test must be boolean, string given.");
+		Assert::error(
+			fn() => $this->link('params', ['p' => null, 'pbool' => 'a']),
+			E_USER_WARNING,
+			"Invalid link: Value passed to persistent parameter 'pbool' in presenter Test must be boolean, string given."
+		);
 
 		// exception invalid link mode
 		$this->invalidLinkMode = self::InvalidLinkException;
-		Assert::exception(function () {
-			$this->link('params', ['p' => null, 'pbool' => 'a']);
-		}, Nette\Application\UI\InvalidLinkException::class, "Value passed to persistent parameter 'pbool' in presenter Test must be boolean, string given.");
+		Assert::exception(
+			fn() => $this->link('params', ['p' => null, 'pbool' => 'a']),
+			Nette\Application\UI\InvalidLinkException::class,
+			"Value passed to persistent parameter 'pbool' in presenter Test must be boolean, string given."
+		);
 
 		$this->p = null; // null in persistent parameter means default
 		Assert::same('/index.php?action=params&presenter=Test', $this->link('params'));
@@ -286,9 +290,7 @@ $url = new Http\UrlScript('http://localhost/index.php', '/index.php');
 
 $presenterFactory = Mockery::mock(Nette\Application\IPresenterFactory::class);
 $presenterFactory->shouldReceive('getPresenterClass')
-	->andReturnUsing(function ($presenter) {
-		return $presenter . 'Presenter';
-	});
+	->andReturnUsing(fn($presenter) => $presenter . 'Presenter');
 
 $presenter = new TestPresenter;
 $presenter->injectPrimary(
@@ -296,7 +298,7 @@ $presenter->injectPrimary(
 	$presenterFactory,
 	new Application\Routers\SimpleRouter,
 	new Http\Request($url),
-	new Http\Response
+	new Http\Response,
 );
 
 $presenter->invalidLinkMode = TestPresenter::InvalidLinkWarning;
