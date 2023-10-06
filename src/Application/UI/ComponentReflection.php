@@ -22,14 +22,14 @@ final class ComponentReflection extends \ReflectionClass
 {
 	use Nette\SmartObject;
 
-	/** @var array getPersistentParams cache */
-	private static $ppCache = [];
+	/** getPersistentParams cache */
+	private static array $ppCache = [];
 
-	/** @var array getPersistentComponents cache */
-	private static $pcCache = [];
+	/** getPersistentComponents cache */
+	private static array $pcCache = [];
 
-	/** @var array isMethodCallable cache */
-	private static $mcCache = [];
+	/** isMethodCallable cache */
+	private static array $mcCache = [];
 
 
 	/**
