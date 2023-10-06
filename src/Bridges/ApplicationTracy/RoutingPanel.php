@@ -24,8 +24,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 	private Nette\Http\IRequest $httpRequest;
 	private Nette\Application\IPresenterFactory $presenterFactory;
 
-	/** @var \stdClass[] */
-	private array $routers = [];
+	private array|\stdClass $routes;
 	private ?array $matched = null;
 	private \ReflectionClass|\ReflectionMethod|null $source = null;
 
@@ -46,7 +45,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 	 */
 	public function getTab(): string
 	{
-		$this->analyse($this->router, $this->httpRequest);
+		$this->routes = $this->analyse($this->router, $this->httpRequest);
 		return Nette\Utils\Helpers::capture(function () {
 			$matched = $this->matched;
 			require __DIR__ . '/templates/RoutingPanel.tab.phtml';
@@ -61,9 +60,8 @@ final class RoutingPanel implements Tracy\IBarPanel
 	{
 		return Nette\Utils\Helpers::capture(function () {
 			$matched = $this->matched;
-			$routers = $this->routers;
+			$routes = $this->routes;
 			$source = $this->source;
-			$hasModule = (bool) array_filter($routers, fn(\stdClass $rq): string => $rq->module);
 			$url = $this->httpRequest->getUrl();
 			$method = $this->httpRequest->getMethod();
 			require __DIR__ . '/templates/RoutingPanel.panel.phtml';
@@ -77,63 +75,47 @@ final class RoutingPanel implements Tracy\IBarPanel
 	private function analyse(
 		Routing\Router $router,
 		?Nette\Http\IRequest $httpRequest,
-		string $module = '',
-		?string $path = null,
-		int $level = -1,
+		?\Closure $afterMatch = null,
 		array $flag = [],
-	): void
-	{
+	) {
+		$afterMatch ??= fn($params) => $params;
+
 		if ($router instanceof Routing\RouteList) {
-			if ($httpRequest) {
-				try {
-					$httpRequest = $router->match($httpRequest) === null ? null : $httpRequest;
-				} catch (\Throwable $e) {
-					$httpRequest = null;
-				}
-			}
+			$info = [
+				'path' => $router->getPath(),
+				'domain' => $router->getDomain(),
+				'module' => ($router instanceof Nette\Application\Routers\RouteList ? $router->getModule() : ''),
+				'routes' => [],
+			];
 
-			$prop = (new \ReflectionProperty(Routing\RouteList::class, 'path'));
-			$prop->setAccessible(true);
-			if ($httpRequest && ($pathPrefix = $prop->getValue($router))) {
-				$path .= $pathPrefix;
-				$url = $httpRequest->getUrl();
-				$httpRequest = $httpRequest->withUrl($url->withPath($url->getPath(), $url->getBasePath() . $pathPrefix));
-			}
+			$httpRequest = $httpRequest
+				? (new \ReflectionMethod($router, 'beforeMatch'))->invoke($router, $httpRequest)
+				: null;
 
-			$module .= ($router instanceof Nette\Application\Routers\RouteList ? $router->getModule() : '');
+			$afterMatch = function ($params) use ($router, $afterMatch) {
+				$params = $params === null
+					? null
+					: (new \ReflectionMethod($router, 'afterMatch'))->invoke($router, $params);
+				return $afterMatch($params);
+			};
 
-			$next = count($this->routers);
 			$flags = $router->getFlags();
-			foreach ($router->getRouters() as $i => $subRouter) {
-				$this->analyse($subRouter, $httpRequest, $module, $path, $level + 1, $flags[$i]);
+			foreach ($router->getRouters() as $i => $innerRouter) {
+				$info['routes'][] = $this->analyse($innerRouter, $httpRequest, $afterMatch, $flags[$i]);
 			}
 
-			if ($info = $this->routers[$next] ?? null) {
-				$info->gutterTop = abs(max(0, $level) - $info->level);
-			}
-
-			if ($info = end($this->routers)) {
-				$info->gutterBottom = abs(max(0, $level) - $info->level);
-			}
-
-			return;
+			return $info;
 		}
 
 		$matched = empty($flag['oneWay']) ? 'no' : 'oneway';
 		$params = $e = null;
 		try {
-			$params = $httpRequest
-				? $router->match($httpRequest)
-				: null;
+			$params = $httpRequest ? $afterMatch($router->match($httpRequest)) : null;
 		} catch (\Throwable $e) {
 			$matched = 'error';
 		}
 
 		if ($params !== null) {
-			if ($module) {
-				$params['presenter'] = $module . ($params['presenter'] ?? '');
-			}
-
 			$matched = 'may';
 			if ($this->matched === null) {
 				$this->matched = $params;
@@ -142,15 +124,12 @@ final class RoutingPanel implements Tracy\IBarPanel
 			}
 		}
 
-		$this->routers[] = (object) [
-			'level' => max(0, $level),
+		return (object) [
 			'matched' => $matched,
 			'class' => $router::class,
 			'defaults' => $router instanceof Routing\Route || $router instanceof Routing\SimpleRouter ? $router->getDefaults() : [],
 			'mask' => $router instanceof Routing\Route ? $router->getMask() : null,
 			'params' => $params,
-			'module' => rtrim($module, ':'),
-			'path' => $path,
 			'error' => $e,
 		];
 	}

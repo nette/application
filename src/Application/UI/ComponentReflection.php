@@ -204,23 +204,22 @@ final class ComponentReflection extends \ReflectionClass
 
 
 	/**
-	 * Non data-loss type conversion.
+	 * Lossless type conversion.
 	 */
 	public static function convertType(&$val, string $types): bool
 	{
 		$scalars = ['string' => 1, 'int' => 1, 'float' => 1, 'bool' => 1, 'true' => 1, 'false' => 1];
-		$tests = ['iterable' => 1, 'object' => 1, 'array' => 1, 'null' => 1];
+		$testable = ['iterable' => 1, 'object' => 1, 'array' => 1, 'null' => 1];
 
 		foreach (explode('|', ltrim($types, '?')) as $type) {
-			$ok = match (true) {
-				isset($scalars[$type]) => self::dataLossConvert($val, $type),
-				isset($tests[$type]) => "is_$type"($val),
-				$type === 'scalar' => !is_array($val), // special historical type
+			if (match (true) {
+				isset($scalars[$type]) => self::castScalar($val, $type),
+				isset($testable[$type]) => "is_$type"($val),
+				$type === 'scalar' => !is_array($val), // special type due to historical reasons
 				$type === 'mixed' => true,
-				$type === 'callable' => false,
+				$type === 'callable' => false, // intentionally disabled for security reasons
 				default => $val instanceof $type,
-			};
-			if ($ok) {
+			}) {
 				return true;
 			}
 		}
@@ -229,7 +228,10 @@ final class ComponentReflection extends \ReflectionClass
 	}
 
 
-	private static function dataLossConvert(&$val, string $type): bool
+	/**
+	 * Lossless type casting.
+	 */
+	private static function castScalar(&$val, string $type): bool
 	{
 		if (!is_scalar($val)) {
 			return false;
