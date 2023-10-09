@@ -10,7 +10,10 @@ declare(strict_types=1);
 namespace Nette\Bridges\ApplicationLatte;
 
 use Latte;
+use Latte\Compiler\Nodes\Php\Expression\AuxiliaryNode;
 use Latte\Compiler\Nodes\TemplateNode;
+use Latte\Compiler\Tag;
+use Latte\Essential\Nodes\ExtendsNode;
 use Nette;
 use Nette\Application\UI;
 
@@ -64,6 +67,8 @@ final class UIExtension extends Latte\Extension
 			'templatePrint' => [Nodes\TemplatePrintNode::class, 'create'],
 			'snippet' => [Nodes\SnippetNode::class, 'create'],
 			'snippetArea' => [Nodes\SnippetAreaNode::class, 'create'],
+			'layout' => [$this, 'createExtendsNode'],
+			'extends' => [$this, 'createExtendsNode'],
 		];
 	}
 
@@ -105,5 +110,16 @@ final class UIExtension extends Latte\Extension
 		$header = $httpResponse->getHeader('Content-Security-Policy')
 			?: $httpResponse->getHeader('Content-Security-Policy-Report-Only');
 		return preg_match('#\s\'nonce-([\w+/]+=*)\'#', (string) $header, $m) ? $m[1] : null;
+	}
+
+
+	public static function createExtendsNode(Tag $tag): ExtendsNode
+	{
+		$auto = $tag->parser->stream->is('auto');
+		$node = ExtendsNode::create($tag);
+		if ($auto) {
+			$node->extends = new AuxiliaryNode(fn() => '$this->global->uiPresenter->findLayoutTemplateFile()');
+		}
+		return $node;
 	}
 }

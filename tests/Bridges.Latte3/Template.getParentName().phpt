@@ -73,3 +73,11 @@ Assert::exception(
 	LogicException::class, // missing template
 );
 Assert::same('layout.latte', $template->getParentName());
+
+
+$latte->setLoader(new Latte\Loaders\StringLoader([
+	'main.latte' => '{extends foo.latte}',
+	'foo.latte' => '{extends auto}',
+	'layout.latte' => 'layout',
+]));
+Assert::same('layout', $template = $latte->renderToString('main.latte'));
