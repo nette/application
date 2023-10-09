@@ -37,23 +37,12 @@ final class Request
 	/** flag */
 	public const VARYING = 'varying';
 
-	/** @var string|null */
-	private $method;
-
-	/** @var array */
-	private $flags = [];
-
-	/** @var string */
-	private $name;
-
-	/** @var array */
-	private $params;
-
-	/** @var array */
-	private $post;
-
-	/** @var array */
-	private $files;
+	private ?string $method;
+	private array $flags = [];
+	private string $name;
+	private array $params;
+	private array $post;
+	private array $files;
 
 
 	/**

@@ -21,23 +21,14 @@ use Nette;
 #[\AllowDynamicProperties]
 final class DefaultTemplate extends Template
 {
-	/** @var Nette\Application\UI\Presenter */
-	public $presenter;
-
-	/** @var Nette\Application\UI\Control */
-	public $control;
-
-	/** @var Nette\Security\User */
-	public $user;
-
-	/** @var string */
-	public $baseUrl;
-
-	/** @var string */
-	public $basePath;
+	public Nette\Application\IPresenter $presenter;
+	public Nette\Application\UI\Control $control;
+	public Nette\Security\User $user;
+	public string $baseUrl;
+	public string $basePath;
 
 	/** @var \stdClass[] */
-	public $flashes = [];
+	public array $flashes = [];
 
 
 	/**

@@ -18,7 +18,7 @@ use Nette;
 class Form extends Nette\Forms\Form implements SignalReceiver
 {
 	/** @var array<callable(self): void>  Occurs when form is attached to presenter */
-	public $onAnchor = [];
+	public array $onAnchor = [];
 
 
 	/**

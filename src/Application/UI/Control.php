@@ -19,17 +19,10 @@ use Nette;
  */
 abstract class Control extends Component implements Renderable
 {
-	/** @var bool */
-	public $snippetMode;
-
-	/** @var TemplateFactory */
-	private $templateFactory;
-
-	/** @var Template */
-	private $template;
-
-	/** @var array */
-	private $invalidSnippets = [];
+	public bool $snippetMode = false;
+	private TemplateFactory $templateFactory;
+	private Template $template;
+	private array $invalidSnippets = [];
 
 
 	/********************* template factory ****************d*g**/
@@ -44,7 +37,7 @@ abstract class Control extends Component implements Renderable
 
 	final public function getTemplate(): Template
 	{
-		if ($this->template === null) {
+		if (!isset($this->template)) {
 			$this->template = $this->createTemplate();
 		}
 
@@ -60,7 +53,7 @@ abstract class Control extends Component implements Renderable
 		$class = func_num_args() // back compatibility
 			? func_get_arg(0)
 			: $this->formatTemplateClass();
-		$templateFactory = $this->templateFactory ?: $this->getPresenter()->getTemplateFactory();
+		$templateFactory = $this->templateFactory ?? $this->getPresenter()->getTemplateFactory();
 		return $templateFactory->createTemplate($this, $class);
 	}
 

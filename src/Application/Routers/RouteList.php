@@ -20,8 +20,7 @@ class RouteList extends Nette\Routing\RouteList implements Nette\Routing\Router,
 {
 	private const PresenterKey = 'presenter';
 
-	/** @var string|null */
-	private $module;
+	private ?string $module;
 
 
 	public function __construct(?string $module = null)

@@ -55,95 +55,46 @@ abstract class Presenter extends Control implements Application\IPresenter
 	public const FLASH_KEY = self::FlashKey;
 	public const DEFAULT_ACTION = self::DefaultAction;
 
-	/** @var int */
-	public $invalidLinkMode;
+	public int $invalidLinkMode = 0;
 
 	/** @var array<callable(self): void>  Occurs when the presenter is starting */
-	public $onStartup = [];
+	public array $onStartup = [];
 
 	/** @var array<callable(self): void>  Occurs when the presenter is rendering after beforeRender */
-	public $onRender = [];
+	public array $onRender = [];
 
 	/** @var array<callable(self, Application\Response): void>  Occurs when the presenter is shutting down */
-	public $onShutdown = [];
+	public array $onShutdown = [];
 
-	/** @var bool  automatically call canonicalize() */
-	public $autoCanonicalize = true;
+	/** automatically call canonicalize() */
+	public bool $autoCanonicalize = true;
 
-	/** @var bool  use absolute Urls or paths? */
-	public $absoluteUrls = false;
-
-	/** @var string[] */
-	public $allowedMethods = ['GET', 'POST', 'HEAD', 'PUT', 'DELETE', 'PATCH'];
-
-	/** @var Nette\Application\Request|null */
-	private $request;
-
-	/** @var Nette\Application\Response */
-	private $response;
-
-	/** @var array */
-	private $globalParams = [];
-
-	/** @var array */
-	private $globalState;
-
-	/** @var array|null */
-	private $globalStateSinces;
-
-	/** @var string */
-	private $action;
-
-	/** @var string */
-	private $view;
-
-	/** @var string|bool */
-	private $layout;
-
-	/** @var \stdClass */
-	private $payload;
-
-	/** @var string */
-	private $signalReceiver;
-
-	/** @var string|null */
-	private $signal;
-
-	/** @var bool */
-	private $ajaxMode;
-
-	/** @var bool */
-	private $startupCheck;
-
-	/** @var Nette\Application\Request|null */
-	private $lastCreatedRequest;
-
-	/** @var array|null */
-	private $lastCreatedRequestFlag;
-
-	/** @var Nette\Http\IRequest */
-	private $httpRequest;
-
-	/** @var Nette\Http\IResponse */
-	private $httpResponse;
-
-	/** @var Nette\Http\Session */
-	private $session;
-
-	/** @var Nette\Application\IPresenterFactory */
-	private $presenterFactory;
-
-	/** @var Nette\Routing\Router */
-	private $router;
-
-	/** @var Nette\Security\User */
-	private $user;
-
-	/** @var TemplateFactory */
-	private $templateFactory;
-
-	/** @var Nette\Http\UrlScript */
-	private $refUrlCache;
+	/** use absolute Urls or paths? */
+	public bool $absoluteUrls = false;
+	public array $allowedMethods = ['GET', 'POST', 'HEAD', 'PUT', 'DELETE', 'PATCH'];
+	private ?Nette\Application\Request $request = null;
+	private ?Nette\Application\Response $response = null;
+	private array $globalParams = [];
+	private array $globalState;
+	private ?array $globalStateSinces;
+	private string $action = '';
+	private string $view = '';
+	private string|bool $layout = '';
+	private \stdClass $payload;
+	private string $signalReceiver;
+	private ?string $signal = null;
+	private bool $ajaxMode;
+	private bool $startupCheck = false;
+	private ?Nette\Application\Request $lastCreatedRequest;
+	private ?array $lastCreatedRequestFlag;
+	private Nette\Http\IRequest $httpRequest;
+	private Nette\Http\IResponse $httpResponse;
+	private ?Nette\Http\Session $session = null;
+	private ?Nette\Application\IPresenterFactory $presenterFactory = null;
+	private ?Nette\Routing\Router $router = null;
+	private ?Nette\Security\User $user = null;
+	private ?TemplateFactory $templateFactory = null;
+	private Nette\Http\UrlScript $refUrlCache;
 
 
 	public function __construct()
@@ -202,7 +153,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	public function run(Application\Request $request): Application\Response
 	{
 		$this->request = $request;
-		$this->payload = $this->payload ?: new \stdClass;
+		$this->payload ??= new \stdClass;
 		$this->setParent($this->getParent(), $request->getPresenterName());
 
 		if (!$this->httpResponse->isSent()) {
@@ -352,7 +303,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function processSignal(): void
 	{
-		if ($this->signal === null) {
+		if (!isset($this->signal)) {
 			return;
 		}
 
@@ -603,7 +554,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	public function formatTemplateClass(): ?string
 	{
 		$base = preg_replace('#Presenter$#', '', static::class);
-		return $this->checkTemplateClass($base . ucfirst((string) $this->action) . 'Template')
+		return $this->checkTemplateClass($base . ucfirst($this->action) . 'Template')
 			?? $this->checkTemplateClass($base . 'Template');
 	}
 
@@ -622,7 +573,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function isAjax(): bool
 	{
-		if ($this->ajaxMode === null) {
+		if (!isset($this->ajaxMode)) {
 			$this->ajaxMode = $this->httpRequest->isAjax();
 		}
 
@@ -1025,7 +976,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	protected function requestToUrl(Application\Request $request, ?bool $relative = null): string
 	{
-		if ($this->refUrlCache === null) {
+		if (!isset($this->refUrlCache)) {
 			$url = $this->httpRequest->getUrl();
 			$this->refUrlCache = new Http\UrlScript($url->getHostUrl() . $url->getScriptPath());
 		}
@@ -1210,7 +1161,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	{
 		$sinces = &$this->globalStateSinces;
 
-		if ($this->globalState === null) {
+		if (!isset($this->globalState)) {
 			$state = [];
 			foreach ($this->globalParams as $id => $params) {
 				$prefix = $id . self::NameSeparator;
@@ -1422,7 +1373,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		?Nette\Security\User $user = null,
 		?TemplateFactory $templateFactory = null,
 	) {
-		if ($this->presenterFactory !== null) {
+		if (isset($this->presenterFactory)) {
 			throw new Nette\InvalidStateException('Method ' . __METHOD__ . ' is intended for initialization and should not be called more than once.');
 		}
 

@@ -26,11 +26,8 @@ use Nette\Utils\Strings;
  */
 final class UIMacros extends Latte\Macros\MacroSet
 {
-	/** @var bool|string */
-	private $extends;
-
-	/** @var string|null */
-	private $printTemplate;
+	private bool|string $extends;
+	private ?string $printTemplate = null;
 
 
 	public static function install(Latte\Compiler $compiler): void

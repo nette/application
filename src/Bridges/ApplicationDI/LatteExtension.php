@@ -21,11 +21,8 @@ use Tracy;
  */
 final class LatteExtension extends Nette\DI\CompilerExtension
 {
-	/** @var bool */
-	private $debugMode;
-
-	/** @var string */
-	private $tempDir;
+	private bool $debugMode;
+	private string $tempDir;
 
 
 	public function __construct(string $tempDir, bool $debugMode = false)

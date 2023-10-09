@@ -20,13 +20,12 @@ class PresenterFactory implements IPresenterFactory
 	use Nette\SmartObject;
 
 	/** @var array[] of module => splited mask */
-	private $mapping = [
+	private array $mapping = [
 		'*' => ['', '*Module\\', '*Presenter'],
 		'Nette' => ['NetteModule\\', '*\\', '*Presenter'],
 	];
 
-	/** @var array */
-	private $cache = [];
+	private array $cache = [];
 
 	/** @var callable */
 	private $factory;

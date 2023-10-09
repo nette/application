@@ -20,14 +20,9 @@ final class Link
 {
 	use Nette\SmartObject;
 
-	/** @var Component */
-	private $component;
-
-	/** @var string */
-	private $destination;
-
-	/** @var array */
-	private $params;
+	private Component $component;
+	private string $destination;
+	private array $params;
 
 
 	/**

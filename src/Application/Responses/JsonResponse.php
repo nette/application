@@ -19,11 +19,8 @@ final class JsonResponse implements Nette\Application\Response
 {
 	use Nette\SmartObject;
 
-	/** @var mixed */
-	private $payload;
-
-	/** @var string */
-	private $contentType;
+	private mixed $payload;
+	private string $contentType;
 
 
 	public function __construct($payload, ?string $contentType = null)
