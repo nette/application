@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace Nette\Bridges\ApplicationLatte;
 
-use Latte;
 use Nette;
 use Nette\Application\UI;
 
@@ -28,7 +27,6 @@ class TemplateFactory implements UI\TemplateFactory
 		private readonly LatteFactory $latteFactory,
 		private readonly ?Nette\Http\IRequest $httpRequest = null,
 		private readonly ?Nette\Security\User $user = null,
-		private readonly ?Nette\Caching\Storage $cacheStorage = null,
 		$templateClass = null,
 		private array $configVars = [],
 	) {
@@ -47,19 +45,9 @@ class TemplateFactory implements UI\TemplateFactory
 			throw new Nette\InvalidArgumentException("Class $class does not implement " . Template::class . ' or it does not exist.');
 		}
 
-		$latte = $this->latteFactory->create();
+		$latte = $this->latteFactory->create($control);
 		$template = new $class($latte);
 		$presenter = $control?->getPresenterIfExists();
-
-		$latte->addExtension(new UIExtension($control));
-
-		if ($this->cacheStorage && class_exists(Nette\Bridges\CacheLatte\CacheExtension::class)) {
-			$latte->addExtension(new Nette\Bridges\CacheLatte\CacheExtension($this->cacheStorage));
-		}
-
-		if (class_exists(Nette\Bridges\FormsLatte\FormsExtension::class)) {
-			$latte->addExtension(new Nette\Bridges\FormsLatte\FormsExtension);
-		}
 
 		// default parameters
 		$baseUrl = $this->httpRequest

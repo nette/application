@@ -65,6 +65,16 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 			$this->addExtension($extension);
 		}
 
+		$this->addExtension(ApplicationLatte\UIExtension::class, [$builder::literal('$control')]);
+
+		if (class_exists(Nette\Bridges\CacheLatte\CacheExtension::class)/* && existuje_instance*/) { // TODO
+			$this->addExtension(Nette\Bridges\CacheLatte\CacheExtension::class);
+		}
+
+		if (class_exists(Nette\Bridges\FormsLatte\FormsExtension::class)) {
+			$this->addExtension(Nette\Bridges\FormsLatte\FormsExtension::class);
+		}
+
 		$builder->addDefinition($this->prefix('templateFactory'))
 			->setFactory(ApplicationLatte\TemplateFactory::class, [
 				'templateClass' => $config->templateClass,
@@ -113,10 +123,10 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 	}
 
 
-	public function addExtension(Nette\DI\Definitions\Statement|string $extension): void
+	public function addExtension(Nette\DI\Definitions\Statement|string $extension, array $args = []): void
 	{
 		$extension = is_string($extension)
-			? new Nette\DI\Definitions\Statement($extension)
+			? new Nette\DI\Definitions\Statement($extension, $args)
 			: $extension;
 
 		$builder = $this->getContainerBuilder();
