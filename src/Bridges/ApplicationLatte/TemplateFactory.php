@@ -61,16 +61,6 @@ class TemplateFactory implements UI\TemplateFactory
 			$latte->addExtension(new Nette\Bridges\FormsLatte\FormsExtension);
 		}
 
-		$latte->addFilter('modifyDate', fn($time, $delta, $unit = null) => $time
-				? Nette\Utils\DateTime::from($time)->modify($delta . $unit)
-				: null);
-
-		if (!isset($latte->getFilters()['translate'])) {
-			$latte->addFilter('translate', function (Latte\Runtime\FilterInfo $fi): void {
-				throw new Nette\InvalidStateException('Translator has not been set. Set translator using $template->setTranslator().');
-			});
-		}
-
 		// default parameters
 		$baseUrl = $this->httpRequest
 			? rtrim($this->httpRequest->getUrl()->withoutUserInfo()->getBaseUrl(), '/')

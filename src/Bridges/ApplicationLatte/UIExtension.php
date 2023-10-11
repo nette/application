@@ -29,6 +29,19 @@ final class UIExtension extends Latte\Extension
 	}
 
 
+	public function getFilters(): array
+	{
+		return [
+			'modifyDate' => fn($time, $delta, $unit = null) => $time
+				? Nette\Utils\DateTime::from($time)->modify($delta . $unit)
+				: null,
+			'translate' => function (Latte\Runtime\FilterInfo $fi): void {
+				throw new Nette\InvalidStateException('Translator has not been set. Set translator using $template->setTranslator().');
+			},
+		];
+	}
+
+
 	public function getFunctions(): array
 	{
 		if ($presenter = $this->control?->getPresenterIfExists()) {
