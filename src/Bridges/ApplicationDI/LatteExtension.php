@@ -68,6 +68,10 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 			$latteFactory->addSetup('setStrictParsing', [$config->strictParsing])
 				->addSetup('enablePhpLinter', [$config->phpLinter]);
 
+			$builder->getDefinition($this->prefix('latteFactory'))
+				->getResultDefinition()
+				->addSetup('?', [$builder::literal('func_num_args() && $service->addExtension(new Nette\Bridges\ApplicationLatte\UIExtension(func_get_arg(0)))')]);
+
 			if ($cache = $builder->getByType(Nette\Caching\Storage::class)) {
 				$this->addExtension(new Statement(Nette\Bridges\CacheLatte\CacheExtension::class, [$builder->getDefinition($cache)]));
 			}

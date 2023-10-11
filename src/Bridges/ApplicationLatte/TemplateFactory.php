@@ -47,13 +47,13 @@ class TemplateFactory implements UI\TemplateFactory
 			throw new Nette\InvalidArgumentException("Class $class does not implement " . Template::class . ' or it does not exist.');
 		}
 
-		$latte = $this->latteFactory->create();
+		$latte = $this->latteFactory->create($control);
 		$template = new $class($latte);
 		$presenter = $control?->getPresenterIfExists();
 
 		if (version_compare(Latte\Engine::VERSION, '3', '<')) {
 			$this->setupLatte2($latte, $control, $presenter, $template);
-		} else {
+		} elseif (!Nette\Utils\Arrays::some($latte->getExtensions(), fn($e) => $e instanceof UIExtension)) {
 			$latte->addExtension(new UIExtension($control));
 		}
 
