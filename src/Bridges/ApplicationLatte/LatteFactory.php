@@ -14,7 +14,7 @@ use Latte;
 
 interface LatteFactory
 {
-	function create(): Latte\Engine;
+	function create(/*?Control $control = null*/): Latte\Engine;
 }
 
 
