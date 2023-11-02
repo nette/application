@@ -44,7 +44,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 			$throw = func_get_arg(0);
 		}
 
-		return $this->lookup(Presenter::class, $throw ?? true);
+		return $this->lookup(Presenter::class, throw: $throw ?? true);
 	}
 
 
@@ -53,14 +53,14 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	 */
 	public function getPresenterIfExists(): ?Presenter
 	{
-		return $this->lookup(Presenter::class, false);
+		return $this->lookup(Presenter::class, throw: false);
 	}
 
 
 	/** @deprecated */
 	public function hasPresenter(): bool
 	{
-		return (bool) $this->lookup(Presenter::class, false);
+		return (bool) $this->lookup(Presenter::class, throw: false);
 	}
 
 
@@ -70,7 +70,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	 */
 	public function getUniqueId(): string
 	{
-		return $this->lookupPath(Presenter::class, true);
+		return $this->lookupPath(Presenter::class);
 	}
 
 
@@ -78,7 +78,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	{
 		$res = parent::createComponent($name);
 		if ($res && !$res instanceof SignalReceiver && !$res instanceof StatePersistent) {
-			$type = get_class($res);
+			$type = $res::class;
 			trigger_error("It seems that component '$name' of type $type is not intended to be used in the Presenter.");
 		}
 
@@ -165,7 +165,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 						$name,
 						$this instanceof Presenter ? 'presenter ' . $this->getName() : "component '{$this->getUniqueId()}'",
 						$meta['type'],
-						is_object($params[$name]) ? get_class($params[$name]) : gettype($params[$name])
+						is_object($params[$name]) ? get_class($params[$name]) : gettype($params[$name]),
 					));
 				}
 
@@ -333,7 +333,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 		$presenter = $this->getPresenter();
 		$presenter->redirectUrl(
 			$presenter->createRequest($this, $destination, $args, 'redirect'),
-			Nette\Http\IResponse::S301_MOVED_PERMANENTLY
+			Nette\Http\IResponse::S301_MOVED_PERMANENTLY,
 		);
 	}
 

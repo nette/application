@@ -39,9 +39,7 @@ final class ErrorPresenter implements Application\IPresenter
 			$code = $e->getHttpCode();
 		} else {
 			$code = 500;
-			if ($this->logger) {
-				$this->logger->log($e, ILogger::EXCEPTION);
-			}
+			$this->logger?->log($e, ILogger::EXCEPTION);
 		}
 
 		return new Application\Responses\CallbackResponse(function (Http\IRequest $httpRequest, Http\IResponse $httpResponse) use ($code): void {

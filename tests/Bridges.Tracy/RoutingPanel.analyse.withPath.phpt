@@ -25,10 +25,7 @@ test('URL: /', function () use ($router) {
 	$httpRequest = new Http\Request(new UrlScript('/', '/'));
 	$panel = new RoutingPanel($router, $httpRequest, new PresenterFactory(function () {}));
 
-	$res = Assert::with($panel, function () use ($httpRequest, $router) {
-		/** @var RoutingPanel $this */
-		return $this->analyse($router, $httpRequest);
-	});
+	$res = Assert::with($panel, fn() => $this->analyse($router, $httpRequest));
 
 	Assert::equal([
 		'path' => null,
@@ -91,10 +88,7 @@ test('URL: /foo', function () use ($router) {
 	$httpRequest = new Http\Request(new UrlScript('/foo', '/'));
 	$panel = new RoutingPanel($router, $httpRequest, new PresenterFactory(function () {}));
 
-	$res = Assert::with($panel, function () use ($httpRequest, $router) {
-		/** @var RoutingPanel $this */
-		return $this->analyse($router, $httpRequest);
-	});
+	$res = Assert::with($panel, fn() => $this->analyse($router, $httpRequest));
 
 	Assert::equal([
 		'path' => null,
@@ -157,10 +151,7 @@ test('URL: /admin', function () use ($router) {
 	$httpRequest = new Http\Request(new UrlScript('/admin', '/'));
 	$panel = new RoutingPanel($router, $httpRequest, new PresenterFactory(function () {}));
 
-	$res = Assert::with($panel, function () use ($httpRequest, $router) {
-		/** @var RoutingPanel $this */
-		return $this->analyse($router, $httpRequest);
-	});
+	$res = Assert::with($panel, fn() => $this->analyse($router, $httpRequest));
 
 	Assert::equal([
 		'path' => null,
@@ -223,10 +214,7 @@ test('URL: /admin/', function () use ($router) {
 	$httpRequest = new Http\Request(new UrlScript('/admin/', '/'));
 	$panel = new RoutingPanel($router, $httpRequest, new PresenterFactory(function () {}));
 
-	$res = Assert::with($panel, function () use ($httpRequest, $router) {
-		/** @var RoutingPanel $this */
-		return $this->analyse($router, $httpRequest);
-	});
+	$res = Assert::with($panel, fn() => $this->analyse($router, $httpRequest));
 
 	Assert::equal([
 		'path' => null,
@@ -289,10 +277,7 @@ test('URL: /admin/foo', function () use ($router) {
 	$httpRequest = new Http\Request(new UrlScript('/admin/foo', '/'));
 	$panel = new RoutingPanel($router, $httpRequest, new PresenterFactory(function () {}));
 
-	$res = Assert::with($panel, function () use ($httpRequest, $router) {
-		/** @var RoutingPanel $this */
-		return $this->analyse($router, $httpRequest);
-	});
+	$res = Assert::with($panel, fn() => $this->analyse($router, $httpRequest));
 
 	Assert::equal([
 		'path' => null,

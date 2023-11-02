@@ -45,7 +45,7 @@ class TemplateFactory implements UI\TemplateFactory
 		?Nette\Http\IRequest $httpRequest = null,
 		?Nette\Security\User $user = null,
 		?Nette\Caching\Storage $cacheStorage = null,
-		$templateClass = null
+		$templateClass = null,
 	) {
 		$this->latteFactory = $latteFactory;
 		$this->httpRequest = $httpRequest;
@@ -62,14 +62,14 @@ class TemplateFactory implements UI\TemplateFactory
 	/** @return Template */
 	public function createTemplate(?UI\Control $control = null, ?string $class = null): UI\Template
 	{
-		$class = $class ?? $this->templateClass;
-		if (!is_a($class, Template::class, true)) {
+		$class ??= $this->templateClass;
+		if (!is_a($class, Template::class, allow_string: true)) {
 			throw new Nette\InvalidArgumentException("Class $class does not implement " . Template::class . ' or it does not exist.');
 		}
 
 		$latte = $this->latteFactory->create();
 		$template = new $class($latte);
-		$presenter = $control ? $control->getPresenterIfExists() : null;
+		$presenter = $control?->getPresenterIfExists();
 
 		if (version_compare(Latte\Engine::VERSION, '3', '<')) {
 			$this->setupLatte2($latte, $control, $presenter, $template);
@@ -86,11 +86,9 @@ class TemplateFactory implements UI\TemplateFactory
 			}
 		}
 
-		$latte->addFilter('modifyDate', function ($time, $delta, $unit = null) {
-			return $time
+		$latte->addFilter('modifyDate', fn($time, $delta, $unit = null) => $time
 				? Nette\Utils\DateTime::from($time)->modify($delta . $unit)
-				: null;
-		});
+				: null);
 
 		if (!isset($latte->getFilters()['translate'])) {
 			$latte->addFilter('translate', function (Latte\Runtime\FilterInfo $fi): void {
@@ -131,7 +129,7 @@ class TemplateFactory implements UI\TemplateFactory
 		Latte\Engine $latte,
 		?UI\Control $control,
 		?UI\Presenter $presenter,
-		Template $template
+		Template $template,
 	): void
 	{
 		if ($latte->onCompile instanceof \Traversable) {
@@ -148,9 +146,7 @@ class TemplateFactory implements UI\TemplateFactory
 				Nette\Bridges\FormsLatte\FormMacros::install($latte->getCompiler());
 			}
 
-			if ($control) {
-				$control->templatePrepareFilters($template);
-			}
+			$control?->templatePrepareFilters($template);
 		});
 
 		$latte->addProvider('cacheStorage', $this->cacheStorage);

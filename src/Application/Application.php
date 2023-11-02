@@ -71,7 +71,7 @@ class Application
 		IPresenterFactory $presenterFactory,
 		Router $router,
 		Nette\Http\IRequest $httpRequest,
-		Nette\Http\IResponse $httpResponse
+		Nette\Http\IResponse $httpResponse,
 	) {
 		$this->httpRequest = $httpRequest;
 		$this->httpResponse = $httpResponse;
@@ -129,7 +129,7 @@ class Application
 			$params,
 			$this->httpRequest->getPost(),
 			$this->httpRequest->getFiles(),
-			[Request::SECURED => $this->httpRequest->isSecured()]
+			[Request::SECURED => $this->httpRequest->isSecured()],
 		);
 	}
 
@@ -186,7 +186,7 @@ class Application
 		if ($this->presenter instanceof UI\Presenter) {
 			try {
 				$this->presenter->forward(":$this->errorPresenter:", $args);
-			} catch (AbortException $foo) {
+			} catch (AbortException) {
 				$this->processRequest($this->presenter->getLastCreatedRequest());
 			}
 		} else {

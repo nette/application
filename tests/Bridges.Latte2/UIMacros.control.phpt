@@ -23,68 +23,66 @@ UIMacros::install($latte->getCompiler());
 // {control ...}
 Assert::match(
 	'%A% $this->global->uiControl->getComponent("form");%A%->render();%A%',
-	$latte->compile('{control form}')
+	$latte->compile('{control form}'),
 );
 
 @Assert::match(
 	<<<'XX'
-%A%
-		/* line 1 */ $_tmp = $this->global->uiControl->getComponent("form");
-		if ($_tmp instanceof Nette\Application\UI\Renderable) $_tmp->redrawControl(null, false);
-		ob_start(function () {});
-		$_tmp->render();
-		$ʟ_fi = new LR\FilterInfo('html');
-		echo $this->filters->filterContent('filter', $ʟ_fi, ob_get_clean());
-%A%
-XX
-	,
-	$latte->compile('{control form|filter}')
+		%A%
+				/* line 1 */ $_tmp = $this->global->uiControl->getComponent("form");
+				if ($_tmp instanceof Nette\Application\UI\Renderable) $_tmp->redrawControl(null, false);
+				ob_start(fn() => null);
+				$_tmp->render();
+				$ʟ_fi = new LR\FilterInfo('html');
+				echo $this->filters->filterContent('filter', $ʟ_fi, ob_get_clean());
+		%A%
+		XX,
+	$latte->compile('{control form|filter}'),
 ); // @deprecated
 
 Assert::match(
 	<<<'XX'
-%A%
-		/* line 1 */ if (is_object($form)) $_tmp = $form;
-		else $_tmp = $this->global->uiControl->getComponent($form);
-		if ($_tmp instanceof Nette\Application\UI\Renderable) $_tmp->redrawControl(null, false);
-		$_tmp->render();
-%A%
-XX
-	,
-	$latte->compile('{control $form}')
+		%A%
+				/* line 1 */ if (is_object($form)) $_tmp = $form;
+				else $_tmp = $this->global->uiControl->getComponent($form);
+				if ($_tmp instanceof Nette\Application\UI\Renderable) $_tmp->redrawControl(null, false);
+				$_tmp->render();
+		%A%
+		XX,
+	$latte->compile('{control $form}'),
 );
 
 Assert::match(
 	'%A% $this->global->uiControl->getComponent("form");%A%->renderType();%A%',
-	$latte->compile('{control form:type}')
+	$latte->compile('{control form:type}'),
 );
 
 Assert::match(
 	'%A% $this->global->uiControl->getComponent("form");%A%->{"render$type"}();%A%',
-	$latte->compile('{control form:$type}')
+	$latte->compile('{control form:$type}'),
 );
 
 Assert::match(
 	'%A% $this->global->uiControl->getComponent("form");%A%->renderType(\'param\');%A%',
-	$latte->compile('{control form:type param}')
+	$latte->compile('{control form:type param}'),
 );
 
 Assert::match(
 	'%A% $this->global->uiControl->getComponent("form");%A%->render(array_merge([], $params, []));%A%',
-	$latte->compile('{control form (expand) $params}')
+	$latte->compile('{control form (expand) $params}'),
 );
 
 Assert::match(
 	'%A% $this->global->uiControl->getComponent("form");%A%->renderType([\'param\' => 123]);%A%',
-	$latte->compile('{control form:type param => 123}')
+	$latte->compile('{control form:type param => 123}'),
 );
 
 Assert::match(
 	'%A% $this->global->uiControl->getComponent("form");%A%->renderType([\'param\' => 123]);%A%',
-	$latte->compile('{control form:type, param => 123}')
+	$latte->compile('{control form:type, param => 123}'),
 );
 
 Assert::match(
 	'%A% $this->global->uiControl->getComponent("form");%A%->renderType(param: 123);%A%',
-	$latte->compile('{control form:type, param: 123}')
+	$latte->compile('{control form:type, param: 123}'),
 );

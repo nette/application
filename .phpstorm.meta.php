@@ -16,7 +16,7 @@ registerArgumentsSet('nette_http_codes_3xx',
 	\Nette\Http\IResponse::S304_NOT_MODIFIED,
 	\Nette\Http\IResponse::S305_USE_PROXY,
 	\Nette\Http\IResponse::S307_TEMPORARY_REDIRECT,
-	\Nette\Http\IResponse::S308_PERMANENT_REDIRECT
+	\Nette\Http\IResponse::S308_PERMANENT_REDIRECT,
 );
 registerArgumentsSet('nette_http_codes_4xx',
 	\Nette\Http\IResponse::S400_BAD_REQUEST,
@@ -45,7 +45,7 @@ registerArgumentsSet('nette_http_codes_4xx',
 	\Nette\Http\IResponse::S428_PRECONDITION_REQUIRED,
 	\Nette\Http\IResponse::S429_TOO_MANY_REQUESTS,
 	\Nette\Http\IResponse::S431_REQUEST_HEADER_FIELDS_TOO_LARGE,
-	\Nette\Http\IResponse::S451_UNAVAILABLE_FOR_LEGAL_REASONS
+	\Nette\Http\IResponse::S451_UNAVAILABLE_FOR_LEGAL_REASONS,
 );
 
 expectedArguments(\Nette\Application\UI\Presenter::redirectUrl(), 1, argumentsSet('nette_http_codes_3xx'));

@@ -40,7 +40,7 @@ final class MicroPresenter implements Application\IPresenter
 	public function __construct(
 		?Nette\DI\Container $context = null,
 		?Http\IRequest $httpRequest = null,
-		?Router $router = null
+		?Router $router = null,
 	) {
 		$this->context = $context;
 		$this->httpRequest = $httpRequest;
@@ -86,7 +86,7 @@ final class MicroPresenter implements Application\IPresenter
 			foreach ($reflection->getParameters() as $param) {
 				$type = $param->getType();
 				if ($type instanceof \ReflectionNamedType && !$type->isBuiltin()) {
-					$params[$param->getName()] = $this->context->getByType($type->getName(), false);
+					$params[$param->getName()] = $this->context->getByType($type->getName(), throw: false);
 				}
 			}
 		}

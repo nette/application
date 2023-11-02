@@ -30,9 +30,7 @@ class Form extends Nette\Forms\Form implements SignalReceiver
 	public function __construct(?Nette\ComponentModel\IContainer $parent = null, ?string $name = null)
 	{
 		parent::__construct();
-		if ($parent !== null) {
-			$parent->addComponent($this, $name);
-		}
+		$parent?->addComponent($this, $name);
 	}
 
 
@@ -73,7 +71,7 @@ class Form extends Nette\Forms\Form implements SignalReceiver
 			$throw = func_get_arg(0);
 		}
 
-		return $this->lookup(Presenter::class, $throw ?? true);
+		return $this->lookup(Presenter::class, throw: $throw ?? true);
 	}
 
 
@@ -82,14 +80,14 @@ class Form extends Nette\Forms\Form implements SignalReceiver
 	 */
 	final public function getPresenterIfExists(): ?Presenter
 	{
-		return $this->lookup(Presenter::class, false);
+		return $this->lookup(Presenter::class, throw: false);
 	}
 
 
 	/** @deprecated */
 	public function hasPresenter(): bool
 	{
-		return (bool) $this->lookup(Presenter::class, false);
+		return (bool) $this->lookup(Presenter::class, throw: false);
 	}
 
 

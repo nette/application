@@ -27,19 +27,27 @@ test('', function () {
 	Assert::same([1, 'abc'], Reflection::combineArgs($method, ['intArray' => '1', 'strArray' => 'abc']));
 	Assert::same([[1], [2]], Reflection::combineArgs($method, ['intArray' => [1], 'strArray' => [2]]));
 
-	Assert::exception(function () use ($method) {
-		Reflection::combineArgs($method, []);
-	}, Nette\InvalidArgumentException::class, 'Missing parameter $intArray required by MyPresenter::hintsUnion()');
+	Assert::exception(
+		fn() => Reflection::combineArgs($method, []),
+		Nette\InvalidArgumentException::class,
+		'Missing parameter $intArray required by MyPresenter::hintsUnion()'
+	);
 
-	Assert::exception(function () use ($method) {
-		Reflection::combineArgs($method, ['intArray' => '']);
-	}, Nette\InvalidArgumentException::class, 'Argument $intArray passed to MyPresenter::hintsUnion() must be array|int, string given.');
+	Assert::exception(
+		fn() => Reflection::combineArgs($method, ['intArray' => '']),
+		Nette\InvalidArgumentException::class,
+		'Argument $intArray passed to MyPresenter::hintsUnion() must be array|int, string given.'
+	);
 
-	Assert::exception(function () use ($method) {
-		Reflection::combineArgs($method, ['intArray' => null]);
-	}, Nette\InvalidArgumentException::class, 'Missing parameter $intArray required by MyPresenter::hintsUnion()');
+	Assert::exception(
+		fn() => Reflection::combineArgs($method, ['intArray' => null]),
+		Nette\InvalidArgumentException::class,
+		'Missing parameter $intArray required by MyPresenter::hintsUnion()'
+	);
 
-	Assert::exception(function () use ($method) {
-		Reflection::combineArgs($method, ['intArray' => new stdClass]);
-	}, Nette\InvalidArgumentException::class, 'Argument $intArray passed to MyPresenter::hintsUnion() must be array|int, stdClass given.');
+	Assert::exception(
+		fn() => Reflection::combineArgs($method, ['intArray' => new stdClass]),
+		Nette\InvalidArgumentException::class,
+		'Argument $intArray passed to MyPresenter::hintsUnion() must be array|int, stdClass given.'
+	);
 });

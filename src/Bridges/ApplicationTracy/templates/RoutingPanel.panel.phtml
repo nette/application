@@ -91,7 +91,7 @@ use Tracy\Helpers;
 <?php if ($matched === null): ?>
 	no route
 <?php elseif (isset($matched[Presenter::PresenterKey])): ?>
-	<?= Helpers::escapeHtml($matched[Presenter::PresenterKey] . ':' . (isset($matched[Presenter::ActionKey]) ? $matched[Presenter::ActionKey] : Presenter::DefaultAction) . (isset($matched[Presenter::SignalKey]) ? " {$matched[Presenter::SignalKey]}!" : '')) ?>
+	<?= Helpers::escapeHtml($matched[Presenter::PresenterKey] . ':' . ($matched[Presenter::ActionKey] ?? Presenter::DefaultAction) . (isset($matched[Presenter::SignalKey]) ? " {$matched[Presenter::SignalKey]}!" : '')) ?>
 <?php endif ?>
 </h1>
 
@@ -160,7 +160,7 @@ $show = function ($info, $path = '') use (&$show) {
 		<div><?php if ($route->params): ?><code>
 		<?php $params = $route->params; ?>
 		<?php if (isset($params[Presenter::PresenterKey])): ?>
-		<strong><?= Helpers::escapeHtml($params['presenter'] . ':' . (isset($params[Presenter::ActionKey]) ? $params[Presenter::ActionKey] : Presenter::DefaultAction)) ?></strong><br />
+		<strong><?= Helpers::escapeHtml($params['presenter'] . ':' . ($params[Presenter::ActionKey] ?? Presenter::DefaultAction)) ?></strong><br />
 		<?php unset($params[Presenter::PresenterKey], $params[Presenter::ActionKey]) ?>
 		<?php endif ?>
 		<?php foreach ($params as $key => $value): ?>

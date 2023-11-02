@@ -231,7 +231,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 			// autoload components
 			foreach ($this->globalParams as $id => $foo) {
-				$this->getComponent((string) $id, false);
+				$this->getComponent((string) $id, throw: false);
 			}
 
 			if ($this->autoCanonicalize) {
@@ -256,7 +256,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			// finish template rendering
 			$this->sendTemplate();
 
-		} catch (Application\AbortException $e) {
+		} catch (Application\AbortException) {
 		}
 
 		// save component tree persistent state
@@ -270,7 +270,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 					$this->response->send($this->httpRequest, $this->httpResponse);
 					$this->sendPayload();
 				}
-			} catch (Application\AbortException $e) {
+			} catch (Application\AbortException) {
 			}
 		}
 
@@ -340,7 +340,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	protected function checkHttpMethod(): void
 	{
 		if ($this->allowedMethods &&
-			!in_array($method = $this->httpRequest->getMethod(), $this->allowedMethods, true)
+			!in_array($method = $this->httpRequest->getMethod(), $this->allowedMethods, strict: true)
 		) {
 			$this->httpResponse->setHeader('Allow', implode(',', $this->allowedMethods));
 			$this->error("Method $method is not allowed", Nette\Http\IResponse::S405_MethodNotAllowed);
@@ -362,7 +362,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 		$component = $this->signalReceiver === ''
 			? $this
-			: $this->getComponent($this->signalReceiver, false);
+			: $this->getComponent($this->signalReceiver, throw: false);
 		if ($component === null) {
 			throw new BadSignalException("The signal receiver component '$this->signalReceiver' is not found.");
 
@@ -393,7 +393,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		if ($component instanceof Nette\ComponentModel\Component) {
 			$component = $component === $this
 				? ''
-				: $component->lookupPath(self::class, true);
+				: $component->lookupPath(self::class);
 		}
 
 		if ($this->signal === null) {
@@ -482,7 +482,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function sendTemplate(?Template $template = null): void
 	{
-		$template = $template ?? $this->getTemplate();
+		$template ??= $this->getTemplate();
 		if (!$template->getFile()) {
 			$template->setFile($this->findTemplateFile());
 		}
@@ -765,9 +765,9 @@ abstract class Presenter extends Control implements Application\IPresenter
 				$this,
 				$destination ?: $this->action,
 				$args + $this->getGlobalState() + $request->getParameters(),
-				'redirectX'
+				'redirectX',
 			);
-		} catch (InvalidLinkException $e) {
+		} catch (InvalidLinkException) {
 		}
 
 		if (!isset($url) || $this->httpRequest->getUrl()->withoutUserInfo()->isEqual($url)) {
@@ -813,7 +813,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		Component $component,
 		string $destination,
 		array $args,
-		string $mode
+		string $mode,
 	): ?string
 	{
 		// note: createRequest supposes that saveState(), run() & tryCall() behaviour is final
@@ -868,7 +868,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 		// PROCESS SIGNAL ARGUMENTS
 		if (isset($signal)) { // $component must be StatePersistent
-			$reflection = new ComponentReflection(get_class($component));
+			$reflection = new ComponentReflection($component::class);
 			if ($signal === 'this') { // means "no signal"
 				$signal = '';
 				if (array_key_exists(0, $args)) {
@@ -885,11 +885,11 @@ abstract class Presenter extends Control implements Application\IPresenter
 					$this->invalidLinkMode
 					&& ComponentReflection::parseAnnotation(new \ReflectionMethod($component, $method), 'deprecated')
 				) {
-					trigger_error("Link to deprecated signal '$signal'" . ($component === $this ? '' : ' in ' . get_class($component)) . " from '{$this->getName()}:{$this->getAction()}'.", E_USER_DEPRECATED);
+					trigger_error("Link to deprecated signal '$signal'" . ($component === $this ? '' : ' in ' . $component::class) . " from '{$this->getName()}:{$this->getAction()}'.", E_USER_DEPRECATED);
 				}
 
 				// convert indexed parameters to named
-				static::argsToParams(get_class($component), $method, $args, [], $missing);
+				static::argsToParams($component::class, $method, $args, [], $missing);
 			}
 
 			// counterpart of StatePersistent
@@ -1068,7 +1068,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		string $method,
 		array &$args,
 		array $supplemental = [],
-		?array &$missing = null
+		?array &$missing = null,
 	): void
 	{
 		$i = 0;
@@ -1110,7 +1110,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 					$name,
 					$rm->getDeclaringClass()->getName() . '::' . $rm->getName(),
 					$type,
-					is_object($args[$name]) ? get_class($args[$name]) : gettype($args[$name])
+					is_object($args[$name]) ? get_class($args[$name]) : gettype($args[$name]),
 				));
 			}
 
@@ -1160,7 +1160,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			$key = Nette\Utils\Random::generate(5);
 		} while (isset($session[$key]));
 
-		$session[$key] = [$this->user ? $this->user->getId() : null, $this->request];
+		$session[$key] = [$this->user?->getId(), $this->request];
 		$session->setExpiration($expiration, $key);
 		return $key;
 	}
@@ -1427,7 +1427,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		Http\IResponse $httpResponse,
 		?Http\Session $session = null,
 		?Nette\Security\User $user = null,
-		?TemplateFactory $templateFactory = null
+		?TemplateFactory $templateFactory = null,
 	) {
 		if ($this->presenterFactory !== null) {
 			throw new Nette\InvalidStateException('Method ' . __METHOD__ . ' is intended for initialization and should not be called more than once.');

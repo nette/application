@@ -76,12 +76,12 @@ abstract class Control extends Component implements Renderable
 	{
 		if (!class_exists($class)) {
 			return null;
-		} elseif (!is_a($class, Template::class, true)) {
+		} elseif (!is_a($class, Template::class, allow_string: true)) {
 			trigger_error(sprintf(
 				'%s: class %s was found but does not implement the %s, so it will not be used for the template.',
 				static::class,
 				$class,
-				Template::class
+				Template::class,
 			));
 			return null;
 		} else {
