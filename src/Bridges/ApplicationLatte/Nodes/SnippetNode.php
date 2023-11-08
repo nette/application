@@ -41,7 +41,7 @@ class SnippetNode extends StatementNode
 	{
 		$tag->outputMode = $tag::OutputKeepIndentation;
 
-		$node = new static;
+		$node = $tag->node = new static;
 		$node->htmlElement = $tag->isNAttribute() ? $tag->htmlElement : null;
 
 		if ($tag->parser->isEnd()) {

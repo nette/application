@@ -31,7 +31,7 @@ class IfCurrentNode extends StatementNode
 	public static function create(Tag $tag): \Generator
 	{
 		trigger_error("Tag {ifCurrent} is deprecated, use {if isLinkCurrent('...')} instead (on line {$tag->position->line})", E_USER_DEPRECATED);
-		$node = new static;
+		$node = $tag->node = new static;
 		if (!$tag->parser->isEnd()) {
 			$node->destination = $tag->parser->parseUnquotedStringOrExpression();
 			$tag->parser->stream->tryConsume(',');
