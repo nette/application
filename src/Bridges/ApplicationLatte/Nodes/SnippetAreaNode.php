@@ -34,7 +34,7 @@ class SnippetAreaNode extends StatementNode
 	/** @return \Generator<int, ?array, array{AreaNode, ?Tag}, static> */
 	public static function create(Tag $tag, TemplateParser $parser): \Generator
 	{
-		$node = new static;
+		$node = $tag->node = new static;
 		$name = $tag->parser->parseUnquotedStringOrExpression();
 		if (
 			$name instanceof Expression\ClassConstantFetchNode
