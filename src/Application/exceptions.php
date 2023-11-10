@@ -16,7 +16,7 @@ use Nette\Http;
  * The exception that is thrown when user attempts to terminate the current presenter or application.
  * This is special "silent exception" with no error message or code.
  */
-class AbortException extends \Exception
+class AbortException extends \LogicException
 {
 }
 
@@ -40,7 +40,7 @@ class InvalidPresenterException extends \Exception
 /**
  * The exception that indicates client error with HTTP code 4xx.
  */
-class BadRequestException extends \Exception
+class BadRequestException extends \LogicException
 {
 	/** @var int */
 	protected $code = Http\IResponse::S404_NOT_FOUND;
