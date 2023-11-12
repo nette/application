@@ -307,11 +307,10 @@ $presenterFactory->shouldReceive('getPresenterClass')
 
 $presenter = new TestPresenter;
 $presenter->injectPrimary(
-	null,
-	$presenterFactory,
-	new Application\Routers\SimpleRouter,
 	new Http\Request($url),
 	new Http\Response,
+	$presenterFactory,
+	new Application\Routers\SimpleRouter,
 );
 
 $presenter->invalidLinkMode = TestPresenter::InvalidLinkWarning;
