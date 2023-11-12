@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test: Nette\Application\Routers\Route with FILTER_IN & FILTER_OUT
+ * Test: Nette\Application\Routers\Route with FilterIn & FilterOut
  */
 
 declare(strict_types=1);
@@ -17,7 +17,7 @@ require __DIR__ . '/Route.php';
 
 $route = new Route('<presenter>', [
 	null => [
-		Route::FILTER_IN => function (array $arr) {
+		Route::FilterIn => function (array $arr) {
 			if (substr($arr['presenter'], 0, 3) !== 'Abc') {
 				return null;
 			}
@@ -26,7 +26,7 @@ $route = new Route('<presenter>', [
 			$arr['param'] .= '.in';
 			return $arr;
 		},
-		Route::FILTER_OUT => function (array $arr) {
+		Route::FilterOut => function (array $arr) {
 			if (substr($arr['presenter'], 0, 3) !== 'Abc') {
 				return null;
 			}
@@ -51,7 +51,7 @@ Assert::null(testRouteOut($route, ['presenter' => 'Cde']));
 
 $route = new Route('<lang>/<presenter>/<action>', [
 	null => [
-		Route::FILTER_IN => function (array $arr) {
+		Route::FilterIn => function (array $arr) {
 			if ($arr['presenter'] !== 'AbcCs') {
 				return null;
 			}
@@ -60,7 +60,7 @@ $route = new Route('<lang>/<presenter>/<action>', [
 			$arr['action'] = substr($arr['action'], 0, -2);
 			return $arr;
 		},
-		Route::FILTER_OUT => function (array $arr) {
+		Route::FilterOut => function (array $arr) {
 			if ($arr['presenter'] !== 'Abc') {
 				return null;
 			}
