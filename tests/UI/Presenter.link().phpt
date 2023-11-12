@@ -107,7 +107,7 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same(['pint' => 20, 'pbool' => null, 'parr' => [1], 'action' => 'params'], $this->getLastCreatedRequest()->getParameters());
 		Assert::same('/index.php?pint=1&pbool=0&action=params&presenter=Test', $this->link('params', ['pint' => true, 'pbool' => '0', 'parr' => []]));
 		Assert::same('/index.php?pint=0&pbool=0&p=0&action=params&presenter=Test', $this->link('params', ['pint' => false, 'pbool' => false, 'p' => false, 'parr' => null]));
-		Assert::same("#error: Value passed to persistent parameter 'pbool' in presenter Test must be boolean, string given.", $this->link('this', ['p' => null, 'pbool' => 'a']));
+		Assert::same("#error: Value passed to persistent parameter 'pbool' in presenter Test must be bool, string given.", $this->link('this', ['p' => null, 'pbool' => 'a']));
 		Assert::same("#error: Value passed to persistent parameter 'p' in presenter Test must be scalar, array given.", $this->link('this', ['p' => [1], 'pbool' => false]));
 		Assert::same('/index.php?action=persistent&presenter=Test', $this->link('persistent'));
 
@@ -147,10 +147,10 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same(['mycontrol-x' => 1, 'mycontrol-y' => 2, 'mycontrol-round' => null, 'mycontrol-order' => null, 'pint' => null, 'parr' => null, 'pbool' => null, 'action' => 'default', 'do' => 'mycontrol-click'], $this->getLastCreatedRequest()->getParameters());
 
 		// Component link type checking
-		Assert::same("#error: Value passed to persistent parameter 'order' in component 'mycontrol' must be array, integer given.", $this['mycontrol']->link('click', ['order' => 1]));
-		Assert::same("#error: Value passed to persistent parameter 'round' in component 'mycontrol' must be integer, array given.", $this['mycontrol']->link('click', ['round' => []]));
+		Assert::same("#error: Value passed to persistent parameter 'order' in component 'mycontrol' must be array, int given.", $this['mycontrol']->link('click', ['order' => 1]));
+		Assert::same("#error: Value passed to persistent parameter 'round' in component 'mycontrol' must be int, array given.", $this['mycontrol']->link('click', ['round' => []]));
 		$this['mycontrol']->order = 1;
-		Assert::same("#error: Value passed to persistent parameter 'order' in component 'mycontrol' must be array, integer given.", $this['mycontrol']->link('click'));
+		Assert::same("#error: Value passed to persistent parameter 'order' in component 'mycontrol' must be array, int given.", $this['mycontrol']->link('click'));
 		$this['mycontrol']->order = null;
 
 		// type checking
@@ -208,10 +208,10 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same('/index.php?action=defaults&presenter=Test', $this->link('defaults', ['int' => '1', 'bool' => '1', 'str' => 'a', 'arr' => [1]]));
 		Assert::same(['int' => null, 'bool' => null, 'str' => null, 'arr' => null, 'pint' => null, 'parr' => null, 'pbool' => null, 'action' => 'defaults'], $this->getLastCreatedRequest()->getParameters());
 		Assert::same('/index.php?int=0&bool=0&str=&action=defaults&presenter=Test', $this->link('defaults', ['int' => 0, 'bool' => false, 'str' => '', 'arr' => []]));
-		Assert::same('#error: Argument $int passed to TestPresenter::actionDefaults() must be integer, string given.', $this->link('defaults', ['int' => '']));
-		Assert::same('#error: Argument $int passed to TestPresenter::actionDefaults() must be integer, array given.', $this->link('defaults', ['int' => []]));
-		Assert::same('#error: Argument $int passed to TestPresenter::actionDefaults() must be integer, stdClass given.', $this->link('defaults', ['int' => new stdClass]));
-		Assert::same('#error: Argument $bool passed to TestPresenter::actionDefaults() must be boolean, string given.', $this->link('defaults', ['int' => '1', 'bool' => '']));
+		Assert::same('#error: Argument $int passed to TestPresenter::actionDefaults() must be int, string given.', $this->link('defaults', ['int' => '']));
+		Assert::same('#error: Argument $int passed to TestPresenter::actionDefaults() must be int, array given.', $this->link('defaults', ['int' => []]));
+		Assert::same('#error: Argument $int passed to TestPresenter::actionDefaults() must be int, stdClass given.', $this->link('defaults', ['int' => new stdClass]));
+		Assert::same('#error: Argument $bool passed to TestPresenter::actionDefaults() must be bool, string given.', $this->link('defaults', ['int' => '1', 'bool' => '']));
 		Assert::same('#error: Argument $arr passed to TestPresenter::actionDefaults() must be array, string given.', $this->link('defaults', ['int' => '1', 'bool' => '1', 'str' => '', 'arr' => '']));
 
 		Assert::same('/index.php?action=objects&presenter=Test', $this->link('objects', ['req' => new stdClass, 'nullable' => new stdClass, 'opt' => new stdClass]));
@@ -229,7 +229,7 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::error(
 			fn() => $this->link('params', ['p' => null, 'pbool' => 'a']),
 			E_USER_WARNING,
-			"Invalid link: Value passed to persistent parameter 'pbool' in presenter Test must be boolean, string given."
+			"Invalid link: Value passed to persistent parameter 'pbool' in presenter Test must be bool, string given.",
 		);
 
 		// exception invalid link mode
@@ -237,7 +237,7 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::exception(
 			fn() => $this->link('params', ['p' => null, 'pbool' => 'a']),
 			Nette\Application\UI\InvalidLinkException::class,
-			"Value passed to persistent parameter 'pbool' in presenter Test must be boolean, string given."
+			"Value passed to persistent parameter 'pbool' in presenter Test must be bool, string given.",
 		);
 
 		$this->p = null; // null in persistent parameter means default

@@ -30,7 +30,7 @@ final class PresenterFactoryCallback
 	{
 		$services = $this->container->findByType($class);
 		if (count($services) > 1) {
-			$exact = array_keys(array_map([$this->container, 'getServiceType'], $services), $class, strict: true);
+			$exact = array_keys(array_map($this->container->getServiceType(...), $services), $class, strict: true);
 			if (count($exact) === 1) {
 				return $this->container->createService($services[$exact[0]]);
 			}

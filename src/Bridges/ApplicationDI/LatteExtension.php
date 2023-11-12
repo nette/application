@@ -128,16 +128,16 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 		$definition = $builder->getDefinition($this->prefix('latteFactory'))->getResultDefinition();
 
 		if (($macro[0] ?? null) === '@') {
-			if (strpos($macro, '::') === false) {
-				$method = 'install';
-			} else {
+			if (str_contains($macro, '::')) {
 				[$macro, $method] = explode('::', $macro);
+			} else {
+				$method = 'install';
 			}
 
 			$definition->addSetup('?->onCompile[] = function ($engine) { ?->' . $method . '($engine->getCompiler()); }', ['@self', $macro]);
 
 		} else {
-			if (strpos($macro, '::') === false && class_exists($macro)) {
+			if (!str_contains($macro, '::') && class_exists($macro)) {
 				$macro .= '::install';
 			}
 

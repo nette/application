@@ -134,7 +134,7 @@ final class ComponentReflection extends \ReflectionClass
 					$name,
 					$component instanceof Presenter ? 'presenter ' . $component->getName() : "component '{$component->getUniqueId()}'",
 					$meta['type'],
-					is_object($params[$name]) ? get_class($params[$name]) : gettype($params[$name]),
+					get_debug_type($params[$name]),
 				));
 			}
 
@@ -180,7 +180,7 @@ final class ComponentReflection extends \ReflectionClass
 						$name,
 						($method instanceof \ReflectionMethod ? $method->getDeclaringClass()->getName() . '::' : '') . $method->getName(),
 						$type,
-						is_object($args[$name]) ? get_class($args[$name]) : gettype($args[$name]),
+						get_debug_type($args[$name]),
 					));
 				}
 			} elseif ($param->isDefaultValueAvailable()) {
@@ -207,24 +207,18 @@ final class ComponentReflection extends \ReflectionClass
 	 */
 	public static function convertType(mixed &$val, string $types): bool
 	{
-		$scalars = ['string' => 1, 'int' => 1, 'float' => 1, 'bool' => 1, 'true' => 1, 'false' => 1, 'boolean' => 1, 'double' => 1, 'integer' => 1];
+		$scalars = ['string' => 1, 'int' => 1, 'float' => 1, 'bool' => 1, 'true' => 1, 'false' => 1];
 		$testable = ['iterable' => 1, 'object' => 1, 'array' => 1, 'null' => 1];
 
 		foreach (explode('|', ltrim($types, '?')) as $type) {
-			if (isset($scalars[$type])) {
-				$ok = self::castScalar($val, $type);
-			} elseif (isset($testable[$type])) {
-				$ok = "is_$type"($val);
-			} elseif ($type === 'scalar') { // special type due to historical reasons
-				$ok = !is_array($val);
-			} elseif ($type === 'mixed') {
-				$ok = true;
-			} elseif ($type === 'callable') { // intentionally disabled for security reasons
-				$ok = false;
-			} else {
-				$ok = $val instanceof $type;
-			}
-			if ($ok) {
+			if (match (true) {
+				isset($scalars[$type]) => self::castScalar($val, $type),
+				isset($testable[$type]) => "is_$type"($val),
+				$type === 'scalar' => !is_array($val), // special type due to historical reasons
+				$type === 'mixed' => true,
+				$type === 'callable' => false, // intentionally disabled for security reasons
+				default => $val instanceof $type,
+			}) {
 				return true;
 			}
 		}
@@ -243,7 +237,7 @@ final class ComponentReflection extends \ReflectionClass
 		}
 
 		$tmp = ($val === false ? '0' : (string) $val);
-		if ($type === 'double' || $type === 'float') {
+		if ($type === 'float') {
 			$tmp = preg_replace('#\.0*$#D', '', $tmp);
 		}
 
@@ -288,7 +282,7 @@ final class ComponentReflection extends \ReflectionClass
 		$type = $param->getType();
 		return $type
 			? ($type instanceof \ReflectionNamedType ? $type->getName() : (string) $type)
-			: ($default === null ? 'scalar' : gettype($default));
+			: ($default === null ? 'scalar' : get_debug_type($default));
 	}
 
 
@@ -297,7 +291,7 @@ final class ComponentReflection extends \ReflectionClass
 		$type = $prop->getType();
 		return $type
 			? ($type instanceof \ReflectionNamedType ? $type->getName() : (string) $type)
-			: ($default === null ? 'scalar' : gettype($default));
+			: ($default === null ? 'scalar' : get_debug_type($default));
 	}
 
 

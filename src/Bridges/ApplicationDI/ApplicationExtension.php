@@ -208,14 +208,14 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 			version_compare(Tracy\Debugger::VERSION, '2.9.0', '>=')
 			&& version_compare(Tracy\Debugger::VERSION, '3.0', '<')
 		) {
-			$blueScreen->addFileGenerator([self::class, 'generateNewPresenterFileContents']);
+			$blueScreen->addFileGenerator(self::generateNewPresenterFileContents(...));
 		}
 	}
 
 
 	public static function generateNewPresenterFileContents(string $file, ?string $class = null): ?string
 	{
-		if (!$class || substr($file, -13) !== 'Presenter.php') {
+		if (!$class || !str_ends_with($file, 'Presenter.php')) {
 			return null;
 		}
 

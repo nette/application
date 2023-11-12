@@ -33,8 +33,8 @@ final class UIExtension extends Latte\Extension
 	{
 		if ($presenter = $this->control?->getPresenterIfExists()) {
 			return [
-				'isLinkCurrent' => [$presenter, 'isLinkCurrent'],
-				'isModuleCurrent' => [$presenter, 'isModuleCurrent'],
+				'isLinkCurrent' => $presenter->isLinkCurrent(...),
+				'isModuleCurrent' => $presenter->isModuleCurrent(...),
 			];
 		}
 		return [];
@@ -46,7 +46,7 @@ final class UIExtension extends Latte\Extension
 		$presenter = $this->control?->getPresenterIfExists();
 		$httpResponse = $presenter?->getHttpResponse();
 		return [
-			'coreParentFinder' => [$this, 'findLayoutTemplate'],
+			'coreParentFinder' => $this->findLayoutTemplate(...),
 			'uiControl' => $this->control,
 			'uiPresenter' => $presenter,
 			'snippetDriver' => $this->control ? new SnippetRuntime($this->control) : null,
@@ -58,17 +58,17 @@ final class UIExtension extends Latte\Extension
 	public function getTags(): array
 	{
 		return [
-			'n:href' => [Nodes\LinkNode::class, 'create'],
-			'n:nonce' => [Nodes\NNonceNode::class, 'create'],
-			'control' => [Nodes\ControlNode::class, 'create'],
-			'plink' => [Nodes\LinkNode::class, 'create'],
-			'link' => [Nodes\LinkNode::class, 'create'],
-			'ifCurrent' => [Nodes\IfCurrentNode::class, 'create'],
-			'templatePrint' => [Nodes\TemplatePrintNode::class, 'create'],
-			'snippet' => [Nodes\SnippetNode::class, 'create'],
-			'snippetArea' => [Nodes\SnippetAreaNode::class, 'create'],
-			'layout' => [$this, 'createExtendsNode'],
-			'extends' => [$this, 'createExtendsNode'],
+			'n:href' => Nodes\LinkNode::create(...),
+			'n:nonce' => Nodes\NNonceNode::create(...),
+			'control' => Nodes\ControlNode::create(...),
+			'plink' => Nodes\LinkNode::create(...),
+			'link' => Nodes\LinkNode::create(...),
+			'ifCurrent' => Nodes\IfCurrentNode::create(...),
+			'templatePrint' => Nodes\TemplatePrintNode::create(...),
+			'snippet' => Nodes\SnippetNode::create(...),
+			'snippetArea' => Nodes\SnippetAreaNode::create(...),
+			'layout' => $this->createExtendsNode(...),
+			'extends' => $this->createExtendsNode(...),
 		];
 	}
 
@@ -76,7 +76,7 @@ final class UIExtension extends Latte\Extension
 	public function getPasses(): array
 	{
 		return [
-			'snippetRendering' => [$this, 'snippetRenderingPass'],
+			'snippetRendering' => $this->snippetRenderingPass(...),
 		];
 	}
 
