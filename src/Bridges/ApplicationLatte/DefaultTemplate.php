@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Nette\Bridges\ApplicationLatte;
 
+use Latte;
 use Nette;
 
 
@@ -52,5 +53,14 @@ final class DefaultTemplate extends Template
 	public function setParameters(array $params): static
 	{
 		return Nette\Utils\Arrays::toObject($params, $this);
+	}
+
+
+	/**
+	 * Generates blueprint of template data class.
+	 */
+	public function blueprint(?string $parentClass = null): void
+	{
+		Latte\Essential\Blueprint::printClass($this->getParameters(), $parentClass);
 	}
 }
