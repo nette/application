@@ -123,11 +123,6 @@ abstract class Presenter extends Control implements Application\IPresenter
 	private readonly LinkGenerator $linkGenerator;
 
 
-	public function __construct()
-	{
-	}
-
-
 	final public function getRequest(): Application\Request
 	{
 		return $this->request ?? throw new Nette\InvalidStateException('Request is not set, presenter is not running.');
