@@ -116,11 +116,6 @@ abstract class Presenter extends Control implements Application\IPresenter
 	private Nette\Http\UrlScript $refUrlCache;
 
 
-	public function __construct()
-	{
-	}
-
-
 	final public function getRequest(): ?Application\Request
 	{
 		return $this->request;
