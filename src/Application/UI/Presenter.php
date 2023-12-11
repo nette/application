@@ -120,11 +120,6 @@ abstract class Presenter extends Control implements Application\IPresenter
 	private readonly LinkGenerator $linkGenerator;
 
 
-	public function __construct()
-	{
-	}
-
-
 	final public function getRequest(): ?Application\Request
 	{
 		return $this->request;
