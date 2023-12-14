@@ -22,23 +22,17 @@ use Tracy;
  */
 final class ApplicationExtension extends Nette\DI\CompilerExtension
 {
-	private bool $debugMode;
 	private array $scanDirs;
-	private ?Nette\Loaders\RobotLoader $robotLoader;
 	private int $invalidLinkMode;
-	private ?string $tempDir;
 
 
 	public function __construct(
-		bool $debugMode = false,
+		private bool $debugMode = false,
 		?array $scanDirs = null,
-		?string $tempDir = null,
-		?Nette\Loaders\RobotLoader $robotLoader = null,
+		private ?string $tempDir = null,
+		private ?Nette\Loaders\RobotLoader $robotLoader = null,
 	) {
-		$this->debugMode = $debugMode;
 		$this->scanDirs = (array) $scanDirs;
-		$this->tempDir = $tempDir;
-		$this->robotLoader = $robotLoader;
 	}
 
 

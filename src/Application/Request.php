@@ -37,31 +37,15 @@ final class Request
 	/** flag */
 	public const VARYING = 'varying';
 
-	private ?string $method;
-	private array $flags = [];
-	private string $name;
-	private array $params;
-	private array $post;
-	private array $files;
 
-
-	/**
-	 * @param  string  $name  presenter name (module:module:presenter)
-	 */
 	public function __construct(
-		string $name,
-		?string $method = null,
-		array $params = [],
-		array $post = [],
-		array $files = [],
-		array $flags = [],
+		private string $name,
+		private ?string $method = null,
+		private array $params = [],
+		private array $post = [],
+		private array $files = [],
+		private array $flags = [],
 	) {
-		$this->name = $name;
-		$this->method = $method;
-		$this->params = $params;
-		$this->post = $post;
-		$this->files = $files;
-		$this->flags = $flags;
 	}
 
 

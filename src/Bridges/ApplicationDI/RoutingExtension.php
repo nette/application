@@ -20,12 +20,9 @@ use Tracy;
  */
 final class RoutingExtension extends Nette\DI\CompilerExtension
 {
-	private bool $debugMode;
-
-
-	public function __construct(bool $debugMode = false)
-	{
-		$this->debugMode = $debugMode;
+	public function __construct(
+		private bool $debugMode = false,
+	) {
 	}
 
 
