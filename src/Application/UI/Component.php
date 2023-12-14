@@ -216,7 +216,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	final public function getParameterId(string $name): string
 	{
 		$uid = $this->getUniqueId();
-		return $uid === '' ? $name : $uid . self::NAME_SEPARATOR . $name;
+		return $uid === '' ? $name : $uid . self::NameSeparator . $name;
 	}
 
 

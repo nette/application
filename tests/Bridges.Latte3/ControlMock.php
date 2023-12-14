@@ -38,9 +38,9 @@ class ControlMock extends Nette\Application\UI\Control
 	}
 
 
-	public function getComponents(bool $deep = false, ?string $filterType = null): Iterator
+	public function getComponents(): array
 	{
-		return new ArrayIterator([]);
+		return [];
 	}
 
 

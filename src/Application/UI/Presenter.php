@@ -870,7 +870,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 				if (array_key_exists(0, $args)) {
 					throw new InvalidLinkException("Unable to pass parameters to 'this!' signal.");
 				}
-			} elseif (strpos($signal, self::NAME_SEPARATOR) === false) {
+			} elseif (strpos($signal, self::NameSeparator) === false) {
 				// counterpart of signalReceived() & tryCall()
 				$method = $component->formatSignalMethod($signal);
 				if (!$reflection->hasCallableMethod($method)) {
@@ -894,7 +894,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			}
 
 			if ($args && $component !== $this) {
-				$prefix = $component->getUniqueId() . self::NAME_SEPARATOR;
+				$prefix = $component->getUniqueId() . self::NameSeparator;
 				foreach ($args as $key => $val) {
 					unset($args[$key]);
 					$args[$prefix . $key] = $val;
@@ -1213,7 +1213,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		if ($this->globalState === null) {
 			$state = [];
 			foreach ($this->globalParams as $id => $params) {
-				$prefix = $id . self::NAME_SEPARATOR;
+				$prefix = $id . self::NameSeparator;
 				foreach ($params as $key => $val) {
 					$state[$prefix . $key] = $val;
 				}
@@ -1228,20 +1228,19 @@ abstract class Presenter extends Control implements Application\IPresenter
 				}
 			}
 
-			$components = $this->getReflection()->getPersistentComponents();
-			$iterator = $this->getComponents(true);
+			$persistents = $this->getReflection()->getPersistentComponents();
 
-			foreach ($iterator as $name => $component) {
-				if ($iterator->getDepth() === 0) {
-					// counts with Nette\Application\RecursiveIteratorIterator::SELF_FIRST
-					$since = $components[$name]['since'] ?? false; // false = nonpersistent
+			foreach ($this->getComponentTree() as $component) {
+				if ($component->getParent() === $this) {
+					// counts on child-first search
+					$since = $persistents[$component->getName()]['since'] ?? false; // false = nonpersistent
 				}
 
 				if (!$component instanceof StatePersistent) {
 					continue;
 				}
 
-				$prefix = $component->getUniqueId() . self::NAME_SEPARATOR;
+				$prefix = $component->getUniqueId() . self::NameSeparator;
 				$params = [];
 				$component->saveState($params);
 				foreach ($params as $key => $val) {
@@ -1258,7 +1257,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			$since = null;
 			foreach ($state as $key => $foo) {
 				if (!isset($sinces[$key])) {
-					$x = strpos($key, self::NAME_SEPARATOR);
+					$x = strpos($key, self::NameSeparator);
 					$x = $x === false ? $key : substr($key, 0, $x);
 					$sinces[$key] = $sinces[$x] ?? false;
 				}

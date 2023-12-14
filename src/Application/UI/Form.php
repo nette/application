@@ -142,7 +142,7 @@ class Form extends Nette\Forms\Form implements SignalReceiver
 		parent::beforeRender();
 		$key = ($this->isMethod('post') ? '_' : '') . Presenter::SignalKey;
 		if (!isset($this[$key])) {
-			$do = $this->lookupPath(Presenter::class) . self::NAME_SEPARATOR . 'submit';
+			$do = $this->lookupPath(Presenter::class) . self::NameSeparator . 'submit';
 			$this[$key] = (new Nette\Forms\Controls\HiddenField($do))->setOmitted();
 		}
 	}
