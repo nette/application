@@ -27,10 +27,10 @@ class TemplateFactory implements UI\TemplateFactory
 
 
 	public function __construct(
-		private LatteFactory $latteFactory,
-		private ?Nette\Http\IRequest $httpRequest = null,
-		private ?Nette\Security\User $user = null,
-		private ?Nette\Caching\Storage $cacheStorage = null,
+		private readonly LatteFactory $latteFactory,
+		private readonly ?Nette\Http\IRequest $httpRequest = null,
+		private readonly ?Nette\Security\User $user = null,
+		private readonly ?Nette\Caching\Storage $cacheStorage = null,
 		$templateClass = null,
 	) {
 		if ($templateClass && (!class_exists($templateClass) || !is_a($templateClass, Template::class, true))) {

@@ -24,7 +24,7 @@ use Nette\Application\UI;
 final class UIExtension extends Latte\Extension
 {
 	public function __construct(
-		private ?UI\Control $control,
+		private readonly ?UI\Control $control,
 	) {
 	}
 

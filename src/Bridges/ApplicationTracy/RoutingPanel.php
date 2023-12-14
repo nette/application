@@ -27,9 +27,9 @@ final class RoutingPanel implements Tracy\IBarPanel
 
 
 	public function __construct(
-		private Routing\Router $router,
-		private Nette\Http\IRequest $httpRequest,
-		private Nette\Application\IPresenterFactory $presenterFactory,
+		private readonly Routing\Router $router,
+		private readonly Nette\Http\IRequest $httpRequest,
+		private readonly Nette\Application\IPresenterFactory $presenterFactory,
 	) {
 	}
 

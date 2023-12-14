@@ -21,7 +21,7 @@ use Tracy;
 final class RoutingExtension extends Nette\DI\CompilerExtension
 {
 	public function __construct(
-		private bool $debugMode = false,
+		private readonly bool $debugMode = false,
 	) {
 	}
 

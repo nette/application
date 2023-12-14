@@ -19,9 +19,9 @@ use Nette;
 final class PresenterFactoryCallback
 {
 	public function __construct(
-		private Nette\DI\Container $container,
-		private int $invalidLinkMode,
-		private ?string $touchToRefresh,
+		private readonly Nette\DI\Container $container,
+		private readonly int $invalidLinkMode,
+		private readonly ?string $touchToRefresh,
 	) {
 	}
 
