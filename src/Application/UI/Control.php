@@ -82,7 +82,7 @@ abstract class Control extends Component implements Renderable
 				static::class,
 				$class,
 				Template::class
-			), E_USER_NOTICE);
+			));
 			return null;
 		} else {
 			return $class;

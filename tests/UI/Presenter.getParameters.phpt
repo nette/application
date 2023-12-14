@@ -24,7 +24,7 @@ class OnePresenter extends Presenter
 	public $yes1;
 
 	#[Persistent, Parameter]
-	public $yes2; /* Parameter is ignored */
+	public $yes2;
 
 	#[Parameter]
 	public $yes3;

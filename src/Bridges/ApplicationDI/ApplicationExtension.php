@@ -151,6 +151,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 	}
 
 
+	/** @return string[] */
 	private function findPresenters(): array
 	{
 		$config = $this->getConfig();

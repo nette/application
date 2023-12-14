@@ -21,6 +21,7 @@ final class Helpers
 
 	/**
 	 * Splits name into [module, presenter] or [presenter, action]
+	 * @return array{string, string, string}
 	 */
 	public static function splitName(string $name): array
 	{

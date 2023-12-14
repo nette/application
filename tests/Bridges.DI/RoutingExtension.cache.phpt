@@ -76,13 +76,13 @@ test('', function () {
 });
 
 
+function myRouterFactory(): Nette\Routing\Router
+{
+	return new Route('path', function () {});
+}
+
+
 Assert::exception(function () {
-	function myRouterFactory(): Nette\Routing\Router
-	{
-		return new Route('path', function () {});
-	}
-
-
 	$loader = new DI\Config\Loader;
 	$config = $loader->load(Tester\FileMock::create('
 	routing:
