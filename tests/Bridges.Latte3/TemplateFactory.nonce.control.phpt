@@ -12,10 +12,6 @@ use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
 
-if (version_compare(Latte\Engine::VERSION, '3', '<')) {
-	Tester\Environment::skip('Test for Latte 3');
-}
-
 $latte = new Latte\Engine;
 
 $latteFactory = Mockery::mock(ApplicationLatte\LatteFactory::class);
