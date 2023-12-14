@@ -317,5 +317,5 @@ $presenter->injectPrimary(
 $presenter->invalidLinkMode = TestPresenter::InvalidLinkWarning;
 $presenter->autoCanonicalize = false;
 
-$request = new Application\Request('Test', Http\Request::GET, []);
+$request = new Application\Request('Test', Http\Request::Get, []);
 $presenter->run($request);

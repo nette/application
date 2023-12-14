@@ -43,7 +43,7 @@ class InvalidPresenterException extends \Exception
 class BadRequestException extends \LogicException
 {
 	/** @var int */
-	protected $code = Http\IResponse::S404_NOT_FOUND;
+	protected $code = Http\IResponse::S404_NotFound;
 
 
 	public function __construct(string $message = '', int $httpCode = 0, ?\Throwable $previous = null)
@@ -65,5 +65,5 @@ class BadRequestException extends \LogicException
 class ForbiddenRequestException extends BadRequestException
 {
 	/** @var int */
-	protected $code = Http\IResponse::S403_FORBIDDEN;
+	protected $code = Http\IResponse::S403_Forbidden;
 }

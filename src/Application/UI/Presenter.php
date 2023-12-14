@@ -713,8 +713,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 		} elseif (!$httpCode) {
 			$httpCode = $this->httpRequest->isMethod('post')
-				? Http\IResponse::S303_POST_GET
-				: Http\IResponse::S302_FOUND;
+				? Http\IResponse::S303_PostGet
+				: Http\IResponse::S302_Found;
 		}
 
 		$this->sendResponse(new Responses\RedirectResponse($url, $httpCode));
@@ -766,13 +766,13 @@ abstract class Presenter extends Control implements Application\IPresenter
 		} catch (InvalidLinkException) {
 		}
 
-		if (!isset($url) || $this->httpRequest->getUrl()->withoutUserInfo()->isEqual($url)) {
+		if (!isset($url) || $this->httpRequest->getUrl()->isEqual($url)) {
 			return;
 		}
 
 		$code = $request->hasFlag($request::VARYING)
-			? Http\IResponse::S302_FOUND
-			: Http\IResponse::S301_MOVED_PERMANENTLY;
+			? Http\IResponse::S302_Found
+			: Http\IResponse::S301_MovedPermanently;
 		$this->sendResponse(new Responses\RedirectResponse($url, $code));
 	}
 
@@ -1027,7 +1027,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	{
 		if ($this->refUrlCache === null) {
 			$url = $this->httpRequest->getUrl();
-			$this->refUrlCache = new Http\UrlScript($url->withoutUserInfo()->getHostUrl() . $url->getScriptPath());
+			$this->refUrlCache = new Http\UrlScript($url->getHostUrl() . $url->getScriptPath());
 		}
 
 		if (!$this->router) {
