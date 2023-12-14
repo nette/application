@@ -21,7 +21,7 @@ class TestPresenter extends UI\Presenter
 test('', function () {
 	$presenter = new TestPresenter;
 	$form = new UI\Form($presenter, 'name');
-	$form->setMethod($form::GET); // must not throw exception
+	$form->setMethod($form::Get); // must not throw exception
 });
 
 

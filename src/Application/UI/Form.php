@@ -20,9 +20,6 @@ class Form extends Nette\Forms\Form implements SignalReceiver
 	/** @var array<callable(self): void>  Occurs when form is attached to presenter */
 	public $onAnchor = [];
 
-	/** @var bool */
-	protected $crossOrigin = false;
-
 
 	/**
 	 * Application form constructor.
@@ -100,19 +97,10 @@ class Form extends Nette\Forms\Form implements SignalReceiver
 	}
 
 
-	/**
-	 * Disables CSRF protection using a SameSite cookie.
-	 */
-	public function allowCrossOrigin(): void
-	{
-		$this->crossOrigin = true;
-	}
-
-
 	/** @deprecated  use allowCrossOrigin() */
 	public function disableSameSiteProtection(): void
 	{
-		$this->crossOrigin = true;
+		$this->allowCrossOrigin();
 	}
 
 
