@@ -91,16 +91,7 @@ class Template implements Nette\Application\UI\Template
 	 */
 	public function setTranslator(?Nette\Localization\Translator $translator, ?string $language = null): static
 	{
-		if (version_compare(Latte\Engine::VERSION, '3', '<')) {
-			$this->latte->addFilter(
-				'translate',
-				fn(Latte\Runtime\FilterInfo $fi, ...$args): string => $translator === null
-						? $args[0]
-						: $translator->translate(...$args),
-			);
-		} else {
-			$this->latte->addExtension(new Latte\Essential\TranslatorExtension($translator, $language));
-		}
+		$this->latte->addExtension(new Latte\Essential\TranslatorExtension($translator, $language));
 		return $this;
 	}
 
