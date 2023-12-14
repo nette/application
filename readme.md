@@ -2,8 +2,7 @@ Nette Application MVC
 =====================
 
 [![Downloads this Month](https://img.shields.io/packagist/dm/nette/application.svg)](https://packagist.org/packages/nette/application)
-[![Tests](https://github.com/nette/application/workflows/Tests/badge.svg?branch=master)](https://github.com/nette/application/actions)
-[![Coverage Status](https://coveralls.io/repos/github/nette/application/badge.svg?branch=master)](https://coveralls.io/github/nette/application?branch=master)
+[![Tests](https://github.com/nette/application/actions/workflows/tests.yml/badge.svg?branch=v3.1)](https://github.com/nette/application/actions)
 [![Latest Stable Version](https://poser.pugx.org/nette/application/v/stable)](https://github.com/nette/application/releases)
 [![License](https://img.shields.io/badge/license-New%20BSD-blue.svg)](https://github.com/nette/application/blob/master/license.md)
 
