@@ -39,7 +39,7 @@ final class RoutingExtension extends Nette\DI\CompilerExtension
 	}
 
 
-	public function loadConfiguration()
+	public function loadConfiguration(): void
 	{
 		if (!$this->config->routes) {
 			return;
@@ -60,7 +60,7 @@ final class RoutingExtension extends Nette\DI\CompilerExtension
 	}
 
 
-	public function beforeCompile()
+	public function beforeCompile(): void
 	{
 		$builder = $this->getContainerBuilder();
 
@@ -84,7 +84,7 @@ final class RoutingExtension extends Nette\DI\CompilerExtension
 	}
 
 
-	public function afterCompile(Nette\PhpGenerator\ClassType $class)
+	public function afterCompile(Nette\PhpGenerator\ClassType $class): void
 	{
 		if ($this->config->cache) {
 			$builder = $this->getContainerBuilder();

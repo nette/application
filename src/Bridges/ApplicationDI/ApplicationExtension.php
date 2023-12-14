@@ -60,7 +60,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 	}
 
 
-	public function loadConfiguration()
+	public function loadConfiguration(): void
 	{
 		$config = $this->config;
 		$builder = $this->getContainerBuilder();
@@ -106,7 +106,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 	}
 
 
-	public function beforeCompile()
+	public function beforeCompile(): void
 	{
 		$builder = $this->getContainerBuilder();
 

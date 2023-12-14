@@ -112,13 +112,13 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/**
 	 * Returns self.
 	 */
-	final public function getPresenter(): self
+	final public function getPresenter(): static
 	{
 		return $this;
 	}
 
 
-	final public function getPresenterIfExists(): self
+	final public function getPresenterIfExists(): static
 	{
 		return $this;
 	}
@@ -256,17 +256,13 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Common render method.
-	 * @return void
 	 */
-	protected function afterRender()
+	protected function afterRender(): void
 	{
 	}
 
 
-	/**
-	 * @return void
-	 */
-	protected function shutdown(Application\Response $response)
+	protected function shutdown(Application\Response $response): void
 	{
 	}
 
@@ -333,9 +329,11 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Checks if the signal receiver is the given one.
-	 * @param  Component|string  $component
 	 */
-	final public function isSignalReceiver($component, $signal = null): bool
+	final public function isSignalReceiver(
+		Nette\ComponentModel\Component|string $component,
+		string|bool|null $signal = null,
+	): bool
 	{
 		if ($component instanceof Nette\ComponentModel\Component) {
 			$component = $component === $this
@@ -392,9 +390,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Changes current view. Any name is allowed.
-	 * @return static
 	 */
-	public function setView(string $view)
+	public function setView(string $view): static
 	{
 		$this->view = $view;
 		return $this;
@@ -403,9 +400,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Returns current layout name.
-	 * @return string|bool
 	 */
-	final public function getLayout()
+	final public function getLayout(): string|bool
 	{
 		return $this->layout;
 	}
@@ -413,10 +409,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Changes or disables layout.
-	 * @param  string|bool  $layout
-	 * @return static
 	 */
-	public function setLayout($layout)
+	public function setLayout(string|bool $layout): static
 	{
 		$this->layout = $layout === false ? false : (string) $layout;
 		return $this;
@@ -539,9 +533,6 @@ abstract class Presenter extends Control implements Application\IPresenter
 	}
 
 
-	/**
-	 * @param  string  $class
-	 */
 	protected function createTemplate(/*string $class = null*/): Template
 	{
 		$class = func_num_args() // back compatibility
@@ -594,11 +585,10 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Sends JSON data to the output.
-	 * @param  mixed  $data
 	 * @throws Nette\Application\AbortException
 	 * @return never
 	 */
-	public function sendJson($data): void
+	public function sendJson(mixed $data): void
 	{
 		$this->sendResponse(new Responses\JsonResponse($data));
 	}
@@ -632,12 +622,11 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Forward to another presenter or action.
-	 * @param  string|Nette\Application\Request  $destination
 	 * @param  array|mixed  $args
 	 * @throws Nette\Application\AbortException
 	 * @return never
 	 */
-	public function forward($destination, $args = []): void
+	public function forward(string|Nette\Application\Request $destination, $args = []): void
 	{
 		if ($destination instanceof Application\Request) {
 			$this->sendResponse(new Responses\ForwardResponse($destination));
@@ -730,12 +719,15 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Attempts to cache the sent entity by its last modification date.
-	 * @param  string|int|\DateTimeInterface  $lastModified
 	 * @param  string  $etag  strong entity tag validator
 	 * @param  string  $expire  like '20 minutes'
 	 * @throws Nette\Application\AbortException
 	 */
-	public function lastModified($lastModified, ?string $etag = null, ?string $expire = null): void
+	public function lastModified(
+		string|int|\DateTimeInterface|null $lastModified,
+		?string $etag = null,
+		?string $expire = null,
+	): void
 	{
 		if ($expire !== null) {
 			$this->httpResponse->setExpiration($expire);
@@ -752,7 +744,6 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * Request/URL factory.
 	 * @param  string   $destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
 	 * @param  string   $mode  forward|redirect|link
-	 * @return string|null   URL
 	 * @throws InvalidLinkException
 	 * @internal
 	 */
@@ -1098,7 +1089,6 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Stores current request to session.
-	 * @return string key
 	 */
 	public function storeRequest(string $expiration = '+ 10 minutes'): string
 	{
@@ -1399,10 +1389,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	}
 
 
-	/**
-	 * @return Http\Session|Http\SessionSection
-	 */
-	final public function getSession(?string $namespace = null)
+	final public function getSession(?string $namespace = null): Http\Session|Http\SessionSection
 	{
 		if (!$this->session) {
 			throw new Nette\InvalidStateException('Service Session has not been set.');

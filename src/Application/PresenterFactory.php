@@ -83,9 +83,8 @@ class PresenterFactory implements IPresenterFactory
 
 	/**
 	 * Sets mapping as pairs [module => mask]
-	 * @return static
 	 */
-	public function setMapping(array $mapping)
+	public function setMapping(array $mapping): static
 	{
 		foreach ($mapping as $module => $mask) {
 			if (is_string($mask)) {

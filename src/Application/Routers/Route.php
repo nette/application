@@ -45,7 +45,7 @@ class Route extends Nette\Routing\Route implements Nette\Routing\Router
 	 * @param  string  $mask  e.g. '<presenter>/<action>/<id \d{1,3}>'
 	 * @param  array|string|\Closure  $metadata  default values or metadata or callback for NetteModule\MicroPresenter
 	 */
-	public function __construct(string $mask, $metadata = [])
+	public function __construct(string $mask, array|string|\Closure $metadata = [])
 	{
 		if (is_string($metadata)) {
 			[$presenter, $action] = Nette\Application\Helpers::splitName($metadata);

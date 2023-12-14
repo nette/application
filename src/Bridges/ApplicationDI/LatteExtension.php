@@ -46,7 +46,7 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 	}
 
 
-	public function loadConfiguration()
+	public function loadConfiguration(): void
 	{
 		if (!class_exists(Latte\Engine::class)) {
 			return;
@@ -87,7 +87,7 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 	}
 
 
-	public function beforeCompile()
+	public function beforeCompile(): void
 	{
 		$builder = $this->getContainerBuilder();
 
@@ -150,8 +150,7 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 	}
 
 
-	/** @param Nette\DI\Definitions\Statement|string $extension */
-	public function addExtension($extension): void
+	public function addExtension(Nette\DI\Definitions\Statement|string $extension): void
 	{
 		$extension = is_string($extension)
 			? new Nette\DI\Definitions\Statement($extension)

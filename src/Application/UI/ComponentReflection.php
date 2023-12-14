@@ -205,7 +205,7 @@ final class ComponentReflection extends \ReflectionClass
 	/**
 	 * Lossless type conversion.
 	 */
-	public static function convertType(&$val, string $types): bool
+	public static function convertType(mixed &$val, string $types): bool
 	{
 		$scalars = ['string' => 1, 'int' => 1, 'float' => 1, 'bool' => 1, 'true' => 1, 'false' => 1, 'boolean' => 1, 'double' => 1, 'integer' => 1];
 		$testable = ['iterable' => 1, 'object' => 1, 'array' => 1, 'null' => 1];
@@ -236,7 +236,7 @@ final class ComponentReflection extends \ReflectionClass
 	/**
 	 * Lossless type casting.
 	 */
-	private static function castScalar(&$val, string $type): bool
+	private static function castScalar(mixed &$val, string $type): bool
 	{
 		if (!is_scalar($val)) {
 			return false;
@@ -261,7 +261,6 @@ final class ComponentReflection extends \ReflectionClass
 
 	/**
 	 * Returns an annotation value.
-	 * @param  \ReflectionClass|\ReflectionMethod  $ref
 	 */
 	public static function parseAnnotation(\Reflector $ref, string $name): ?array
 	{
@@ -293,7 +292,7 @@ final class ComponentReflection extends \ReflectionClass
 	}
 
 
-	public static function getPropertyType(\ReflectionProperty $prop, $default): string
+	public static function getPropertyType(\ReflectionProperty $prop, mixed $default): string
 	{
 		$type = $prop->getType();
 		return $type
@@ -313,9 +312,8 @@ final class ComponentReflection extends \ReflectionClass
 
 	/**
 	 * Returns an annotation value.
-	 * @return mixed
 	 */
-	public function getAnnotation(string $name)
+	public function getAnnotation(string $name): mixed
 	{
 		$res = self::parseAnnotation($this, $name);
 		return $res ? end($res) : null;

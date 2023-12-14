@@ -28,7 +28,7 @@ abstract class Control extends Component implements Renderable
 	/********************* template factory ****************d*g**/
 
 
-	final public function setTemplateFactory(TemplateFactory $templateFactory)
+	final public function setTemplateFactory(TemplateFactory $templateFactory): static
 	{
 		$this->templateFactory = $templateFactory;
 		return $this;
@@ -94,9 +94,8 @@ abstract class Control extends Component implements Renderable
 
 	/**
 	 * Saves the message to template, that can be displayed after redirect.
-	 * @param  string|\stdClass|Nette\HtmlStringable  $message
 	 */
-	public function flashMessage($message, string $type = 'info'): \stdClass
+	public function flashMessage(string|\stdClass|Nette\HtmlStringable $message, string $type = 'info'): \stdClass
 	{
 		$id = $this->getParameterId('flash');
 		$flash = $message instanceof \stdClass ? $message : (object) [

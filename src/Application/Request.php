@@ -67,9 +67,8 @@ final class Request
 
 	/**
 	 * Sets the presenter name.
-	 * @return static
 	 */
-	public function setPresenterName(string $name)
+	public function setPresenterName(string $name): static
 	{
 		$this->name = $name;
 		return $this;
@@ -87,9 +86,8 @@ final class Request
 
 	/**
 	 * Sets variables provided to the presenter.
-	 * @return static
 	 */
-	public function setParameters(array $params)
+	public function setParameters(array $params): static
 	{
 		$this->params = $params;
 		return $this;
@@ -107,9 +105,8 @@ final class Request
 
 	/**
 	 * Returns a parameter provided to the presenter.
-	 * @return mixed
 	 */
-	public function getParameter(string $key)
+	public function getParameter(string $key): mixed
 	{
 		return $this->params[$key] ?? null;
 	}
@@ -117,9 +114,8 @@ final class Request
 
 	/**
 	 * Sets variables provided to the presenter via POST.
-	 * @return static
 	 */
-	public function setPost(array $params)
+	public function setPost(array $params): static
 	{
 		$this->post = $params;
 		return $this;
@@ -129,9 +125,8 @@ final class Request
 	/**
 	 * Returns a variable provided to the presenter via POST.
 	 * If no key is passed, returns the entire array.
-	 * @return mixed
 	 */
-	public function getPost(?string $key = null)
+	public function getPost(?string $key = null): mixed
 	{
 		return func_num_args() === 0
 			? $this->post
@@ -141,9 +136,8 @@ final class Request
 
 	/**
 	 * Sets all uploaded files.
-	 * @return static
 	 */
-	public function setFiles(array $files)
+	public function setFiles(array $files): static
 	{
 		$this->files = $files;
 		return $this;
@@ -161,9 +155,8 @@ final class Request
 
 	/**
 	 * Sets the method.
-	 * @return static
 	 */
-	public function setMethod(?string $method)
+	public function setMethod(?string $method): static
 	{
 		$this->method = $method;
 		return $this;
@@ -190,9 +183,8 @@ final class Request
 
 	/**
 	 * Sets the flag.
-	 * @return static
 	 */
-	public function setFlag(string $flag, bool $value = true)
+	public function setFlag(string $flag, bool $value = true): static
 	{
 		$this->flags[$flag] = $value;
 		return $this;
