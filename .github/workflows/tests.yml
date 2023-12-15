@@ -40,6 +40,11 @@ jobs:
 
             - run: composer update --no-progress --prefer-dist --prefer-lowest --prefer-stable
             - run: vendor/bin/tester tests -s -C
+            - if: failure()
+              uses: actions/upload-artifact@v3
+              with:
+                  name: output
+                  path: tests/**/output
 
 
     code_coverage:
