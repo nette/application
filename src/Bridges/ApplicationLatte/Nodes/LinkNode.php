@@ -39,6 +39,7 @@ class LinkNode extends StatementNode
 		$tag->parser->stream->tryConsume(',');
 		$node->args = $tag->parser->parseArguments();
 		$node->modifier = $tag->parser->parseModifier();
+		$node->modifier->defineFlags('noescape'); // v 3.0.14, neni potreba nastavovat $escape a $check
 		$node->modifier->escape = true;
 		$node->modifier->check = false;
 		$node->mode = $tag->name;
