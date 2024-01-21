@@ -85,7 +85,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 				continue;
 			}
 
-			$matched = $flags[$i] & $router::ONE_WAY ? 'oneway' : 'no';
+			$matched = empty($flags[$i]['oneWay']) ? 'no' : 'oneway';
 			$params = $e = null;
 			try {
 				if (
