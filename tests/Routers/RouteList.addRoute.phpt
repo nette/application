@@ -9,7 +9,7 @@ require __DIR__ . '/Route.php';
 
 $list = new RouteList;
 $list->addRoute('foo', ['presenter' => 'foo'], oneWay: 1);
-$list->addRoute('bar', ['presenter' => 'bar'], oneWay: 1);
+$list->addRoute('bar', ['presenter' => 'bar'], oneWay: true);
 $list->addRoute('hello', ['presenter' => 'hello']);
 
 
