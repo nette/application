@@ -472,9 +472,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * @throws Nette\Application\AbortException
-	 * @return never
 	 */
-	public function sendTemplate(?Template $template = null): void
+	public function sendTemplate(?Template $template = null): never
 	{
 		$template ??= $this->getTemplate();
 		if (!$template->getFile()) {
@@ -646,9 +645,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/**
 	 * Sends AJAX payload to the output.
 	 * @throws Nette\Application\AbortException
-	 * @return never
 	 */
-	public function sendPayload(): void
+	public function sendPayload(): never
 	{
 		$this->sendResponse(new Responses\JsonResponse($this->getPayload()));
 	}
@@ -657,9 +655,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/**
 	 * Sends JSON data to the output.
 	 * @throws Nette\Application\AbortException
-	 * @return never
 	 */
-	public function sendJson(mixed $data): void
+	public function sendJson(mixed $data): never
 	{
 		$this->sendResponse(new Responses\JsonResponse($data));
 	}
@@ -671,9 +668,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/**
 	 * Sends response and terminates presenter.
 	 * @throws Nette\Application\AbortException
-	 * @return never
 	 */
-	public function sendResponse(Application\Response $response): void
+	public function sendResponse(Application\Response $response): never
 	{
 		$this->response = $response;
 		$this->terminate();
@@ -683,9 +679,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/**
 	 * Correctly terminates presenter.
 	 * @throws Nette\Application\AbortException
-	 * @return never
 	 */
-	public function terminate(): void
+	public function terminate(): never
 	{
 		throw new Application\AbortException;
 	}
@@ -695,9 +690,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * Forward to another presenter or action.
 	 * @param  array|mixed  $args
 	 * @throws Nette\Application\AbortException
-	 * @return never
 	 */
-	public function forward(string|Nette\Application\Request $destination, $args = []): void
+	public function forward(string|Nette\Application\Request $destination, $args = []): never
 	{
 		if ($destination instanceof Application\Request) {
 			$this->sendResponse(new Responses\ForwardResponse($destination));
@@ -714,9 +708,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/**
 	 * Redirect to another URL and ends presenter execution.
 	 * @throws Nette\Application\AbortException
-	 * @return never
 	 */
-	public function redirectUrl(string $url, ?int $httpCode = null): void
+	public function redirectUrl(string $url, ?int $httpCode = null): never
 	{
 		if ($this->isAjax()) {
 			$this->getPayload()->redirect = $url;
