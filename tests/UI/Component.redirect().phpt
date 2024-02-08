@@ -24,7 +24,7 @@ class TestPresenter extends Application\UI\Presenter
 	}
 
 
-	public function sendResponse(Application\Response $response): void
+	public function sendResponse(Application\Response $response): never
 	{
 		parent::sendResponse($this->response = $response);
 	}
