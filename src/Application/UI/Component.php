@@ -337,10 +337,9 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	 * Redirect to another presenter, action or signal.
 	 * @param  string   $destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
 	 * @param  array|mixed  $args
-	 * @return never
 	 * @throws Nette\Application\AbortException
 	 */
-	public function redirect(string $destination, $args = []): void
+	public function redirect(string $destination, $args = []): never
 	{
 		$args = func_num_args() < 3 && is_array($args)
 			? $args
@@ -355,10 +354,9 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	 * Permanently redirects to presenter, action or signal.
 	 * @param  string   $destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
 	 * @param  array|mixed  $args
-	 * @return never
 	 * @throws Nette\Application\AbortException
 	 */
-	public function redirectPermanent(string $destination, $args = []): void
+	public function redirectPermanent(string $destination, $args = []): never
 	{
 		$args = func_num_args() < 3 && is_array($args)
 			? $args
@@ -375,7 +373,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	 * Throws HTTP error.
 	 * @throws Nette\Application\BadRequestException
 	 */
-	public function error(string $message = '', int $httpCode = Nette\Http\IResponse::S404_NotFound): void
+	public function error(string $message = '', int $httpCode = Nette\Http\IResponse::S404_NotFound): never
 	{
 		throw new Nette\Application\BadRequestException($message, $httpCode);
 	}
