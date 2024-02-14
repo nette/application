@@ -42,7 +42,10 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 			'debugger' => Expect::bool(),
 			'errorPresenter' => Expect::string('Nette:Error')->dynamic(),
 			'catchExceptions' => Expect::bool(false)->dynamic(),
-			'mapping' => Expect::arrayOf('string|array'),
+			'mapping' => Expect::anyOf(
+				Expect::string(),
+				Expect::arrayOf('string|array'),
+			),
 			'scanDirs' => Expect::anyOf(
 				Expect::arrayOf('string')->default($this->scanDirs)->mergeDefaults(),
 				false,
@@ -85,7 +88,9 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 			)]);
 
 		if ($config->mapping) {
-			$presenterFactory->addSetup('setMapping', [$config->mapping]);
+			$presenterFactory->addSetup('setMapping', [
+				is_string($config->mapping) ? ['*' => $config->mapping] : $config->mapping,
+			]);
 		}
 
 		$builder->addDefinition($this->prefix('linkGenerator'))
