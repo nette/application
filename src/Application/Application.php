@@ -24,6 +24,7 @@ class Application
 	/** @deprecated exceptions are caught if the error presenter is set */
 	public bool $catchExceptions = true;
 	public ?string $errorPresenter = null;
+	public ?string $error4xxPresenter = null;
 
 	/** @var array<callable(self): void>  Occurs before the application loads presenter */
 	public array $onStartup = [];
@@ -131,7 +132,8 @@ class Application
 
 		if (
 			!$request->isMethod($request::FORWARD)
-			&& !strcasecmp($request->getPresenterName(), (string) $this->errorPresenter)
+			&& (!strcasecmp($request->getPresenterName(), (string) $this->errorPresenter)
+				|| !strcasecmp($request->getPresenterName(), (string) $this->error4xxPresenter))
 		) {
 			throw new BadRequestException('Invalid request. Presenter is not achievable.');
 		}
@@ -159,20 +161,24 @@ class Application
 
 	public function createErrorRequest(\Throwable $e): ?Request
 	{
-		if ($this->errorPresenter === null) {
+		$errorPresenter = $e instanceof BadRequestException
+			? $this->error4xxPresenter ?? $this->errorPresenter
+			: $this->errorPresenter;
+
+		if ($errorPresenter === null) {
 			return null;
 		}
 
 		$args = ['exception' => $e, 'previousPresenter' => $this->presenter, 'request' => Arrays::last($this->requests) ?: null];
 		if ($this->presenter instanceof UI\Presenter) {
 			try {
-				$this->presenter->forward(":$this->errorPresenter:", $args);
+				$this->presenter->forward(":$errorPresenter:", $args);
 			} catch (AbortException) {
 				return $this->presenter->getLastCreatedRequest();
 			}
 		}
 
-		return new Request($this->errorPresenter, Request::FORWARD, $args);
+		return new Request($errorPresenter, Request::FORWARD, $args);
 	}
 
 

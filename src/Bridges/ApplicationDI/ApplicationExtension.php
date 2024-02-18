@@ -40,7 +40,13 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 	{
 		return Expect::structure([
 			'debugger' => Expect::bool(),
-			'errorPresenter' => Expect::string('Nette:Error')->dynamic(),
+			'errorPresenter' => Expect::anyOf(
+				Expect::structure([
+					'4xx' => Expect::string('Nette:Error')->dynamic(),
+					'5xx' => Expect::string('Nette:Error')->dynamic(),
+				])->castTo('array'),
+				Expect::string()->dynamic(),
+			)->firstIsDefault(),
 			'catchExceptions' => Expect::bool(false)->dynamic(),
 			'mapping' => Expect::anyOf(
 				Expect::string(),
@@ -70,7 +76,8 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 		$application = $builder->addDefinition($this->prefix('application'))
 			->setFactory(Nette\Application\Application::class);
 		if ($config->catchExceptions || !$this->debugMode) {
-			$application->addSetup('$errorPresenter', [$config->errorPresenter]);
+			$application->addSetup('$error4xxPresenter', [is_array($config->errorPresenter) ? $config->errorPresenter['4xx'] : $config->errorPresenter]);
+			$application->addSetup('$errorPresenter', [is_array($config->errorPresenter) ? $config->errorPresenter['5xx'] : $config->errorPresenter]);
 		}
 
 		$this->compiler->addExportedType(Nette\Application\Application::class);
