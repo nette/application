@@ -76,10 +76,11 @@ class Application
 			Arrays::invoke($this->onShutdown, $this);
 
 		} catch (\Throwable $e) {
+			$this->sendHttpCode($e);
 			Arrays::invoke($this->onError, $this, $e);
-			if ($this->catchExceptions && $this->errorPresenter) {
+			if ($this->catchExceptions && ($req = $this->createErrorRequest($e))) {
 				try {
-					$this->processException($e);
+					$this->processRequest($req);
 					Arrays::invoke($this->onShutdown, $this, $e);
 					return;
 
@@ -156,14 +157,10 @@ class Application
 	}
 
 
-	public function processException(\Throwable $e): void
+	public function createErrorRequest(\Throwable $e): ?Request
 	{
-		if (!$e instanceof BadRequestException && $this->httpResponse instanceof Nette\Http\Response) {
-			$this->httpResponse->warnOnBuffer = false;
-		}
-
-		if (!$this->httpResponse->isSent()) {
-			$this->httpResponse->setCode($e instanceof BadRequestException ? ($e->getHttpCode() ?: 404) : 500);
+		if ($this->errorPresenter === null) {
+			return null;
 		}
 
 		$args = ['exception' => $e, 'previousPresenter' => $this->presenter, 'request' => Arrays::last($this->requests) ?: null];
@@ -171,10 +168,22 @@ class Application
 			try {
 				$this->presenter->forward(":$this->errorPresenter:", $args);
 			} catch (AbortException) {
-				$this->processRequest($this->presenter->getLastCreatedRequest());
+				return $this->presenter->getLastCreatedRequest();
 			}
-		} else {
-			$this->processRequest(new Request($this->errorPresenter, Request::FORWARD, $args));
+		}
+
+		return new Request($this->errorPresenter, Request::FORWARD, $args);
+	}
+
+
+	private function sendHttpCode(\Throwable $e): void
+	{
+		if (!$e instanceof BadRequestException && $this->httpResponse instanceof Nette\Http\Response) {
+			$this->httpResponse->warnOnBuffer = false;
+		}
+
+		if (!$this->httpResponse->isSent()) {
+			$this->httpResponse->setCode($e instanceof BadRequestException ? ($e->getHttpCode() ?: 404) : 500);
 		}
 	}
 
