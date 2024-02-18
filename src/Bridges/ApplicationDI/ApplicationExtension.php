@@ -67,10 +67,11 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 			? UI\Presenter::InvalidLinkTextual | ($config->silentLinks ? 0 : UI\Presenter::InvalidLinkWarning)
 			: UI\Presenter::InvalidLinkWarning;
 
-		$builder->addDefinition($this->prefix('application'))
-			->setFactory(Nette\Application\Application::class)
-			->addSetup('$catchExceptions', [$this->debugMode ? $config->catchExceptions : true])
-			->addSetup('$errorPresenter', [$config->errorPresenter]);
+		$application = $builder->addDefinition($this->prefix('application'))
+			->setFactory(Nette\Application\Application::class);
+		if ($config->catchExceptions || !$this->debugMode) {
+			$application->addSetup('$errorPresenter', [$config->errorPresenter]);
+		}
 
 		$this->compiler->addExportedType(Nette\Application\Application::class);
 

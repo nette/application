@@ -21,8 +21,8 @@ class Application
 {
 	public int $maxLoop = 20;
 
-	/** enable fault barrier? */
-	public bool $catchExceptions = false;
+	/** @deprecated exceptions are caught if the error presenter is set */
+	public bool $catchExceptions = true;
 	public ?string $errorPresenter = null;
 
 	/** @var array<callable(self): void>  Occurs before the application loads presenter */
