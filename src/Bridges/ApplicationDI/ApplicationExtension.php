@@ -47,7 +47,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 				])->castTo('array'),
 				Expect::string()->dynamic(),
 			)->firstIsDefault(),
-			'catchExceptions' => Expect::bool(false)->dynamic(),
+			'catchExceptions' => Expect::anyOf('4xx', true, false)->firstIsDefault()->dynamic(),
 			'mapping' => Expect::anyOf(
 				Expect::string(),
 				Expect::arrayOf('string|array'),
@@ -77,6 +77,8 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 			->setFactory(Nette\Application\Application::class);
 		if ($config->catchExceptions || !$this->debugMode) {
 			$application->addSetup('$error4xxPresenter', [is_array($config->errorPresenter) ? $config->errorPresenter['4xx'] : $config->errorPresenter]);
+		}
+		if ($config->catchExceptions === true || !$this->debugMode) {
 			$application->addSetup('$errorPresenter', [is_array($config->errorPresenter) ? $config->errorPresenter['5xx'] : $config->errorPresenter]);
 		}
 
