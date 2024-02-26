@@ -116,7 +116,6 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	public function __construct()
 	{
-		$this->payload = new \stdClass;
 	}
 
 
@@ -170,7 +169,6 @@ abstract class Presenter extends Control implements Application\IPresenter
 	public function run(Application\Request $request): Application\Response
 	{
 		$this->request = $request;
-		$this->payload ??= new \stdClass;
 		$this->setParent($this->getParent(), $request->getPresenterName());
 
 		if (!$this->httpResponse->isSent()) {
@@ -227,7 +225,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		$this->saveGlobalState();
 
 		if ($this->isAjax()) {
-			$this->payload->state = $this->getGlobalState();
+			$this->getPayload()->state = $this->getGlobalState();
 			try {
 				if ($this->response instanceof Responses\TextResponse && $this->isControlInvalid()) {
 					$this->snippetMode = true;
@@ -570,7 +568,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	final public function getPayload(): \stdClass
 	{
-		return $this->payload;
+		return $this->payload ??= new \stdClass;
 	}
 
 
@@ -594,7 +592,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function sendPayload(): void
 	{
-		$this->sendResponse(new Responses\JsonResponse($this->payload));
+		$this->sendResponse(new Responses\JsonResponse($this->getPayload()));
 	}
 
 
@@ -663,7 +661,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	public function redirectUrl(string $url, ?int $httpCode = null): void
 	{
 		if ($this->isAjax()) {
-			$this->payload->redirect = $url;
+			$this->getPayload()->redirect = $url;
 			$this->sendPayload();
 
 		} elseif (!$httpCode) {
