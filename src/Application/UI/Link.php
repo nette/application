@@ -16,19 +16,11 @@ namespace Nette\Application\UI;
  */
 final class Link
 {
-	private Component $component;
-	private string $destination;
-	private array $params;
-
-
-	/**
-	 * Link specification.
-	 */
-	public function __construct(Component $component, string $destination, array $params = [])
-	{
-		$this->component = $component;
-		$this->destination = $destination;
-		$this->params = $params;
+	public function __construct(
+		private readonly Component $component,
+		private readonly string $destination,
+		private array $params = [],
+	) {
 	}
 
 

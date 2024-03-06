@@ -29,13 +29,13 @@ final class SnippetRuntime
 	private array $stack = [];
 	private int $nestingLevel = 0;
 	private bool $renderingSnippets = false;
-	private Control $control;
+
 	private ?\stdClass $payload;
 
 
-	public function __construct(Control $control)
-	{
-		$this->control = $control;
+	public function __construct(
+		private readonly Control $control,
+	) {
 	}
 
 

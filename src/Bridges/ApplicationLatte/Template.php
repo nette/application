@@ -18,13 +18,12 @@ use Nette;
  */
 class Template implements Nette\Application\UI\Template
 {
-	private Latte\Engine $latte;
 	private ?string $file = null;
 
 
-	public function __construct(Latte\Engine $latte)
-	{
-		$this->latte = $latte;
+	public function __construct(
+		private readonly Latte\Engine $latte,
+	) {
 	}
 
 
