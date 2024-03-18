@@ -90,7 +90,7 @@ abstract class Control extends Component implements Renderable
 	/**
 	 * Saves the message to template, that can be displayed after redirect.
 	 */
-	public function flashMessage(string|\stdClass|Nette\HtmlStringable $message, string $type = 'info'): \stdClass
+	public function flashMessage(string|\stdClass|\Stringable $message, string $type = 'info'): \stdClass
 	{
 		$id = $this->getParameterId('flash');
 		$flash = $message instanceof \stdClass ? $message : (object) [
