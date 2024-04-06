@@ -106,6 +106,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 		}
 
 		$rm = $rc->getMethod($method);
+		(new AccessPolicy($this, $rm))->checkAccess();
 		$this->checkRequirements($rm);
 		try {
 			$args = ParameterConverter::toArguments($rm, $params);
@@ -119,19 +120,11 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 
 
 	/**
-	 * Checks for requirements such as authorization.
+	 * Descendant can override this method to check for permissions.
+	 * It is called with the presenter class and the render*(), action*(), and handle*() methods.
 	 */
-	public function checkRequirements($element): void
+	public function checkRequirements(\ReflectionClass|\ReflectionMethod $element): void
 	{
-		if (
-			$element instanceof \ReflectionMethod
-			&& str_starts_with($element->getName(), 'handle')
-			&& !ComponentReflection::parseAnnotation($element, 'crossOrigin')
-			&& !$element->getAttributes(Nette\Application\Attributes\CrossOrigin::class)
-			&& !$this->getPresenter()->getHttpRequest()->isSameSite()
-		) {
-			$this->getPresenter()->detectedCsrf();
-		}
 	}
 
 
