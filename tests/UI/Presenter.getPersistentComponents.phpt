@@ -19,16 +19,8 @@ class OnePresenter extends Presenter
 }
 
 
-/**
- * @persistent(a, b)
- */
-class TwoPresenter extends Presenter
-{
-}
-
-
 #[Persistent('a', 'b')]
-class ThreePresenter extends Presenter
+class TwoPresenter extends Presenter
 {
 }
 
@@ -36,5 +28,3 @@ class ThreePresenter extends Presenter
 Assert::same([], OnePresenter::getPersistentComponents());
 
 Assert::same(['a', 'b'], TwoPresenter::getPersistentComponents());
-
-Assert::same(['a', 'b'], ThreePresenter::getPersistentComponents());
