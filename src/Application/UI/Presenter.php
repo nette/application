@@ -284,6 +284,23 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 
 	/**
+	 * Checks requirements defined by attributes.
+	 */
+	public function checkRequirements(\ReflectionClass|\ReflectionMethod $element): void
+	{
+		if (
+			$element instanceof \ReflectionMethod
+			&& str_starts_with($element->getName(), 'handle')
+			&& !ComponentReflection::parseAnnotation($element, 'crossOrigin')
+			&& !$element->getAttributes(Nette\Application\Attributes\CrossOrigin::class)
+			&& !$this->httpRequest->isSameSite()
+		) {
+			$this->detectedCsrf();
+		}
+	}
+
+
+	/**
 	 * This method will be called when CSRF is detected.
 	 */
 	public function detectedCsrf(): void
@@ -291,7 +308,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		try {
 			$this->redirect('this');
 		} catch (InvalidLinkException $e) {
-			throw new Nette\Application\BadRequestException($e->getMessage());
+			$this->error($e->getMessage(), $this->httpResponse::S403_Forbidden);
 		}
 	}
 

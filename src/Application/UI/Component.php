@@ -119,19 +119,11 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 
 
 	/**
-	 * Checks for requirements such as authorization.
+	 * Checks requirements defined by attributes.
 	 */
-	public function checkRequirements($element): void
+	public function checkRequirements(\ReflectionClass|\ReflectionMethod $element): void
 	{
-		if (
-			$element instanceof \ReflectionMethod
-			&& str_starts_with($element->getName(), 'handle')
-			&& !ComponentReflection::parseAnnotation($element, 'crossOrigin')
-			&& !$element->getAttributes(Nette\Application\Attributes\CrossOrigin::class)
-			&& !$this->getPresenter()->getHttpRequest()->isSameSite()
-		) {
-			$this->getPresenter()->detectedCsrf();
-		}
+		$this->getPresenter()->checkRequirements($element);
 	}
 
 
