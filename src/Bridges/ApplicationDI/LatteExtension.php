@@ -12,6 +12,7 @@ namespace Nette\Bridges\ApplicationDI;
 use Latte;
 use Nette;
 use Nette\Bridges\ApplicationLatte;
+use Nette\DI\Definitions\Statement;
 use Nette\Schema\Expect;
 use Tracy;
 
@@ -66,6 +67,13 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 		} else {
 			$latteFactory->addSetup('setStrictParsing', [$config->strictParsing])
 				->addSetup('enablePhpLinter', [$config->phpLinter]);
+
+			if ($cache = $builder->getByType(Nette\Caching\Storage::class)) {
+				$this->addExtension(new Statement(Nette\Bridges\CacheLatte\CacheExtension::class, [$builder->getDefinition($cache)]));
+			}
+			if (class_exists(Nette\Bridges\FormsLatte\FormsExtension::class)) {
+				$this->addExtension(new Statement(Nette\Bridges\FormsLatte\FormsExtension::class));
+			}
 
 			foreach ($config->extensions as $extension) {
 				$this->addExtension($extension);
@@ -146,10 +154,10 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 	}
 
 
-	public function addExtension(Nette\DI\Definitions\Statement|string $extension): void
+	public function addExtension(Statement|string $extension): void
 	{
 		$extension = is_string($extension)
-			? new Nette\DI\Definitions\Statement($extension)
+			? new Statement($extension)
 			: $extension;
 
 		$builder = $this->getContainerBuilder();
