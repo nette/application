@@ -11,6 +11,7 @@ namespace Nette\Application\UI;
 
 use Nette;
 use Nette\Application;
+use Nette\Application\Attributes;
 use Nette\Application\Helpers;
 use Nette\Application\Responses;
 use Nette\Http;
@@ -832,9 +833,10 @@ abstract class Presenter extends Control implements Application\IPresenter
 					throw new InvalidLinkException("Unknown signal '$signal', missing handler {$reflection->getName()}::$method()");
 				}
 
+				$rm = new \ReflectionMethod($component, $method);
 				if (
 					$this->invalidLinkMode
-					&& ComponentReflection::parseAnnotation(new \ReflectionMethod($component, $method), 'deprecated')
+					&& (ComponentReflection::parseAnnotation($rm, 'deprecated') || $rm->getAttributes(Attributes\Deprecated::class))
 				) {
 					trigger_error("Link to deprecated signal '$signal'" . ($component === $this ? '' : ' in ' . $component::class) . " from '{$this->getName()}:{$this->getAction()}'.", E_USER_DEPRECATED);
 				}
@@ -866,7 +868,9 @@ abstract class Presenter extends Control implements Application\IPresenter
 			$current = ($action === '*' || strcasecmp($action, (string) $this->action) === 0) && $presenterClass === static::class;
 
 			$reflection = new ComponentReflection($presenterClass);
-			if ($this->invalidLinkMode && ComponentReflection::parseAnnotation($reflection, 'deprecated')) {
+			if ($this->invalidLinkMode
+				&& (ComponentReflection::parseAnnotation($reflection, 'deprecated') || $reflection->getAttributes(Attributes\Deprecated::class))
+			) {
 				trigger_error("Link to deprecated presenter '$presenter' from '{$this->getName()}:{$this->getAction()}'.", E_USER_DEPRECATED);
 			}
 
@@ -885,9 +889,10 @@ abstract class Presenter extends Control implements Application\IPresenter
 					throw new InvalidLinkException("Unable to pass parameters to action '$presenter:$action', missing corresponding method.");
 				}
 			} else {
+				$rm = new \ReflectionMethod($presenterClass, $method);
 				if (
 					$this->invalidLinkMode
-					&& ComponentReflection::parseAnnotation(new \ReflectionMethod($presenterClass, $method), 'deprecated')
+					&& (ComponentReflection::parseAnnotation($rm, 'deprecated') || $rm->getAttributes(Attributes\Deprecated::class))
 				) {
 					trigger_error("Link to deprecated action '$presenter:$action' from '{$this->getName()}:{$this->getAction()}'.", E_USER_DEPRECATED);
 				}
