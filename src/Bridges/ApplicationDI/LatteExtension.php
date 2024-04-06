@@ -59,8 +59,9 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 				->addSetup('setAutoRefresh', [$this->debugMode])
 				->addSetup('setStrictTypes', [$config->strictTypes])
 				->addSetup('setStrictParsing', [$config->strictParsing])
-				->addSetup('enablePhpLinter', [$config->phpLinter])
-				->addSetup('?', [$builder::literal('func_num_args() && $service->addExtension(new Nette\Bridges\ApplicationLatte\UIExtension(func_get_arg(0)))')]);
+				->addSetup('enablePhpLinter', [$config->phpLinter]);
+
+		$this->addExtension(new Statement(ApplicationLatte\UIExtension::class, [$builder::literal('$control')]));
 
 		if ($builder->getByType(Nette\Caching\Storage::class)) {
 			$this->addExtension(new Statement(Nette\Bridges\CacheLatte\CacheExtension::class));
