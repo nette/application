@@ -26,7 +26,7 @@ class TestPresenter extends Application\UI\Presenter
 
 	public function sendResponse(Application\Response $response): void
 	{
-		$this->response = $response;
+		parent::sendResponse($this->response = $response);
 	}
 }
 
@@ -42,7 +42,10 @@ $presenter->injectPrimary(
 
 
 test('', function () use ($presenter) {
-	$presenter->redirect('foo');
+	try {
+		$presenter->redirect('foo');
+	} catch (Throwable) {
+	}
 	Assert::type(Nette\Application\Responses\RedirectResponse::class, $presenter->response);
 	Assert::same(302, $presenter->response->getCode());
 	Assert::same('http://localhost/?action=foo&presenter=test', $presenter->response->getUrl());
@@ -50,7 +53,10 @@ test('', function () use ($presenter) {
 
 
 test('', function () use ($presenter) {
-	$presenter->redirect('foo', ['arg' => 1]);
+	try {
+		$presenter->redirect('foo', ['arg' => 1]);
+	} catch (Throwable) {
+	}
 	Assert::type(Nette\Application\Responses\RedirectResponse::class, $presenter->response);
 	Assert::same(302, $presenter->response->getCode());
 	Assert::same('http://localhost/?arg=1&action=foo&presenter=test', $presenter->response->getUrl());
@@ -58,7 +64,10 @@ test('', function () use ($presenter) {
 
 
 test('', function () use ($presenter) {
-	$presenter->redirect('foo', 2);
+	try {
+		$presenter->redirect('foo', 2);
+	} catch (Throwable) {
+	}
 	Assert::type(Nette\Application\Responses\RedirectResponse::class, $presenter->response);
 	Assert::same(302, $presenter->response->getCode());
 	Assert::same('http://localhost/?val=2&action=foo&presenter=test', $presenter->response->getUrl());
@@ -66,7 +75,10 @@ test('', function () use ($presenter) {
 
 
 test('', function () use ($presenter) {
-	$presenter->redirectPermanent('foo', 2);
+	try {
+		$presenter->redirectPermanent('foo', 2);
+	} catch (Throwable) {
+	}
 	Assert::type(Nette\Application\Responses\RedirectResponse::class, $presenter->response);
 	Assert::same(301, $presenter->response->getCode());
 	Assert::same('http://localhost/?val=2&action=foo&presenter=test', $presenter->response->getUrl());
@@ -74,7 +86,10 @@ test('', function () use ($presenter) {
 
 
 test('', function () use ($presenter) {
-	$presenter->redirectPermanent('foo', ['arg' => 1]);
+	try {
+		$presenter->redirectPermanent('foo', ['arg' => 1]);
+	} catch (Throwable) {
+	}
 	Assert::type(Nette\Application\Responses\RedirectResponse::class, $presenter->response);
 	Assert::same(301, $presenter->response->getCode());
 	Assert::same('http://localhost/?arg=1&action=foo&presenter=test', $presenter->response->getUrl());

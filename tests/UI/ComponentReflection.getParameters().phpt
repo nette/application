@@ -1,9 +1,5 @@
 <?php
 
-/**
- * Test: Nette\Application\UI\Presenter::getRequestParams
- */
-
 declare(strict_types=1);
 
 use Nette\Application\Attributes\Parameter;

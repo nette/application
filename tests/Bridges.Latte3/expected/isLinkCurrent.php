@@ -26,7 +26,7 @@
 <a href="';
 		echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link('default')) /* line 9 */;
 		echo '"';
-		echo ($ʟ_tmp = array_filter([($this->global->fn->isLinkCurrent)('default') ? 'current' : null])) ? ' class="' . LR\Filters::escapeHtmlAttr(implode(" ", array_unique($ʟ_tmp))) . '"' : "" /* line 9 */;
+		echo ($ʟ_tmp = array_filter([($this->global->fn->isLinkCurrent)(%a%'default') ? 'current' : null])) ? ' class="' . LR\Filters::escapeHtmlAttr(implode(" ", array_unique($ʟ_tmp))) . '"' : "" /* line 9 */;
 		echo '>custom function</a>
 ';
 %A%
