@@ -1140,7 +1140,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Returns array of persistent components.
-	 * This default implementation detects components by class-level annotation @persistent(cmp1, cmp2).
+	 * This default implementation detects components by class-level attribute #[Persistent(cmp1, cmp2)].
 	 */
 	public static function getPersistentComponents(): array
 	{
