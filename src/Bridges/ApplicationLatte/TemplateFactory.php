@@ -66,10 +66,6 @@ class TemplateFactory implements UI\TemplateFactory
 			}
 		}
 
-		$latte->addFilter('modifyDate', fn($time, $delta, $unit = null) => $time
-				? Nette\Utils\DateTime::from($time)->modify($delta . $unit)
-				: null);
-
 		if (!isset($latte->getFilters()['translate'])) {
 			$latte->addFilter('translate', function (Latte\Runtime\FilterInfo $fi): void {
 				throw new Nette\InvalidStateException('Translator has not been set. Set translator using $template->setTranslator().');
@@ -148,5 +144,10 @@ class TemplateFactory implements UI\TemplateFactory
 			$latte->addFunction('isLinkCurrent', [$presenter, 'isLinkCurrent']);
 			$latte->addFunction('isModuleCurrent', [$presenter, 'isModuleCurrent']);
 		}
+
+		$latte->addFilter('modifyDate', fn($time, $delta, $unit = null) => $time
+				? Nette\Utils\DateTime::from($time)->modify($delta . $unit)
+				: null);
+
 	}
 }
