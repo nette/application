@@ -66,12 +66,6 @@ class TemplateFactory implements UI\TemplateFactory
 			}
 		}
 
-		if (!isset($latte->getFilters()['translate'])) {
-			$latte->addFilter('translate', function (Latte\Runtime\FilterInfo $fi): void {
-				throw new Nette\InvalidStateException('Translator has not been set. Set translator using $template->setTranslator().');
-			});
-		}
-
 		// default parameters
 		$baseUrl = $this->httpRequest
 			? rtrim($this->httpRequest->getUrl()->withoutUserInfo()->getBaseUrl(), '/')
