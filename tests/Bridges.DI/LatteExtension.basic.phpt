@@ -66,6 +66,7 @@ $extensions = Assert::with($latte, fn() => $this->extensions);
 Assert::equal([
 	new Latte\Essential\CoreExtension,
 	new Latte\Sandbox\SandboxExtension,
+	new Nette\Bridges\FormsLatte\FormsExtension,
 	new MyExtension,
 	new MyExtension(1),
 	new MyExtension(2),
