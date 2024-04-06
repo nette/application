@@ -1,13 +1,12 @@
 <?php
 
 /**
- * Test: TemplateFactory nonce
+ * Test: UIExtension nonce
  */
 
 declare(strict_types=1);
 
 use Nette\Application\UI;
-use Nette\Bridges\ApplicationLatte;
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
@@ -18,11 +17,6 @@ if (version_compare(Latte\Engine::VERSION, '3', '<')) {
 
 Tester\Environment::bypassFinals();
 
-$latte = new Latte\Engine;
-
-$latteFactory = Mockery::mock(ApplicationLatte\LatteFactory::class);
-$latteFactory->shouldReceive('create')->andReturn($latte);
-
 $response = Mockery::mock(Nette\Http\IResponse::class);
 $response->shouldReceive('getHeader')->with('Content-Security-Policy')->andReturn("hello 'nonce-abcd123==' world");
 
@@ -31,10 +25,9 @@ $presenter->shouldReceive('getPresenterIfExists')->andReturn($presenter);
 $presenter->shouldReceive('getHttpResponse')->andReturn($response);
 $presenter->shouldIgnoreMissing();
 
-$factory = new ApplicationLatte\TemplateFactory($latteFactory);
-$factory->createTemplate($presenter);
-
+$latte = new Latte\Engine;
 $latte->setLoader(new Latte\Loaders\StringLoader);
+$latte->addExtension(new Nette\Bridges\ApplicationLatte\UIExtension($presenter));
 
 Assert::match(
 	'<script nonce="abcd123=="></script>',
