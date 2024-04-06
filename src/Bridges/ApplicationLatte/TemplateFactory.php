@@ -53,17 +53,8 @@ class TemplateFactory implements UI\TemplateFactory
 
 		if (version_compare(Latte\Engine::VERSION, '3', '<')) {
 			$this->setupLatte2($latte, $control, $presenter, $template);
-
 		} else {
 			$latte->addExtension(new UIExtension($control));
-
-			if ($this->cacheStorage && class_exists(Nette\Bridges\CacheLatte\CacheExtension::class)) {
-				$latte->addExtension(new Nette\Bridges\CacheLatte\CacheExtension($this->cacheStorage));
-			}
-
-			if (class_exists(Nette\Bridges\FormsLatte\FormsExtension::class)) {
-				$latte->addExtension(new Nette\Bridges\FormsLatte\FormsExtension);
-			}
 		}
 
 		// default parameters
