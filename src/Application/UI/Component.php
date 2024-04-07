@@ -67,6 +67,20 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	}
 
 
+	public function addComponent(
+		Nette\ComponentModel\IComponent $component,
+		?string $name,
+		?string $insertBefore = null,
+	): static
+	{
+		if (!$component instanceof SignalReceiver && !$component instanceof StatePersistent) {
+			throw new Nette\InvalidStateException("Component '$name' of type " . get_debug_type($component) . ' is not intended to be used in the Presenter.');
+		}
+
+		return parent::addComponent($component, $name, $insertBefore = null);
+	}
+
+
 	protected function createComponent(string $name): ?Nette\ComponentModel\IComponent
 	{
 		if (method_exists($this, $method = 'createComponent' . $name)) {
@@ -74,13 +88,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 			(new AccessPolicy($rm))->checkAccess($this);
 			$this->checkRequirements($rm);
 		}
-		$res = parent::createComponent($name);
-		if ($res && !$res instanceof SignalReceiver && !$res instanceof StatePersistent) {
-			$type = $res::class;
-			trigger_error("It seems that component '$name' of type $type is not intended to be used in the Presenter.");
-		}
-
-		return $res;
+		return parent::createComponent($name);
 	}
 
 
