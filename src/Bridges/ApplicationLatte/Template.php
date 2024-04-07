@@ -36,20 +36,20 @@ class Template implements Nette\Application\UI\Template
 	/**
 	 * Renders template to output.
 	 */
-	public function render(?string $file = null, array $params = []): void
+	public function render(?string $file = null, array $params = [], bool $block = null): void
 	{
 		Nette\Utils\Arrays::toObject($params, $this);
-		$this->latte->render($file ?: $this->file, $this);
+		$this->latte->render($file ?: $this->file, $this, $block);
 	}
 
 
 	/**
 	 * Renders template to output.
 	 */
-	public function renderToString(?string $file = null, array $params = []): string
+	public function renderToString(?string $file = null, array $params = [], bool $block = null): string
 	{
 		Nette\Utils\Arrays::toObject($params, $this);
-		return $this->latte->renderToString($file ?: $this->file, $this);
+		return $this->latte->renderToString($file ?: $this->file, $this, $block);
 	}
 
 
