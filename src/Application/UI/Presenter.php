@@ -849,6 +849,13 @@ abstract class Presenter extends Control implements Application\IPresenter
 			$path = 'this';
 		}
 
+		if ($path[0] === '@') {
+			if (!($this->presenterFactory ?? null) instanceof Application\PresenterFactory) {
+				throw new Nette\InvalidStateException('Link aliasing requires PresenterFactory service.');
+			}
+			$path = ':' . $this->presenterFactory->getAlias(substr($path, 1));
+		}
+
 		$current = false;
 		[$presenter, $action] = Helpers::splitName($path);
 		if ($presenter === '') {

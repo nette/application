@@ -52,6 +52,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 				Expect::string(),
 				Expect::arrayOf('string|array'),
 			),
+			'aliases' => Expect::arrayOf('string'),
 			'scanDirs' => Expect::anyOf(
 				Expect::arrayOf('string')->default($this->scanDirs)->mergeDefaults(),
 				false,
@@ -99,6 +100,10 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 			$presenterFactory->addSetup('setMapping', [
 				is_string($config->mapping) ? ['*' => $config->mapping] : $config->mapping,
 			]);
+		}
+
+		if ($config->aliases) {
+			$presenterFactory->addSetup('setAliases', [$config->aliases]);
 		}
 
 		$builder->addDefinition($this->prefix('linkGenerator'))

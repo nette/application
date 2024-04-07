@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Nette\Application;
 
+use Nette;
 use Nette\Http\UrlScript;
 use Nette\Routing\Router;
 
@@ -33,11 +34,18 @@ final class LinkGenerator
 	 */
 	public function link(string $dest, array $params = []): string
 	{
-		if (!preg_match('~^([\w:]+):(\w*+)(#.*)?()$~D', $dest, $m)) {
+		if (!preg_match('~^(@[\w:-]++|[\w:]+:\w*+)(#.*)?()$~D', $dest, $m)) {
 			throw new UI\InvalidLinkException("Invalid link destination '$dest'.");
 		}
 
-		[, $presenter, $action, $frag] = $m;
+		[, $path, $frag] = $m;
+		if ($path[0] === '@') {
+			if (!$this->presenterFactory instanceof PresenterFactory) {
+				throw new Nette\InvalidStateException('Link aliasing requires PresenterFactory service.');
+			}
+			$path = $this->presenterFactory->getAlias(substr($path, 1));
+		}
+		[$presenter, $action] = Helpers::splitName($path);
 
 		try {
 			$class = $this->presenterFactory?->getPresenterClass($presenter);
