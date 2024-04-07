@@ -23,6 +23,7 @@ class PresenterFactory implements IPresenterFactory
 		'Nette' => ['NetteModule\\', '*\\', '*Presenter'],
 	];
 
+	private array $aliases = [];
 	private array $cache = [];
 
 	/** @var callable */
@@ -116,5 +117,21 @@ class PresenterFactory implements IPresenterFactory
 		}
 
 		return $mapping[0];
+	}
+
+
+	/**
+	 * Sets pairs [alias => destination]
+	 */
+	public function setAliases(array $aliases): static
+	{
+		$this->aliases = $aliases;
+		return $this;
+	}
+
+
+	public function getAlias(string $alias): string
+	{
+		return $this->aliases[$alias] ?? throw new Nette\InvalidStateException("Link alias '$alias' was not found.");
 	}
 }

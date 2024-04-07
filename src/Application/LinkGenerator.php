@@ -33,7 +33,7 @@ final class LinkGenerator
 
 	/**
 	 * Generates URL to presenter.
-	 * @param  string  $destination  in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
+	 * @param  string  $destination  in format "[//] [[[module:]presenter:]action | signal! | this | @alias] [#fragment]"
 	 * @throws UI\InvalidLinkException
 	 */
 	public function link(
@@ -54,7 +54,7 @@ final class LinkGenerator
 
 
 	/**
-	 * @param  string  $destination  in format "[[[module:]presenter:]action | signal! | this]"
+	 * @param  string  $destination  in format "[[[module:]presenter:]action | signal! | this | @alias]"
 	 * @param  string  $mode  forward|redirect|link
 	 * @throws UI\InvalidLinkException
 	 * @internal
@@ -83,6 +83,13 @@ final class LinkGenerator
 			}
 
 			$path = 'this';
+		}
+
+		if ($path[0] === '@') {
+			if (!$this->presenterFactory instanceof PresenterFactory) {
+				throw new \LogicException('Link aliasing requires PresenterFactory service.');
+			}
+			$path = ':' . $this->presenterFactory->getAlias(substr($path, 1));
 		}
 
 		$current = false;
@@ -223,7 +230,7 @@ final class LinkGenerator
 
 
 	/**
-	 * Parse destination in format "[//] [[[module:]presenter:]action | signal! | this] [?query] [#fragment]"
+	 * Parse destination in format "[//] [[[module:]presenter:]action | signal! | this | @alias] [?query] [#fragment]"
 	 * @throws UI\InvalidLinkException
 	 * @return array{absolute: bool, path: string, signal: bool, args: ?array, fragment: string}
 	 * @internal
