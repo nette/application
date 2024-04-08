@@ -100,8 +100,10 @@ use Tracy\Helpers;
 	<p><code><?= Helpers::escapeHtml($method) ?></code>
 	<code><?= Helpers::escapeHtml($url->getBaseUrl()) ?><wbr><span class="nette-RoutingPanel-rel"><?= str_replace(['&amp;', '?'], ['<wbr>&amp;', '<wbr>?'], Helpers::escapeHtml($url->getRelativeUrl())) ?></span></code></p>
 
-	<?php if ($source): ?>
-	<p><a href="<?= Helpers::escapeHtml(Tracy\Helpers::editorUri($source->getFileName(), $source->getStartLine())) ?>"><?= $source instanceof \ReflectionClass ? $source->getName() : $source->getDeclaringClass()->getName() . '::' . $source->getName() . '()' ?></a></p>
+	<?php if (is_string($source)): ?>
+		<p><?= Helpers::escapeHtml($source) ?> (class not found)</p>
+	<?php elseif ($source): ?>
+		<p><a href="<?= Helpers::escapeHtml(Tracy\Helpers::editorUri($source->getFileName(), $source->getStartLine())) ?>"><?= $source instanceof \ReflectionClass ? $source->getName() : $source->getDeclaringClass()->getName() . '::' . $source->getName() . '()' ?></a></p>
 	<?php endif ?>
 </div>
 

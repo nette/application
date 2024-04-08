@@ -116,13 +116,16 @@ final class RoutingPanel implements Tracy\IBarPanel
 	}
 
 
-	private function findSource(): \ReflectionClass|\ReflectionMethod|null
+	private function findSource(): \ReflectionClass|\ReflectionMethod|string|null
 	{
 		$params = $this->matched;
 		$presenter = $params['presenter'] ?? '';
 		try {
 			$class = $this->presenterFactory->getPresenterClass($presenter);
 		} catch (Nette\Application\InvalidPresenterException) {
+			if ($this->presenterFactory instanceof Nette\Application\PresenterFactory) {
+				return $this->presenterFactory->formatPresenterClass($presenter);
+			}
 			return null;
 		}
 
