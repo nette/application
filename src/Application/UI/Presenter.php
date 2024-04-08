@@ -538,18 +538,28 @@ abstract class Presenter extends Control implements Application\IPresenter
 			return [$this->layout];
 		}
 
-		[$module, $presenter] = Helpers::splitName($this->getName());
 		$layout = $this->layout ?: 'layout';
 		$dir = dirname(static::getReflection()->getFileName());
-		$dir = is_dir("$dir/templates") ? $dir : dirname($dir);
+		$levels = substr_count($this->getName(), ':');
+		if (!is_dir("$dir/templates")) {
+			$dir = dirname($origDir = $dir);
+			if (!is_dir("$dir/templates")) {
+				$list = ["$origDir/@$layout.latte"];
+				do {
+					$list[] = "$dir/@$layout.latte";
+				} while ($levels-- && ($dir = dirname($dir)));
+				return $list;
+			}
+		}
+
+		[, $presenter] = Helpers::splitName($this->getName());
 		$list = [
 			"$dir/templates/$presenter/@$layout.latte",
 			"$dir/templates/$presenter.@$layout.latte",
 		];
 		do {
 			$list[] = "$dir/templates/@$layout.latte";
-			$dir = dirname($dir);
-		} while ($dir && $module && ([$module] = Helpers::splitName($module)));
+		} while ($levels-- && ($dir = dirname($dir)));
 
 		return $list;
 	}
@@ -561,9 +571,17 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function formatTemplateFiles(): array
 	{
-		[, $presenter] = Helpers::splitName($this->getName());
 		$dir = dirname(static::getReflection()->getFileName());
-		$dir = is_dir("$dir/templates") ? $dir : dirname($dir);
+		if (!is_dir("$dir/templates")) {
+			$dir = dirname($origDir = $dir);
+			if (!is_dir("$dir/templates")) {
+				return [
+					"$origDir/$this->view.latte",
+				];
+			}
+		}
+
+		[, $presenter] = Helpers::splitName($this->getName());
 		return [
 			"$dir/templates/$presenter/$this->view.latte",
 			"$dir/templates/$presenter.$this->view.latte",
