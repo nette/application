@@ -34,6 +34,12 @@ final class LinkGenerator
 	 */
 	public function link(string $dest, array $params = []): string
 	{
+		if(str_starts_with($dest, '//:') && !str_starts_with($dest, '//:@')){
+			$dest = substr($dest, 3);
+		}elseif(str_starts_with($dest, ':') && !str_starts_with($dest, ':@')){
+			$dest = substr($dest, 1);
+		}
+
 		if (!preg_match('~^(@[\w:-]++|[\w:]+:\w*+)(#.*)?()$~D', $dest, $m)) {
 			throw new UI\InvalidLinkException("Invalid link destination '$dest'.");
 		}
