@@ -6,7 +6,9 @@
 
 declare(strict_types=1);
 
-namespace {
+namespace App\Presentation\Homepage {
+
+	use Nette;
 
 	require __DIR__ . '/../bootstrap.php';
 
@@ -24,7 +26,7 @@ namespace {
 
 }
 
-namespace ModuleModule {
+namespace App\Presentation\Module\My {
 
 	use Nette;
 
@@ -77,7 +79,7 @@ namespace {
 	testException('invalid action parameter propagation', function () use ($pf) {
 		$generator = new LinkGenerator(new Routers\Route('/', 'Homepage:'), new Http\UrlScript('http://nette.org/en/'), $pf);
 		$generator->link('Homepage:missing', [10]);
-	}, Nette\Application\UI\InvalidLinkException::class, "Unable to pass parameters to action 'Homepage:missing', missing corresponding method HomepagePresenter::renderMissing().");
+	}, Nette\Application\UI\InvalidLinkException::class, "Unable to pass parameters to action 'Homepage:missing', missing corresponding method App\\Presentation\\Homepage\\HomepagePresenter::renderMissing().");
 
 
 	test('URL generation without PresenterFactory', function () {
