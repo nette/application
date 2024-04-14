@@ -21,11 +21,11 @@ test('defined module', function () {
 		'Foo3' => 'My\App\*Mod\*Presenter',
 	]);
 
-	Assert::same('FooPresenter', $factory->formatPresenterClass('Foo'));
-	Assert::same('FooModule\BarPresenter', $factory->formatPresenterClass('Foo:Bar'));
-	Assert::same('FooModule\BarModule\BazPresenter', $factory->formatPresenterClass('Foo:Bar:Baz'));
+	Assert::same('App\Presentation\Foo\FooPresenter', $factory->formatPresenterClass('Foo'));
+	Assert::same('App\Presentation\Foo\Bar\BarPresenter', $factory->formatPresenterClass('Foo:Bar'));
+	Assert::same('App\Presentation\Foo\Bar\Baz\BazPresenter', $factory->formatPresenterClass('Foo:Bar:Baz'));
 
-	Assert::same('Foo2Presenter', $factory->formatPresenterClass('Foo2'));
+	Assert::same('App\Presentation\Foo2\Foo2Presenter', $factory->formatPresenterClass('Foo2'));
 	Assert::same('App2\BarPresenter', $factory->formatPresenterClass('Foo2:Bar'));
 	Assert::same('App2\Bar\BazPresenter', $factory->formatPresenterClass('Foo2:Bar:Baz'));
 
@@ -44,7 +44,7 @@ test('auto module', function () {
 		'Foo3' => 'My\App\*Presenter',
 	]);
 
-	Assert::same('Foo2Presenter', $factory->formatPresenterClass('Foo2'));
+	Assert::same('App\Presentation\Foo2\Foo2Presenter', $factory->formatPresenterClass('Foo2'));
 	Assert::same('App2\BarPresenter', $factory->formatPresenterClass('Foo2:Bar'));
 	Assert::same('App2\BarModule\BazPresenter', $factory->formatPresenterClass('Foo2:Bar:Baz'));
 
@@ -61,11 +61,11 @@ test('location ** & defined module', function () {
 		'Foo3' => 'My\App\*Mod\**Presenter',
 	]);
 
-	Assert::same('FooPresenter', $factory->formatPresenterClass('Foo'));
-	Assert::same('FooModule\BarPresenter', $factory->formatPresenterClass('Foo:Bar'));
-	Assert::same('FooModule\BarModule\BazPresenter', $factory->formatPresenterClass('Foo:Bar:Baz'));
+	Assert::same('App\Presentation\Foo\FooPresenter', $factory->formatPresenterClass('Foo'));
+	Assert::same('App\Presentation\Foo\Bar\BarPresenter', $factory->formatPresenterClass('Foo:Bar'));
+	Assert::same('App\Presentation\Foo\Bar\Baz\BazPresenter', $factory->formatPresenterClass('Foo:Bar:Baz'));
 
-	Assert::same('Foo2Presenter', $factory->formatPresenterClass('Foo2'));
+	Assert::same('App\Presentation\Foo2\Foo2Presenter', $factory->formatPresenterClass('Foo2'));
 	Assert::same('App2\Bar\BarPresenter', $factory->formatPresenterClass('Foo2:Bar'));
 	Assert::same('App2\Bar\Baz\BazPresenter', $factory->formatPresenterClass('Foo2:Bar:Baz'));
 
