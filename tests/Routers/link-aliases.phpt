@@ -18,6 +18,7 @@ class TestPresenter extends Application\UI\Presenter
 
 
 $factory = new PresenterFactory;
+$factory->setMapping(['*' => '*Presenter']);
 $factory->setAliases([
 	'a' => 'Test:a',
 	'b' => 'Test:b',
