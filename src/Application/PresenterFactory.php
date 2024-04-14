@@ -19,7 +19,7 @@ class PresenterFactory implements IPresenterFactory
 {
 	/** @var array[] of module => splited mask */
 	private array $mapping = [
-		'*' => ['', '*Module\\', '*Presenter'],
+		'*' => ['App\UI\\', '*\\', '**Presenter'],
 		'Nette' => ['NetteModule\\', '*\\', '*Presenter'],
 	];
 
