@@ -537,7 +537,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public static function formatActionMethod(string $action): string
 	{
-		return 'action' . $action;
+		return 'action' . ucfirst($action);
 	}
 
 
@@ -546,7 +546,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public static function formatRenderMethod(string $view): string
 	{
-		return 'render' . $view;
+		return 'render' . ucfirst($view);
 	}
 
 
