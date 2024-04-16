@@ -937,7 +937,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			}
 
 			// counterpart of StatePersistent
-			if ($args && array_intersect_key($args, $reflection->getPersistentParams())) {
+			if (empty($signal) && $args && array_intersect_key($args, $reflection->getPersistentParams())) {
 				$this->saveStatePartial($args, $reflection);
 			}
 
