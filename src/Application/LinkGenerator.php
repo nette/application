@@ -127,10 +127,7 @@ final class LinkGenerator
 				$method = $reflection->getSignalMethod($signal);
 				if (!$method) {
 					throw new UI\InvalidLinkException("Unknown signal '$signal', missing handler {$reflection->getName()}::{$component::formatSignalMethod($signal)}()");
-				} elseif (
-					$refPresenter?->invalidLinkMode
-					&& UI\ComponentReflection::parseAnnotation($method, 'deprecated')
-				) {
+				} elseif ($this->isDeprecated($refPresenter, $method)) {
 					trigger_error("Link to deprecated signal '$signal'" . ($component === $refPresenter ? '' : ' in ' . $component::class) . " from '{$refPresenter->getName()}:{$refPresenter->getAction()}'.", E_USER_DEPRECATED);
 				}
 
@@ -161,13 +158,13 @@ final class LinkGenerator
 			$current = $refPresenter && ($action === '*' || strcasecmp($action, $refPresenter->getAction()) === 0) && $presenterClass === $refPresenter::class;
 
 			$reflection = new UI\ComponentReflection($presenterClass);
-			if ($refPresenter?->invalidLinkMode && UI\ComponentReflection::parseAnnotation($reflection, 'deprecated')) {
+			if ($this->isDeprecated($refPresenter, $reflection)) {
 				trigger_error("Link to deprecated presenter '$presenter' from '{$refPresenter->getName()}:{$refPresenter->getAction()}'.", E_USER_DEPRECATED);
 			}
 
 			// counterpart of run() & tryCall()
 			if ($method = $reflection->getActionRenderMethod($action)) {
-				if ($refPresenter?->invalidLinkMode && UI\ComponentReflection::parseAnnotation($method, 'deprecated')) {
+				if ($this->isDeprecated($refPresenter, $method)) {
 					trigger_error("Link to deprecated action '$presenter:$action' from '{$refPresenter->getName()}:{$refPresenter->getAction()}'.", E_USER_DEPRECATED);
 				}
 
@@ -282,5 +279,12 @@ final class LinkGenerator
 			new UrlScript($url),
 			$this->presenterFactory,
 		);
+	}
+
+
+	private function isDeprecated(?UI\Presenter $presenter, \ReflectionClass|\ReflectionMethod $reflection): bool
+	{
+		return $presenter?->invalidLinkMode
+			&& (UI\ComponentReflection::parseAnnotation($reflection, 'deprecated') || $reflection->getAttributes(Attributes\Deprecated::class));
 	}
 }
