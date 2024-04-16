@@ -77,7 +77,7 @@ namespace {
 	Assert::exception(function () use ($pf) {
 		$generator = new LinkGenerator(new Routers\Route('/', 'Homepage:'), new Http\UrlScript('http://nette.org/en/'), $pf);
 		$generator->link('Homepage:missing', [10]);
-	}, Nette\Application\UI\InvalidLinkException::class, "Unable to pass parameters to action 'Homepage:missing', missing corresponding method.");
+	}, Nette\Application\UI\InvalidLinkException::class, "Unable to pass parameters to action 'Homepage:missing', missing corresponding method HomepagePresenter::renderMissing().");
 
 
 	test('', function () {

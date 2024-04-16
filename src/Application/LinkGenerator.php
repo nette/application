@@ -174,7 +174,7 @@ final class LinkGenerator
 				UI\ParameterConverter::toParameters($method, $args, $path === 'this' ? $refPresenter->getParameters() : [], $missing);
 
 			} elseif (array_key_exists(0, $args)) {
-				throw new UI\InvalidLinkException("Unable to pass parameters to action '$presenter:$action', missing corresponding method.");
+				throw new UI\InvalidLinkException("Unable to pass parameters to action '$presenter:$action', missing corresponding method $presenterClass::{$presenterClass::formatRenderMethod($action)}().");
 			}
 
 			// counterpart of StatePersistent

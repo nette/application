@@ -86,7 +86,7 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same('/index.php?sort%5By%5D%5Basc%5D=1&action=default&presenter=Test', $this->link('this', ['sort' => ['y' => ['asc' => true]]]));
 		Assert::same(['sort' => ['y' => ['asc' => true]], 'pint' => null, 'parr' => null, 'pbool' => null, 'mycontrol-order' => null, 'mycontrol-round' => null, 'action' => 'default'], $this->getLastCreatedRequest()->getParameters());
 
-		Assert::same("#error: Unable to pass parameters to action 'Test:product', missing corresponding method.", $this->link('product', 1));
+		Assert::same("#error: Unable to pass parameters to action 'Test:product', missing corresponding method TestPresenter::renderProduct().", $this->link('product', 1));
 		Assert::same('/index.php?a=1&action=product&presenter=Test', $this->link('product', ['a' => 1]));
 		Assert::same('#error: Passed more parameters than method TestPresenter::actionParams() expects.', $this->link('params', 1, 2, 3, 4, 5));
 
