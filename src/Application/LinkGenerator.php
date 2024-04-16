@@ -11,6 +11,7 @@ namespace Nette\Application;
 
 use Nette\Http\UrlScript;
 use Nette\Routing\Router;
+use Nette\Utils\Reflection;
 
 
 /**
@@ -134,7 +135,7 @@ final class LinkGenerator
 				}
 
 				// convert indexed parameters to named
-				UI\ParameterConverter::toParameters($component::class, $method->getName(), $args, [], $missing);
+				UI\ParameterConverter::toParameters($method, $args, [], $missing);
 			}
 
 			// counterpart of StatePersistent
@@ -170,7 +171,7 @@ final class LinkGenerator
 					trigger_error("Link to deprecated action '$presenter:$action' from '{$refPresenter->getName()}:{$refPresenter->getAction()}'.", E_USER_DEPRECATED);
 				}
 
-				UI\ParameterConverter::toParameters($presenterClass, $method->getName(), $args, $path === 'this' ? $refPresenter->getParameters() : [], $missing);
+				UI\ParameterConverter::toParameters($method, $args, $path === 'this' ? $refPresenter->getParameters() : [], $missing);
 
 			} elseif (array_key_exists(0, $args)) {
 				throw new UI\InvalidLinkException("Unable to pass parameters to action '$presenter:$action', missing corresponding method.");
@@ -200,7 +201,7 @@ final class LinkGenerator
 		if ($mode !== 'test' && !empty($missing)) {
 			foreach ($missing as $rp) {
 				if (!array_key_exists($rp->getName(), $args)) {
-					throw new UI\InvalidLinkException("Missing parameter \${$rp->getName()} required by {$rp->getDeclaringClass()->getName()}::{$rp->getDeclaringFunction()->getName()}()");
+					throw new UI\InvalidLinkException("Missing parameter \${$rp->getName()} required by " . Reflection::toString($rp->getDeclaringFunction()));
 				}
 			}
 		}

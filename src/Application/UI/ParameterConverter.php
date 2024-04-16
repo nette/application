@@ -64,16 +64,14 @@ final class ParameterConverter
 	 * @internal
 	 */
 	public static function toParameters(
-		string $class,
-		string $method,
+		\ReflectionMethod $method,
 		array &$args,
 		array $supplemental = [],
 		?array &$missing = null,
 	): void
 	{
 		$i = 0;
-		$rm = new \ReflectionMethod($class, $method);
-		foreach ($rm->getParameters() as $param) {
+		foreach ($method->getParameters() as $param) {
 			$type = self::getType($param);
 			$name = $param->getName();
 
@@ -106,9 +104,9 @@ final class ParameterConverter
 
 			if (!self::convertType($args[$name], $type)) {
 				throw new InvalidLinkException(sprintf(
-					'Argument $%s passed to %s() must be %s, %s given.',
+					'Argument $%s passed to %s must be %s, %s given.',
 					$name,
-					$rm->getDeclaringClass()->getName() . '::' . $rm->getName(),
+					Reflection::toString($method),
 					$type,
 					get_debug_type($args[$name]),
 				));
@@ -123,7 +121,7 @@ final class ParameterConverter
 		}
 
 		if (array_key_exists($i, $args)) {
-			throw new InvalidLinkException("Passed more parameters than method $class::{$rm->getName()}() expects.");
+			throw new InvalidLinkException('Passed more parameters than method ' . Reflection::toString($method) . ' expects.');
 		}
 	}
 
