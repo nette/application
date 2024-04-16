@@ -10,6 +10,8 @@ declare(strict_types=1);
 namespace Nette\Application\UI;
 
 use Nette;
+use Nette\Application\Attributes;
+use Nette\Utils\Reflection;
 
 
 /**
@@ -22,7 +24,6 @@ final class ComponentReflection extends \ReflectionClass
 {
 	private static array $ppCache = [];
 	private static array $pcCache = [];
-	private static array $mcCache = [];
 
 
 	/**
@@ -43,14 +44,14 @@ final class ComponentReflection extends \ReflectionClass
 				continue;
 			} elseif (
 				self::parseAnnotation($prop, 'persistent')
-				|| $prop->getAttributes(Nette\Application\Attributes\Persistent::class)
+				|| $prop->getAttributes(Attributes\Persistent::class)
 			) {
 				$params[$prop->getName()] = [
 					'def' => $prop->getDefaultValue(),
 					'type' => self::getType($prop),
-					'since' => $isPresenter ? Nette\Utils\Reflection::getPropertyDeclaringClass($prop)->getName() : null,
+					'since' => $isPresenter ? Reflection::getPropertyDeclaringClass($prop)->getName() : null,
 				];
-			} elseif ($prop->getAttributes(Nette\Application\Attributes\Parameter::class)) {
+			} elseif ($prop->getAttributes(Attributes\Parameter::class)) {
 				$params[$prop->getName()] = [
 					'type' => (string) ($prop->getType() ?? 'mixed'),
 				];
@@ -149,18 +150,10 @@ final class ComponentReflection extends \ReflectionClass
 	 */
 	public function hasCallableMethod(string $method): bool
 	{
-		$class = $this->getName();
-		$cache = &self::$mcCache[strtolower($class . ':' . $method)];
-		if ($cache === null) {
-			try {
-				$cache = false;
-				$rm = new \ReflectionMethod($class, $method);
-				$cache = $this->isInstantiable() && $rm->isPublic() && !$rm->isAbstract() && !$rm->isStatic();
-			} catch (\ReflectionException) {
-			}
-		}
-
-		return $cache;
+		return $this->isInstantiable()
+			&& $this->hasMethod($method)
+			&& ($rm = $this->getMethod($method))
+			&& $rm->isPublic() && !$rm->isAbstract() && !$rm->isStatic();
 	}
 
 
@@ -174,9 +167,9 @@ final class ComponentReflection extends \ReflectionClass
 				$res[$i] = $args[$name];
 				if (!self::convertType($res[$i], $type)) {
 					throw new Nette\InvalidArgumentException(sprintf(
-						'Argument $%s passed to %s() must be %s, %s given.',
+						'Argument $%s passed to %s must be %s, %s given.',
 						$name,
-						($method instanceof \ReflectionMethod ? $method->getDeclaringClass()->getName() . '::' : '') . $method->getName(),
+						Reflection::toString($method),
 						$type,
 						get_debug_type($args[$name]),
 					));
@@ -189,9 +182,9 @@ final class ComponentReflection extends \ReflectionClass
 				$res[$i] = [];
 			} else {
 				throw new Nette\InvalidArgumentException(sprintf(
-					'Missing parameter $%s required by %s()',
+					'Missing parameter $%s required by %s',
 					$name,
-					($method instanceof \ReflectionMethod ? $method->getDeclaringClass()->getName() . '::' : '') . $method->getName(),
+					Reflection::toString($method),
 				));
 			}
 		}
