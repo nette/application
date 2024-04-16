@@ -344,6 +344,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 			? $args
 			: array_slice(func_get_args(), 1);
 		$presenter = $this->getPresenter();
+		$presenter->saveGlobalState();
 		$presenter->redirectUrl($presenter->createRequest($this, $destination, $args, 'redirect'));
 	}
 
