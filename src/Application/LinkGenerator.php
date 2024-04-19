@@ -243,6 +243,7 @@ final class LinkGenerator
 		}
 
 		if (!empty($matches['query'])) {
+			trigger_error("Link format is obsolete, use arguments instead of query string in '$destination'.", E_USER_DEPRECATED);
 			parse_str(substr($matches['query'], 1), $args);
 		}
 
