@@ -899,7 +899,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 			// counterpart of StatePersistent
 			if ($args && array_intersect_key($args, $reflection->getPersistentParams())) {
-				$this->saveState($args, $reflection);
+				$this->saveStatePartial($args, $reflection);
 			}
 
 			if ($mode === 'redirect') {
@@ -1104,7 +1104,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 				}
 			}
 
-			$this->saveState($state, $forClass ? new ComponentReflection($forClass) : null);
+			$this->saveStatePartial($state, new ComponentReflection($forClass ?? $this));
 
 			if ($sinces === null) {
 				$sinces = [];
@@ -1159,15 +1159,6 @@ abstract class Presenter extends Control implements Application\IPresenter
 		}
 
 		return $state;
-	}
-
-
-	/**
-	 * Saves state information for next request.
-	 */
-	public function saveState(array &$params, ?ComponentReflection $reflection = null): void
-	{
-		($reflection ?: static::getReflection())->saveState($this, $params);
 	}
 
 

@@ -180,7 +180,46 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	 */
 	public function saveState(array &$params): void
 	{
-		$this->getReflection()->saveState($this, $params);
+		$this->saveStatePartial($params, static::getReflection());
+	}
+
+
+	/**
+	 * @internal used by presenter
+	 */
+	public function saveStatePartial(array &$params, ComponentReflection $reflection): void
+	{
+		$tree = Nette\Application\Helpers::getClassesAndTraits(static::class);
+
+		foreach ($reflection->getPersistentParams() as $name => $meta) {
+			if (isset($params[$name])) {
+				// injected value
+
+			} elseif (
+				array_key_exists($name, $params) // nulls are skipped
+				|| (isset($meta['since']) && !isset($tree[$meta['since']])) // not related
+				|| !isset($this->$name)
+			) {
+				continue;
+
+			} else {
+				$params[$name] = $this->$name; // object property value
+			}
+
+			if (!ParameterConverter::convertType($params[$name], $meta['type'])) {
+				throw new InvalidLinkException(sprintf(
+					"Value passed to persistent parameter '%s' in %s must be %s, %s given.",
+					$name,
+					$this instanceof Presenter ? 'presenter ' . $this->getName() : "component '{$this->getUniqueId()}'",
+					$meta['type'],
+					get_debug_type($params[$name]),
+				));
+			}
+
+			if ($params[$name] === $meta['def'] || ($meta['def'] === null && $params[$name] === '')) {
+				$params[$name] = null; // value transmit is unnecessary
+			}
+		}
 	}
 
 
