@@ -16,7 +16,7 @@ class OnePresenter extends Presenter
 	public static $no1;
 	public $no2;
 
-	/** @persistent */
+	#[Persistent]
 	public $yes1;
 
 	#[Persistent, Parameter]
