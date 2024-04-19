@@ -88,6 +88,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/** use absolute Urls or paths? */
 	public bool $absoluteUrls = false;
+
+	/** @deprecated  use #[Requires(methods: ...)] to specify allowed methods */
 	public array $allowedMethods = ['GET', 'POST', 'HEAD', 'PUT', 'DELETE', 'PATCH'];
 	private ?Nette\Application\Request $request = null;
 	private ?Nette\Application\Response $response = null;
@@ -298,6 +300,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	}
 
 
+	/** @deprecated  use #[Requires(methods: ...)] to specify allowed methods */
 	protected function checkHttpMethod(): void
 	{
 		if ($this->allowedMethods &&
