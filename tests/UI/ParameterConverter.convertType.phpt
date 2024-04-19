@@ -1,12 +1,12 @@
 <?php
 
 /**
- * Test: ComponentReflection::convertType()
+ * Test: ParameterConverter::convertType()
  */
 
 declare(strict_types=1);
 
-use Nette\Application\UI\ComponentReflection;
+use Nette\Application\UI\ParameterConverter;
 use Tester\Assert;
 
 
@@ -25,10 +25,10 @@ function testIt(string $type, $val, $res = null)
 {
 	$isClass = class_exists($type);
 	if (func_num_args() === 3) {
-		Assert::true(ComponentReflection::convertType($val, $type, $isClass));
+		Assert::true(ParameterConverter::convertType($val, $type, $isClass));
 	} else {
 		$res = $val;
-		Assert::false(ComponentReflection::convertType($val, $type, $isClass));
+		Assert::false(ParameterConverter::convertType($val, $type, $isClass));
 	}
 
 	Assert::same($res, $val);

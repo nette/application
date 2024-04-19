@@ -842,7 +842,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 				}
 
 				// convert indexed parameters to named
-				static::argsToParams($component::class, $method, $args, [], $missing);
+				ParameterConverter::toParameters($component::class, $method, $args, [], $missing);
 			}
 
 			// counterpart of StatePersistent
@@ -894,7 +894,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 					trigger_error("Link to deprecated action '$presenter:$action' from '{$this->getName()}:{$this->getAction()}'.", E_USER_DEPRECATED);
 				}
 
-				static::argsToParams($presenterClass, $method, $args, $path === 'this' ? $this->params : [], $missing);
+				ParameterConverter::toParameters($presenterClass, $method, $args, $path === 'this' ? $this->params : [], $missing);
 			}
 
 			// counterpart of StatePersistent
@@ -1007,77 +1007,6 @@ abstract class Presenter extends Control implements Application\IPresenter
 		}
 
 		return $url;
-	}
-
-
-	/**
-	 * Converts list of arguments to named parameters.
-	 * @param  \ReflectionParameter[]  $missing arguments
-	 * @throws InvalidLinkException
-	 * @internal
-	 */
-	public static function argsToParams(
-		string $class,
-		string $method,
-		array &$args,
-		array $supplemental = [],
-		?array &$missing = null,
-	): void
-	{
-		$i = 0;
-		$rm = new \ReflectionMethod($class, $method);
-		foreach ($rm->getParameters() as $param) {
-			$type = ComponentReflection::getType($param);
-			$name = $param->getName();
-
-			if (array_key_exists($i, $args)) {
-				$args[$name] = $args[$i];
-				unset($args[$i]);
-				$i++;
-
-			} elseif (array_key_exists($name, $args)) {
-				// continue with process
-
-			} elseif (array_key_exists($name, $supplemental)) {
-				$args[$name] = $supplemental[$name];
-			}
-
-			if (!isset($args[$name])) {
-				if (
-					!$param->isDefaultValueAvailable()
-					&& !$param->allowsNull()
-					&& $type !== 'scalar'
-					&& $type !== 'array'
-					&& $type !== 'iterable'
-				) {
-					$missing[] = $param;
-					unset($args[$name]);
-				}
-
-				continue;
-			}
-
-			if (!ComponentReflection::convertType($args[$name], $type)) {
-				throw new InvalidLinkException(sprintf(
-					'Argument $%s passed to %s() must be %s, %s given.',
-					$name,
-					$rm->getDeclaringClass()->getName() . '::' . $rm->getName(),
-					$type,
-					get_debug_type($args[$name]),
-				));
-			}
-
-			$def = $param->isDefaultValueAvailable()
-				? $param->getDefaultValue()
-				: null;
-			if ($args[$name] === $def || ($def === null && $args[$name] === '')) {
-				$args[$name] = null; // value transmit is unnecessary
-			}
-		}
-
-		if (array_key_exists($i, $args)) {
-			throw new InvalidLinkException("Passed more parameters than method $class::{$rm->getName()}() expects.");
-		}
 	}
 
 
@@ -1209,7 +1138,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		}
 
 		if ($forClass !== null) {
-			$tree = ComponentReflection::getClassesAndTraits($forClass);
+			$tree = Helpers::getClassesAndTraits($forClass);
 			$since = null;
 			foreach ($state as $key => $foo) {
 				if (!isset($sinces[$key])) {

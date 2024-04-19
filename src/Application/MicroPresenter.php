@@ -78,7 +78,7 @@ final class MicroPresenter implements Application\IPresenter
 
 		$params['presenter'] = $this;
 		try {
-			$params = Application\UI\ComponentReflection::combineArgs($reflection, $params);
+			$params = Application\UI\ParameterConverter::toArguments($reflection, $params);
 		} catch (Nette\InvalidArgumentException $e) {
 			$this->error($e->getMessage());
 		}

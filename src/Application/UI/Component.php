@@ -108,7 +108,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 		$rm = $rc->getMethod($method);
 		$this->checkRequirements($rm);
 		try {
-			$args = $rc->combineArgs($rm, $params);
+			$args = ParameterConverter::toArguments($rm, $params);
 		} catch (Nette\InvalidArgumentException $e) {
 			throw new Nette\Application\BadRequestException($e->getMessage());
 		}
@@ -155,7 +155,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 		$reflection = $this->getReflection();
 		foreach ($reflection->getParameters() as $name => $meta) {
 			if (isset($params[$name])) { // nulls are ignored
-				if (!$reflection->convertType($params[$name], $meta['type'])) {
+				if (!ParameterConverter::convertType($params[$name], $meta['type'])) {
 					throw new Nette\Application\BadRequestException(sprintf(
 						"Value passed to persistent parameter '%s' in %s must be %s, %s given.",
 						$name,
