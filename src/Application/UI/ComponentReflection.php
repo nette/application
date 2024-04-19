@@ -27,7 +27,7 @@ final class ComponentReflection extends \ReflectionClass
 
 
 	/**
-	 * Returns array of class properties that are public and have attribute #[Persistent] or #[Parameter] or annotation @persistent.
+	 * Returns array of class properties that are public and have attribute #[Persistent] or #[Parameter].
 	 * @return array<string, array{def: mixed, type: string, since: ?string}>
 	 */
 	public function getParameters(): array
@@ -74,7 +74,7 @@ final class ComponentReflection extends \ReflectionClass
 
 
 	/**
-	 * Returns array of persistent properties. They are public and have attribute #[Persistent] or annotation @persistent.
+	 * Returns array of persistent properties. They are public and have attribute #[Persistent].
 	 * @return array<string, array{def: mixed, type: string, since: string}>
 	 */
 	public function getPersistentParams(): array
@@ -149,6 +149,7 @@ final class ComponentReflection extends \ReflectionClass
 
 	/**
 	 * Returns an annotation value.
+	 * @deprecated
 	 */
 	public static function parseAnnotation(\Reflector $ref, string $name): ?array
 	{
@@ -166,12 +167,20 @@ final class ComponentReflection extends \ReflectionClass
 			}
 		}
 
+		$alt = match ($name) {
+			'persistent' => '#[Nette\Application\Attributes\Persistent]',
+			'deprecated' => '#[Nette\Application\Attributes\Deprecated]',
+			'crossOrigin' => '#[Nette\Application\Attributes\Request(sameOrigin: false)]',
+			default => 'alternative'
+		};
+		trigger_error("Annotation @$name is deprecated, use $alt (used in " . Nette\Utils\Reflection::toString($ref) . ')', E_USER_DEPRECATED);
 		return $res;
 	}
 
 
 	/**
 	 * Has class specified annotation?
+	 * @deprecated
 	 */
 	public function hasAnnotation(string $name): bool
 	{
@@ -181,6 +190,7 @@ final class ComponentReflection extends \ReflectionClass
 
 	/**
 	 * Returns an annotation value.
+	 * @deprecated
 	 */
 	public function getAnnotation(string $name): mixed
 	{
