@@ -83,6 +83,11 @@ final class ComponentReflection extends \ReflectionClass
 	}
 
 
+	/**
+	 * Returns array of persistent components. They are tagged with class-level attribute
+	 * #[Persistent] or annotation @persistent or returned by Presenter::getPersistentComponents().
+	 * @return array<string, array{since: string}>
+	 */
 	public function getPersistentComponents(): array
 	{
 		$class = $this->getName();
@@ -91,12 +96,14 @@ final class ComponentReflection extends \ReflectionClass
 			return $components;
 		}
 
-		$components = [];
-		if ($this->isSubclassOf(Presenter::class)) {
-			foreach ($class::getPersistentComponents() as $name => $meta) {
-				$components[is_string($meta) ? $meta : $name] = ['since' => $class];
-			}
+		$attrs = $this->getAttributes(Attributes\Persistent::class);
+		$names = $attrs
+			? $attrs[0]->getArguments()
+			: (array) self::parseAnnotation($this, 'persistent');
+		$names = array_merge($names, $class::getPersistentComponents());
+		$components = array_fill_keys($names, ['since' => $class]);
 
+		if ($this->isSubclassOf(Presenter::class)) {
 			$parent = new self($this->getParentClass()->getName());
 			$components = $parent->getPersistentComponents() + $components;
 		}

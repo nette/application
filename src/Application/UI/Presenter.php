@@ -1075,16 +1075,12 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 
 	/**
-	 * Returns array of persistent components.
-	 * This default implementation detects components by class-level annotation @persistent(cmp1, cmp2).
+	 * Descendant can override this method to return the names of custom persistent components.
+	 * @return string[]
 	 */
 	public static function getPersistentComponents(): array
 	{
-		$rc = new \ReflectionClass(static::class);
-		$attrs = $rc->getAttributes(Application\Attributes\Persistent::class);
-		return $attrs
-			? $attrs[0]->getArguments()
-			: (array) ComponentReflection::parseAnnotation($rc, 'persistent');
+		return [];
 	}
 
 
