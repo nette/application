@@ -78,7 +78,6 @@ final class UIExtension extends Latte\Extension
 			'plink' => Nodes\LinkNode::create(...),
 			'link' => Nodes\LinkNode::create(...),
 			'linkBase' => Nodes\LinkBaseNode::create(...),
-			'templatePrint' => Nodes\TemplatePrintNode::create(...),
 			'snippet' => Nodes\SnippetNode::create(...),
 			'snippetArea' => Nodes\SnippetAreaNode::create(...),
 			'layout' => $this->createExtendsNode(...),
