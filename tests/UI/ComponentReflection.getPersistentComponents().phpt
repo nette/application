@@ -14,14 +14,6 @@ class NonePresenter extends Presenter
 }
 
 
-/**
- * @persistent(a, b)
- */
-class AnnotationPresenter extends Presenter
-{
-}
-
-
 #[Persistent('a', 'b')]
 class AttributePresenter extends Presenter
 {
@@ -38,11 +30,6 @@ class MethodPresenter extends AttributePresenter
 
 
 Assert::same([], NonePresenter::getReflection()->getPersistentComponents());
-
-Assert::same([
-	'a' => ['since' => AnnotationPresenter::class],
-	'b' => ['since' => AnnotationPresenter::class],
-], AnnotationPresenter::getReflection()->getPersistentComponents());
 
 Assert::same([
 	'a' => ['since' => AttributePresenter::class],
