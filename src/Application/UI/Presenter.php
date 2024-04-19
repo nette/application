@@ -704,8 +704,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 		$args = func_num_args() < 3 && is_array($args)
 			? $args
 			: array_slice(func_get_args(), 1);
-		$this->linkGenerator->createRequest($this, $destination, $args, 'forward');
-		$this->sendResponse(new Responses\ForwardResponse($this->linkGenerator->lastRequest));
+		$request = $this->linkGenerator->createRequest($this, $destination, $args, 'forward');
+		$this->sendResponse(new Responses\ForwardResponse($request));
 	}
 
 
@@ -766,10 +766,10 @@ abstract class Presenter extends Control implements Application\IPresenter
 			? $args[0]
 			: $args;
 		try {
-			$url = $this->linkGenerator->createRequest(
-				$this,
+			$url = $this->linkGenerator->link(
 				$destination ?: $this->action,
 				$args + $this->getGlobalState() + $request->getParameters(),
+				$this,
 				'redirectX',
 			);
 		} catch (InvalidLinkException) {
@@ -812,7 +812,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @deprecated @internal */
 	protected function createRequest(Component $component, string $destination, array $args, string $mode): ?string
 	{
-		return $this->linkGenerator->createRequest($component, $destination, $args, $mode);
+		return $this->linkGenerator->link($destination, $args, $component, $mode);
 	}
 
 

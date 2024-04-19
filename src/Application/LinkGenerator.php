@@ -32,53 +32,23 @@ final class LinkGenerator
 
 	/**
 	 * Generates URL to presenter.
-	 * @param  string   $dest in format "[[[module:]presenter:]action] [#fragment]"
+	 * @param  string  $destination  in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
 	 * @throws UI\InvalidLinkException
 	 */
-	public function link(string $dest, array $params = []): string
+	public function link(
+		string $destination,
+		array $args = [],
+		?UI\Component $component = null,
+		?string $mode = null,
+	): ?string
 	{
-		if (!preg_match('~^([\w:]+):(\w*+)(#.*)?()$~D', $dest, $m)) {
-			throw new UI\InvalidLinkException("Invalid link destination '$dest'.");
-		}
-
-		[, $presenter, $action, $frag] = $m;
-
-		try {
-			$class = $this->presenterFactory?->getPresenterClass($presenter);
-		} catch (InvalidPresenterException $e) {
-			throw new UI\InvalidLinkException($e->getMessage(), 0, $e);
-		}
-
-		if (is_subclass_of($class, UI\Presenter::class)) {
-			if ($action === '') {
-				$action = UI\Presenter::DefaultAction;
-			}
-
-			if ($method = $class::getReflection()->getActionRenderMethod($action)) {
-				UI\ParameterConverter::toParameters($class, $method->getName(), $params, [], $missing);
-				if ($missing) {
-					$rp = $missing[0];
-					throw new UI\InvalidLinkException("Missing parameter \${$rp->getName()} required by $class::{$method->getName()}()");
-				}
-			} elseif (array_key_exists(0, $params)) {
-				throw new UI\InvalidLinkException("Unable to pass parameters to action '$presenter:$action', missing corresponding method.");
-			}
-		}
-
-		if ($action !== '') {
-			$params[UI\Presenter::ActionKey] = $action;
-		}
-
-		$params[UI\Presenter::PresenterKey] = $presenter;
-
-		$url = $this->router->constructUrl($params, $this->refUrl);
-		if ($url === null) {
-			unset($params[UI\Presenter::ActionKey], $params[UI\Presenter::PresenterKey]);
-			$paramsDecoded = urldecode(http_build_query($params, '', ', '));
-			throw new UI\InvalidLinkException("No route for $dest($paramsDecoded)");
-		}
-
-		return $url . $frag;
+		$parts = self::parseDestination($destination);
+		$args = $parts['args'] ?? $args;
+		$request = $this->createRequest($component, $parts['path'] . ($parts['signal'] ? '!' : ''), $args, $mode ?? 'link');
+		$relative = $mode === 'link' && !$parts['absolute'] && !$component?->getPresenter()->absoluteUrls;
+		return $mode === 'forward' || $mode === 'test'
+			? null
+			: $this->requestToUrl($request, $relative) . $parts['fragment'];
 	}
 
 
@@ -89,23 +59,20 @@ final class LinkGenerator
 	 * @internal
 	 */
 	public function createRequest(
-		UI\Component $component,
+		?UI\Component $component,
 		string $destination,
 		array $args,
 		string $mode,
-	): ?string
+	): Request
 	{
 		// note: createRequest supposes that saveState(), run() & tryCall() behaviour is final
 
 		$this->lastRequest = null;
-		$refPresenter = $component->getPresenter();
+		$refPresenter = $component?->getPresenter();
+		$path = $destination;
 
-		$parts = static::parseDestination($destination);
-		$path = $parts['path'];
-		$args = $parts['args'] ?? $args;
-
-		if (!$component instanceof UI\Presenter || $parts['signal']) {
-			[$cname, $signal] = Helpers::splitName($path);
+		if (($component && !$component instanceof UI\Presenter) || str_ends_with($destination, '!')) {
+			[$cname, $signal] = Helpers::splitName(rtrim($destination, '!'));
 			if ($cname !== '') {
 				$component = $component->getComponent(strtr($cname, ':', '-'));
 			}
@@ -120,6 +87,9 @@ final class LinkGenerator
 		$current = false;
 		[$presenter, $action] = Helpers::splitName($path);
 		if ($presenter === '') {
+			if (!$refPresenter) {
+				throw new \LogicException("Presenter must be specified in '$destination'.");
+			}
 			$action = $path === 'this' ? $refPresenter->getAction() : $action;
 			$presenter = $refPresenter->getName();
 			$presenterClass = $refPresenter::class;
@@ -130,13 +100,13 @@ final class LinkGenerator
 				if (!$presenter) {
 					throw new UI\InvalidLinkException("Missing presenter name in '$destination'.");
 				}
-			} else { // relative
+			} elseif ($refPresenter) { // relative
 				[$module, , $sep] = Helpers::splitName($refPresenter->getName());
 				$presenter = $module . $sep . $presenter;
 			}
 
 			try {
-				$presenterClass = $this->presenterFactory->getPresenterClass($presenter);
+				$presenterClass = $this->presenterFactory?->getPresenterClass($presenter);
 			} catch (InvalidPresenterException $e) {
 				throw new UI\InvalidLinkException($e->getMessage(), 0, $e);
 			}
@@ -157,7 +127,7 @@ final class LinkGenerator
 				if (!$method) {
 					throw new UI\InvalidLinkException("Unknown signal '$signal', missing handler {$reflection->getName()}::{$component::formatSignalMethod($signal)}()");
 				} elseif (
-					$refPresenter->invalidLinkMode
+					$refPresenter?->invalidLinkMode
 					&& UI\ComponentReflection::parseAnnotation($method, 'deprecated')
 				) {
 					trigger_error("Link to deprecated signal '$signal'" . ($component === $refPresenter ? '' : ' in ' . $component::class) . " from '{$refPresenter->getName()}:{$refPresenter->getAction()}'.", E_USER_DEPRECATED);
@@ -187,16 +157,16 @@ final class LinkGenerator
 				$action = UI\Presenter::DefaultAction;
 			}
 
-			$current = ($action === '*' || strcasecmp($action, $refPresenter->getAction()) === 0) && $presenterClass === $refPresenter::class;
+			$current = $refPresenter && ($action === '*' || strcasecmp($action, $refPresenter->getAction()) === 0) && $presenterClass === $refPresenter::class;
 
 			$reflection = new UI\ComponentReflection($presenterClass);
-			if ($refPresenter->invalidLinkMode && UI\ComponentReflection::parseAnnotation($reflection, 'deprecated')) {
+			if ($refPresenter?->invalidLinkMode && UI\ComponentReflection::parseAnnotation($reflection, 'deprecated')) {
 				trigger_error("Link to deprecated presenter '$presenter' from '{$refPresenter->getName()}:{$refPresenter->getAction()}'.", E_USER_DEPRECATED);
 			}
 
 			// counterpart of run() & tryCall()
 			if ($method = $reflection->getActionRenderMethod($action)) {
-				if ($refPresenter->invalidLinkMode && UI\ComponentReflection::parseAnnotation($method, 'deprecated')) {
+				if ($refPresenter?->invalidLinkMode && UI\ComponentReflection::parseAnnotation($method, 'deprecated')) {
 					trigger_error("Link to deprecated action '$presenter:$action' from '{$refPresenter->getName()}:{$refPresenter->getAction()}'.", E_USER_DEPRECATED);
 				}
 
@@ -207,22 +177,24 @@ final class LinkGenerator
 			}
 
 			// counterpart of StatePersistent
-			if (empty($signal) && $args && array_intersect_key($args, $reflection->getPersistentParams())) {
-				$refPresenter->saveStatePartial($args, $reflection);
-			}
+			if ($refPresenter) {
+				if (empty($signal) && $args && array_intersect_key($args, $reflection->getPersistentParams())) {
+					$refPresenter->saveStatePartial($args, $reflection);
+				}
 
-			$globalState = $refPresenter->getGlobalState($path === 'this' ? null : $presenterClass);
-			if ($current && $args) {
-				$tmp = $globalState + $refPresenter->getParameters();
-				foreach ($args as $key => $val) {
-					if (http_build_query([$val]) !== (isset($tmp[$key]) ? http_build_query([$tmp[$key]]) : '')) {
-						$current = false;
-						break;
+				$globalState = $refPresenter->getGlobalState($path === 'this' ? null : $presenterClass);
+				if ($current && $args) {
+					$tmp = $globalState + $refPresenter->getParameters();
+					foreach ($args as $key => $val) {
+						if (http_build_query([$val]) !== (isset($tmp[$key]) ? http_build_query([$tmp[$key]]) : '')) {
+							$current = false;
+							break;
+						}
 					}
 				}
-			}
 
-			$args += $globalState;
+				$args += $globalState;
+			}
 		}
 
 		if ($mode !== 'test' && !empty($missing)) {
@@ -248,11 +220,7 @@ final class LinkGenerator
 			$args[UI\Presenter::FlashKey] = is_string($flashKey) && $flashKey !== '' ? $flashKey : null;
 		}
 
-		$this->lastRequest = new Request($presenter, Request::FORWARD, $args, flags: ['current' => $current]);
-
-		return $mode === 'forward' || $mode === 'test'
-			? null
-			: $this->requestToUrl($this->lastRequest, $mode === 'link' && !$parts['absolute'] && !$refPresenter->absoluteUrls) . $parts['fragment'];
+		return $this->lastRequest = new Request($presenter, Request::FORWARD, $args, flags: ['current' => $current]);
 	}
 
 

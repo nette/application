@@ -65,7 +65,7 @@ namespace {
 	Assert::exception(function () use ($pf) {
 		$generator = new LinkGenerator(new Routers\SimpleRouter, new Http\UrlScript('http://nette.org/en/'), $pf);
 		$generator->link('default');
-	}, Nette\Application\UI\InvalidLinkException::class, "Invalid link destination 'default'.");
+	}, LogicException::class, "Presenter must be specified in 'default'.");
 
 
 	Assert::exception(function () use ($pf) {

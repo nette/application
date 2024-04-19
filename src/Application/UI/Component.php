@@ -290,7 +290,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 			$args = func_num_args() < 3 && is_array($args)
 				? $args
 				: array_slice(func_get_args(), 1);
-			return $this->getPresenter()->getLinkGenerator()->createRequest($this, $destination, $args, 'link');
+			return $this->getPresenter()->getLinkGenerator()->link($destination, $args, $this, 'link');
 
 		} catch (InvalidLinkException $e) {
 			return $this->getPresenter()->handleInvalidLink($e);
@@ -314,7 +314,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 
 	/**
 	 * Determines whether it links to the current page.
-	 * @param  string   $destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
+	 * @param  string   $destination in format "[[[module:]presenter:]action | signal! | this]"
 	 * @param  array|mixed  $args
 	 * @throws InvalidLinkException
 	 */
@@ -345,7 +345,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 			: array_slice(func_get_args(), 1);
 		$presenter = $this->getPresenter();
 		$presenter->saveGlobalState();
-		$presenter->redirectUrl($presenter->getLinkGenerator()->createRequest($this, $destination, $args, 'redirect'));
+		$presenter->redirectUrl($presenter->getLinkGenerator()->link($destination, $args, $this, 'redirect'));
 	}
 
 
@@ -363,7 +363,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 			: array_slice(func_get_args(), 1);
 		$presenter = $this->getPresenter();
 		$presenter->redirectUrl(
-			$presenter->getLinkGenerator()->createRequest($this, $destination, $args, 'redirect'),
+			$presenter->getLinkGenerator()->link($destination, $args, $this, 'redirect'),
 			Nette\Http\IResponse::S301_MovedPermanently,
 		);
 	}
