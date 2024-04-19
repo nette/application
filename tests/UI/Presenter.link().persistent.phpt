@@ -5,6 +5,7 @@
  */
 
 use Nette\Application;
+use Nette\Application\Attributes\Persistent;
 use Nette\Http;
 use Tester\Assert;
 
@@ -21,13 +22,13 @@ function sortParams(array $params): array
 
 trait PersistentParam1
 {
-	/** @persistent */
+	#[Persistent]
 	public $t1;
 }
 
 trait PersistentParam2A
 {
-	/** @persistent */
+	#[Persistent]
 	public $t2;
 }
 
@@ -38,7 +39,7 @@ trait PersistentParam2B
 
 trait PersistentParam3
 {
-	/** @persistent */
+	#[Persistent]
 	public $t3;
 }
 
@@ -46,7 +47,7 @@ class BasePresenter extends Application\UI\Presenter
 {
 	use PersistentParam1;
 
-	/** @persistent */
+	#[Persistent]
 	public $p1;
 }
 
@@ -55,7 +56,7 @@ class TestPresenter extends BasePresenter
 {
 	use PersistentParam2B;
 
-	/** @persistent */
+	#[Persistent]
 	public $p2;
 
 
@@ -90,10 +91,10 @@ class SecondPresenter extends BasePresenter
 {
 	use PersistentParam3;
 
-	/** @persistent */
+	#[Persistent]
 	public $p1 = 20;
 
-	/** @persistent */
+	#[Persistent]
 	public $p3;
 }
 
@@ -106,7 +107,7 @@ class ThirdPresenter extends BasePresenter
 
 class FourthPresenter extends BasePresenter
 {
-	#[Application\Attributes\Persistent]
+	#[Persistent]
 	public $p1;
 }
 
