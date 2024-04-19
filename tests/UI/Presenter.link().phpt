@@ -7,6 +7,7 @@
 declare(strict_types=1);
 
 use Nette\Application;
+use Nette\Application\Attributes\Persistent;
 use Nette\Http;
 use Tester\Assert;
 
@@ -16,10 +17,10 @@ require __DIR__ . '/../bootstrap.php';
 
 class TestControl extends Application\UI\Control
 {
-	/** @persistent array */
+	#[Persistent]
 	public $order = [];
 
-	/** @persistent int */
+	#[Persistent]
 	public $round = 0;
 
 
@@ -50,22 +51,22 @@ class TestControl extends Application\UI\Control
 
 class TestPresenter extends Application\UI\Presenter
 {
-	/** @persistent */
+	#[Persistent]
 	public $p;
 
-	/** @persistent */
+	#[Persistent]
 	public $pint = 10;
 
-	/** @persistent */
+	#[Persistent]
 	public $parr = [];
 
-	/** @persistent */
+	#[Persistent]
 	public $pbool = true;
 
-	/** @persistent */
+	#[Persistent]
 	public array $parrn;
 
-	/** @persistent */
+	#[Persistent]
 	public ?bool $pbooln = null;
 
 
@@ -290,7 +291,7 @@ class TestPresenter extends Application\UI\Presenter
 
 class OtherPresenter extends TestPresenter
 {
-	/** @persistent */
+	#[Persistent]
 	public $p = 20;
 }
 
