@@ -90,15 +90,11 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same('/index.php?a=1&action=product&presenter=Test', $this->link('product', ['a' => 1]));
 		Assert::same('#error: Passed more parameters than method TestPresenter::actionParams() expects.', $this->link('params', 1, 2, 3, 4, 5));
 
-		// special url
-		Assert::same('/index.php?x=1&y=2&action=product&presenter=Test', $this->link('product?x=1&y=2'));
-		Assert::same('/index.php?x=1&y=2&action=product&presenter=Test#fragment', $this->link('product?x=1&y=2#fragment'));
-
 		// absolute
-		Assert::same('http://localhost/index.php?x=1&y=2&action=product&presenter=Test#fragment', $this->link('//product?x=1&y=2#fragment'));
+		Assert::same('http://localhost/index.php?x=1&y=2&action=product&presenter=Test#fragment', $this->link('//product#fragment', ['x' => 1, 'y' => 2]));
 		$this->absoluteUrls = true;
-		Assert::same('http://localhost/index.php?x=1&y=2&action=product&presenter=Test#fragment', $this->link('product?x=1&y=2#fragment'));
-		Assert::same('http://localhost/index.php?x=1&y=2&action=product&presenter=Test#fragment', $this->link('//product?x=1&y=2#fragment'));
+		Assert::same('http://localhost/index.php?x=1&y=2&action=product&presenter=Test#fragment', $this->link('product#fragment', ['x' => 1, 'y' => 2]));
+		Assert::same('http://localhost/index.php?x=1&y=2&action=product&presenter=Test#fragment', $this->link('//product#fragment', ['x' => 1, 'y' => 2]));
 		$this->absoluteUrls = false;
 
 		// persistent params
@@ -142,7 +138,7 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same('/index.php?mycontrol-x=1&mycontrol-y=0&action=default&do=mycontrol-click&presenter=Test', $this['mycontrol']->link('click', true, false));
 		Assert::same('/index.php?action=default&do=mycontrol-click&presenter=Test', $this['mycontrol']->link('click', null, ''));
 		Assert::same('#error: Passed more parameters than method TestControl::handleClick() expects.', $this['mycontrol']->link('click', 1, 2, 3));
-		Assert::same('http://localhost/index.php?mycontrol-x=1&mycontrol-round=1&action=default&presenter=Test#frag', $this['mycontrol']->link('//this?x=1&round=1#frag'));
+		Assert::same('http://localhost/index.php?mycontrol-x=1&mycontrol-round=1&action=default&presenter=Test#frag', $this['mycontrol']->link('//this#frag', ['x' => 1, 'round' => 1]));
 		Assert::same('/index.php?mycontrol-x=1&mycontrol-y=2&action=default&do=mycontrol-click&presenter=Test', $this->link('mycontrol:click!', ['x' => 1, 'y' => 2, 'round' => 0]));
 		Assert::same(['mycontrol-x' => 1, 'mycontrol-y' => 2, 'mycontrol-round' => null, 'mycontrol-order' => null, 'pint' => null, 'parr' => null, 'pbool' => null, 'action' => 'default', 'do' => 'mycontrol-click'], $this->getLastCreatedRequest()->getParameters());
 
