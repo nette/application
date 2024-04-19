@@ -24,6 +24,7 @@ final class ComponentReflection extends \ReflectionClass
 {
 	private static array $ppCache = [];
 	private static array $pcCache = [];
+	private static array $armCache = [];
 
 
 	/**
@@ -161,6 +162,28 @@ final class ComponentReflection extends \ReflectionClass
 			&& $this->hasMethod($method)
 			&& ($rm = $this->getMethod($method))
 			&& $rm->isPublic() && !$rm->isAbstract() && !$rm->isStatic();
+	}
+
+
+	/** Returns action*() or render*() method if available */
+	public function getActionRenderMethod(string $action): ?\ReflectionMethod
+	{
+		$class = $this->name;
+		return self::$armCache[$class][$action] ??=
+			$this->hasCallableMethod($name = $class::formatActionMethod($action))
+			|| $this->hasCallableMethod($name = $class::formatRenderMethod($action))
+				? parent::getMethod($name)
+				: null;
+	}
+
+
+	/** Returns handle*() method if available */
+	public function getSignalMethod(string $signal): ?\ReflectionMethod
+	{
+		$class = $this->name;
+		return $this->hasCallableMethod($name = $class::formatSignalMethod($signal))
+			? parent::getMethod($name)
+			: null;
 	}
 
 

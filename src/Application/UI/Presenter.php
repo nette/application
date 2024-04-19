@@ -829,20 +829,15 @@ abstract class Presenter extends Control implements Application\IPresenter
 				}
 			} elseif (!str_contains($signal, self::NameSeparator)) {
 				// counterpart of signalReceived() & tryCall()
-				$method = $component->formatSignalMethod($signal);
-				if (!$reflection->hasCallableMethod($method)) {
-					throw new InvalidLinkException("Unknown signal '$signal', missing handler {$reflection->getName()}::$method()");
-				}
-
-				if (
-					$this->invalidLinkMode
-					&& ComponentReflection::parseAnnotation(new \ReflectionMethod($component, $method), 'deprecated')
-				) {
+				$method = $reflection->getSignalMethod($signal);
+				if (!$method) {
+					throw new InvalidLinkException("Unknown signal '$signal', missing handler {$reflection->getName()}::{$component::formatSignalMethod($signal)}()");
+				} elseif ($this->invalidLinkMode && ComponentReflection::parseAnnotation($method, 'deprecated')) {
 					trigger_error("Link to deprecated signal '$signal'" . ($component === $this ? '' : ' in ' . $component::class) . " from '{$this->getName()}:{$this->getAction()}'.", E_USER_DEPRECATED);
 				}
 
 				// convert indexed parameters to named
-				ParameterConverter::toParameters($component::class, $method, $args, [], $missing);
+				ParameterConverter::toParameters($component::class, $method->getName(), $args, [], $missing);
 			}
 
 			// counterpart of StatePersistent
@@ -865,7 +860,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 				$action = self::DefaultAction;
 			}
 
-			$current = ($action === '*' || strcasecmp($action, (string) $this->action) === 0) && $presenterClass === static::class;
+			$current = ($action === '*' || strcasecmp($action, $this->action) === 0) && $presenterClass === static::class;
 
 			$reflection = new ComponentReflection($presenterClass);
 			if ($this->invalidLinkMode && ComponentReflection::parseAnnotation($reflection, 'deprecated')) {
@@ -873,28 +868,15 @@ abstract class Presenter extends Control implements Application\IPresenter
 			}
 
 			// counterpart of run() & tryCall()
-			$method = $presenterClass::formatActionMethod($action);
-			if (!$reflection->hasCallableMethod($method)) {
-				$method = $presenterClass::formatRenderMethod($action);
-				if (!$reflection->hasCallableMethod($method)) {
-					$method = null;
-				}
-			}
-
-			// convert indexed parameters to named
-			if ($method === null) {
-				if (array_key_exists(0, $args)) {
-					throw new InvalidLinkException("Unable to pass parameters to action '$presenter:$action', missing corresponding method.");
-				}
-			} else {
-				if (
-					$this->invalidLinkMode
-					&& ComponentReflection::parseAnnotation(new \ReflectionMethod($presenterClass, $method), 'deprecated')
-				) {
+			if ($method = $reflection->getActionRenderMethod($action)) {
+				if ($this->invalidLinkMode && ComponentReflection::parseAnnotation($method, 'deprecated')) {
 					trigger_error("Link to deprecated action '$presenter:$action' from '{$this->getName()}:{$this->getAction()}'.", E_USER_DEPRECATED);
 				}
 
-				ParameterConverter::toParameters($presenterClass, $method, $args, $path === 'this' ? $this->params : [], $missing);
+				ParameterConverter::toParameters($presenterClass, $method->getName(), $args, $path === 'this' ? $this->params : [], $missing);
+
+			} elseif (array_key_exists(0, $args)) {
+				throw new InvalidLinkException("Unable to pass parameters to action '$presenter:$action', missing corresponding method.");
 			}
 
 			// counterpart of StatePersistent

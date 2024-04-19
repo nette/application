@@ -50,14 +50,11 @@ final class LinkGenerator
 				$action = UI\Presenter::DefaultAction;
 			}
 
-			if (
-				method_exists($class, $method = $class::formatActionMethod($action))
-				|| method_exists($class, $method = $class::formatRenderMethod($action))
-			) {
-				UI\ParameterConverter::toParameters($class, $method, $params, [], $missing);
+			if ($method = $class::getReflection()->getActionRenderMethod($action)) {
+				UI\ParameterConverter::toParameters($class, $method->getName(), $params, [], $missing);
 				if ($missing) {
 					$rp = $missing[0];
-					throw new UI\InvalidLinkException("Missing parameter \${$rp->getName()} required by {$rp->getDeclaringClass()->getName()}::{$rp->getDeclaringFunction()->getName()}()");
+					throw new UI\InvalidLinkException("Missing parameter \${$rp->getName()} required by $class::{$method->getName()}()");
 				}
 			} elseif (array_key_exists(0, $params)) {
 				throw new UI\InvalidLinkException("Unable to pass parameters to action '$presenter:$action', missing corresponding method.");
