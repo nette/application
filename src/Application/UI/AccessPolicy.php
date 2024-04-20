@@ -65,7 +65,8 @@ final class AccessPolicy
 
 	private function checkAttribute(Attributes\Requires $attribute): void
 	{
-		$this->presenter ??= $this->component->getPresenter();
+		$this->presenter ??= $this->component->getPresenterIfExists() ??
+			throw new Nette\InvalidStateException('Presenter is required for checking requirements of ' . Reflection::toString($this->element));
 
 		if ($attribute->methods !== null) {
 			$this->checkHttpMethod($attribute);
