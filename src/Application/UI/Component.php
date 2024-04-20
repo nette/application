@@ -76,6 +76,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	{
 		if (method_exists($this, $method = 'createComponent' . $name)) {
 			(new AccessPolicy(new \ReflectionMethod($this, $method)))->checkAccess($this);
+			$this->checkRequirements($rm);
 		}
 		$res = parent::createComponent($name);
 		if ($res && !$res instanceof SignalReceiver && !$res instanceof StatePersistent) {
