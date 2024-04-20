@@ -12,7 +12,14 @@ namespace Nette\Application\Attributes;
 use Attribute;
 
 
+/**
+ * Use Requires(sameOrigin: false)
+ */
 #[Attribute(Attribute::TARGET_METHOD)]
-class CrossOrigin
+final class CrossOrigin extends Requires
 {
+	public function __construct()
+	{
+		parent::__construct(sameOrigin: false);
+	}
 }

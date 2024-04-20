@@ -178,9 +178,12 @@ abstract class Presenter extends Control implements Application\IPresenter
 		$this->initGlobalParameters();
 
 		try {
-			// STARTUP
+			// CHECK REQUIREMENTS
+			(new AccessPolicy($this, static::getReflection()))->checkAccess();
 			$this->checkRequirements(static::getReflection());
 			$this->checkHttpMethod();
+
+			// STARTUP
 			Arrays::invoke($this->onStartup, $this);
 			$this->startup();
 			if (!$this->startupCheck) {
