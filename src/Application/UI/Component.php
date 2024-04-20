@@ -74,7 +74,9 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	protected function createComponent(string $name): ?Nette\ComponentModel\IComponent
 	{
 		if (method_exists($this, $method = 'createComponent' . $name)) {
-			(new AccessPolicy(new \ReflectionMethod($this, $method)))->checkAccess($this);
+			$rm = new \ReflectionMethod($this, $method);
+			(new AccessPolicy($rm))->checkAccess($this);
+			$this->checkRequirements($rm);
 		}
 		$res = parent::createComponent($name);
 		if ($res && !$res instanceof SignalReceiver && !$res instanceof StatePersistent) {
@@ -125,7 +127,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 
 	/**
 	 * Descendant can override this method to check for permissions.
-	 * It is called with the presenter class and the render*(), action*(), and handle*() methods.
+	 * It is called with the presenter class and the render*(), action*(), handle*() and createComponent*() methods.
 	 * @param  \ReflectionClass<object>|\ReflectionMethod  $element
 	 */
 	public function checkRequirements(\ReflectionClass|\ReflectionMethod $element): void

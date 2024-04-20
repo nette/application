@@ -15,9 +15,8 @@ No single file shows this; the policy is applied wherever user code is about to 
 3. **Factory methods** — `Component::createComponent()` checks the policy on the
    `createComponent<Name>()` method, so a component can be guarded at creation.
 
-At the first two sites the (older, unrelated) `checkRequirements()` user hook is
-also called with the same reflection — the two mechanisms coexist. The factory
-site runs only the attribute policy.
+At all three sites the (older, unrelated) `checkRequirements()` user hook is
+also called with the same reflection — the two mechanisms coexist.
 
 ## `#[Requires]` semantics
 
