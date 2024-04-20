@@ -76,11 +76,7 @@ final class AccessPolicy
 			$this->checkActions($attribute);
 		}
 
-		if (
-			$attribute->forward
-			&& !$this->presenter->getRequest()->isMethod($this->presenter->getRequest()::FORWARD)
-			&& $this->presenter->getAction() === $this->presenter->getView()
-		) {
+		if ($attribute->forward && !$this->presenter->isForwarded()) {
 			$this->presenter->error('Forwarded request is required by ' . Reflection::toString($this->element));
 		}
 

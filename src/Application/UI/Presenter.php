@@ -98,6 +98,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	private ?array $globalStateSinces;
 	private string $action = '';
 	private string $view = '';
+	private bool $forwarded = false;
 	private string|bool $layout = '';
 	private \stdClass $payload;
 	private string $signalReceiver;
@@ -165,6 +166,12 @@ abstract class Presenter extends Control implements Application\IPresenter
 	}
 
 
+	public function isForwarded(): bool
+	{
+		return $this->forwarded || $this->request->isMethod($this->request::FORWARD);
+	}
+
+
 	/********************* interface IPresenter ****************d*g**/
 
 
@@ -194,7 +201,14 @@ abstract class Presenter extends Control implements Application\IPresenter
 			}
 
 			// calls $this->action<Action>()
-			$this->tryCall(static::formatActionMethod($this->action), $this->params);
+			try {
+				actionMethod:
+				$this->tryCall(static::formatActionMethod($this->action), $this->params);
+			} catch (Application\SwitchException $e) {
+				$this->changeAction($e->getMessage());
+				$this->autoCanonicalize = false;
+				goto actionMethod;
+			}
 
 			// autoload components
 			foreach ($this->globalParams as $id => $foo) {
@@ -217,12 +231,20 @@ abstract class Presenter extends Control implements Application\IPresenter
 			$this->beforeRender();
 			Arrays::invoke($this->onRender, $this);
 			// calls $this->render<View>()
-			$this->tryCall(static::formatRenderMethod($this->view), $this->params);
+			try {
+				renderMethod:
+				$this->tryCall(static::formatRenderMethod($this->view), $this->params);
+			} catch (Application\SwitchException $e) {
+				$this->setView($e->getMessage());
+				goto renderMethod;
+			}
 			$this->afterRender();
 
 			// finish template rendering
 			$this->sendTemplate();
 
+		} catch (Application\SwitchException $e) {
+			throw new \LogicException('Switch is only allowed inside action*() or render*() method.', 0, $e);
 		} catch (Application\AbortException) {
 		}
 
@@ -396,7 +418,17 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function changeAction(string $action): void
 	{
+		$this->forwarded = true;
 		$this->action = $this->view = $action;
+	}
+
+
+	/**
+	 * Switch from current action or render method to another.
+	 */
+	public function switch(string $action): never
+	{
+		throw new Application\SwitchException($action);
 	}
 
 
@@ -414,6 +446,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function setView(string $view): static
 	{
+		$this->forwarded = true;
 		$this->view = $view;
 		return $this;
 	}
@@ -1193,6 +1226,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		}
 
 		$this->changeAction($action);
+		$this->forwarded = false;
 
 		// init $this->signalReceiver and key 'signal' in appropriate params array
 		$this->signalReceiver = $this->getUniqueId();

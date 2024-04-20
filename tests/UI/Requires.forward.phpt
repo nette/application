@@ -41,6 +41,22 @@ class TestForwardViewPresenter extends Nette\Application\UI\Presenter
 }
 
 
+class TestSwitchViewPresenter extends Nette\Application\UI\Presenter
+{
+	public function actionDefault(): void
+	{
+		$this->switch('switch');
+	}
+
+
+	#[Requires(forward: true)]
+	public function actionSwitch(): void
+	{
+		$this->terminate();
+	}
+}
+
+
 // forwarded request
 $presenter = createPresenter(TestForwardPresenter::class);
 Assert::noError(
@@ -64,4 +80,17 @@ Assert::exception(
 	fn() => $presenter->run(new Application\Request('', Http\Request::Get, ['action' => 'forward'])),
 	Application\BadRequestException::class,
 	'Forwarded request is required by TestForwardViewPresenter::renderForward()',
+);
+
+
+// switched view
+$presenter = createPresenter(TestSwitchViewPresenter::class);
+Assert::noError(
+	fn() => $presenter->run(new Application\Request('', Http\Request::Get)),
+);
+
+Assert::exception(
+	fn() => $presenter->run(new Application\Request('', Http\Request::Get, ['action' => 'switch'])),
+	Application\BadRequestException::class,
+	'Forwarded request is required by TestSwitchViewPresenter::actionSwitch()',
 );
