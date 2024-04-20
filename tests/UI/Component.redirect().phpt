@@ -36,7 +36,7 @@ $presenter->setParent(null, 'test');
 $presenter->injectPrimary(
 	new Http\Request(new Http\UrlScript('http://localhost')),
 	new Http\Response,
-	null,
+	new Application\PresenterFactory,
 	new Application\Routers\SimpleRouter,
 );
 

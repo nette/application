@@ -90,6 +90,7 @@ $httpRequest->shouldReceive('getPost')->andReturn([]);
 $httpRequest->shouldReceive('getFiles')->andReturn([]);
 $httpRequest->shouldReceive('isSecured')->andReturn(false);
 $httpRequest->shouldReceive('isAjax')->andReturn(false);
+$httpRequest->shouldReceive('getUrl')->andReturn(new Nette\Http\UrlScript);
 
 $httpResponse = Mockery::mock(Nette\Http\IResponse::class);
 $httpResponse->shouldIgnoreMissing();

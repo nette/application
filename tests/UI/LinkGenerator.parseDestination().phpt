@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
+use Nette\Application\LinkGenerator;
 use Nette\Application\UI\InvalidLinkException;
-use Nette\Application\UI\Presenter;
 use Tester\Assert;
 
 
@@ -16,7 +16,7 @@ Assert::same([
 	'signal' => false,
 	'args' => null,
 	'fragment' => '',
-], Presenter::parseDestination('a:b'));
+], LinkGenerator::parseDestination('a:b'));
 
 Assert::same([
 	'absolute' => false,
@@ -24,7 +24,7 @@ Assert::same([
 	'signal' => true,
 	'args' => null,
 	'fragment' => '',
-], Presenter::parseDestination('a:b!'));
+], LinkGenerator::parseDestination('a:b!'));
 
 Assert::same([
 	'absolute' => true,
@@ -32,7 +32,7 @@ Assert::same([
 	'signal' => false,
 	'args' => null,
 	'fragment' => '',
-], Presenter::parseDestination('//a:b'));
+], LinkGenerator::parseDestination('//a:b'));
 
 Assert::same([
 	'absolute' => false,
@@ -40,7 +40,7 @@ Assert::same([
 	'signal' => false,
 	'args' => null,
 	'fragment' => '#fragment',
-], Presenter::parseDestination('a:b#fragment'));
+], LinkGenerator::parseDestination('a:b#fragment'));
 
 Assert::same([
 	'absolute' => false,
@@ -48,7 +48,7 @@ Assert::same([
 	'signal' => false,
 	'args' => [],
 	'fragment' => '#fragment',
-], Presenter::parseDestination('a:b?#fragment'));
+], LinkGenerator::parseDestination('a:b?#fragment'));
 
 Assert::same([
 	'absolute' => false,
@@ -56,9 +56,9 @@ Assert::same([
 	'signal' => false,
 	'args' => ['a' => 'b', 'c' => 'd'],
 	'fragment' => '#fragment',
-], Presenter::parseDestination('a:b?a=b&c=d#fragment'));
+], LinkGenerator::parseDestination('a:b?a=b&c=d#fragment'));
 
 Assert::exception(
-	fn() => Presenter::parseDestination(''),
+	fn() => LinkGenerator::parseDestination(''),
 	InvalidLinkException::class,
 );

@@ -290,7 +290,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 			$args = func_num_args() < 3 && is_array($args)
 				? $args
 				: array_slice(func_get_args(), 1);
-			return $this->getPresenter()->createRequest($this, $destination, $args, 'link');
+			return $this->getPresenter()->getLinkGenerator()->createRequest($this, $destination, $args, 'link');
 
 		} catch (InvalidLinkException $e) {
 			return $this->getPresenter()->handleInvalidLink($e);
@@ -324,7 +324,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 			$args = func_num_args() < 3 && is_array($args)
 				? $args
 				: array_slice(func_get_args(), 1);
-			$this->getPresenter()->createRequest($this, $destination, $args, 'test');
+			$this->getPresenter()->getLinkGenerator()->createRequest($this, $destination, $args, 'test');
 		}
 
 		return $this->getPresenter()->getLastCreatedRequestFlag('current');
@@ -345,7 +345,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 			: array_slice(func_get_args(), 1);
 		$presenter = $this->getPresenter();
 		$presenter->saveGlobalState();
-		$presenter->redirectUrl($presenter->createRequest($this, $destination, $args, 'redirect'));
+		$presenter->redirectUrl($presenter->getLinkGenerator()->createRequest($this, $destination, $args, 'redirect'));
 	}
 
 
@@ -363,7 +363,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 			: array_slice(func_get_args(), 1);
 		$presenter = $this->getPresenter();
 		$presenter->redirectUrl(
-			$presenter->createRequest($this, $destination, $args, 'redirect'),
+			$presenter->getLinkGenerator()->createRequest($this, $destination, $args, 'redirect'),
 			Nette\Http\IResponse::S301_MovedPermanently,
 		);
 	}

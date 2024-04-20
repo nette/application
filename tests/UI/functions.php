@@ -9,7 +9,7 @@ function createPresenter(string $class, ...$options): Nette\Application\UI\Prese
 	$presenter->injectPrimary(
 		new Nette\Http\Request(new Nette\Http\UrlScript, ...$options),
 		new Nette\Http\Response,
-		null,
+		new Nette\Application\PresenterFactory,
 		new Nette\Application\Routers\SimpleRouter,
 	);
 	$presenter->autoCanonicalize = false;
