@@ -97,7 +97,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 			->setType(Nette\Application\IPresenterFactory::class)
 			->setFactory(Nette\Application\PresenterFactory::class, [new Definitions\Statement(
 				Nette\Bridges\ApplicationDI\PresenterFactoryCallback::class,
-				[1 => $this->invalidLinkMode, $touch ?? null],
+				[1 => $touch ?? null],
 			)]);
 
 		if ($config->mapping) {
