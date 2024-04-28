@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace Nette\Application\UI;
 
-use Nette;
 use Nette\Application\Attributes;
 use Nette\Utils\Reflection;
 
@@ -110,45 +109,6 @@ final class ComponentReflection extends \ReflectionClass
 		}
 
 		return $components;
-	}
-
-
-	/**
-	 * Saves state information for next request.
-	 */
-	public function saveState(Component $component, array &$params): void
-	{
-		$tree = Nette\Application\Helpers::getClassesAndTraits($component::class);
-
-		foreach ($this->getPersistentParams() as $name => $meta) {
-			if (isset($params[$name])) {
-				// injected value
-
-			} elseif (
-				array_key_exists($name, $params) // nulls are skipped
-				|| (isset($meta['since']) && !isset($tree[$meta['since']])) // not related
-				|| !isset($component->$name)
-			) {
-				continue;
-
-			} else {
-				$params[$name] = $component->$name; // object property value
-			}
-
-			if (!ParameterConverter::convertType($params[$name], $meta['type'])) {
-				throw new InvalidLinkException(sprintf(
-					"Value passed to persistent parameter '%s' in %s must be %s, %s given.",
-					$name,
-					$component instanceof Presenter ? 'presenter ' . $component->getName() : "component '{$component->getUniqueId()}'",
-					$meta['type'],
-					get_debug_type($params[$name]),
-				));
-			}
-
-			if ($params[$name] === $meta['def'] || ($meta['def'] === null && $params[$name] === '')) {
-				$params[$name] = null; // value transmit is unnecessary
-			}
-		}
 	}
 
 

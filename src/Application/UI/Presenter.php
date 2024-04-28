@@ -314,7 +314,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		try {
 			$this->redirect('this');
 		} catch (InvalidLinkException $e) {
-			throw new Nette\Application\BadRequestException($e->getMessage());
+			$this->error($e->getMessage());
 		}
 	}
 
@@ -788,8 +788,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Attempts to cache the sent entity by its last modification date.
-	 * @param  string  $etag  strong entity tag validator
-	 * @param  string  $expire  like '20 minutes'
+	 * @param  ?string  $etag  strong entity tag validator
+	 * @param  ?string  $expire  like '20 minutes'
 	 * @throws Nette\Application\AbortException
 	 */
 	public function lastModified(
@@ -859,9 +859,9 @@ abstract class Presenter extends Control implements Application\IPresenter
 		$session = $this->getSession('Nette.Application/requests');
 		do {
 			$key = Nette\Utils\Random::generate(5);
-		} while (isset($session[$key]));
+		} while ($session->get($key));
 
-		$session[$key] = [$this->user?->getId(), $this->request];
+		$session->set($key, [$this->user?->getId(), $this->request]);
 		$session->setExpiration($expiration, $key);
 		return $key;
 	}
@@ -873,12 +873,13 @@ abstract class Presenter extends Control implements Application\IPresenter
 	public function restoreRequest(string $key): void
 	{
 		$session = $this->getSession('Nette.Application/requests');
-		if (!isset($session[$key]) || ($session[$key][0] !== null && $session[$key][0] !== $this->getUser()->getId())) {
+		$data = $session->get($key);
+		if (!$data || ($data[0] !== null && $data[0] !== $this->getUser()->getId())) {
 			return;
 		}
 
-		$request = clone $session[$key][1];
-		unset($session[$key]);
+		$request = clone $data[1];
+		$session->remove($key);
 		$params = $request->getParameters();
 		$params[self::FlashKey] = $this->getFlashKey();
 		$request->setParameters($params);
