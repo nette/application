@@ -114,7 +114,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 		try {
 			$args = ParameterConverter::toArguments($rm, $params);
 		} catch (Nette\InvalidArgumentException $e) {
-			throw new Nette\Application\BadRequestException($e->getMessage());
+			$this->error($e->getMessage());
 		}
 
 		$rm->invokeArgs($this, $args);
@@ -152,7 +152,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 		foreach ($reflection->getParameters() as $name => $meta) {
 			if (isset($params[$name])) { // nulls are ignored
 				if (!ParameterConverter::convertType($params[$name], $meta['type'])) {
-					throw new Nette\Application\BadRequestException(sprintf(
+					$this->error(sprintf(
 						"Value passed to persistent parameter '%s' in %s must be %s, %s given.",
 						$name,
 						$this instanceof Presenter ? 'presenter ' . $this->getName() : "component '{$this->getUniqueId()}'",
@@ -314,7 +314,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 
 	/**
 	 * Determines whether it links to the current page.
-	 * @param  string   $destination in format "[[[module:]presenter:]action | signal! | this]"
+	 * @param  ?string   $destination in format "[[[module:]presenter:]action | signal! | this]"
 	 * @param  array|mixed  $args
 	 * @throws InvalidLinkException
 	 */

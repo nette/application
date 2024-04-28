@@ -34,13 +34,13 @@ test('ok', function () {
 			return $sessionSectionMock;
 		});
 
-	$sessionSectionMock->shouldReceive('offsetExists')
+	$sessionSectionMock->shouldReceive('get')
 		->andReturnUsing(function ($name) use (&$testedKeyExistence) {
 			$testedKeyExistence = $name;
 			return false;
 		});
 
-	$sessionSectionMock->shouldReceive('offsetSet')
+	$sessionSectionMock->shouldReceive('set')
 		->andReturnUsing(function ($name, $value) use (&$storedKey, &$storedValue) {
 			$storedKey = $name;
 			$storedValue = $value;
@@ -90,13 +90,13 @@ test('no user', function () {
 			return $sessionSectionMock;
 		});
 
-	$sessionSectionMock->shouldReceive('offsetExists')
+	$sessionSectionMock->shouldReceive('get')
 		->andReturnUsing(function ($name) use (&$testedKeyExistence) {
 			$testedKeyExistence = $name;
 			return false;
 		});
 
-	$sessionSectionMock->shouldReceive('offsetSet')
+	$sessionSectionMock->shouldReceive('set')
 		->andReturnUsing(function ($name, $value) use (&$storedKey, &$storedValue) {
 			$storedKey = $name;
 			$storedValue = $value;
