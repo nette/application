@@ -30,14 +30,16 @@ final class PresenterFactoryCallback
 	{
 		$services = $this->container->findByType($class);
 		if (count($services) > 1) {
-			$exact = array_keys(array_map($this->container->getServiceType(...), $services), $class, strict: true);
-			if (count($exact) === 1) {
-				return $this->container->createService($services[$exact[0]]);
-			}
+			$services = array_keys(array_map($this->container->getServiceType(...), $services), $class, strict: true);
+		}
 
+		if (count($services) === 1) {
+			return $this->container->createService($services[0]);
+
+		} elseif (count($services) > 1) {
 			throw new Nette\Application\InvalidPresenterException("Multiple services of type $class found: " . implode(', ', $services) . '.');
 
-		} elseif (!$services) {
+		} else {
 			if ($this->touchToRefresh) {
 				touch($this->touchToRefresh);
 			}
@@ -59,7 +61,5 @@ final class PresenterFactoryCallback
 
 			return $presenter;
 		}
-
-		return $this->container->createService($services[0]);
 	}
 }
