@@ -20,7 +20,6 @@ final class PresenterFactoryCallback
 {
 	public function __construct(
 		private readonly Nette\DI\Container $container,
-		private readonly int $invalidLinkMode,
 		private readonly ?string $touchToRefresh,
 	) {
 	}
@@ -40,25 +39,13 @@ final class PresenterFactoryCallback
 			return $this->container->createService($services[0]);
 		}
 
-		if ($this->touchToRefresh) {
+		if ($this->touchToRefresh && class_exists($class)) {
 			touch($this->touchToRefresh);
+			header('Refresh: 3');
+			echo "The DI container does not know the $class class. I will refresh it in 3 seconds.";
+			exit;
 		}
 
-		try {
-			$presenter = $this->container->createInstance($class);
-			$this->container->callInjects($presenter);
-		} catch (Nette\DI\MissingServiceException | Nette\DI\ServiceCreationException $e) {
-			if ($this->touchToRefresh && class_exists($class)) {
-				throw new \Exception("Refresh your browser. New presenter $class was found.", 0, $e);
-			}
-
-			throw $e;
-		}
-
-		if ($presenter instanceof Nette\Application\UI\Presenter && !isset($presenter->invalidLinkMode)) {
-			$presenter->invalidLinkMode = $this->invalidLinkMode;
-		}
-
-		return $presenter;
+		throw new Nette\Application\InvalidPresenterException("No services of type $class found.");
 	}
 }
