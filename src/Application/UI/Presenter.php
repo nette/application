@@ -788,8 +788,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Attempts to cache the sent entity by its last modification date.
-	 * @param  string  $etag  strong entity tag validator
-	 * @param  string  $expire  like '20 minutes'
+	 * @param  ?string  $etag  strong entity tag validator
+	 * @param  ?string  $expire  like '20 minutes'
 	 * @throws Nette\Application\AbortException
 	 */
 	public function lastModified(

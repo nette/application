@@ -314,7 +314,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 
 	/**
 	 * Determines whether it links to the current page.
-	 * @param  string   $destination in format "[[[module:]presenter:]action | signal! | this]"
+	 * @param  ?string   $destination in format "[[[module:]presenter:]action | signal! | this]"
 	 * @param  array|mixed  $args
 	 * @throws InvalidLinkException
 	 */
