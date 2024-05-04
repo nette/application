@@ -134,7 +134,10 @@ final class RoutingPanel implements Tracy\IBarPanel
 			if (isset($params[Presenter::SignalKey])) {
 				return $rc->getSignalMethod($params[Presenter::SignalKey]);
 			} elseif (isset($params[Presenter::ActionKey])) {
-				return $rc->getActionRenderMethod($params[Presenter::ActionKey]);
+				$method = $rc->getActionRenderMethod($params[Presenter::ActionKey]);
+				if($method){
+					return $method;
+				}
 			}
 		}
 
