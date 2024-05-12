@@ -313,7 +313,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 
 		$re = $class::formatActionMethod('') . '.|' . $class::formatRenderMethod('') . '.|' . $class::formatSignalMethod('') . '.';
 		foreach ($rc->getMethods() as $rm) {
-			if (preg_match("#^(?!handleInvalidLink)($re)#", $rm->getName()) && (!$rm->isPublic() || $rm->isStatic())) {
+			if (preg_match("#^$re#", $rm->getName()) && (!$rm->isPublic() || $rm->isStatic())) {
 				throw new Nette\InvalidStateException(sprintf(
 					'Method %s: this method must be public non-static.',
 					Reflection::toString($rm),
