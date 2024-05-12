@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 use Nette\Application;
 use Nette\Http;
-use Nette\Security;
 use Tester\Assert;
 
 
@@ -23,112 +22,48 @@ class TestPresenter extends Application\UI\Presenter
 	}
 }
 
-class MockSession extends Http\Session
-{
-	public $testSection;
+
+test('ok', function () {
+	$testedKeyExistence = $storedKey = $storedValue = $testExpiration = $testExpirationVariables = null;
+
+	$sessionSectionMock = Mockery::mock(Nette\Http\SessionSection::class);
+	$sessionSectionMock->shouldReceive('setExpiration')
+		->andReturnUsing(function ($expiration, $variables = null) use (&$testExpiration, &$testExpirationVariables, $sessionSectionMock) {
+			$testExpiration = $expiration;
+			$testExpirationVariables = $variables;
+			return $sessionSectionMock;
+		});
+
+	$sessionSectionMock->shouldReceive('offsetExists')
+		->andReturnUsing(function ($name) use (&$testedKeyExistence) {
+			$testedKeyExistence = $name;
+			return false;
+		});
+
+	$sessionSectionMock->shouldReceive('offsetSet')
+		->andReturnUsing(function ($name, $value) use (&$storedKey, &$storedValue) {
+			$storedKey = $name;
+			$storedValue = $value;
+		});
+
+	$sessionMock = Mockery::mock(Nette\Http\Session::class);
+	$sessionMock->shouldReceive('getSection')
+		->andReturn($sessionSectionMock);
+
+	$userMock = Mockery::mock(Nette\Security\User::class);
+	$userMock->shouldReceive('getId')
+		->andReturn('test_id');
 
 
-	public function __construct()
-	{
-	}
-
-
-	public function getSection(
-		string $section,
-		string $class = Nette\Http\SessionSection::class,
-	): Nette\Http\SessionSection
-	{
-		return $this->testSection;
-	}
-}
-
-class MockSessionSection extends Nette\Http\SessionSection
-{
-	public $testedKeyExistence;
-
-	public $storedKey;
-
-	public $storedValue;
-
-	public $testExpiration;
-
-	public $testExpirationVariables;
-
-
-	public function __construct()
-	{
-	}
-
-
-	public function __isset(string $name): bool
-	{
-		$this->testedKeyExistence = $name;
-		return false;
-	}
-
-
-	public function __set(string $name, $value): void
-	{
-		$this->storedKey = $name;
-		$this->storedValue = $value;
-	}
-
-
-	public function setExpiration(?string $expiraton, string|array|null $variables = null): static
-	{
-		$this->testExpiration = $expiraton;
-		$this->testExpirationVariables = $variables;
-		return $this;
-	}
-
-
-	public function offsetExists($name): bool
-	{
-		return $this->__isset($name);
-	}
-
-
-	public function offsetSet($name, $value): void
-	{
-		$this->__set($name, $value);
-	}
-
-
-	public function offsetGet($name): mixed
-	{
-	}
-
-
-	public function offsetUnset($name): void
-	{
-	}
-}
-
-class MockUser extends Security\User
-{
-	public function __construct()
-	{
-	}
-
-
-	public function getId(): string|int
-	{
-		return 'test_id';
-	}
-}
-
-test('', function () {
 	$presenter = new TestPresenter;
 	$presenter->injectPrimary(
 		new Http\Request(new Http\UrlScript),
 		new Http\Response,
 		null,
 		new Application\Routers\SimpleRouter,
-		$session = new MockSession,
-		$user = new MockUser,
+		$sessionMock,
+		$userMock,
 	);
-
-	$section = $session->testSection = new MockSessionSection($session);
 
 	$applicationRequest = new Application\Request('', '', []);
 	$presenter->run($applicationRequest);
@@ -136,24 +71,50 @@ test('', function () {
 	$expiration = '+1 year';
 	$key = $presenter->storeRequest($expiration);
 
-	Assert::same($expiration, $section->testExpiration);
-	Assert::same($key, $section->testExpirationVariables);
-	Assert::same($key, $section->testedKeyExistence);
-	Assert::same($key, $section->storedKey);
-	Assert::same([$user->getId(), $applicationRequest], $section->storedValue);
+	Assert::same($expiration, $testExpiration);
+	Assert::same($key, $testExpirationVariables);
+	Assert::same($key, $testedKeyExistence);
+	Assert::same($key, $storedKey);
+	Assert::same([$userMock->getId(), $applicationRequest], $storedValue);
 });
 
-test('', function () {
+
+test('no user', function () {
+	$testedKeyExistence = $storedKey = $storedValue = $testExpiration = $testExpirationVariables = null;
+
+	$sessionSectionMock = Mockery::mock(Nette\Http\SessionSection::class);
+	$sessionSectionMock->shouldReceive('setExpiration')
+		->andReturnUsing(function ($expiration, $variables = null) use (&$testExpiration, &$testExpirationVariables, $sessionSectionMock) {
+			$testExpiration = $expiration;
+			$testExpirationVariables = $variables;
+			return $sessionSectionMock;
+		});
+
+	$sessionSectionMock->shouldReceive('offsetExists')
+		->andReturnUsing(function ($name) use (&$testedKeyExistence) {
+			$testedKeyExistence = $name;
+			return false;
+		});
+
+	$sessionSectionMock->shouldReceive('offsetSet')
+		->andReturnUsing(function ($name, $value) use (&$storedKey, &$storedValue) {
+			$storedKey = $name;
+			$storedValue = $value;
+		});
+
+	$sessionMock = Mockery::mock(Nette\Http\Session::class);
+	$sessionMock->shouldReceive('getSection')
+		->andReturn($sessionSectionMock);
+
+
 	$presenter = new TestPresenter;
 	$presenter->injectPrimary(
 		new Http\Request(new Http\UrlScript),
 		new Http\Response,
 		null,
 		new Application\Routers\SimpleRouter,
-		$session = new MockSession,
+		$sessionMock,
 	);
-
-	$section = $session->testSection = new MockSessionSection($session);
 
 	$applicationRequest = new Application\Request('', '', []);
 	$presenter->run($applicationRequest);
@@ -161,9 +122,9 @@ test('', function () {
 	$expiration = '+1 year';
 	$key = $presenter->storeRequest($expiration);
 
-	Assert::same($expiration, $section->testExpiration);
-	Assert::same($key, $section->testExpirationVariables);
-	Assert::same($key, $section->testedKeyExistence);
-	Assert::same($key, $section->storedKey);
-	Assert::same([null, $applicationRequest], $section->storedValue);
+	Assert::same($expiration, $testExpiration);
+	Assert::same($key, $testExpirationVariables);
+	Assert::same($key, $testedKeyExistence);
+	Assert::same($key, $storedKey);
+	Assert::same([null, $applicationRequest], $storedValue);
 });
