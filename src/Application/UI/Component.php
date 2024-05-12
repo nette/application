@@ -105,7 +105,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 		if (!$rc->hasMethod($method)) {
 			return false;
 		} elseif (!$rc->hasCallableMethod($method)) {
-			throw new Nette\InvalidStateException('Method ' . Nette\Utils\Reflection::toString($rc->getMethod($method)) . ' is not callable.');
+			$this->error('Method ' . Nette\Utils\Reflection::toString($rc->getMethod($method)) . ' is not callable.');
 		}
 
 		$rm = $rc->getMethod($method);
