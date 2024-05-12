@@ -11,9 +11,11 @@ namespace Nette\Bridges\ApplicationDI;
 
 use Composer\Autoload\ClassLoader;
 use Nette;
+use Nette\Application\Attributes;
 use Nette\Application\UI;
 use Nette\DI\Definitions;
 use Nette\Schema\Expect;
+use Nette\Utils\Reflection;
 use Tracy;
 
 
@@ -24,6 +26,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 {
 	private readonly array $scanDirs;
 	private int $invalidLinkMode;
+	private array $checked = [];
 
 
 	public function __construct(
@@ -135,6 +138,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 
 		$counter = 0;
 		foreach ($this->findPresenters() as $class) {
+			$this->checkPresenter($class);
 			if (empty($all[$class])) {
 				$all[$class] = $builder->addDefinition($this->prefix((string) ++$counter))
 					->setType($class);
@@ -246,5 +250,42 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 		}
 
 		return $res . "use Nette;\n\n\nclass $class extends Nette\\Application\\UI\\Presenter\n{\n\$END\$\n}\n";
+	}
+
+
+	private function checkPresenter(string $class): void
+	{
+		if (!is_subclass_of($class, UI\Presenter::class) || isset($this->checked[$class])) {
+			return;
+		}
+		$this->checked[$class] = true;
+
+		$rc = new \ReflectionClass($class);
+		if ($rc->getParentClass()) {
+			$this->checkPresenter($rc->getParentClass()->getName());
+		}
+
+		foreach ($rc->getProperties() as $rp) {
+			if (($rp->getAttributes($attr = Attributes\Parameter::class) || $rp->getAttributes($attr = Attributes\Persistent::class))
+				&& (!$rp->isPublic() || $rp->isStatic() || $rp->isReadOnly())
+			) {
+				throw new Nette\InvalidStateException(sprintf('Property %s: attribute %s can be used only with public non-static property.', Reflection::toString($rp), $attr));
+			}
+		}
+
+		$re = $class::formatActionMethod('') . '.|' . $class::formatRenderMethod('') . '.|' . $class::formatSignalMethod('') . '.';
+		foreach ($rc->getMethods() as $rm) {
+			if (preg_match("#^(?!handleInvalidLink)($re)#", $rm->getName()) && (!$rm->isPublic() || $rm->isStatic())) {
+				throw new Nette\InvalidStateException(sprintf('Method %s: this method must be public non-static.', Reflection::toString($rm)));
+			} elseif (preg_match('#^createComponent.#', $rm->getName()) && ($rm->isPrivate() || $rm->isStatic())) {
+				throw new Nette\InvalidStateException(sprintf('Method %s: this method must be non-private non-static.', Reflection::toString($rm)));
+			} elseif ($rm->getAttributes(Attributes\Requires::class, \ReflectionAttribute::IS_INSTANCEOF)
+				&& !preg_match("#^$re|createComponent.#", $rm->getName())
+			) {
+				throw new Nette\InvalidStateException(sprintf('Method %s: attribute %s can be used only with action, render, handle or createComponent methods.', Reflection::toString($rm), Attributes\Requires::class));
+			} elseif ($rm->getAttributes(Attributes\Deprecated::class) && !preg_match("#^$re#", $rm->getName())) {
+				throw new Nette\InvalidStateException(sprintf('Method %s: attribute %s can be used only with action, render or handle methods.', Reflection::toString($rm), Attributes\Deprecated::class));
+			}
+		}
 	}
 }
