@@ -829,7 +829,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * Invalid link handler. Descendant can override this method to change default behaviour.
 	 * @throws InvalidLinkException
 	 */
-	protected function handleInvalidLink(InvalidLinkException $e): string
+	protected function processInvalidLink(InvalidLinkException $e): string
 	{
 		if ($this->invalidLinkMode & self::InvalidLinkException) {
 			throw $e;
