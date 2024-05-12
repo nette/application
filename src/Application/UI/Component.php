@@ -293,7 +293,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 			return $this->getPresenter()->getLinkGenerator()->link($destination, $args, $this, 'link');
 
 		} catch (InvalidLinkException $e) {
-			return $this->getPresenter()->handleInvalidLink($e);
+			return $this->getPresenter()->processInvalidLink($e);
 		}
 	}
 
