@@ -152,7 +152,7 @@ class TestPresenter extends Application\UI\Presenter
 		$this->absoluteUrls = false;
 
 		// persistent params
-		Assert::same('/index.php?action=params&presenter=Test', $this->link('params', ['pint' => $this->pint, 'p' => '']));
+		Assert::same('/index.php?p=&action=params&presenter=Test', $this->link('params', ['pint' => $this->pint, 'p' => '']));
 		Assert::same(
 			'/index.php?pint=20&parr%5B0%5D=1&action=params&presenter=Test',
 			$this->link('params', ['pint' => $this->pint * 2, 'pbool' => true, 'parr' => [1]]),
@@ -245,7 +245,10 @@ class TestPresenter extends Application\UI\Presenter
 			'/index.php?mycontrol-x=1&mycontrol-y=0&action=default&do=mycontrol-click&presenter=Test',
 			$this['mycontrol']->link('click', true, false),
 		);
-		Assert::same('/index.php?action=default&do=mycontrol-click&presenter=Test', $this['mycontrol']->link('click', null, ''));
+		Assert::same(
+			'/index.php?mycontrol-y=&action=default&do=mycontrol-click&presenter=Test',
+			$this['mycontrol']->link('click', null, ''),
+		);
 		Assert::same(
 			'#error: Passed more parameters than method TestControl::handleClick() expects.',
 			$this['mycontrol']->link('click', 1, 2, 3),
@@ -317,7 +320,7 @@ class TestPresenter extends Application\UI\Presenter
 			$this->link('params', ['int' => 1, 'bool' => true, 'str' => 'abc', 'arr' => '1']),
 		);
 		Assert::same(
-			'/index.php?int=0&bool=0&action=params&presenter=Test',
+			'/index.php?int=0&bool=0&str=&arr=&action=params&presenter=Test',
 			$this->link('params', ['int' => 0, 'bool' => false, 'str' => '', 'arr' => '']),
 		);
 		Assert::same('/index.php?action=params&presenter=Test', $this->link('params', ['int' => new stdClass]));
