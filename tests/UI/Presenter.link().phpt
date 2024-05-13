@@ -113,7 +113,7 @@ class TestPresenter extends Application\UI\Presenter
 		$this->absoluteUrls = false;
 
 		// persistent params
-		Assert::same('/index.php?action=params&presenter=Test', $this->link('params', ['pint' => $this->pint, 'p' => '']));
+		Assert::same('/index.php?p=&action=params&presenter=Test', $this->link('params', ['pint' => $this->pint, 'p' => '']));
 		Assert::same('/index.php?pint=20&parr%5B0%5D=1&action=params&presenter=Test', $this->link('params', ['pint' => $this->pint * 2, 'pbool' => true, 'parr' => [1]]));
 		Assert::same(['pint' => 20, 'pbool' => null, 'parr' => [1], 'action' => 'params'], $this->getLastCreatedRequest()->getParameters());
 		Assert::same('/index.php?pint=1&pbool=0&action=params&presenter=Test', $this->link('params', ['pint' => true, 'pbool' => '0', 'parr' => []]));
@@ -150,8 +150,8 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same('/index.php?mycontrol-x=0a&mycontrol-y=1a&action=default&do=mycontrol-click&presenter=Test', $this['mycontrol']->link('click', '0a', '1a'));
 		Assert::same('/index.php?mycontrol-x=1&action=default&do=mycontrol-click&presenter=Test', $this['mycontrol']->link('click', [1]));
 		Assert::same('#error: Argument $x passed to TestControl::handleClick() must be scalar, array given.', $this['mycontrol']->link('click', [1], (object) [1]));
-		Assert::same('/index.php?mycontrol-x=1&mycontrol-y=0&action=default&do=mycontrol-click&presenter=Test', $this['mycontrol']->link('click', true, false));
-		Assert::same('/index.php?action=default&do=mycontrol-click&presenter=Test', $this['mycontrol']->link('click', null, ''));
+		Assert::same('/index.php?mycontrol-x=1&mycontrol-y=0&action=default&do=mycontrol-click&presenter=Test', $this['mycontrol']->link('click', TRUE, FALSE));
+		Assert::same('/index.php?mycontrol-y=&action=default&do=mycontrol-click&presenter=Test', $this['mycontrol']->link('click', NULL, ''));
 		Assert::same('#error: Passed more parameters than method TestControl::handleClick() expects.', $this['mycontrol']->link('click', 1, 2, 3));
 		Assert::same('http://localhost/index.php?mycontrol-x=1&mycontrol-round=1&action=default&presenter=Test#frag', $this['mycontrol']->link('//this#frag', ['x' => 1, 'round' => 1]));
 		Assert::same('/index.php?mycontrol-x=1&mycontrol-y=2&action=default&do=mycontrol-click&presenter=Test', $this->link('mycontrol:click!', ['x' => 1, 'y' => 2, 'round' => 0]));
@@ -166,11 +166,11 @@ class TestPresenter extends Application\UI\Presenter
 
 		// type checking
 		Assert::same('/index.php?action=params&presenter=Test', $this->link('params', []));
-		Assert::same(['pint' => null, 'parr' => null, 'pbool' => null, 'action' => 'params'], $this->getLastCreatedRequest()->getParameters());
-		Assert::same('/index.php?action=params&presenter=Test', $this->link('params', ['int' => null, 'bool' => null, 'str' => null, 'arr' => null]));
-		Assert::same(['int' => null, 'bool' => null, 'str' => null, 'arr' => null, 'pint' => null, 'parr' => null, 'pbool' => null, 'action' => 'params'], $this->getLastCreatedRequest()->getParameters());
-		Assert::same('/index.php?int=1&bool=1&str=abc&arr=1&action=params&presenter=Test', $this->link('params', ['int' => 1, 'bool' => true, 'str' => 'abc', 'arr' => '1']));
-		Assert::same('/index.php?int=0&bool=0&action=params&presenter=Test', $this->link('params', ['int' => 0, 'bool' => false, 'str' => '', 'arr' => '']));
+		Assert::same(['pint' => NULL, 'parr' => NULL, 'pbool' => NULL, 'action' => 'params'], $this->getLastCreatedRequest()->getParameters());
+		Assert::same('/index.php?action=params&presenter=Test', $this->link('params', ['int' => NULL, 'bool' => NULL, 'str' => NULL, 'arr' => NULL]));
+		Assert::same(['int' => NULL, 'bool' => NULL, 'str' => NULL, 'arr' => NULL, 'pint' => NULL, 'parr' => NULL, 'pbool' => NULL, 'action' => 'params'], $this->getLastCreatedRequest()->getParameters());
+		Assert::same('/index.php?int=1&bool=1&str=abc&arr=1&action=params&presenter=Test', $this->link('params', ['int' => 1, 'bool' => TRUE, 'str' => 'abc', 'arr' => '1']));
+		Assert::same('/index.php?int=0&bool=0&str=&arr=&action=params&presenter=Test', $this->link('params', ['int' => 0, 'bool' => FALSE, 'str' => '', 'arr' => '']));
 		Assert::same('/index.php?action=params&presenter=Test', $this->link('params', ['int' => new stdClass]));
 
 		Assert::same('#error: Missing parameter $int required by TestPresenter::actionHints()', $this->link('hints', []));
