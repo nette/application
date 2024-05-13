@@ -124,10 +124,8 @@ final class ParameterConverter
 					: new InvalidLinkException($message);
 			}
 
-			$def = $param->isDefaultValueAvailable()
-				? $param->getDefaultValue()
-				: null;
-			if ($args[$name] === $def || ($def === null && $args[$name] === '')) {
+			$def = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null;
+			if ($args[$name] === $def) {
 				$args[$name] = null; // value transmit is unnecessary
 			}
 		}

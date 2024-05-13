@@ -238,7 +238,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 				));
 			}
 
-			if ($params[$name] === $meta['def'] || ($meta['def'] === null && $params[$name] === '')) {
+			if ($params[$name] === $meta['def']) {
 				$params[$name] = null; // value transmit is unnecessary
 			}
 		}
