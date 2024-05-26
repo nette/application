@@ -39,6 +39,7 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 			'strictTypes' => Expect::bool(false),
 			'strictParsing' => Expect::bool(false),
 			'phpLinter' => Expect::string(),
+			'locale' => Expect::string(),
 		]);
 	}
 
@@ -59,6 +60,9 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 				->addSetup('setTempDirectory', [$this->tempDir])
 				->addSetup('setAutoRefresh', [$this->debugMode])
 				->addSetup('setStrictTypes', [$config->strictTypes]);
+		if ($config->locale) {
+			$latteFactory->addSetup('setLocale', [$config->locale]);
+		}
 
 		if (version_compare(Latte\Engine::VERSION, '3', '<')) {
 			foreach ($config->macros as $macro) {
