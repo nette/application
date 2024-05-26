@@ -9,10 +9,9 @@ declare(strict_types=1);
 
 namespace Nette\Bridges\ApplicationLatte;
 
-use Latte;
 use Nette;
 use Nette\Application\UI;
-use function array_unshift, class_exists, is_a, iterator_to_array, preg_match, preg_replace, property_exists, rtrim, version_compare;
+use function class_exists, is_a, preg_replace, property_exists, rtrim;
 
 
 /**
@@ -29,7 +28,6 @@ class TemplateFactory implements UI\TemplateFactory
 		private readonly LatteFactory $latteFactory,
 		private readonly ?Nette\Http\IRequest $httpRequest = null,
 		private readonly ?Nette\Security\User $user = null,
-		private readonly ?Nette\Caching\Storage $cacheStorage = null,
 		$templateClass = null,
 	) {
 		if ($templateClass && (!class_exists($templateClass) || !is_a($templateClass, Template::class, true))) {
@@ -52,9 +50,7 @@ class TemplateFactory implements UI\TemplateFactory
 		$template = new $class($latte);
 		$presenter = $control?->getPresenterIfExists();
 
-		if (version_compare(Latte\Engine::VERSION, '3', '<')) {
-			$this->setupLatte2($latte, $control, $presenter, $template);
-		} elseif (!Nette\Utils\Arrays::some($latte->getExtensions(), fn($e) => $e instanceof UIExtension)) {
+		if (!Nette\Utils\Arrays::some($latte->getExtensions(), fn($e) => $e instanceof UIExtension)) {
 			$latte->addExtension(new UIExtension($control));
 		}
 
@@ -84,56 +80,5 @@ class TemplateFactory implements UI\TemplateFactory
 		Nette\Utils\Arrays::invoke($this->onCreate, $template);
 
 		return $template;
-	}
-
-
-	private function setupLatte2(
-		Latte\Engine $latte,
-		?UI\Control $control,
-		?UI\Presenter $presenter,
-		Template $template,
-	): void
-	{
-		if ($latte->onCompile instanceof \Traversable) {
-			$latte->onCompile = iterator_to_array($latte->onCompile);
-		}
-
-		array_unshift($latte->onCompile, function (Latte\Engine $latte) use ($control, $template): void {
-			if ($this->cacheStorage) {
-				$latte->getCompiler()->addMacro('cache', new Nette\Bridges\CacheLatte\CacheMacro);
-			}
-
-			UIMacros::install($latte->getCompiler());
-			if (class_exists(Nette\Bridges\FormsLatte\FormMacros::class)) {
-				Nette\Bridges\FormsLatte\FormMacros::install($latte->getCompiler());
-			}
-
-			$control?->templatePrepareFilters($template);
-		});
-
-		$latte->addProvider('cacheStorage', $this->cacheStorage);
-
-		if ($control) {
-			$latte->addProvider('uiControl', $control);
-			$latte->addProvider('uiPresenter', $presenter);
-			$latte->addProvider('snippetBridge', new SnippetBridge($control));
-			if ($presenter) {
-				$header = $presenter->getHttpResponse()->getHeader('Content-Security-Policy')
-					?: $presenter->getHttpResponse()->getHeader('Content-Security-Policy-Report-Only');
-			}
-
-			$nonce = $presenter && preg_match('#\s\'nonce-([\w+/]+=*)\'#', (string) $header, $m) ? $m[1] : null;
-			$latte->addProvider('uiNonce', $nonce);
-		}
-
-		if ($presenter) {
-			$latte->addFunction('isLinkCurrent', [$presenter, 'isLinkCurrent']);
-			$latte->addFunction('isModuleCurrent', [$presenter, 'isModuleCurrent']);
-		}
-
-		$latte->addFilter('modifyDate', fn($time, $delta, $unit = null) => $time
-				? Nette\Utils\DateTime::from($time)->modify($delta . $unit)
-				: null);
-
 	}
 }
