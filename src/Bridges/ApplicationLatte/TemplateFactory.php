@@ -49,10 +49,6 @@ class TemplateFactory implements UI\TemplateFactory
 		$template = new $class($latte);
 		$presenter = $control?->getPresenterIfExists();
 
-		if (!Nette\Utils\Arrays::some($latte->getExtensions(), fn($e) => $e instanceof UIExtension)) {
-			$latte->addExtension(new UIExtension($control));
-		}
-
 		// default parameters
 		$baseUrl = $this->httpRequest
 			? rtrim($this->httpRequest->getUrl()->withoutUserInfo()->getBaseUrl(), '/')
