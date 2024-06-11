@@ -11,10 +11,6 @@ use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
 
-if (version_compare(Latte\Engine::VERSION, '3', '<')) {
-	Tester\Environment::skip('Test for Latte 3');
-}
-
 $response = Mockery::mock(Nette\Http\IResponse::class);
 $response->shouldReceive('getHeader')->with('Content-Security-Policy')->andReturn("hello 'nonce-abcd123==' world");
 
