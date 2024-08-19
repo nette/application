@@ -194,7 +194,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			$this->startup();
 			if (!$this->startupCheck) {
 				$class = static::getReflection()->getMethod('startup')->getDeclaringClass()->getName();
-				throw new Nette\InvalidStateException("Method $class::startup() or its descendant doesn't call parent::startup().");
+				throw new Nette\InvalidStateException("Method $class::startup() or its parents doesn't call parent::startup().");
 			}
 
 			// calls $this->action<Action>()

@@ -158,7 +158,7 @@ final class Request
 	 */
 	public function isMethod(string $method): bool
 	{
-		return strcasecmp((string) $this->method, $method) === 0;
+		return strcasecmp($this->method, $method) === 0;
 	}
 
 

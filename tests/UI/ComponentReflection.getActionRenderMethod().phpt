@@ -13,31 +13,26 @@ class TestPresenter extends Presenter
 {
 	public function actionDefault(): void
 	{
-
 	}
 
 
 	public function renderDefault(): void
 	{
-
 	}
 
 
 	public function actionAltAction(): void
 	{
-
 	}
 
 
 	public function renderAltRender(): void
 	{
-
 	}
 
 
 	public function handleSignal(): void
 	{
-
 	}
 }
 
