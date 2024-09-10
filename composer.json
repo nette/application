@@ -31,7 +31,7 @@
 		"nette/forms": "^3.2",
 		"nette/robot-loader": "^4.0",
 		"nette/security": "^3.2",
-		"latte/latte": "^2.10.2 || ^3.0.12",
+		"latte/latte": "^2.10.2 || ^3.0.18",
 		"tracy/tracy": "^2.9",
 		"mockery/mockery": "^2.0",
 		"phpstan/phpstan-nette": "^1.0",
@@ -42,7 +42,7 @@
 		"nette/di": "<3.2",
 		"nette/forms": "<3.2",
 		"nette/schema": "<1.3",
-		"latte/latte": "<2.7.1 || >=3.0.0 <3.0.12 || >=3.1",
+		"latte/latte": "<2.7.1 || >=3.0.0 <3.0.18 || >=3.1",
 		"tracy/tracy": "<2.9"
 	},
 	"autoload": {

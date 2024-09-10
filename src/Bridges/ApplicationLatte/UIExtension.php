@@ -107,11 +107,9 @@ final class UIExtension extends Latte\Extension
 	public static function findLayoutTemplate(Latte\Runtime\Template $template): ?string
 	{
 		$presenter = $template->global->uiControl ?? null;
-		return $presenter instanceof UI\Presenter
-			&& ($template::Blocks[$template::LayerTop] ?? null)
-			&& !$template->getReferringTemplate()
-				? $presenter->findLayoutTemplateFile()
-				: null;
+		return $presenter instanceof UI\Presenter && !empty($template::Blocks[$template::LayerTop])
+			? $presenter->findLayoutTemplateFile()
+			: null;
 	}
 
 
