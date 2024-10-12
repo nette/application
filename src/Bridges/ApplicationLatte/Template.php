@@ -72,7 +72,7 @@ class Template implements Nette\Application\UI\Template
 	/**
 	 * Registers run-time filter.
 	 */
-	public function addFilter(?string $name, callable $callback): static
+	public function addFilter(string $name, callable $callback): static
 	{
 		$this->latte->addFilter($name, $callback);
 		return $this;
