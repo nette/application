@@ -11,11 +11,12 @@ namespace Nette\Bridges\ApplicationLatte;
 
 use Latte;
 use Nette;
-
+use AllowDynamicProperties;
 
 /**
  * Latte powered template.
  */
+#[AllowDynamicProperties]
 class Template implements Nette\Application\UI\Template
 {
 	private ?string $file = null;
