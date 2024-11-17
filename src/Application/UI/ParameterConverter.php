@@ -160,6 +160,16 @@ final class ParameterConverter
 			return false;
 		}
 
+		if ($type === 'bool') {
+			if ($val === 'true') {
+				$val = true;
+				return true;
+			} elseif ($val === 'false') {
+				$val = false;
+				return true;
+			}
+		}
+
 		$tmp = ($val === false ? '0' : (string) $val);
 		if ($type === 'float') {
 			$tmp = preg_replace('#\.0*$#D', '', $tmp);
