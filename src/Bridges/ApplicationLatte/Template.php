@@ -17,7 +17,7 @@ use function version_compare;
 /**
  * Latte powered template.
  */
-class Template implements Nette\Application\UI\Template
+abstract class Template implements Nette\Application\UI\Template
 {
 	private ?string $file = null;
 	private ?string $blueprint;
