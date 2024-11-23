@@ -22,7 +22,7 @@ class Application
 {
 	public int $maxLoop = 20;
 
-	/** @deprecated exceptions are caught if the error presenter is set */
+	#[\Deprecated('exceptions are caught if the error presenter is set')]
 	public bool $catchExceptions = true;
 	public ?string $errorPresenter = null;
 	public ?string $error4xxPresenter = null;
