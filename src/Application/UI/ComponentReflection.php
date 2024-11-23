@@ -211,7 +211,7 @@ final class ComponentReflection extends \ReflectionClass
 	}
 
 
-	/** @deprecated  */
+	#[\Deprecated]
 	public static function combineArgs(\ReflectionFunctionAbstract $method, array $args): array
 	{
 		return ParameterConverter::toArguments($method, $args);
