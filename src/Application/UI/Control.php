@@ -79,10 +79,7 @@ abstract class Control extends Component implements Renderable
 	}
 
 
-	/**
-	 * Descendant can override this method to customize template compile-time filters.
-	 * @deprecated
-	 */
+	#[\Deprecated]
 	public function templatePrepareFilters(Template $template): void
 	{
 	}
