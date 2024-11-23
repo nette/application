@@ -15,18 +15,14 @@ namespace Nette\Application\UI;
  */
 final class MethodReflection extends \ReflectionMethod
 {
-	/**
-	 * Has method specified annotation?
-	 */
+	#[\Deprecated]
 	public function hasAnnotation(string $name): bool
 	{
 		return (bool) ComponentReflection::parseAnnotation($this, $name);
 	}
 
 
-	/**
-	 * Returns an annotation value.
-	 */
+	#[\Deprecated]
 	public function getAnnotation(string $name): mixed
 	{
 		$res = ComponentReflection::parseAnnotation($this, $name);
