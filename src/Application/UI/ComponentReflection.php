@@ -241,6 +241,7 @@ final class ComponentReflection extends \ReflectionClass
 	 * @param  array<string, mixed>  $args
 	 * @return list<mixed>
 	 */
+	#[\Deprecated]
 	public static function combineArgs(\ReflectionFunctionAbstract $method, array $args): array
 	{
 		return ParameterConverter::toArguments($method, $args);
