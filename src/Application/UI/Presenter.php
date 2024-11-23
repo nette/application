@@ -843,8 +843,10 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * @deprecated @internal
 	 * @param  array<string, mixed>  $args
 	 */
+	#[\Deprecated]
 	protected function createRequest(Component $component, string $destination, array $args, string $mode): ?string
 	{
+		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
 		return $this->linkGenerator->link($destination, $args, $component, $mode);
 	}
 
@@ -853,15 +855,18 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * @deprecated @internal
 	 * @return array{absolute: bool, path: string, signal: bool, args: ?array<string, mixed>, fragment: string}
 	 */
+	#[\Deprecated]
 	public static function parseDestination(string $destination): array
 	{
+		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
 		return LinkGenerator::parseDestination($destination);
 	}
 
 
-	/** @deprecated @internal */
+	#[\Deprecated]
 	protected function requestToUrl(Application\Request $request, ?bool $relative = null): string
 	{
+		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
 		return $this->linkGenerator->requestToUrl($request, $relative ?? !$this->absoluteUrls);
 	}
 
