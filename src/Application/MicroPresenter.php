@@ -124,8 +124,8 @@ final class MicroPresenter implements Application\IPresenter
 		$template->context = $this->context;
 		if ($this->httpRequest) {
 			$url = $this->httpRequest->getUrl();
-			$template->baseUrl = rtrim($url->getBaseUrl(), '/');
-			$template->basePath = rtrim($url->getBasePath(), '/');
+			$template->baseUrl = $url->getBaseUrl();
+			$template->basePath = $url->getBasePath();
 		}
 
 		return $template;
