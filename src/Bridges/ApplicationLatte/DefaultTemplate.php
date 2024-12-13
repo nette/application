@@ -14,9 +14,6 @@ use Nette;
 
 /**
  * Default template for controls and presenters.
- *
- * @method bool isLinkCurrent(string $destination = null, ...$args)
- * @method bool isModuleCurrent(string $module)
  */
 #[\AllowDynamicProperties]
 final class DefaultTemplate extends Template

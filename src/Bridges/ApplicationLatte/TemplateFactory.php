@@ -49,17 +49,15 @@ class TemplateFactory implements UI\TemplateFactory
 		$presenter = $control?->getPresenterIfExists();
 
 		// default parameters
-		$baseUrl = $this->httpRequest
-			? rtrim($this->httpRequest->getUrl()->withoutUserInfo()->getBaseUrl(), '/')
-			: null;
+        $url = $this->httpRequest?->getUrl()->withoutUserInfo();
 		$flashes = $presenter instanceof UI\Presenter && $presenter->hasFlashSession()
 			? (array) $presenter->getFlashSession()->get($control->getParameterId('flash'))
 			: [];
 
 		$params = [
 			'user' => $this->user,
-			'baseUrl' => $baseUrl,
-			'basePath' => $baseUrl ? preg_replace('#https?://[^/]+#A', '', $baseUrl) : null,
+            'baseUrl' => $url?->getBaseUrl(),
+            'basePath' => $url?->getBasePath(),
 			'flashes' => $flashes,
 			'control' => $control,
 			'presenter' => $presenter,
