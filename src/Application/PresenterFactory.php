@@ -108,9 +108,17 @@ class PresenterFactory implements IPresenterFactory
 			throw new InvalidPresenterException("Presenter name must be alphanumeric string, '$presenter' is invalid.");
 		}
 		$parts = explode(':', $presenter);
-		$mapping = isset($parts[1], $this->mapping[$parts[0]])
-			? $this->mapping[array_shift($parts)]
-			: $this->mapping['*'];
+		$mapping = $this->mapping['*'];
+
+        $key = '';
+        foreach ($parts as $part) {
+            $key = $key ? $key . ':' . $part : $part;
+            if (isset($parts[1], $this->mapping[$key])) {
+                $mapping = $this->mapping[$key];
+                $parts = array_slice($parts, count(explode(':', $key)));
+                break;
+            }
+        }
 
 		while ($part = array_shift($parts)) {
 			$mapping[0] .= strtr($mapping[$parts ? 1 : 2], ['**' => "$part\\$part", '*' => $part]);
