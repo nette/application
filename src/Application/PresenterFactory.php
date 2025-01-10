@@ -107,14 +107,26 @@ class PresenterFactory implements IPresenterFactory
 		if (!Nette\Utils\Strings::match($presenter, '#^[a-zA-Z\x7f-\xff][a-zA-Z0-9\x7f-\xff:]*$#D')) {
 			throw new InvalidPresenterException("Presenter name must be alphanumeric string, '$presenter' is invalid.");
 		}
-		$parts = explode(':', $presenter);
-		$mapping = isset($parts[1], $this->mapping[$parts[0]])
-			? $this->mapping[array_shift($parts)]
-			: $this->mapping['*'];
+        $parts = explode(':', $presenter);
 
-		while ($part = array_shift($parts)) {
-			$mapping[0] .= strtr($mapping[$parts ? 1 : 2], ['**' => "$part\\$part", '*' => $part]);
-		}
+        $mapping = $this->mapping['*'];
+
+        $key = $presenter;
+        while (strrpos($key, ':') != false) {
+            $key = substr($key, 0, strrpos($key, ':'));
+
+            if (isset($this->mapping[$key])) {
+                $mapping = $this->mapping[$key];
+
+                $parts = array_slice($parts, substr_count($key, ':') + 1);
+                break;
+            }
+
+        }
+
+        while ($part = array_shift($parts)) {
+            $mapping[0] .= strtr($mapping[$parts ? 1 : 2], ['**' => "$part\\$part", '*' => $part]);
+        }
 
 		return $mapping[0];
 	}
