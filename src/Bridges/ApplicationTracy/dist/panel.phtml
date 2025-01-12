@@ -1,0 +1,185 @@
+<?php
+declare(strict_types=1);
+?>
+<?php use Nette\Application\UI\Presenter ?><?php use Tracy\Dumper ?>
+<style class="tracy-debug">
+	#tracy-debug .nette-RoutingPanel-grid {
+		background: #FDF5CE;
+		display: grid;
+		grid-template-columns: auto 1fr auto auto;
+		border: 1px solid #E6DFBF;
+	}
+
+	#tracy-debug .nette-RoutingPanel-grid-inner,
+	#tracy-debug .nette-RoutingPanel-grid-columns {
+		grid-column: 1 / span 4;
+		display: grid;
+		grid-template-columns: subgrid;
+	}
+
+	#tracy-debug .nette-RoutingPanel-grid-columns:nth-child(2n) {
+		background: rgba(0,0,0,0.02);
+	}
+
+	#tracy-debug .nette-RoutingPanel-grid-header {
+		color: #655E5E;
+		background: #F4F3F1;
+		font-size: 90%;
+		font-weight: bold;
+	}
+
+	#tracy-debug .nette-RoutingPanel-grid-group-header {
+		grid-column: 1 / span 4;
+		font-size: 90%;
+		font-weight: bold;
+		text-align: center;
+	}
+
+	#tracy-debug .nette-RoutingPanel-grid-inner .nette-RoutingPanel-grid-inner {
+		background: #23180007;
+		box-shadow: 0 1px 20px 0px #00000040;
+		border-right: 8px solid #0000002e;
+	}
+
+	#tracy-debug .nette-RoutingPanel-grid-columns > div {
+		border-bottom: 1px solid #95770026;
+		border-right: 1px solid #95770026;
+		padding: 2px 5px;
+	}
+
+	#tracy-debug .nette-RoutingPanel-status-yes {
+		background: #BDE678 !important;
+	}
+
+	#tracy-debug .nette-RoutingPanel-status-may {
+		background: #C1D3FF !important;
+	}
+
+	#tracy-debug .nette-RoutingPanel-status-error {
+		background: #ffd2c3 !important;
+	}
+
+	#tracy-debug .nette-RoutingPanel-symbol {
+		text-align: right;
+	}
+
+	#tracy-debug .nette-RoutingPanel .tracy-dump.tracy-dump {
+		padding: 0;
+		margin: 0;
+		border: none;
+	}
+
+	#tracy-debug .nette-RoutingPanel pre, #tracy-debug .nette-RoutingPanel code {
+		display: inline;
+		background: transparent;
+	}
+
+	#tracy-debug .nette-RoutingPanel-rel {
+		background: #eee;
+		white-space: nowrap;
+	}
+</style>
+
+<h1>
+<?php if ($matched === null): ?>		no route
+<?php elseif (isset($matched[Presenter::PresenterKey])): ?>		<?= Tracy\Helpers::escapeHtml($matched[Presenter::PresenterKey]) ?>
+:<?= Tracy\Helpers::escapeHtml($matched[Presenter::ActionKey] ?? Presenter::DefaultAction) ?>
+
+<?php if (isset($matched[Presenter::SignalKey])): ?>
+		<?= Tracy\Helpers::escapeHtml($matched[Presenter::SignalKey]) ?>
+!
+<?php endif ?>
+<?php endif ?></h1>
+
+<div class="tracy-inner nette-RoutingPanel">
+<div class="tracy-inner-container">
+	<p>
+		<code><?= Tracy\Helpers::escapeHtml($method) ?>
+</code>
+		<code><?= Tracy\Helpers::escapeHtml($url->getBaseUrl()) ?>
+<wbr><span class="nette-RoutingPanel-rel"><?= str_replace(['&amp;', '?'], ['<wbr>&amp;', '<wbr>?'], htmlspecialchars($url->getRelativeUrl())) ?>
+</span></code>
+	</p>
+
+<?php if (is_string($source)): ?>		<p><?= Tracy\Helpers::escapeHtml($source) ?>
+ (class not found)</p>
+<?php elseif ($source): ?>		<p><a href="<?= Tracy\Helpers::escapeHtml(Tracy\Helpers::editorUri($source->getFileName(), $source->getStartLine())) ?>
+"><?= Tracy\Helpers::escapeHtml($source instanceof ReflectionClass ? $source->getName() : $source->getDeclaringClass()->getName() . '::' . $source->getName() . '()') ?>
+</a></p>
+<?php endif ?></div>
+
+<div class="tracy-inner-container">
+<?php if (empty($routes)): ?>		<p>No routes defined.</p>
+<?php else: ?>		<div class="nette-RoutingPanel-grid">
+			<div class="nette-RoutingPanel-grid-columns nette-RoutingPanel-grid-header">
+				<div></div>
+				<div>Mask / Class</div>
+				<div>Defaults</div>
+				<div>Matched as</div>
+			</div>
+
+<?php $_blocks['routeList'] = function ($list, $path = '') use (&$_blocks) { ?>				<div class="nette-RoutingPanel-grid-inner">
+<?php if ($list['domain'] || $list['module']): ?>						<div class="nette-RoutingPanel-grid-group-header">
+<?php if ($list['domain']): ?>
+							domain = <?= Tracy\Helpers::escapeHtml($list['domain']) ?>
+
+<?php endif ?>
+<?php if ($list['module']): ?>
+							module = <?= Tracy\Helpers::escapeHtml($list['module']) ?>
+
+<?php endif ?>
+						</div>
+<?php endif ?><?php $path .= $list['path'] ?><?php foreach ($list['routes'] as $router): ?><?php if (is_array($router)): ?><?php $_blocks['routeList']($router, $path) ?><?php else: ?><?php $_blocks['route']($router, $path) ?><?php endif ?><?php endforeach ?>				</div>
+<?php } ?>
+<?php $_blocks['route'] = function ($route, $path) use (&$_blocks) { ?>				<div class="nette-RoutingPanel-grid-columns nette-RoutingPanel-status-<?= Tracy\Helpers::escapeHtml($route->matched) ?>
+">
+					<div class="nette-RoutingPanel-symbol" title="<?= Tracy\Helpers::escapeHtml(['yes' => 'matched as first', 'may' => 'suitable but not matched as first', 'no' => '', 'oneway' => 'one-way', 'error' => 'error'][$route->matched]) ?>
+">
+						<?= Tracy\Helpers::escapeHtml(['yes' => '✓', 'may' => '≈', 'no' => '', 'oneway' => '⛔', 'error' => '❌'][$route->matched]) ?>
+
+					</div>
+
+					<div>
+						<code title="<?= Tracy\Helpers::escapeHtml($route->class) ?>
+">
+<?php if ($path !== ''): ?>
+							<small><?= Tracy\Helpers::escapeHtml($path) ?>
+</small>
+<?php endif ?>
+							<?= isset($route->mask) ? str_replace(['/', '-'], ['<wbr>/', '<wbr>-'], htmlspecialchars($route->mask)) : str_replace('\\', '<wbr>\\', htmlspecialchars($route->class)) ?>
+
+						</code>
+					</div>
+
+					<div>
+						<code>
+<?php foreach ($route->defaults as $key => $value): ?>								<?= Tracy\Helpers::escapeHtml($key) ?>
+&nbsp;=&nbsp;<?php if (is_string($value)): ?>
+<?= Tracy\Helpers::escapeHtml($value) ?>
+<br><?= Dumper::toHtml($value, [Dumper::COLLAPSE => true, Dumper::LIVE => true]) ?>
+
+<?php endif ?>
+<?php endforeach ?>						</code>
+					</div>
+
+					<div>
+<?php if ($route->params): ?>							<code>
+<?php $params = $route->params ?><?php if (isset($params[Presenter::PresenterKey])): ?>									<strong><?= Tracy\Helpers::escapeHtml($params['presenter']) ?>
+:<?= Tracy\Helpers::escapeHtml($params[Presenter::ActionKey] ?? Presenter::DefaultAction) ?>
+</strong>
+									<br>
+<?php unset($params[Presenter::PresenterKey], $params[Presenter::ActionKey]) ?><?php endif ?><?php foreach ($params as $key => $value): ?>									<?= Tracy\Helpers::escapeHtml($key) ?>
+&nbsp;=&nbsp;<?php if (is_string($value)): ?>
+<?= Tracy\Helpers::escapeHtml($value) ?>
+<br><?= Dumper::toHtml($value, [Dumper::COLLAPSE => true, Dumper::LIVE => true]) ?>
+
+<?php endif ?>
+<?php endforeach ?>							</code>
+<?php elseif ($route->error): ?>							<strong><?= Tracy\Helpers::escapeHtml($route->error->getMessage()) ?>
+</strong>
+<?php endif ?>					</div>
+				</div>
+<?php } ?>
+<?php $_blocks['routeList']($routes) ?>		</div>
+<?php endif ?></div>
+</div>
