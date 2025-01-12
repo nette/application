@@ -45,7 +45,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 		);
 		return Nette\Utils\Helpers::capture(function () {
 			$matched = $this->matched;
-			require __DIR__ . '/templates/RoutingPanel.tab.phtml';
+			require __DIR__ . '/dist/tab.phtml';
 		});
 	}
 
@@ -61,7 +61,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 			$source = $this->matched ? $this->findSource() : null;
 			$url = $this->httpRequest->getUrl();
 			$method = $this->httpRequest->getMethod();
-			require __DIR__ . '/templates/RoutingPanel.panel.phtml';
+			require __DIR__ . '/dist/panel.phtml';
 		});
 	}
 
