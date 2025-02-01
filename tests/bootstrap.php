@@ -13,6 +13,7 @@ if (@!include __DIR__ . '/../vendor/autoload.php') {
 
 // configure environment
 Tester\Environment::setup();
+Tester\Environment::setupFunctions();
 date_default_timezone_set('Europe/Prague');
 Mockery::setLoader(new Mockery\Loader\RequireLoader(getTempDir()));
 
@@ -44,11 +45,9 @@ function getTempDir(): string
 }
 
 
-function test(string $title, Closure $function): void
-{
-	$function();
+tearDown(function () {
 	Mockery::close();
-}
+});
 
 
 class Notes
