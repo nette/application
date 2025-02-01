@@ -26,7 +26,7 @@
 		"latte/latte": "Allows using Latte in templates"
 	},
 	"require-dev": {
-		"nette/tester": "^2.5",
+		"nette/tester": "^2.5.2",
 		"nette/di": "^3.2",
 		"nette/forms": "^3.2",
 		"nette/robot-loader": "^4.0",
