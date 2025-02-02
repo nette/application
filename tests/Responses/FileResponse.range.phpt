@@ -19,7 +19,7 @@ $file = __FILE__;
 $fileResponse = new FileResponse($file);
 $origData = file_get_contents($file);
 
-test('', function () use ($fileResponse, $origData) {
+test('partial content with byte range', function () use ($fileResponse, $origData) {
 	ob_start();
 	$fileResponse->send(
 		new Http\Request(new Http\UrlScript, headers: ['range' => 'bytes=10-20']),
@@ -30,7 +30,7 @@ test('', function () use ($fileResponse, $origData) {
 });
 
 
-test('', function () use ($fileResponse, $origData) {
+test('single byte range request', function () use ($fileResponse, $origData) {
 	ob_start();
 	$fileResponse->send(
 		new Http\Request(new Http\UrlScript, headers: ['range' => 'bytes=10-10']),
@@ -40,7 +40,7 @@ test('', function () use ($fileResponse, $origData) {
 });
 
 
-test('', function () use ($fileResponse, $origData, $file) {
+test('range from offset to end', function () use ($fileResponse, $origData, $file) {
 	ob_start();
 	$fileResponse->send(
 		new Http\Request(new Http\UrlScript, headers: ['range' => 'bytes=10-' . filesize($file)]),
@@ -50,7 +50,7 @@ test('', function () use ($fileResponse, $origData, $file) {
 });
 
 
-test('prefix', function () use ($fileResponse, $origData) {
+test('range starting at offset', function () use ($fileResponse, $origData) {
 	ob_start();
 	$fileResponse->send(
 		new Http\Request(new Http\UrlScript, headers: ['range' => 'bytes=20-']),
@@ -60,7 +60,7 @@ test('prefix', function () use ($fileResponse, $origData) {
 });
 
 
-test('prefix', function () use ($fileResponse, $origData, $file) {
+test('last byte range request', function () use ($fileResponse, $origData, $file) {
 	ob_start();
 	$fileResponse->send(
 		new Http\Request(new Http\UrlScript, headers: ['range' => 'bytes=' . (filesize($file) - 1) . '-']),
@@ -70,7 +70,7 @@ test('prefix', function () use ($fileResponse, $origData, $file) {
 });
 
 
-test('prefix', function () use ($fileResponse, $file) {
+test('invalid byte range handling', function () use ($fileResponse, $file) {
 	ob_start();
 	$fileResponse->send(
 		new Http\Request(new Http\UrlScript, headers: ['range' => 'bytes=' . filesize($file) . '-']),
@@ -81,7 +81,7 @@ test('prefix', function () use ($fileResponse, $file) {
 });
 
 
-test('suffix', function () use ($fileResponse, $origData) {
+test('negative offset range (last bytes)', function () use ($fileResponse, $origData) {
 	ob_start();
 	$fileResponse->send(
 		new Http\Request(new Http\UrlScript, headers: ['range' => 'bytes=-20']),
@@ -91,7 +91,7 @@ test('suffix', function () use ($fileResponse, $origData) {
 });
 
 
-test('suffix', function () use ($fileResponse, $origData, $file) {
+test('full content via negative range', function () use ($fileResponse, $origData, $file) {
 	ob_start();
 	$fileResponse->send(
 		new Http\Request(new Http\UrlScript, headers: ['range' => 'bytes=-' . filesize($file)]),

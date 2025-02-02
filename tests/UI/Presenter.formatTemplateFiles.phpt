@@ -15,7 +15,7 @@ require __DIR__ . '/one/sub/BPresenter.php';
 require __DIR__ . '/two/CPresenter.php';
 
 
-test('with subdir templates', function () {
+test('template file paths for root presenter', function () {
 	$presenter = new APresenter;
 	$presenter->setParent(null, 'One');
 	$presenter->setView('view');
@@ -27,7 +27,7 @@ test('with subdir templates', function () {
 });
 
 
-test('with parent-dir templates', function () {
+test('submodule presenter template resolution', function () {
 	$presenter = new BPresenter;
 	$presenter->setParent(null, 'One');
 	$presenter->setView('view');
@@ -39,7 +39,7 @@ test('with parent-dir templates', function () {
 });
 
 
-test('without subdir templates', function () {
+test('flat module structure template lookup', function () {
 	$presenter = new CPresenter;
 	$presenter->setParent(null, 'Two');
 	$presenter->setView('view');
@@ -50,7 +50,7 @@ test('without subdir templates', function () {
 });
 
 
-test('with module & subdir templates', function () {
+test('module-prefixed presenter template paths', function () {
 	$presenter = new APresenter;
 	$presenter->setParent(null, 'Module:One');
 	$presenter->setView('view');
@@ -62,7 +62,7 @@ test('with module & subdir templates', function () {
 });
 
 
-test('with module & parent-dir templates', function () {
+test('nested module template inheritance', function () {
 	$presenter = new BPresenter;
 	$presenter->setParent(null, 'Module:One');
 	$presenter->setView('view');
@@ -74,7 +74,7 @@ test('with module & parent-dir templates', function () {
 });
 
 
-test('with module & without subdir templates', function () {
+test('module-specific template file hierarchy', function () {
 	$presenter = new CPresenter;
 	$presenter->setParent(null, 'Module:Two');
 	$presenter->setView('view');

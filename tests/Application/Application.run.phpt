@@ -96,8 +96,7 @@ $httpResponse = Mockery::mock(Nette\Http\IResponse::class);
 $httpResponse->shouldIgnoreMissing();
 
 
-// no route without error presenter
-Assert::exception(function () use ($httpRequest, $httpResponse) {
+testException('no route handling without error presenter', function () use ($httpRequest, $httpResponse) {
 	$presenterFactory = Mockery::mock(IPresenterFactory::class);
 	$router = Mockery::mock(Router::class);
 	$router->shouldReceive('match')->andReturn(null);
@@ -107,7 +106,7 @@ Assert::exception(function () use ($httpRequest, $httpResponse) {
 }, BadRequestException::class, 'No route for HTTP request.');
 
 
-test('no route with error presenter', function () use ($httpRequest, $httpResponse) {
+test('error presenter handling for route mismatch', function () use ($httpRequest, $httpResponse) {
 	$errorPresenter = new ErrorPresenter;
 
 	$presenterFactory = Mockery::mock(IPresenterFactory::class);
@@ -133,7 +132,7 @@ test('no route with error presenter', function () use ($httpRequest, $httpRespon
 });
 
 
-test('route to error presenter', function () use ($httpRequest, $httpResponse) {
+test('error presenter invoked directly via router', function () use ($httpRequest, $httpResponse) {
 	$errorPresenter = new ErrorPresenter;
 
 	$presenterFactory = Mockery::mock(IPresenterFactory::class);
@@ -161,8 +160,7 @@ test('route to error presenter', function () use ($httpRequest, $httpResponse) {
 });
 
 
-// missing presenter without error presenter
-Assert::exception(function () use ($httpRequest, $httpResponse) {
+testException('missing presenter exception without error presenter', function () use ($httpRequest, $httpResponse) {
 	$presenterFactory = Mockery::mock(IPresenterFactory::class);
 	$presenterFactory->shouldReceive('createPresenter')->with('Missing')->andThrow(Nette\Application\InvalidPresenterException::class);
 
@@ -174,7 +172,7 @@ Assert::exception(function () use ($httpRequest, $httpResponse) {
 }, BadRequestException::class);
 
 
-test('missing presenter with error presenter', function () use ($httpRequest, $httpResponse) {
+test('missing presenter fallback to error presenter', function () use ($httpRequest, $httpResponse) {
 	$errorPresenter = new ErrorPresenter;
 
 	$presenterFactory = Mockery::mock(IPresenterFactory::class);
@@ -203,8 +201,7 @@ test('missing presenter with error presenter', function () use ($httpRequest, $h
 });
 
 
-// presenter error without error presenter
-Assert::exception(function () use ($httpRequest, $httpResponse) {
+testException('presenter exception propagation without error handling', function () use ($httpRequest, $httpResponse) {
 	$presenterFactory = Mockery::mock(IPresenterFactory::class);
 	$presenterFactory->shouldReceive('createPresenter')->with('Bad')->andReturn(new BadPresenter);
 
@@ -216,7 +213,7 @@ Assert::exception(function () use ($httpRequest, $httpResponse) {
 }, BadException::class);
 
 
-test('presenter error with error presenter', function () use ($httpRequest, $httpResponse) {
+test('presenter exception propagation to error presenter', function () use ($httpRequest, $httpResponse) {
 	$badPresenter = new BadPresenter;
 	$errorPresenter = new ErrorPresenter;
 

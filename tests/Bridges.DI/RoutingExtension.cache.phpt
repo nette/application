@@ -37,7 +37,7 @@ class MyRouter implements Nette\Routing\Router
 }
 
 
-test('', function () {
+test('router without cache', function () {
 	$loader = new DI\Config\Loader;
 	$config = $loader->load(Tester\FileMock::create('
 	services:
@@ -55,7 +55,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('router with cache', function () {
 	$loader = new DI\Config\Loader;
 	$config = $loader->load(Tester\FileMock::create('
 	routing:
@@ -82,7 +82,7 @@ function myRouterFactory(): Nette\Routing\Router
 }
 
 
-Assert::exception(function () {
+testException('non-cacheable router factory', function () {
 	$loader = new DI\Config\Loader;
 	$config = $loader->load(Tester\FileMock::create('
 	routing:

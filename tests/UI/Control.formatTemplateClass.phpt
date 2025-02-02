@@ -46,13 +46,13 @@ class CTemplate implements Nette\Application\UI\Template
 }
 
 
-test('without template', function () {
+test('no associated template class', function () {
 	$control = new AControl;
 	Assert::null($control->formatTemplateClass());
 });
 
 
-test('with class', function () {
+test('template class missing interface implementation', function () {
 	Assert::error(function () {
 		$control = new BControl;
 		Assert::null($control->formatTemplateClass());
@@ -60,7 +60,7 @@ test('with class', function () {
 });
 
 
-test('with template', function () {
+test('valid template class implementation', function () {
 	$control = new CControl;
 	Assert::same(CTemplate::class, $control->formatTemplateClass());
 });

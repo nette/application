@@ -49,7 +49,7 @@ namespace {
 	$pf = new PresenterFactory;
 
 
-	test('', function () use ($pf) {
+	test('basic link generation with various parameters', function () use ($pf) {
 		$generator = new LinkGenerator(new Routers\SimpleRouter, new Http\UrlScript('http://nette.org/en/'), $pf);
 		Assert::same('http://nette.org/en/?action=default&presenter=Homepage', $generator->link('Homepage:default'));
 		Assert::same('http://nette.org/en/?action=default&presenter=Module%3AMy', $generator->link('Module:My:default'));
@@ -62,25 +62,25 @@ namespace {
 	});
 
 
-	Assert::exception(function () use ($pf) {
+	testException('missing presenter specification error', function () use ($pf) {
 		$generator = new LinkGenerator(new Routers\SimpleRouter, new Http\UrlScript('http://nette.org/en/'), $pf);
 		$generator->link('default');
 	}, LogicException::class, "Presenter must be specified in 'default'.");
 
 
-	Assert::exception(function () use ($pf) {
+	testException('route mismatch exception handling', function () use ($pf) {
 		$generator = new LinkGenerator(new Routers\Route('/', 'Product:'), new Http\UrlScript('http://nette.org/en/'), $pf);
 		$generator->link('Homepage:default', ['id' => 10]);
 	}, Nette\Application\UI\InvalidLinkException::class, 'No route for Homepage:default(id=10)');
 
 
-	Assert::exception(function () use ($pf) {
+	testException('invalid action parameter propagation', function () use ($pf) {
 		$generator = new LinkGenerator(new Routers\Route('/', 'Homepage:'), new Http\UrlScript('http://nette.org/en/'), $pf);
 		$generator->link('Homepage:missing', [10]);
 	}, Nette\Application\UI\InvalidLinkException::class, "Unable to pass parameters to action 'Homepage:missing', missing corresponding method HomepagePresenter::renderMissing().");
 
 
-	test('', function () {
+	test('URL generation without PresenterFactory', function () {
 		$generator = new LinkGenerator(new Routers\SimpleRouter, new Http\UrlScript('http://nette.org/en/'));
 		Assert::same('http://nette.org/en/?action=default&presenter=Homepage', $generator->link('Homepage:default'));
 		Assert::same('http://nette.org/en/?action=default&presenter=Module%3AMy', $generator->link('Module:My:default'));
@@ -93,7 +93,7 @@ namespace {
 	});
 
 
-	test('', function () {
+	test('reference URL context switching', function () {
 		$generator = new LinkGenerator(new Routers\SimpleRouter, new Http\UrlScript('http://nette.org/en/'));
 		$generator2 = $generator->withReferenceUrl('http://nette.org/cs/');
 		Assert::same('http://nette.org/en/?action=default&presenter=Homepage', $generator->link('Homepage:default'));

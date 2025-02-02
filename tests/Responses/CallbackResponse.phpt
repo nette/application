@@ -14,7 +14,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test('', function () {
+test('callback execution on send', function () {
 	$response = new CallbackResponse(function (Http\IRequest $request, Http\IResponse $response) use (&$ok) {
 		$ok = true;
 	});

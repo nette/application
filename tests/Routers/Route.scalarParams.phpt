@@ -15,7 +15,7 @@ require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/Route.php';
 
 
-test('', function () {
+test('numeric and boolean parameter serialization', function () {
 	$route = new Route('<presenter>/<param>', [
 	]);
 
@@ -44,7 +44,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('default integer parameter handling', function () {
 	$route = new Route('<presenter>/<param>', [
 		'param' => 12,
 	]);
@@ -78,7 +78,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('default float parameter handling', function () {
 	$route = new Route('<presenter>/<param>', [
 		'param' => 12.1,
 	]);
@@ -112,7 +112,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('boolean default parameter optimization', function () {
 	$route = new Route('<presenter>/<param>', [
 		'param' => true,
 	]);
@@ -146,7 +146,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('false default parameter optimization', function () {
 	$route = new Route('<presenter>/<param>', [
 		'param' => false,
 	]);
@@ -180,7 +180,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('null default parameter handling', function () {
 	$route = new Route('<presenter>/<param>', [
 		'param' => null,
 	]);

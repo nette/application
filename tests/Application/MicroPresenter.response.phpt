@@ -37,7 +37,7 @@ function createContainer()
 }
 
 
-test('', function () {
+test('textResponse with direct output', function () {
 	$presenter = new NetteModule\MicroPresenter(createContainer());
 	$response = $presenter->run(new Request('Nette:Micro', 'GET', [
 		'callback' => fn() => 'test',
@@ -48,7 +48,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('parameter passing to callback', function () {
 	$presenter = new NetteModule\MicroPresenter(createContainer());
 	$response = $presenter->run(new Request('Nette:Micro', 'GET', [
 		'callback' => fn($param) => $param,
@@ -60,7 +60,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('latte template evaluation', function () {
 	$presenter = new NetteModule\MicroPresenter(createContainer());
 	$response = $presenter->run(new Request('Nette:Micro', 'GET', [
 		'callback' => fn() => '{=date(Y)}',
@@ -71,7 +71,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('template file with parameters', function () {
 	$presenter = new NetteModule\MicroPresenter(createContainer());
 	$response = $presenter->run(new Request('Nette:Micro', 'GET', [
 		'callback' => fn() => [new SplFileInfo(Tester\FileMock::create('{$param}')), []],
@@ -83,7 +83,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('manual template creation', function () {
 	$presenter = new NetteModule\MicroPresenter;
 
 	$response = $presenter->run(new Request('Nette:Micro', 'GET', [
@@ -101,7 +101,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('template file loader with parameters', function () {
 	$presenter = new NetteModule\MicroPresenter;
 
 	$response = $presenter->run(new Request('Nette:Micro', 'GET', [
@@ -120,7 +120,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('missing template file handling', function () {
 	$filename = 'notfound.latte';
 	Assert::exception(function () use ($filename) {
 		$presenter = new NetteModule\MicroPresenter;

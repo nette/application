@@ -55,7 +55,7 @@ test('without template', function () {
 });
 
 
-test('with class', function () {
+test('template class missing interface implementation', function () {
 	Assert::error(function () {
 		$presenter = new BPresenter;
 		Assert::null($presenter->formatTemplateClass());
@@ -63,13 +63,13 @@ test('with class', function () {
 });
 
 
-test('with template', function () {
+test('valid template class resolution', function () {
 	$presenter = new CPresenter;
 	Assert::same(CTemplate::class, $presenter->formatTemplateClass());
 });
 
 
-test('with action template', function () {
+test('action-specific template class selection', function () {
 	$presenter = new CPresenter;
 	$presenter->changeAction('foo');
 	Assert::same(CTemplate::class, $presenter->formatTemplateClass());

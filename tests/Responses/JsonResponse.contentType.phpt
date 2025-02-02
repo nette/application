@@ -17,7 +17,7 @@ if (PHP_SAPI === 'cli') {
 	Tester\Environment::skip('Requires CGI SAPI to work with HTTP headers.');
 }
 
-test('', function () {
+test('JSON content type with UTF-8 charset', function () {
 	$data = ['text' => 'žluťoučký kůň'];
 	$encoded = json_encode($data, JSON_UNESCAPED_UNICODE);
 	$jsonResponse = new JsonResponse($data, 'application/json');
@@ -29,7 +29,7 @@ test('', function () {
 	Assert::same('application/json; charset=utf-8', $response->getHeader('Content-Type'));
 });
 
-test('', function () {
+test('boolean data JSON encoding', function () {
 	$data = true;
 	$encoded = json_encode($data, JSON_UNESCAPED_UNICODE);
 	$jsonResponse = new JsonResponse($data, 'application/json');
