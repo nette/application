@@ -12,7 +12,7 @@ require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/files/MyPresenter.php';
 
 
-test('', function () {
+test('default presenter registration', function () {
 	$compiler = new DI\Compiler;
 	$compiler->addExtension('application', new ApplicationExtension);
 
@@ -30,7 +30,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('scanDirs with filter', function () {
 	$compiler = new DI\Compiler;
 	$compiler->addExtension('application', new ApplicationExtension);
 
@@ -53,7 +53,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('combined scanDirs and config setup', function () {
 	$compiler = new DI\Compiler;
 	$compiler->addExtension('application', new ApplicationExtension(false, [__DIR__ . '/files']));
 
@@ -85,7 +85,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('robotLoader discovery', function () {
 	$robot = new Nette\Loaders\RobotLoader;
 	$robot->addDirectory(__DIR__ . '/files');
 	$robot->setTempDirectory(getTempDir());

@@ -13,7 +13,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test('defined module', function () {
+test('complex mapping with multiple wildcards', function () {
 	$factory = new PresenterFactory;
 
 	$factory->setMapping([
@@ -36,7 +36,7 @@ test('defined module', function () {
 });
 
 
-test('auto module', function () {
+test('simple wildcard mapping', function () {
 	$factory = new PresenterFactory;
 
 	$factory->setMapping([
@@ -53,7 +53,7 @@ test('auto module', function () {
 });
 
 
-test('location ** & defined module', function () {
+test('multi-segment wildcard expansion', function () {
 	$factory = new PresenterFactory;
 
 	$factory->setMapping([
@@ -76,7 +76,7 @@ test('location ** & defined module', function () {
 });
 
 
-test('location ** & auto module', function () {
+test('global wildcard mapping strategy', function () {
 	$factory = new PresenterFactory;
 
 	$factory->setMapping([
@@ -94,7 +94,7 @@ test('location ** & auto module', function () {
 });
 
 
-test('', function () {
+test('array-based hierarchical mapping', function () {
 	$factory = new PresenterFactory;
 	$factory->setMapping([
 		'*' => ['App', 'Module\*', 'Presenter\*'],
@@ -104,7 +104,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('empty namespace mapping structure', function () {
 	$factory = new PresenterFactory;
 	$factory->setMapping([
 		'*' => ['', '*', '*'],
@@ -113,7 +113,8 @@ test('', function () {
 });
 
 
-Assert::exception(
+testException(
+	'invalid mapping mask validation',
 	function () {
 		$factory = new PresenterFactory;
 		$factory->setMapping([

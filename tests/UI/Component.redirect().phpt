@@ -41,7 +41,7 @@ $presenter->injectPrimary(
 );
 
 
-test('', function () use ($presenter) {
+test('basic redirect response generation', function () use ($presenter) {
 	try {
 		$presenter->redirect('foo');
 	} catch (Throwable) {
@@ -52,7 +52,7 @@ test('', function () use ($presenter) {
 });
 
 
-test('', function () use ($presenter) {
+test('redirect with named parameters', function () use ($presenter) {
 	try {
 		$presenter->redirect('foo', ['arg' => 1]);
 	} catch (Throwable) {
@@ -63,7 +63,7 @@ test('', function () use ($presenter) {
 });
 
 
-test('', function () use ($presenter) {
+test('positional parameter in redirect', function () use ($presenter) {
 	try {
 		$presenter->redirect('foo', 2);
 	} catch (Throwable) {
@@ -74,7 +74,7 @@ test('', function () use ($presenter) {
 });
 
 
-test('', function () use ($presenter) {
+test('permanent redirect with parameter', function () use ($presenter) {
 	try {
 		$presenter->redirectPermanent('foo', 2);
 	} catch (Throwable) {
@@ -85,7 +85,7 @@ test('', function () use ($presenter) {
 });
 
 
-test('', function () use ($presenter) {
+test('permanent redirect with named parameters', function () use ($presenter) {
 	try {
 		$presenter->redirectPermanent('foo', ['arg' => 1]);
 	} catch (Throwable) {

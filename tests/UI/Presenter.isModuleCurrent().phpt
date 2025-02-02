@@ -16,7 +16,7 @@ class TestPresenter extends Nette\Application\UI\Presenter
 }
 
 
-test('', function () {
+test('root module current status check', function () {
 	$presenter = new TestPresenter;
 	$presenter->setParent(null, 'Test');
 
@@ -26,7 +26,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('nested module hierarchy validation', function () {
 	$presenter = new TestPresenter;
 	$presenter->setParent(null, 'First:Second:Third:Test');
 

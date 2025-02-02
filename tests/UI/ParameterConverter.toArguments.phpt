@@ -65,7 +65,7 @@ class MyPresenter
 }
 
 
-test('', function () {
+test('untyped parameter handling', function () {
 	$method = new ReflectionMethod('MyPresenter', 'params');
 
 	Assert::same([null, null, null, null], ParameterConverter::toArguments($method, []));
@@ -91,7 +91,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('type-hinted parameter validation', function () {
 	$method = new ReflectionMethod('MyPresenter', 'hints');
 
 	Assert::same(
@@ -144,7 +144,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('nullable type-hinted parameters with defaults', function () {
 	$method = new ReflectionMethod('MyPresenter', 'hintsNulls');
 
 	Assert::same([null, null, null, null, null], ParameterConverter::toArguments($method, []));
@@ -193,7 +193,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('nullable parameter type conversion', function () {
 	$method = new ReflectionMethod('MyPresenter', 'hintsNullable');
 
 	Assert::same([null, null, null, null, null], ParameterConverter::toArguments($method, []));
@@ -242,7 +242,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('default values with type hints', function () {
 	$method = new ReflectionMethod('MyPresenter', 'hintsDefaults');
 
 	Assert::same([0, false, '', [], []], ParameterConverter::toArguments($method, []));
@@ -291,7 +291,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('untyped parameters with defaults', function () {
 	$method = new ReflectionMethod('MyPresenter', 'defaults');
 
 	Assert::same([0, false, '', []], ParameterConverter::toArguments($method, []));
@@ -340,7 +340,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('object type parameter validation', function () {
 	$method = new ReflectionMethod('MyPresenter', 'objects');
 
 	Assert::equal(
@@ -374,7 +374,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('union type parameter handling', function () {
 	$method = new ReflectionMethod('MyPresenter', 'hintsUnion');
 
 	Assert::same([1, 'abc'], ParameterConverter::toArguments($method, ['intArray' => '1', 'strArray' => 'abc']));

@@ -18,7 +18,7 @@ class TestControl extends UI\Control
 }
 
 
-test('', function () {
+test('direct child component invalidation', function () {
 	$control = new TestControl;
 	$child = new TestControl;
 	$control->addComponent($child, 'foo');
@@ -29,7 +29,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('nested component invalidation propagation', function () {
 	$control = new TestControl;
 	$child = new Nette\ComponentModel\Container;
 	$grandChild = new TestControl;
