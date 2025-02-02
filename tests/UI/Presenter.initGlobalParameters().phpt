@@ -42,7 +42,7 @@ function createPresenter()
 }
 
 
-test('signal in GET', function () {
+test('signal parsing from GET parameters', function () {
 	$presenter = createPresenter();
 	$presenter->run(new Application\Request('Foo', 'GET', [
 		'do' => 'foo',
@@ -50,7 +50,7 @@ test('signal in GET', function () {
 	Assert::same(['', 'foo'], $presenter->getSignal());
 });
 
-test('signal for subcomponent in GET', function () {
+test('compound signal name handling', function () {
 	$presenter = createPresenter();
 	$presenter->run(new Application\Request('Foo', 'GET', [
 		'do' => 'foo-bar',
@@ -58,7 +58,7 @@ test('signal for subcomponent in GET', function () {
 	Assert::same(['foo', 'bar'], $presenter->getSignal());
 });
 
-test('signal in POST', function () {
+test('POST signal without CSRF protection', function () {
 	$presenter = createPresenter();
 	$presenter->run(new Application\Request('Foo', 'POST', [], [
 		'do' => 'foo',
@@ -66,7 +66,7 @@ test('signal in POST', function () {
 	Assert::null($presenter->getSignal());
 });
 
-test('_signal_ in POST', function () {
+test('POST signal with CSRF protection', function () {
 	$presenter = createPresenter();
 	$presenter->run(new Application\Request('Foo', 'POST', [], [
 		'_do' => 'foo',
@@ -74,7 +74,7 @@ test('_signal_ in POST', function () {
 	Assert::same(['', 'foo'], $presenter->getSignal());
 });
 
-test('signal in POST not overwriting GET', function () {
+test('conflicting signal parameters resolution', function () {
 	$presenter = createPresenter();
 	$presenter->run(new Application\Request('Foo', 'POST', ['do' => null], [
 		'do' => 'foo',
@@ -82,7 +82,7 @@ test('signal in POST not overwriting GET', function () {
 	Assert::null($presenter->getSignal());
 });
 
-test('_signal_ in POST overwriting GET', function () {
+test('POST signal priority over GET', function () {
 	$presenter = createPresenter();
 	$presenter->run(new Application\Request('Foo', 'POST', ['do' => 'bar'], [
 		'_do' => 'foo',
@@ -90,7 +90,7 @@ test('_signal_ in POST overwriting GET', function () {
 	Assert::same(['', 'foo'], $presenter->getSignal());
 });
 
-test('AJAX: signal in POST', function () {
+test('AJAX signal handling in POST', function () {
 	$presenter = createPresenter();
 	$presenter->ajax = true;
 	$presenter->run(new Application\Request('Foo', 'POST', [], [
@@ -99,7 +99,7 @@ test('AJAX: signal in POST', function () {
 	Assert::same(['', 'foo'], $presenter->getSignal());
 });
 
-test('AJAX: signal in POST overwriting GET', function () {
+test('AJAX signal override in POST data', function () {
 	$presenter = createPresenter();
 	$presenter->ajax = true;
 	$presenter->run(new Application\Request('Foo', 'POST', ['do' => 'bar'], [
@@ -108,7 +108,7 @@ test('AJAX: signal in POST overwriting GET', function () {
 	Assert::same(['', 'foo'], $presenter->getSignal());
 });
 
-test('AJAX: _signal_ in POST overwriting GET', function () {
+test('AJAX with explicit CSRF-protected signal', function () {
 	$presenter = createPresenter();
 	$presenter->ajax = true;
 	$presenter->run(new Application\Request('Foo', 'POST', ['do' => 'bar'], [

@@ -23,7 +23,7 @@ class TestPresenter extends Application\UI\Presenter
 }
 
 
-test('ok', function () {
+test('request storage with user context', function () {
 	$testedKeyExistence = $storedKey = $storedValue = $testExpiration = $testExpirationVariables = null;
 
 	$sessionSectionMock = Mockery::mock(Nette\Http\SessionSection::class);
@@ -79,7 +79,7 @@ test('ok', function () {
 });
 
 
-test('no user', function () {
+test('request storage without user context', function () {
 	$testedKeyExistence = $storedKey = $storedValue = $testExpiration = $testExpirationVariables = null;
 
 	$sessionSectionMock = Mockery::mock(Nette\Http\SessionSection::class);

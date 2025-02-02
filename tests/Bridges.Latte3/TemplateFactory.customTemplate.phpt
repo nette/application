@@ -46,21 +46,22 @@ class TemplateMock extends Template
 }
 
 
-test('', function () {
+test('default template creation', function () {
 	$latteFactory = Mockery::mock(LatteFactory::class);
 	$latteFactory->shouldReceive('create')->andReturn(new Latte\Engine);
 	$factory = new TemplateFactory($latteFactory);
 	Assert::type(Template::class, $factory->createTemplate());
 });
 
-Assert::exception(
+testException(
+	'13456',
 	fn() => new TemplateFactory(Mockery::mock(LatteFactory::class), templateClass: stdClass::class),
 	Nette\InvalidArgumentException::class,
 	'Class stdClass does not implement Nette\Bridges\ApplicationLatte\Template or it does not exist.',
 );
 
 
-test('', function () {
+test('custom template behavior', function () {
 	$latteFactory = Mockery::mock(LatteFactory::class);
 	$latteFactory->shouldReceive('create')->andReturn(new Latte\Engine);
 	$factory = new TemplateFactory($latteFactory, templateClass: TemplateMock::class);

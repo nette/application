@@ -18,7 +18,7 @@ if (PHP_SAPI === 'cli') {
 }
 
 
-test('', function () {
+test('default attachment content disposition', function () {
 	$file = __FILE__;
 	$fileResponse = new FileResponse($file);
 	$origData = file_get_contents($file);
@@ -34,7 +34,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('inline content disposition', function () {
 	$file = __FILE__;
 	$fileResponse = new FileResponse($file, forceDownload: false);
 	$origData = file_get_contents($file);
@@ -50,7 +50,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('filename with special characters', function () {
 	$file = __FILE__;
 	$fileName = 'žluťoučký kůň.txt';
 	$fileResponse = new FileResponse($file, $fileName);
