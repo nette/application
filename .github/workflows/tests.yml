@@ -22,9 +22,9 @@ jobs:
             - run: composer install --no-progress --prefer-dist
             - run: vendor/bin/tester tests -s -C
             - if: failure()
-              uses: actions/upload-artifact@v3
+              uses: actions/upload-artifact@v4
               with:
-                  name: output
+                  name: output-${{ matrix.php }}
                   path: tests/**/output
 
 
@@ -40,11 +40,6 @@ jobs:
 
             - run: composer update --no-progress --prefer-dist --prefer-lowest --prefer-stable
             - run: vendor/bin/tester tests -s -C
-            - if: failure()
-              uses: actions/upload-artifact@v3
-              with:
-                  name: output
-                  path: tests/**/output
 
 
     code_coverage:
