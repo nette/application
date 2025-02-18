@@ -32,11 +32,16 @@ final class UIExtension extends Latte\Extension
 
 	public function getFilters(): array
 	{
+		$presenter = $this->control?->getPresenterIfExists();
 		return [
 			'modifyDate' => fn($time, $delta, $unit = null) => $time
 				? Nette\Utils\DateTime::from($time)->modify($delta . $unit)
 				: null,
-		];
+		] + ($presenter ? [
+			'absoluteUrl' => fn(\Stringable|string|null $link): ?string => $link === null
+					? null
+					: $presenter->getHttpRequest()->getUrl()->resolve((string) $link)->getAbsoluteUrl(),
+		] : []);
 	}
 
 
