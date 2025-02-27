@@ -79,6 +79,7 @@ final class UIExtension extends Latte\Extension
 			'control' => Nodes\ControlNode::create(...),
 			'plink' => Nodes\LinkNode::create(...),
 			'link' => Nodes\LinkNode::create(...),
+			'linkBase' => Nodes\LinkBaseNode::create(...),
 			'ifCurrent' => Nodes\IfCurrentNode::create(...),
 			'templatePrint' => Nodes\TemplatePrintNode::create(...),
 			'snippet' => Nodes\SnippetNode::create(...),
@@ -93,6 +94,7 @@ final class UIExtension extends Latte\Extension
 	{
 		return [
 			'snippetRendering' => $this->snippetRenderingPass(...),
+			'applyLinkBase' => [Nodes\LinkBaseNode::class, 'applyLinkBasePass'],
 		];
 	}
 

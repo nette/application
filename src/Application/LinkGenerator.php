@@ -295,4 +295,13 @@ final class LinkGenerator
 		return $presenter?->invalidLinkMode
 			&& (UI\ComponentReflection::parseAnnotation($reflection, 'deprecated') || $reflection->getAttributes(Attributes\Deprecated::class));
 	}
+
+
+	/** @internal */
+	public static function applyBase(string $link, string $base): string
+	{
+		return str_contains($link, ':') && $link[0] !== ':'
+			? ":$base:$link"
+			: $link;
+	}
 }
