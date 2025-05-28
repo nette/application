@@ -173,7 +173,7 @@ final class ComponentReflection extends \ReflectionClass
 			'crossOrigin' => '#[Nette\Application\Attributes\Request(sameOrigin: false)]',
 			default => 'alternative'
 		};
-		trigger_error("Annotation @$name is deprecated, use $alt (used in " . Nette\Utils\Reflection::toString($ref) . ')', E_USER_DEPRECATED);
+		trigger_error("Annotation @$name is deprecated, use $alt (used in " . Reflection::toString($ref) . ')', E_USER_DEPRECATED);
 		return $res;
 	}
 
