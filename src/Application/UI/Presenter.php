@@ -273,7 +273,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/**
 	 * @return void
 	 */
-	protected function startup()
+	public function startup()
 	{
 		$this->startupCheck = true;
 	}
@@ -283,7 +283,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 * Common render method.
 	 * @return void
 	 */
-	protected function beforeRender()
+    public function beforeRender()
 	{
 	}
 
@@ -291,12 +291,12 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/**
 	 * Common render method.
 	 */
-	protected function afterRender(): void
+    public function afterRender(): void
 	{
 	}
 
 
-	protected function shutdown(Application\Response $response): void
+    public function shutdown(Application\Response $response): void
 	{
 	}
 
@@ -315,7 +315,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 
 	/** @deprecated  use #[Requires(methods: ...)] to specify allowed methods */
-	protected function checkHttpMethod(): void
+    public function checkHttpMethod(): void
 	{
 		if ($this->allowedMethods &&
 			!in_array($method = $this->httpRequest->getMethod(), $this->allowedMethods, strict: true)
