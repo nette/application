@@ -12,6 +12,7 @@ namespace Nette\Application;
 use Nette\Http\UrlScript;
 use Nette\Routing\Router;
 use Nette\Utils\Reflection;
+use function array_intersect_key, array_key_exists, http_build_query, is_string, is_subclass_of, parse_str, preg_match, rtrim, str_contains, str_ends_with, strcasecmp, strlen, strncmp, strtr, substr, trigger_error, urldecode;
 
 
 /**

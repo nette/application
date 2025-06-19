@@ -11,6 +11,8 @@ namespace Nette\Application\UI;
 
 use Nette\Application\Attributes;
 use Nette\Utils\Reflection;
+use function array_fill_keys, array_filter, array_key_exists, array_merge, class_exists, end, preg_match_all, preg_quote, preg_split, strtolower;
+use const PREG_SPLIT_NO_EMPTY;
 
 
 /**

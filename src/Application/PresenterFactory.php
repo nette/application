@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Nette\Application;
 
 use Nette;
+use function array_shift, class_exists, count, explode, is_array, is_string, preg_match, strtr;
 
 
 /**

@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Nette\Application\Routers;
 
 use Nette;
+use function is_array;
 
 
 /**

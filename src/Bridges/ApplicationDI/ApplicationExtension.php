@@ -17,6 +17,7 @@ use Nette\DI\Definitions;
 use Nette\Schema\Expect;
 use Nette\Utils\Reflection;
 use Tracy;
+use function is_array, is_string, sprintf;
 
 
 /**

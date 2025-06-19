@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Nette\Application;
 
 use Nette;
+use function class_parents, class_uses, strrpos, substr;
 
 
 /**

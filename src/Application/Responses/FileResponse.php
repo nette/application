@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Nette\Application\Responses;
 
 use Nette;
+use function strlen;
 
 
 /**
