@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Nette\Application\UI;
 
 use Nette;
+use function array_key_exists, array_slice, class_exists, func_get_arg, func_get_args, func_num_args, get_debug_type, is_array, link, method_exists, sprintf, trigger_error;
 
 
 /**

@@ -12,6 +12,7 @@ namespace Nette\Application\UI;
 use Nette;
 use Nette\Application\Attributes;
 use Nette\Utils\Reflection;
+use function array_map, implode, in_array, str_starts_with, strtoupper;
 
 
 /**

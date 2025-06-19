@@ -12,6 +12,7 @@ namespace Nette\Bridges\ApplicationLatte;
 use Nette;
 use Nette\Application\UI\Control;
 use Nette\Application\UI\Renderable;
+use function array_pop, array_shift, end, ob_end_clean, ob_get_clean, ob_start, reset, trigger_error;
 
 
 /**

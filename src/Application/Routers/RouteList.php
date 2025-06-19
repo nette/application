@@ -11,6 +11,7 @@ namespace Nette\Application\Routers;
 
 use JetBrains\PhpStorm\Language;
 use Nette;
+use function count, interface_exists, is_int, is_string, strlen, strncmp, substr;
 
 
 /**

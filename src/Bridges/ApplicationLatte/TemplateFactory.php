@@ -12,6 +12,7 @@ namespace Nette\Bridges\ApplicationLatte;
 use Latte;
 use Nette;
 use Nette\Application\UI;
+use function array_unshift, class_exists, is_a, iterator_to_array, preg_match, preg_replace, property_exists, rtrim, version_compare;
 
 
 /**

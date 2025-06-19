@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Nette\Application\Routers;
 
 use Nette;
+use function interface_exists, is_string, lcfirst, preg_replace, rawurlencode, str_replace, strlen, strncmp, strrpos, strtolower, strtr, substr, ucwords;
 
 
 /**

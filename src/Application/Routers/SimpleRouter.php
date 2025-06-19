@@ -11,6 +11,7 @@ namespace Nette\Application\Routers;
 
 use Nette;
 use Nette\Application;
+use function is_string;
 
 
 /**

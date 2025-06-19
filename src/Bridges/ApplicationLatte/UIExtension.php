@@ -16,6 +16,7 @@ use Latte\Compiler\Tag;
 use Latte\Essential\Nodes\ExtendsNode;
 use Nette;
 use Nette\Application\UI;
+use function array_unshift, preg_match;
 
 
 /**

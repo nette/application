@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Nette\Application\UI;
 
 use Nette;
+use function func_num_args;
 
 
 /**

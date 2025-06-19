@@ -11,6 +11,7 @@ namespace Nette\Application\UI;
 
 use Nette;
 use Nette\Utils\Reflection;
+use function array_key_exists, explode, get_debug_type, is_array, is_scalar, ltrim, preg_replace, settype, sprintf;
 
 
 /**
