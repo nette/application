@@ -63,11 +63,43 @@ class TemplateFactory implements UI\TemplateFactory
 			'presenter' => $presenter,
 		];
 
-		foreach ($params as $key => $value) {
-			if ($value !== null && property_exists($template, $key)) {
-				$template->$key = $value;
-			}
-		}
+        $checkTypes = !is_a($template, DefaultTemplate::class);
+        if($checkTypes){
+            $properties = [];
+            $rc = new \ReflectionClass($template);
+            foreach($rc->getProperties(\ReflectionProperty::IS_PUBLIC) as $property){
+                $properties[$property->name] = $property;
+            }
+            foreach ($params as $key => $value) {
+                if ($value !== null && isset($properties[$key])) {
+                    $property = $properties[$key];
+                    $type = $property->getType();
+                    if($type instanceof \ReflectionNamedType){
+                        $expected = $type->getName();
+                        $isValid = $type->isBuiltin() ? match($expected){
+                            'string' => is_string($value),
+                            'int'    => is_int($value),
+                            'bool'   => is_bool($value),
+                            'array'  => is_array($value),
+                            'float'  => is_float($value),
+                            'object' => is_object($value),
+                            default  => false,
+                        }
+                        : is_a($value, $expected);
+                        if($isValid){
+                            $template->$key = $value;
+                        }
+                    }
+                }
+            }
+
+        }else{
+            foreach ($params as $key => $value) {
+                if ($value !== null && property_exists($template, $key)) {
+                    $template->$key = $value;
+                }
+            }
+        }
 
 		Nette\Utils\Arrays::invoke($this->onCreate, $template);
 
