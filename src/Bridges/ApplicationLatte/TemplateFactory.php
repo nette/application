@@ -77,7 +77,10 @@ class TemplateFactory implements UI\TemplateFactory
 
 		foreach ($params as $key => $value) {
 			if ($value !== null && property_exists($template, $key)) {
-				$template->$key = $value;
+				try {
+					$template->$key = $value;
+				} catch (\TypeError) {
+				}
 			}
 		}
 
