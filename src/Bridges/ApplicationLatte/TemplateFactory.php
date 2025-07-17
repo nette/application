@@ -11,6 +11,8 @@ namespace Nette\Bridges\ApplicationLatte;
 
 use Nette;
 use Nette\Application\UI;
+use ReflectionNamedType;
+use ReflectionProperty;
 
 
 /**
@@ -63,41 +65,16 @@ class TemplateFactory implements UI\TemplateFactory
 			'presenter' => $presenter,
 		];
 
-        $checkTypes = !is_a($template, DefaultTemplate::class);
-        if($checkTypes){
-            $properties = [];
-            $rc = new \ReflectionClass($template);
-            foreach($rc->getProperties(\ReflectionProperty::IS_PUBLIC) as $property){
-                $properties[$property->name] = $property;
-            }
-            foreach ($params as $key => $value) {
-                if ($value !== null && isset($properties[$key])) {
-                    $property = $properties[$key];
-                    $type = $property->getType();
-                    if($type instanceof \ReflectionNamedType){
-                        $expected = $type->getName();
-                        $isValid = $type->isBuiltin() ? match($expected){
-                            'string' => is_string($value),
-                            'int'    => is_int($value),
-                            'bool'   => is_bool($value),
-                            'array'  => is_array($value),
-                            'float'  => is_float($value),
-                            'object' => is_object($value),
-                            default  => false,
-                        }
-                        : is_a($value, $expected);
-                        if($isValid){
-                            $template->$key = $value;
-                        }
+        foreach ($params as $key => $value) {
+            if ($value !== null && property_exists($template, $key)) {
+                if($key === 'user' && !is_a($template, DefaultTemplate::class)){
+                    $rp = new ReflectionProperty($template, 'user');
+                    $type = $rp->getType();
+                    if(!$type instanceof ReflectionNamedType || !is_a($value, $type->getName())){
+                        continue;
                     }
                 }
-            }
-
-        }else{
-            foreach ($params as $key => $value) {
-                if ($value !== null && property_exists($template, $key)) {
-                    $template->$key = $value;
-                }
+                $template->$key = $value;
             }
         }
 
