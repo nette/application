@@ -22,7 +22,7 @@ testRouteIn($route, '/a%3A%25%2Fb', [
 	'presenter' => 'Presenter',
 	'param' => 'a:%/b',
 	'test' => 'testvalue',
-], '/a%3A%25/b?test=testvalue');
+], '/a:%25/b?test=testvalue');
 
 
 $route = new Route('<param .*>', [

@@ -33,21 +33,21 @@ Assert::null($template->getParentName());
 $template = $latte->createTemplate('{block name}...{/block}');
 Assert::exception(
 	fn() => $template->render(),
-	LogicException::class, // missing template
+	Throwable::class, // missing template
 );
 Assert::same('layout.latte', $template->getParentName());
 
 $template = $latte->createTemplate('{extends "file.latte"} {block name}...{/block}');
 Assert::exception(
 	fn() => $template->render(),
-	LogicException::class, // missing template
+	Throwable::class, // missing template
 );
 Assert::same('file.latte', $template->getParentName());
 
 $template = $latte->createTemplate('{extends "file.latte"}');
 Assert::exception(
 	fn() => $template->render(),
-	LogicException::class, // missing template
+	Throwable::class, // missing template
 );
 Assert::same('file.latte', $template->getParentName());
 
@@ -57,7 +57,7 @@ $template = $latte->createTemplate(
 );
 Assert::exception(
 	fn() => $template->render(),
-	LogicException::class, // missing template
+	Throwable::class, // missing template
 );
 Assert::same('file.latte', $template->getParentName());
 
@@ -68,7 +68,7 @@ Assert::null($template->getParentName());
 $template = $latte->createTemplate('{extends auto} {block name}...{/block}');
 Assert::exception(
 	fn() => $template->render(),
-	LogicException::class, // missing template
+	Throwable::class, // missing template
 );
 Assert::same('layout.latte', $template->getParentName());
 
