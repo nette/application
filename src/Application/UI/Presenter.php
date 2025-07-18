@@ -75,7 +75,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @deprecated use Presenter::DefaultAction */
 	public const DEFAULT_ACTION = self::DefaultAction;
 
-	public int $invalidLinkMode = 0;
+	public ?int $invalidLinkMode = null;
 
 	/** @var array<callable(self): void>  Occurs when the presenter is starting */
 	public array $onStartup = [];
