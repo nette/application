@@ -30,7 +30,7 @@ class MyRouter implements Nette\Routing\Router
 	}
 
 
-	public function __wakeup()
+	public function __unserialize($_)
 	{
 		$this->woken = true;
 	}
