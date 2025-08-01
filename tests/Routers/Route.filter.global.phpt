@@ -16,7 +16,7 @@ require __DIR__ . '/Route.php';
 
 
 $route = new Route('<presenter>', [
-	null => [
+	'' => [
 		Route::FilterIn => function (array $arr) {
 			if (substr($arr['presenter'], 0, 3) !== 'Abc') {
 				return null;
@@ -50,7 +50,7 @@ Assert::null(testRouteOut($route, ['presenter' => 'Cde']));
 
 
 $route = new Route('<lang>/<presenter>/<action>', [
-	null => [
+	'' => [
 		Route::FilterIn => function (array $arr) {
 			if ($arr['presenter'] !== 'AbcCs') {
 				return null;
