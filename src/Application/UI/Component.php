@@ -382,7 +382,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	 * Throws HTTP error.
 	 * @throws Nette\Application\BadRequestException
 	 */
-	public function error(string $message = '', int $httpCode = Nette\Http\IResponse::S404_NotFound): void
+	public function error(string $message = '', int $httpCode = Nette\Http\IResponse::S404_NotFound): never
 	{
 		throw new Nette\Application\BadRequestException($message, $httpCode);
 	}
