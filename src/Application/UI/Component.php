@@ -172,8 +172,14 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 				}
 
 				$this->$name = &$params[$name];
-			} else {
+			} elseif ($meta['hasDefault']) {
 				$params[$name] = &$this->$name;
+			} else {
+				throw new Nette\InvalidArgumentException(sprintf(
+					'Missing parameter $%s required by %s.',
+					$name,
+					$this instanceof Presenter ? "presenter {$this->getName()}" : "component '{$this->getUniqueId()}'",
+				));
 			}
 		}
 
