@@ -30,7 +30,7 @@ final class ComponentReflection extends \ReflectionClass
 
 	/**
 	 * Returns array of class properties that are public and have attribute #[Persistent] or #[Parameter].
-	 * @return array<string, array{def: mixed, type: string, since: ?string}>
+	 * @return array<string, array{def: mixed, type: string, since?: ?string, hasDefault: bool}>
 	 */
 	public function getParameters(): array
 	{
@@ -48,16 +48,20 @@ final class ComponentReflection extends \ReflectionClass
 				self::parseAnnotation($prop, 'persistent')
 				|| $prop->getAttributes(Attributes\Persistent::class)
 			) {
-				$params[$prop->getName()] = [
-					'def' => $prop->getDefaultValue(),
+				$param = [
 					'type' => ParameterConverter::getType($prop),
 					'since' => $isPresenter ? Reflection::getPropertyDeclaringClass($prop)->getName() : null,
 				];
 			} elseif ($prop->getAttributes(Attributes\Parameter::class)) {
-				$params[$prop->getName()] = [
+				$param = [
 					'type' => (string) ($prop->getType() ?? 'mixed'),
 				];
+			} else {
+				continue;
 			}
+			$param['def'] = $prop->getDefaultValue();
+			$param['hasDefault'] = $prop->hasDefaultValue();
+			$params[$prop->getName()] = $param;
 		}
 
 		if ($this->getParentClass()->isSubclassOf(Component::class)) {
@@ -77,7 +81,7 @@ final class ComponentReflection extends \ReflectionClass
 
 	/**
 	 * Returns array of persistent properties. They are public and have attribute #[Persistent].
-	 * @return array<string, array{def: mixed, type: string, since: string}>
+	 * @return array<string, array{def: mixed, type: string, since: ?string, hasDefault: bool}>
 	 */
 	public function getPersistentParams(): array
 	{
