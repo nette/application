@@ -45,7 +45,7 @@ Assert::same(
 );
 
 Assert::same(
-	'<div title="&lt;&gt;&amp;">',
+	'<div title="&amp;">',
 	$latte->renderToString('<div title="{control x}">'),
 );
 

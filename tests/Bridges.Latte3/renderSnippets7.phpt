@@ -25,7 +25,7 @@ $dataSets = [
 	],
 	//snippetArea with nested snippet
 	[
-		['main' => '{snippetArea fooWrapper}{php $this->global->value = hello}{snippet foo}{$this->global->value}{/snippet}{/snippetArea}'],
+		['main' => '{snippetArea fooWrapper}{do $global->value = hello}{snippet foo}{$global->value}{/snippet}{/snippetArea}'],
 		['foo' => 'hello'],
 		'<div id="foo">hello</div>',
 		['fooWrapper', 'foo'],
@@ -200,7 +200,7 @@ foreach ($dataSets as $data) {
 	$engine->setLoader(new Latte\Loaders\StringLoader($data[0]));
 	$engine->addExtension(new Nette\Bridges\ApplicationLatte\UIExtension(null));
 	$engine->addProvider('snippetDriver', new Nette\Bridges\ApplicationLatte\SnippetRuntime($control));
-	$engine->render('main');
+	$engine->render('main', ['global' => new stdClass]);
 
 	Assert::same($data[1], $control->payload);
 
@@ -214,7 +214,7 @@ foreach ($dataSets as $data) {
 	$engine->addExtension(new Nette\Bridges\ApplicationLatte\UIExtension(null));
 	$engine->addProvider('snippetDriver', new Nette\Bridges\ApplicationLatte\SnippetRuntime($control));
 
-	$result = $engine->renderToString('main');
+	$result = $engine->renderToString('main', ['global' => new stdClass]);
 
 	Assert::match($data[2], $result);
 }

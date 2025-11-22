@@ -57,7 +57,7 @@ class LinkNode extends StatementNode
 	public function print(PrintContext $context): string
 	{
 		if ($this->mode === 'href') {
-			$context->beginEscape()->enterHtmlAttribute(null, '"');
+			$context->beginEscape()->enterHtmlAttribute(null);
 			$res = $context->format(
 				<<<'XX'
 						echo ' href="'; echo %modify($this->global->uiControl->link(%node, %node?)) %line; echo '"';

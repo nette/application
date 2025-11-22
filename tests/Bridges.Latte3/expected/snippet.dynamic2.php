@@ -12,7 +12,7 @@ final class Template%a% extends Latte\Runtime\Template
 %A%
 		echo '	';
 		echo '<div id="', htmlspecialchars($this->global->snippetDriver->getHtmlId('outer')), '">';
-		$this->renderBlock('outer', [], null, 'snippet') /* line %d% */;
+		$this->renderBlock('outer', [], null, 'snippet') /* %a% */;
 		echo '</div>';
 	}
 
@@ -23,24 +23,24 @@ final class Template%a% extends Latte\Runtime\Template
 	}
 
 
-	/** {snippet outer} on line %d% */
+	/** {snippet outer} on %a% */
 	public function blockOuter(array $ʟ_args): void
 	{
 		extract($this->params);
 		extract($ʟ_args);
 		unset($ʟ_args);
 
-		$this->global->snippetDriver->enter('outer', 'static') /* line %d% */;
+		$this->global->snippetDriver->enter('outer', 'static') /* %a% */;
 		try {
 			echo "\n";
-			foreach ([1, 2, 3] as $id) /* line %d% */ {
+			foreach ([1, 2, 3] as $id) /* %a% */ {
 				echo '		';
 				echo '<div id="', htmlspecialchars($this->global->snippetDriver->getHtmlId($ʟ_nm = 'inner-' . $id)), '">';
-				$this->global->snippetDriver->enter($ʟ_nm, 'dynamic') /* line %d% */;
+				$this->global->snippetDriver->enter($ʟ_nm, 'dynamic') /* %a% */;
 				try {
 					echo '
 				#';
-					echo LR\Filters::escapeHtmlText($id) /* line %d% */;
+					echo LR\%a%Text($id) /* %a% */;
 					echo '
 		';
 

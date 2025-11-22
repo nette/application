@@ -29,7 +29,7 @@ Assert::match(
 @Assert::match(
 	<<<'XX'
 		%A%
-				/* line 1 */ $_tmp = $this->global->uiControl->getComponent("form");
+				/* %a% */ $_tmp = $this->global->uiControl->getComponent("form");
 				if ($_tmp instanceof Nette\Application\UI\Renderable) $_tmp->redrawControl(null, false);
 				ob_start(fn() => null);
 				$_tmp->render();
@@ -43,7 +43,7 @@ Assert::match(
 Assert::match(
 	<<<'XX'
 		%A%
-				/* line 1 */ if (is_object($form)) $_tmp = $form;
+				/* %a% */ if (is_object($form)) $_tmp = $form;
 				else $_tmp = $this->global->uiControl->getComponent($form);
 				if ($_tmp instanceof Nette\Application\UI\Renderable) $_tmp->redrawControl(null, false);
 				$_tmp->render();

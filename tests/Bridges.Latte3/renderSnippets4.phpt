@@ -23,7 +23,7 @@ class TestPresenter extends Nette\Application\UI\Presenter
 		$latte = new Latte\Engine;
 		$latte->setLoader(new Latte\Loaders\StringLoader);
 		$latte->addExtension(new Nette\Bridges\ApplicationLatte\UIExtension($this));
-		$latte->render('{snippet foo}{php $presenter->renderFoo()}{/snippet}', ['presenter' => $this]);
+		$latte->render('{snippet foo}{do $presenter->renderFoo()}{/snippet}', ['presenter' => $this]);
 	}
 
 
