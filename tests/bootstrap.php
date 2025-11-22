@@ -16,7 +16,7 @@ Tester\Environment::setup();
 Tester\Environment::setupFunctions();
 date_default_timezone_set('Europe/Prague');
 Mockery::setLoader(new Mockery\Loader\RequireLoader(getTempDir()));
-
+ob_start();
 
 // output buffer level check
 register_shutdown_function(function ($level): void {
