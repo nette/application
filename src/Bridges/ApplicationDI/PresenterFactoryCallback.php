@@ -56,7 +56,7 @@ final class PresenterFactoryCallback
 			throw $e;
 		}
 
-		if ($presenter instanceof Nette\Application\UI\Presenter && !isset($presenter->invalidLinkMode)) {
+		if ($presenter instanceof Nette\Application\UI\Presenter && !$presenter->invalidLinkMode) {
 			$presenter->invalidLinkMode = $this->invalidLinkMode;
 		}
 
