@@ -170,6 +170,12 @@ final class LinkGenerator
 				trigger_error("Link to deprecated presenter '$presenter' from '{$refPresenter->getName()}:{$refPresenter->getAction()}'.", E_USER_DEPRECATED);
 			}
 
+			foreach (array_intersect_key($reflection->getParameters(), $args) as $name => $param) {
+				if ($args[$name] === $param['def']) {
+					$args[$name] = null; // value transmit is unnecessary
+				}
+			}
+
 			// counterpart of run() & tryCall()
 			if ($method = $reflection->getActionRenderMethod($action)) {
 				if ($this->isDeprecated($refPresenter, $method)) {

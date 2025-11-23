@@ -51,6 +51,7 @@ Assert::same(
 			'since' => 'OnePresenter',
 		],
 		'yes3' => [
+			'def' => null,
 			'type' => 'mixed',
 		],
 	],
@@ -60,9 +61,11 @@ Assert::same(
 Assert::same(
 	[
 		'yes2' => [
+			'def' => null,
 			'type' => 'mixed',
 		],
 		'yes4' => [
+			'def' => null,
 			'type' => 'mixed',
 		],
 		'yes1' => [
@@ -71,6 +74,7 @@ Assert::same(
 			'since' => 'OnePresenter',
 		],
 		'yes3' => [
+			'def' => null,
 			'type' => 'mixed',
 		],
 	],
