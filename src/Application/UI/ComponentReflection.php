@@ -55,6 +55,7 @@ final class ComponentReflection extends \ReflectionClass
 				];
 			} elseif ($prop->getAttributes(Attributes\Parameter::class)) {
 				$params[$prop->getName()] = [
+					'def' => $prop->hasDefaultValue() ? $prop->getDefaultValue() : null,
 					'type' => (string) ($prop->getType() ?? 'mixed'),
 				];
 			}
