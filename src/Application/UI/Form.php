@@ -42,7 +42,7 @@ class Form extends Nette\Forms\Form implements SignalReceiver
 			}
 
 			if (!$this->getAction()) {
-				$this->setAction(new Link($presenter, 'this'));
+				$this->setAction(new Link($presenter, 'this', $presenter->getParameters()));
 			}
 
 			$controls = $this->getControls();
