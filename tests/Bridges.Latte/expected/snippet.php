@@ -11,32 +11,32 @@ final class Template%a% extends Latte\Runtime\Template
 %A%
 		echo '	';
 		echo '<div id="', htmlspecialchars($this->global->snippetDriver->getHtmlId('')), '">';
-		$this->renderBlock('', [], null, 'snippet') /* %a% */;
+		$this->renderBlock('', [], null, 'snippet') /* pos %d%:2 */;
 		echo '</div>
 
 
 
 	';
 		echo '<div id="', htmlspecialchars($this->global->snippetDriver->getHtmlId('outer')), '">';
-		$this->renderBlock('outer', [], null, 'snippet') /* %a% */;
+		$this->renderBlock('outer', [], null, 'snippet') /* pos %d%:2 */;
 		echo '</div>
 
 
 
 	@';
-		if (true) /* %a% */ {
+		if (true) /* pos %d%:3 */ {
 			echo ' Hello World @';
 		}
 		echo '
 
 	';
 		echo '<div id="', htmlspecialchars($this->global->snippetDriver->getHtmlId('title')), '">';
-		$this->renderBlock('title', [], null, 'snippet') /* %a% */;
+		$this->renderBlock('title', [], null, 'snippet') /* pos %d%:2 */;
 		echo '</div>
 
 	';
 		echo '<div id="', htmlspecialchars($this->global->snippetDriver->getHtmlId('title2')), '">';
-		$this->renderBlock('title2', [], null, 'snippet') /* %a% */;
+		$this->renderBlock('title2', [], null, 'snippet') /* pos %d%:2 */;
 		echo '</div>';
 	}
 
@@ -48,7 +48,7 @@ final class Template%a% extends Latte\Runtime\Template
 		extract($ʟ_args);
 		unset($ʟ_args);
 
-		$this->global->snippetDriver->enter('', 'static') /* %a% */;
+		$this->global->snippetDriver->enter('', 'static') /* pos %d%:2 */;
 		try {
 			echo '
 
@@ -67,13 +67,13 @@ final class Template%a% extends Latte\Runtime\Template
 		extract($ʟ_args);
 		unset($ʟ_args);
 
-		$this->global->snippetDriver->enter('outer', 'static') /* %a% */;
+		$this->global->snippetDriver->enter('outer', 'static') /* pos %d%:2 */;
 		try {
 			echo '
 	Outer
 		';
 			echo '<div id="', htmlspecialchars($this->global->snippetDriver->getHtmlId('inner')), '">';
-			$this->renderBlock('inner', [], null, 'snippet') /* %a% */;
+			$this->renderBlock('inner', [], null, 'snippet') /* pos %d%:3 */;
 			echo '</div>
 	/Outer
 	';
@@ -91,7 +91,7 @@ final class Template%a% extends Latte\Runtime\Template
 		extract($ʟ_args);
 		unset($ʟ_args);
 
-		$this->global->snippetDriver->enter('inner', 'static') /* %a% */;
+		$this->global->snippetDriver->enter('inner', 'static') /* pos %d%:3 */;
 		try {
 			echo 'Inner';
 
@@ -108,7 +108,7 @@ final class Template%a% extends Latte\Runtime\Template
 		extract($ʟ_args);
 		unset($ʟ_args);
 
-		$this->global->snippetDriver->enter('title', 'static') /* %a% */;
+		$this->global->snippetDriver->enter('title', 'static') /* pos %d%:2 */;
 		try {
 			echo 'Title 1';
 
@@ -125,7 +125,7 @@ final class Template%a% extends Latte\Runtime\Template
 		extract($ʟ_args);
 		unset($ʟ_args);
 
-		$this->global->snippetDriver->enter('title2', 'static') /* %a% */;
+		$this->global->snippetDriver->enter('title2', 'static') /* pos %d%:2 */;
 		try {
 			echo 'Title 2';
 

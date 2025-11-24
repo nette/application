@@ -10,7 +10,6 @@ namespace Nette\Bridges\ApplicationLatte;
 use Latte\Runtime\Block;
 use Nette;
 use Nette\Application\UI\Control;
-use Nette\Application\UI\Renderable;
 use function array_pop, array_shift, end, ob_end_clean, ob_get_clean, ob_start, reset, trigger_error;
 
 
@@ -127,7 +126,7 @@ final class SnippetRuntime
 		$queue = [$this->control];
 		do {
 			foreach (array_shift($queue)->getComponents() as $child) {
-				if ($child instanceof Renderable) {
+				if ($child instanceof Control) {
 					if ($child->isControlInvalid()) {
 						$child->snippetMode = true;
 						$child->render();

@@ -29,10 +29,6 @@ class TemplatePrintNode extends Latte\Essential\Nodes\TemplatePrintNode
 	public static function printClass(array $params, string $parentClass): void
 	{
 		$bp = new Latte\Essential\Blueprint;
-		if (!method_exists($bp, 'generateTemplateClass')) {
-			throw new \LogicException("Please update 'latte/latte' to version 3.0.15 or newer.");
-		}
-
 		$control = $params['control'] ?? $params['presenter'] ?? null;
 		$name = 'Template';
 		if ($control instanceof UI\Control) {
