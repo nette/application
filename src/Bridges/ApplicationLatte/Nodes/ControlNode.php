@@ -64,11 +64,9 @@ class ControlNode extends StatementNode
 		}
 
 		$modifier = $tag->parser->parseModifier();
-		foreach ($modifier->filters as $filter) {
-			match ($filter->name->name) {
-				'noescape' => $node->escape = false,
-				default => throw new Latte\CompileException('Only modifier |noescape is allowed here.', $tag->position),
-			};
+		$node->escape = $modifier->removeFilter('noescape') ? false : null;
+		if ($modifier->filters) {
+			throw new Latte\CompileException('Only modifier |noescape is allowed here.', reset($modifier->filters)->position);
 		}
 
 		return $node;
