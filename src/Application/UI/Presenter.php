@@ -393,7 +393,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	final public function isSignalReceiver(
 		Nette\ComponentModel\Component|string $component,
-		string|bool|null $signal = null,
+		string|true|null $signal = null,
 	): bool
 	{
 		if ($component instanceof Nette\ComponentModel\Component) {
@@ -413,7 +413,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			return $this->signalReceiver === $component;
 		}
 
-		return $this->signalReceiver === $component && strcasecmp((string) $signal, $this->signal) === 0;
+		return $this->signalReceiver === $component && strcasecmp($signal, $this->signal) === 0;
 	}
 
 
