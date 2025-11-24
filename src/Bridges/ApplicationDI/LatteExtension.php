@@ -26,6 +26,8 @@ use function class_exists, is_string;
  *     templateClass: string|null,
  *     strictTypes: bool,
  *     strictParsing: bool,
+ *     scopedLoopVariables: bool,
+ *     dedent: bool,
  *     phpLinter: string|null,
  *     locale: string|null,
  * } $config
@@ -47,6 +49,8 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 			'templateClass' => Expect::string(),
 			'strictTypes' => Expect::bool(false),
 			'strictParsing' => Expect::bool(false),
+			'scopedLoopVariables' => Expect::bool(false),
+			'dedent' => Expect::bool(false),
 			'phpLinter' => Expect::string(),
 			'locale' => Expect::string(),
 		]);
@@ -66,10 +70,12 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 			->setImplement(ApplicationLatte\LatteFactory::class)
 			->getResultDefinition()
 				->setFactory(Latte\Engine::class)
-				->addSetup('setTempDirectory', [$this->tempDir])
+				->addSetup('setCacheDirectory', [$this->tempDir])
 				->addSetup('setAutoRefresh', [$this->debugMode])
-				->addSetup('setStrictTypes', [$config->strictTypes])
-				->addSetup('setStrictParsing', [$config->strictParsing])
+				->addSetup('setFeature', [Latte\Feature::StrictTypes, $config->strictTypes])
+				->addSetup('setFeature', [Latte\Feature::StrictParsing, $config->strictParsing])
+				->addSetup('setFeature', [Latte\Feature::ScopedLoopVariables, $config->scopedLoopVariables])
+				->addSetup('setFeature', [Latte\Feature::Dedent, $config->dedent])
 				->addSetup('enablePhpLinter', [$config->phpLinter])
 				->addSetup('setLocale', [$config->locale])
 				->addSetup('?', [$builder::literal('func_num_args() && $service->addExtension(new Nette\Bridges\ApplicationLatte\UIExtension(func_get_arg(0)))')]);
