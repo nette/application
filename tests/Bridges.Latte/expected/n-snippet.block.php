@@ -11,12 +11,12 @@ final class Template%a% extends Latte\Runtime\Template
 	public function main(array $ʟ_args): void
 	{
 %A%
-		$this->renderBlock('block1', get_defined_vars()) /* %a% */;
+		$this->renderBlock('block1', get_defined_vars()) /* pos %d%:26 */;
 		echo '
 
 ';
 		echo '<div id="', htmlspecialchars($this->global->snippetDriver->getHtmlId('outer')), '">';
-		$this->renderBlock('outer', [], null, 'snippet') /* %a% */;
+		$this->renderBlock('outer', [], null, 'snippet') /* pos %d%:1 */;
 		echo '</div>';
 	}
 
@@ -31,7 +31,7 @@ final class Template%a% extends Latte\Runtime\Template
 		echo '<div';
 		echo ' id="', htmlspecialchars($this->global->snippetDriver->getHtmlId('snippet')), '"';
 		echo '>';
-		$this->renderBlock('snippet', [], null, 'snippet') /* %a% */;
+		$this->renderBlock('snippet', [], null, 'snippet') /* pos %d%:6 */;
 		echo '</div>
 ';
 	}
@@ -44,7 +44,7 @@ final class Template%a% extends Latte\Runtime\Template
 		extract($ʟ_args);
 		unset($ʟ_args);
 
-		$this->global->snippetDriver->enter('snippet', 'static') /* %a% */;
+		$this->global->snippetDriver->enter('snippet', 'static') /* pos %d%:6 */;
 		try {
 			echo '
 		static
@@ -63,12 +63,12 @@ final class Template%a% extends Latte\Runtime\Template
 		extract($ʟ_args);
 		unset($ʟ_args);
 
-		$this->global->snippetDriver->enter('outer', 'static') /* %a% */;
+		$this->global->snippetDriver->enter('outer', 'static') /* pos %d%:1 */;
 		try {
 			echo '
 begin
 ';
-			$this->renderBlock('block2', get_defined_vars()) /* %a% */;
+			$this->renderBlock('block2', get_defined_vars()) /* pos %d%:30 */;
 			echo 'end
 ';
 
@@ -88,7 +88,7 @@ begin
 		echo '<div';
 		echo ' id="', htmlspecialchars($this->global->snippetDriver->getHtmlId($ʟ_nm = "inner-{$id}")), '"';
 		echo '>';
-		$this->global->snippetDriver->enter($ʟ_nm, 'dynamic') /* %a% */;
+		$this->global->snippetDriver->enter($ʟ_nm, 'dynamic') /* pos %d%:6 */;
 		try {
 			echo '
 		dynamic
