@@ -13,25 +13,26 @@ final class Template%a% extends Latte\Runtime\Template
 		echo '	<div class="test"';
 		echo ' id="', htmlspecialchars($this->global->snippetDriver->getHtmlId('outer')), '"';
 		echo '>';
-		$this->renderBlock('outer', [], null, 'snippet') /* %a% */;
+		$this->renderBlock('outer', [], null, 'snippet') /* pos %d%:20 */;
 		echo '</div>
 
 	<div';
 		echo ' id="', htmlspecialchars($this->global->snippetDriver->getHtmlId('gallery')), '"';
-		%A%
-		$this->renderBlock('gallery', [], null, 'snippet') /* %a% */;
+		echo LR\HtmlHelpers::formatListAttribute(' class', 'class') /* pos %d%:36 */;
+		echo '>';
+		$this->renderBlock('gallery', [], null, 'snippet') /* pos %d%:7 */;
 		echo '</div>
 
 	<script';
 		echo ' id="', htmlspecialchars($this->global->snippetDriver->getHtmlId('script')), '"';
 		echo '>';
-		$this->renderBlock('script', [], null, 'snippet') /* %a% */;
+		$this->renderBlock('script', [], null, 'snippet') /* pos %d%:10 */;
 		echo '</script>
 
 	<script';
 		echo ' id="', htmlspecialchars($this->global->snippetDriver->getHtmlId('hello')), '"';
 		echo '>';
-		$this->renderBlock('hello', [], null, 'snippet') /* %a% */;
+		$this->renderBlock('hello', [], null, 'snippet') /* pos %d%:10 */;
 		echo '</script>
 ';
 	}
@@ -44,7 +45,7 @@ final class Template%a% extends Latte\Runtime\Template
 		extract($ʟ_args);
 		unset($ʟ_args);
 
-		$this->global->snippetDriver->enter('outer', 'static') /* %a% */;
+		$this->global->snippetDriver->enter('outer', 'static') /* pos %d%:20 */;
 		try {
 			echo '
 	<p>Outer</p>
@@ -63,7 +64,7 @@ final class Template%a% extends Latte\Runtime\Template
 		extract($ʟ_args);
 		unset($ʟ_args);
 
-		$this->global->snippetDriver->enter('gallery', 'static') /* %a% */;
+		$this->global->snippetDriver->enter('gallery', 'static') /* pos %d%:7 */;
 		try {
 		} finally {
 			$this->global->snippetDriver->leave();
@@ -78,9 +79,9 @@ final class Template%a% extends Latte\Runtime\Template
 		extract($ʟ_args);
 		unset($ʟ_args);
 
-		$this->global->snippetDriver->enter('script', 'static') /* %a% */;
+		$this->global->snippetDriver->enter('script', 'static') /* pos %d%:10 */;
 		try {
-			echo LR\%a%::escapeJs('x') /* %a% */;
+			echo LR\Helpers::escapeJs('x') /* pos %d%:29 */;
 
 		} finally {
 			$this->global->snippetDriver->leave();
@@ -95,9 +96,9 @@ final class Template%a% extends Latte\Runtime\Template
 		extract($ʟ_args);
 		unset($ʟ_args);
 
-		$this->global->snippetDriver->enter('hello', 'static') /* %a% */;
+		$this->global->snippetDriver->enter('hello', 'static') /* pos %d%:10 */;
 		try {
-			echo LR\%a%::escapeJs('y') /* %a% */;
+			echo LR\Helpers::escapeJs('y') /* pos %d%:32 */;
 
 		} finally {
 			$this->global->snippetDriver->leave();
