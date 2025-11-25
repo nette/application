@@ -66,7 +66,8 @@ class Application
 	{
 		try {
 			Arrays::invoke($this->onStartup, $this);
-			$this->processRequest($this->createInitialRequest());
+			$this->processRequest($this->createInitialRequest())
+				->send($this->httpRequest, $this->httpResponse);
 			Arrays::invoke($this->onShutdown, $this);
 
 		} catch (\Throwable $e) {
@@ -74,7 +75,8 @@ class Application
 			Arrays::invoke($this->onError, $this, $e);
 			if ($this->catchExceptions && ($req = $this->createErrorRequest($e))) {
 				try {
-					$this->processRequest($req);
+					$this->processRequest($req)
+						->send($this->httpRequest, $this->httpResponse);
 					Arrays::invoke($this->onShutdown, $this, $e);
 					return;
 
@@ -113,7 +115,7 @@ class Application
 	}
 
 
-	public function processRequest(Request $request): void
+	public function processRequest(Request $request): Response
 	{
 		process:
 		if (count($this->requests) > $this->maxLoop) {
@@ -148,7 +150,7 @@ class Application
 		}
 
 		Arrays::invoke($this->onResponse, $this, $response);
-		$response->send($this->httpRequest, $this->httpResponse);
+		return $response;
 	}
 
 
