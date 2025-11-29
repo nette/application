@@ -137,7 +137,7 @@ final class LinkGenerator
 					throw new UI\InvalidLinkException("Unknown signal '$signal', missing handler {$reflection->getName()}::{$component::formatSignalMethod($signal)}()");
 				}
 
-				$this->checkAllowed($refPresenter, $method, "signal '$signal'" . ($component === $refPresenter ? '' : ' in ' . $component::class));
+				$this->checkAllowed($refPresenter, $method, "signal '$signal'" . ($component === $refPresenter ? '' : ' in ' . $component::class), $mode);
 
 				// convert indexed parameters to named
 				UI\ParameterConverter::toParameters($method, $args, [], $missing);
@@ -166,7 +166,7 @@ final class LinkGenerator
 			$current = $refPresenter && ($action === '*' || strcasecmp($action, $refPresenter->getAction()) === 0) && $presenterClass === $refPresenter::class;
 
 			$reflection = new UI\ComponentReflection($presenterClass);
-			$this->checkAllowed($refPresenter, $reflection, "presenter '$presenter'");
+			$this->checkAllowed($refPresenter, $reflection, "presenter '$presenter'", $mode);
 
 			foreach (array_intersect_key($reflection->getParameters(), $args) as $name => $param) {
 				if ($args[$name] === $param['def']) {
@@ -176,7 +176,7 @@ final class LinkGenerator
 
 			// counterpart of run() & tryCall()
 			if ($method = $reflection->getActionRenderMethod($action)) {
-				$this->checkAllowed($refPresenter, $method, "action '$presenter:$action'");
+				$this->checkAllowed($refPresenter, $method, "action '$presenter:$action'", $mode);
 
 				UI\ParameterConverter::toParameters($method, $args, $path === 'this' ? $refPresenter->getParameters() : [], $missing);
 
@@ -296,9 +296,12 @@ final class LinkGenerator
 		?UI\Presenter $presenter,
 		\ReflectionClass|\ReflectionMethod $element,
 		string $message,
+		string $mode,
 	): void
 	{
-		if ($presenter?->invalidLinkMode
+		if ($mode !== 'forward' && !(new UI\AccessPolicy($element))->canGenerateLink()) {
+			throw new UI\InvalidLinkException("Link to forbidden $message from '{$presenter->getName()}:{$presenter->getAction()}'.");
+		} elseif ($presenter?->invalidLinkMode
 			&& (UI\ComponentReflection::parseAnnotation($element, 'deprecated') || $element->getAttributes(Attributes\Deprecated::class))
 		) {
 			trigger_error("Link to deprecated $message from '{$presenter->getName()}:{$presenter->getAction()}'.", E_USER_DEPRECATED);
