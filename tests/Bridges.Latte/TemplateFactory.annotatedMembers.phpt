@@ -90,4 +90,13 @@ test('', function () {
 	Assert::same(1, $template->public);
 	Assert::false(isset($template->protected));
 	Assert::false(isset($template->private));
+
+	$latte = $template->getLatte();
+	Assert::same(2, $latte->invokeFilter('filterPublic', []));
+	Assert::same(2, $latte->invokeFilter('filterProtected', []));
+	Assert::exception(fn() => $latte->invokeFilter('filterPrivate', []), LogicException::class);
+
+	Assert::same(3, $latte->invokeFunction('functionPublic', []));
+	Assert::same(3, $latte->invokeFunction('functionProtected', []));
+	Assert::exception(fn() => $latte->invokeFunction('functionPrivate', []), LogicException::class);
 });
