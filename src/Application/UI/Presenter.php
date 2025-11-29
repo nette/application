@@ -487,6 +487,9 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	protected function completeTemplate(Template $template): void
 	{
+		foreach ($this->getReflection()->getTemplateVariables($this) as $name) {
+			$template->$name ??= $this->$name;
+		}
 		if ($template->getFile() === null) {
 			$template->setFile($this->findTemplateFile());
 		}

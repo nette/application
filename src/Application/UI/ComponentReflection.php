@@ -115,6 +115,23 @@ final class ComponentReflection extends \ReflectionClass
 	}
 
 
+	public function getTemplateVariables(Control $control): array
+	{
+		$res = [];
+		foreach ($this->getProperties() as $prop) {
+			if ($prop->getAttributes(Attributes\TemplateVariable::class)) {
+				$name = $prop->getName();
+				if (!$prop->isPublic()) {
+					throw new \LogicException("Property {$this->getName()}::\$$name must be public to be used as TemplateVariable.");
+				} elseif ($prop->isInitialized($control) || (PHP_VERSION_ID >= 80400 && $prop->hasHook(\PropertyHookType::Get))) {
+					$res[] = $name;
+				}
+			}
+		}
+		return $res;
+	}
+
+
 	/**
 	 * Is a method callable? It means class is instantiable and method has
 	 * public visibility, is non-static and non-abstract.
