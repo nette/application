@@ -13,7 +13,7 @@ use Nette;
 
 
 /**
- * Default template for controls and presenters.
+ * Default parameters of Latte templates for controls and presenters.
  */
 #[\AllowDynamicProperties]
 final class DefaultTemplate extends Template

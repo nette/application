@@ -12,6 +12,9 @@ namespace Nette\Application\Attributes;
 use Attribute;
 
 
+/**
+ * Marks property as persistent parameter. Value is automatically preserved across requests.
+ */
 #[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_CLASS)]
 final class Persistent
 {

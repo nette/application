@@ -15,7 +15,7 @@ use function version_compare;
 
 
 /**
- * Latte powered template.
+ * Parameters of Latte templates.
  */
 abstract class Template implements Nette\Application\UI\Template
 {

@@ -13,7 +13,8 @@ use Attribute;
 
 
 /**
- * Use Requires(sameOrigin: false)
+ * Allows cross-origin requests (disables CSRF protection).
+ * @deprecated Use #[Requires(sameOrigin: false)] instead
  */
 #[Attribute(Attribute::TARGET_METHOD)]
 final class CrossOrigin extends Requires
