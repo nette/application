@@ -90,6 +90,14 @@ test('', function () {
 
 	Assert::same(1, $template->public);
 
+	$latte = $template->getLatte();
+	Assert::same(2, $latte->invokeFilter('filterPublic', []));
+	Assert::same(2, $latte->invokeFilter('filterProtected', []));
+	Assert::same(2, $latte->invokeFilter('filterPrivate', []));
+
+	Assert::same(3, $latte->invokeFunction('functionPublic', []));
+	Assert::same(3, $latte->invokeFunction('functionProtected', []));
+	Assert::same(3, $latte->invokeFunction('functionPrivate', []));
 
 	$presenter = new BadPresenter;
 	$presenter->injectPrimary($httpRequest, new Http\Response);

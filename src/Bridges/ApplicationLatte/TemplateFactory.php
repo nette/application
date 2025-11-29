@@ -107,5 +107,14 @@ class TemplateFactory implements UI\TemplateFactory
 				}
 			}
 		}
+
+		foreach ($rc->getMethods() as $method) {
+			if ($method->getAttributes(TemplateFilter::class)) {
+				$template->getLatte()->addFilter($method->getName(), $method->getClosure($control));
+			}
+			if ($method->getAttributes(TemplateFunction::class)) {
+				$template->getLatte()->addFunction($method->getName(), $method->getClosure($control));
+			}
+		}
 	}
 }
