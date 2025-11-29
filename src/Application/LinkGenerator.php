@@ -347,9 +347,7 @@ final class LinkGenerator
 			: " from '{$presenter->getName()}:{$presenter->getAction()}'";
 		if ($mode !== 'forward' && $mode !== 'test' && !(new UI\AccessPolicy($element))->isLinkable()) {
 			throw new UI\InvalidLinkException("Link to forbidden $message.");
-		} elseif ($presenter?->invalidLinkMode
-			&& (UI\ComponentReflection::parseAnnotation($element, 'deprecated') || $element->getAttributes(Attributes\Deprecated::class)) // dresscode:ignore upgrading.declarations.deprecatedMember -- @deprecated is still supported
-		) {
+		} elseif ($presenter?->invalidLinkMode && $element->getAttributes(Attributes\Deprecated::class)) {
 			trigger_error("Link to deprecated $message.", E_USER_DEPRECATED);
 		}
 	}
