@@ -135,9 +135,9 @@ final class LinkGenerator
 				$method = $reflection->getSignalMethod($signal);
 				if (!$method) {
 					throw new UI\InvalidLinkException("Unknown signal '$signal', missing handler {$reflection->getName()}::{$component::formatSignalMethod($signal)}()");
-				} elseif ($this->isDeprecated($refPresenter, $method)) {
-					trigger_error("Link to deprecated signal '$signal'" . ($component === $refPresenter ? '' : ' in ' . $component::class) . " from '{$refPresenter->getName()}:{$refPresenter->getAction()}'.", E_USER_DEPRECATED);
 				}
+
+				$this->checkAllowed($refPresenter, $method, "signal '$signal'" . ($component === $refPresenter ? '' : ' in ' . $component::class));
 
 				// convert indexed parameters to named
 				UI\ParameterConverter::toParameters($method, $args, [], $missing);
@@ -166,9 +166,7 @@ final class LinkGenerator
 			$current = $refPresenter && ($action === '*' || strcasecmp($action, $refPresenter->getAction()) === 0) && $presenterClass === $refPresenter::class;
 
 			$reflection = new UI\ComponentReflection($presenterClass);
-			if ($this->isDeprecated($refPresenter, $reflection)) {
-				trigger_error("Link to deprecated presenter '$presenter' from '{$refPresenter->getName()}:{$refPresenter->getAction()}'.", E_USER_DEPRECATED);
-			}
+			$this->checkAllowed($refPresenter, $reflection, "presenter '$presenter'");
 
 			foreach (array_intersect_key($reflection->getParameters(), $args) as $name => $param) {
 				if ($args[$name] === $param['def']) {
@@ -178,9 +176,7 @@ final class LinkGenerator
 
 			// counterpart of run() & tryCall()
 			if ($method = $reflection->getActionRenderMethod($action)) {
-				if ($this->isDeprecated($refPresenter, $method)) {
-					trigger_error("Link to deprecated action '$presenter:$action' from '{$refPresenter->getName()}:{$refPresenter->getAction()}'.", E_USER_DEPRECATED);
-				}
+				$this->checkAllowed($refPresenter, $method, "action '$presenter:$action'");
 
 				UI\ParameterConverter::toParameters($method, $args, $path === 'this' ? $refPresenter->getParameters() : [], $missing);
 
@@ -296,10 +292,17 @@ final class LinkGenerator
 	}
 
 
-	private function isDeprecated(?UI\Presenter $presenter, \ReflectionClass|\ReflectionMethod $reflection): bool
+	private function checkAllowed(
+		?UI\Presenter $presenter,
+		\ReflectionClass|\ReflectionMethod $element,
+		string $message,
+	): void
 	{
-		return $presenter?->invalidLinkMode
-			&& (UI\ComponentReflection::parseAnnotation($reflection, 'deprecated') || $reflection->getAttributes(Attributes\Deprecated::class));
+		if ($presenter?->invalidLinkMode
+			&& (UI\ComponentReflection::parseAnnotation($element, 'deprecated') || $element->getAttributes(Attributes\Deprecated::class))
+		) {
+			trigger_error("Link to deprecated $message from '{$presenter->getName()}:{$presenter->getAction()}'.", E_USER_DEPRECATED);
+		}
 	}
 
 
