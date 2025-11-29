@@ -25,22 +25,27 @@ final class AccessPolicy
 
 
 	public function __construct(
-		private readonly Component $component,
 		private readonly \ReflectionClass|\ReflectionMethod $element,
 	) {
 	}
 
 
-	public function checkAccess(): void
+	public function checkAccess(Component $component): void
 	{
+		$this->presenter ??= $component->getPresenterIfExists() ??
+			throw new Nette\InvalidStateException('Presenter is required for checking requirements of ' . Reflection::toString($this->element));
+
 		$attrs = $this->getAttributes();
-		$attrs = self::applyInternalRules($attrs);
+		$attrs = self::applyInternalRules($attrs, $component);
 		foreach ($attrs as $attribute) {
 			$this->checkAttribute($attribute);
 		}
 	}
 
 
+	/**
+	 * @return Attributes\Requires[]
+	 */
 	private function getAttributes(): array
 	{
 		return array_map(
@@ -50,11 +55,11 @@ final class AccessPolicy
 	}
 
 
-	private function applyInternalRules(array $attrs): array
+	private function applyInternalRules(array $attrs, Component $component): array
 	{
 		if (
 			$this->element instanceof \ReflectionMethod
-			&& str_starts_with($this->element->getName(), $this->component::formatSignalMethod(''))
+			&& str_starts_with($this->element->getName(), $component::formatSignalMethod(''))
 			&& !ComponentReflection::parseAnnotation($this->element, 'crossOrigin')
 			&& !Nette\Utils\Arrays::some($attrs, fn($attr) => $attr->sameOrigin === false)
 		) {
@@ -66,9 +71,6 @@ final class AccessPolicy
 
 	private function checkAttribute(Attributes\Requires $attribute): void
 	{
-		$this->presenter ??= $this->component->getPresenterIfExists() ??
-			throw new Nette\InvalidStateException('Presenter is required for checking requirements of ' . Reflection::toString($this->element));
-
 		if ($attribute->methods !== null) {
 			$this->checkHttpMethod($attribute);
 		}
