@@ -44,10 +44,7 @@ final class ComponentReflection extends \ReflectionClass
 		foreach ($this->getProperties(\ReflectionProperty::IS_PUBLIC) as $prop) {
 			if ($prop->isStatic()) {
 				continue;
-			} elseif (
-				self::parseAnnotation($prop, 'persistent')
-				|| $prop->getAttributes(Attributes\Persistent::class)
-			) {
+			} elseif ($prop->getAttributes(Attributes\Persistent::class)) {
 				$params[$prop->getName()] = [
 					'def' => $prop->hasDefaultValue() ? $prop->getDefaultValue() : null,
 					'type' => ParameterConverter::getType($prop),
@@ -88,7 +85,7 @@ final class ComponentReflection extends \ReflectionClass
 
 	/**
 	 * Returns array of persistent components. They are tagged with class-level attribute
-	 * #[Persistent] or annotation @persistent or returned by Presenter::getPersistentComponents().
+	 * #[Persistent] or returned by Presenter::getPersistentComponents().
 	 * @return array<string, array{since: class-string}>
 	 */
 	public function getPersistentComponents(): array
@@ -100,9 +97,7 @@ final class ComponentReflection extends \ReflectionClass
 		}
 
 		$attrs = $this->getAttributes(Attributes\Persistent::class);
-		$names = $attrs
-			? $attrs[0]->getArguments()
-			: (array) self::parseAnnotation($this, 'persistent');
+		$names = $attrs ? $attrs[0]->getArguments() : [];
 		$names = array_merge($names, $class::getPersistentComponents());
 		$components = array_fill_keys($names, ['since' => $class]);
 
@@ -164,71 +159,6 @@ final class ComponentReflection extends \ReflectionClass
 		return $this->hasCallableMethod($name = $class::formatSignalMethod($signal))
 			? parent::getMethod($name)
 			: null;
-	}
-
-
-	/**
-	 * Returns an annotation value.
-	 * @deprecated
-	 */
-	public static function parseAnnotation(\Reflector $ref, string $name): ?array
-	{
-		if (!preg_match_all('#[\s*]@' . preg_quote($name, '#') . '(?:\(\s*([^)]*)\s*\)|\s|$)#', (string) $ref->getDocComment(), $m)) {
-			return null;
-		}
-
-		$tokens = ['true' => true, 'false' => false, 'null' => null];
-		$res = [];
-		foreach ($m[1] as $s) {
-			foreach (preg_split('#\s*,\s*#', $s, -1, PREG_SPLIT_NO_EMPTY) ?: ['true'] as $item) {
-				$res[] = array_key_exists($tmp = strtolower($item), $tokens)
-					? $tokens[$tmp]
-					: $item;
-			}
-		}
-
-		$alt = match ($name) {
-			'persistent' => '#[Nette\Application\Attributes\Persistent]',
-			'deprecated' => '#[Nette\Application\Attributes\Deprecated]',
-			'crossOrigin' => '#[Nette\Application\Attributes\Request(sameOrigin: false)]',
-			default => 'alternative'
-		};
-		trigger_error("Annotation @$name is deprecated, use $alt (used in " . Reflection::toString($ref) . ')', E_USER_DEPRECATED);
-		return $res;
-	}
-
-
-	#[\Deprecated]
-	public function hasAnnotation(string $name): bool
-	{
-		return (bool) self::parseAnnotation($this, $name);
-	}
-
-
-	#[\Deprecated]
-	public function getAnnotation(string $name): mixed
-	{
-		$res = self::parseAnnotation($this, $name);
-		return $res ? end($res) : null;
-	}
-
-
-	public function getMethod($name): MethodReflection
-	{
-		return new MethodReflection($this->getName(), $name);
-	}
-
-
-	/**
-	 * @return MethodReflection[]
-	 */
-	public function getMethods($filter = -1): array
-	{
-		foreach ($res = parent::getMethods($filter) as $key => $val) {
-			$res[$key] = new MethodReflection($this->getName(), $val->getName());
-		}
-
-		return $res;
 	}
 
 
