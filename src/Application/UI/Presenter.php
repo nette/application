@@ -187,7 +187,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 		try {
 			// CHECK REQUIREMENTS
-			(new AccessPolicy($this, static::getReflection()))->checkAccess();
+			(new AccessPolicy(static::getReflection()))->checkAccess($this);
 			$this->checkRequirements(static::getReflection());
 			$this->checkHttpMethod();
 
