@@ -9,7 +9,10 @@ declare(strict_types=1);
 
 namespace Nette\Bridges\ApplicationLatte;
 
+use Latte\Attributes\TemplateFilter;
+use Latte\Attributes\TemplateFunction;
 use Nette;
+use Nette\Application\Attributes\TemplateVariable;
 use Nette\Application\UI;
 use function class_exists, is_a, preg_replace, property_exists, rtrim;
 
@@ -51,6 +54,10 @@ class TemplateFactory implements UI\TemplateFactory
 
 		$this->injectDefaultParameters($template, $control);
 
+		if ($control) {
+			$this->injectAnnotatedMembers($template, $control);
+		}
+
 		Nette\Utils\Arrays::invoke($this->onCreate, $template);
 
 		return $template;
@@ -81,6 +88,20 @@ class TemplateFactory implements UI\TemplateFactory
 				try {
 					$template->$key = $value;
 				} catch (\TypeError) {
+				}
+			}
+		}
+	}
+
+
+	private function injectAnnotatedMembers(Template $template, ?UI\Control $control): void
+	{
+		$rc = new \ReflectionClass($control);
+		foreach ($rc->getProperties(\ReflectionProperty::IS_PUBLIC) as $prop) {
+			if ($prop->getAttributes(TemplateVariable::class)) {
+				if ($prop->isInitialized($control)) {
+					$name = $prop->getName();
+					$template->$name = $control->$name;
 				}
 			}
 		}
