@@ -12,6 +12,9 @@ namespace Nette\Application\Attributes;
 use Attribute;
 
 
+/**
+ * Marks property as request parameter. Value is automatically populated from HTTP request and type-cast.
+ */
 #[Attribute(Attribute::TARGET_PROPERTY)]
 final class Parameter
 {

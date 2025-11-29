@@ -7,6 +7,11 @@ namespace Nette\Application\Attributes;
 use Attribute;
 
 
+/**
+ * Restricts access to actions, signals, or entire presenter. Can enforce HTTP methods (GET, POST, etc.),
+ * limit to specific actions, allow only forwarded requests, enforce or bypass same-origin policy (CSRF protection),
+ * or require AJAX calls.
+ */
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
 class Requires
 {
