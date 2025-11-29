@@ -50,15 +50,24 @@ class TemplateFactory implements UI\TemplateFactory
 
 		$latte = $this->latteFactory->create($control);
 		$template = new $class($latte);
-		$presenter = $control?->getPresenterIfExists();
 
 		if (version_compare(Latte\Engine::VERSION, '3', '<')) {
-			$this->setupLatte2($latte, $control, $presenter, $template);
+			$this->setupLatte2($latte, $control, $template);
 		} elseif (!Nette\Utils\Arrays::some($latte->getExtensions(), fn($e) => $e instanceof UIExtension)) {
 			$latte->addExtension(new UIExtension($control));
 		}
 
-		// default parameters
+		$this->injectDefaultParameters($template, $control);
+
+		Nette\Utils\Arrays::invoke($this->onCreate, $template);
+
+		return $template;
+	}
+
+
+	private function injectDefaultParameters(Template $template, ?UI\Control $control): void
+	{
+		$presenter = $control?->getPresenterIfExists();
 		$baseUrl = $this->httpRequest
 			? rtrim($this->httpRequest->getUrl()->withoutUserInfo()->getBaseUrl(), '/')
 			: null;
@@ -83,17 +92,12 @@ class TemplateFactory implements UI\TemplateFactory
 				}
 			}
 		}
-
-		Nette\Utils\Arrays::invoke($this->onCreate, $template);
-
-		return $template;
 	}
 
 
 	private function setupLatte2(
 		Latte\Engine $latte,
 		?UI\Control $control,
-		?UI\Presenter $presenter,
 		Template $template,
 	): void
 	{
@@ -116,6 +120,7 @@ class TemplateFactory implements UI\TemplateFactory
 
 		$latte->addProvider('cacheStorage', $this->cacheStorage);
 
+		$presenter = $control?->getPresenterIfExists();
 		if ($control) {
 			$latte->addProvider('uiControl', $control);
 			$latte->addProvider('uiPresenter', $presenter);
