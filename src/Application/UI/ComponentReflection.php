@@ -17,7 +17,7 @@ use const PREG_SPLIT_NO_EMPTY;
 
 /**
  * Helpers for Presenter & Component.
- * @property-read string $name
+ * @property-read class-string<Control> $name
  * @property-read string $fileName
  * @internal
  */
@@ -30,7 +30,7 @@ final class ComponentReflection extends \ReflectionClass
 
 	/**
 	 * Returns array of class properties that are public and have attribute #[Persistent] or #[Parameter] or annotation @persistent.
-	 * @return array<string, array{def: mixed, type: string, since: ?string}>
+	 * @return array<string, array{def: mixed, type: string, since: ?class-string}>
 	 */
 	public function getParameters(): array
 	{
@@ -78,7 +78,7 @@ final class ComponentReflection extends \ReflectionClass
 
 	/**
 	 * Returns array of persistent properties. They are public and have attribute #[Persistent] or annotation @persistent.
-	 * @return array<string, array{def: mixed, type: string, since: string}>
+	 * @return array<string, array{def: mixed, type: string, since: class-string}>
 	 */
 	public function getPersistentParams(): array
 	{
@@ -89,11 +89,11 @@ final class ComponentReflection extends \ReflectionClass
 	/**
 	 * Returns array of persistent components. They are tagged with class-level attribute
 	 * #[Persistent] or annotation @persistent or returned by Presenter::getPersistentComponents().
-	 * @return array<string, array{since: string}>
+	 * @return array<string, array{since: class-string}>
 	 */
 	public function getPersistentComponents(): array
 	{
-		$class = $this->getName();
+		$class = $this->name;
 		$components = &self::$pcCache[$class];
 		if ($components !== null) {
 			return $components;
