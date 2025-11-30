@@ -477,7 +477,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	public function sendTemplate(?Template $template = null): void
 	{
 		$template ??= $this->getTemplate();
-		if (!$template->getFile()) {
+		if ($template->getFile() === null) {
 			$template->setFile($this->findTemplateFile());
 		}
 		$this->sendResponse(new Responses\TextResponse($template));
