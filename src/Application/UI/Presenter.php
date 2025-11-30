@@ -477,13 +477,22 @@ abstract class Presenter extends Control implements Application\IPresenter
 	public function sendTemplate(?Template $template = null): void
 	{
 		$template ??= $this->getTemplate();
+		$this->completeTemplate($template);
+		$this->sendResponse(new Responses\TextResponse($template));
+	}
+
+
+	/**
+	 * Completes template parameters and file before rendering.
+	 */
+	protected function completeTemplate(Template $template): void
+	{
 		foreach ($this->getReflection()->getTemplateVariables($this) as $name) {
 			$template->$name ??= $this->$name;
 		}
 		if ($template->getFile() === null) {
 			$template->setFile($this->findTemplateFile());
 		}
-		$this->sendResponse(new Responses\TextResponse($template));
 	}
 
 
