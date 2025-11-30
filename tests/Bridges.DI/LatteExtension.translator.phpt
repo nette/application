@@ -39,4 +39,4 @@ $container = new Container;
 
 $latte = $container->getService('nette.latteFactory')->create();
 $extensions = Assert::with($latte, fn() => $this->extensions);
-Assert::equal(new Latte\Essential\TranslatorExtension(new Translator), $extensions[3]);
+Assert::equal(new Latte\Essential\TranslatorExtension(new Translator), $extensions[4]);
