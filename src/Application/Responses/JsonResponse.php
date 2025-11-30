@@ -24,7 +24,7 @@ final class JsonResponse implements Nette\Application\Response
 	public function __construct(mixed $payload, ?string $contentType = null)
 	{
 		$this->payload = $payload;
-		$this->contentType = $contentType ?: 'application/json';
+		$this->contentType = $contentType ?? 'application/json';
 	}
 
 
