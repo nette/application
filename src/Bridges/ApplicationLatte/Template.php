@@ -20,7 +20,6 @@ use function version_compare;
 abstract class Template implements Nette\Application\UI\Template
 {
 	private ?string $file = null;
-	private ?string $blueprint;
 
 
 	public function __construct(
@@ -41,9 +40,6 @@ abstract class Template implements Nette\Application\UI\Template
 	public function render(?string $file = null, array $params = []): void
 	{
 		Nette\Utils\Arrays::toObject($params, $this);
-		if (isset($this->blueprint)) {
-			Nodes\TemplatePrintNode::printClass($this->getParameters(), $this->blueprint);
-		}
 		$this->latte->render($file ?: $this->file, $this);
 	}
 
@@ -141,12 +137,6 @@ abstract class Template implements Nette\Application\UI\Template
 		}
 
 		return $res;
-	}
-
-
-	public function blueprint(?string $parentClass = null): void
-	{
-		$this->blueprint = $parentClass ?? self::class;
 	}
 
 
