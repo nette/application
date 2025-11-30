@@ -62,20 +62,6 @@ $extensions = Assert::with($latte, fn() => $this->extensions);
 Assert::equal([
 	new Latte\Essential\CoreExtension,
 	new Latte\Sandbox\SandboxExtension,
-	new Nette\Bridges\FormsLatte\FormsExtension,
-	new MyExtension,
-	new MyExtension(1),
-	new MyExtension(2),
-	new MyExtension,
-], $extensions);
-
-// UIExtension is added
-$latte = $container->getService('nette.latteFactory')->create(null);
-$extensions = Assert::with($latte, fn() => $this->extensions);
-
-Assert::equal([
-	new Latte\Essential\CoreExtension,
-	new Latte\Sandbox\SandboxExtension,
 	new Nette\Bridges\ApplicationLatte\UIExtension(null),
 	new Nette\Bridges\FormsLatte\FormsExtension,
 	new MyExtension,
