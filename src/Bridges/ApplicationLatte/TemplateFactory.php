@@ -29,6 +29,7 @@ class TemplateFactory implements UI\TemplateFactory
 		private readonly ?Nette\Http\IRequest $httpRequest = null,
 		private readonly ?Nette\Security\User $user = null,
 		$templateClass = null,
+		private bool $generate = false,
 	) {
 		if ($templateClass && (!class_exists($templateClass) || !is_a($templateClass, Template::class, true))) {
 			throw new Nette\InvalidArgumentException("Class $templateClass does not implement " . Template::class . ' or it does not exist.');
@@ -47,7 +48,9 @@ class TemplateFactory implements UI\TemplateFactory
 		}
 
 		$latte = $this->latteFactory->create($control);
-		$template = new $class($latte);
+		$template = $this->generate && $control instanceof UI\Presenter
+			? new TemplateGenerator($latte, $class, $control)
+			: new $class($latte);
 		$this->injectDefaultVariables($template, $control);
 
 		Nette\Utils\Arrays::invoke($this->onCreate, $template);
@@ -81,6 +84,8 @@ class TemplateFactory implements UI\TemplateFactory
 					$template->$key = $value;
 				} catch (\TypeError) {
 				}
+			} elseif ($template instanceof TemplateGenerator) {
+				$template->addDefaultVariable($key, $value);
 			}
 		}
 	}

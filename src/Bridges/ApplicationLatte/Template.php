@@ -117,7 +117,7 @@ abstract class Template implements Nette\Application\UI\Template
 	/**
 	 * Returns array of all parameters.
 	 */
-	final public function getParameters(): array
+	public function getParameters(): array
 	{
 		$res = [];
 		foreach ((new \ReflectionObject($this))->getProperties(\ReflectionProperty::IS_PUBLIC) as $prop) {

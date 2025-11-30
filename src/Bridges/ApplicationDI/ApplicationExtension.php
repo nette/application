@@ -64,6 +64,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 			'scanComposer' => Expect::bool(class_exists(ClassLoader::class)),
 			'scanFilter' => Expect::string('*Presenter'),
 			'silentLinks' => Expect::bool(),
+			'generateTemplateClasses' => Expect::bool(),
 		]);
 	}
 
@@ -129,6 +130,11 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 		if ($this->config->debugger ?? $builder->getByType(Tracy\BlueScreen::class)) {
 			$builder->getDefinition($this->prefix('application'))
 				->addSetup([self::class, 'initializeBlueScreenPanel']);
+		}
+
+		if ($this->debugMode && $this->config->generateTemplateClasses) {
+			$builder->getDefinition('latte.templateFactory')
+				->setArgument('generate', true);
 		}
 
 		$all = [];
