@@ -52,11 +52,6 @@ class TemplateFactory implements UI\TemplateFactory
 
 		$latte = $this->latteFactory->create($control);
 		$template = new $class($latte);
-
-		if (!Nette\Utils\Arrays::some($latte->getExtensions(), fn($e) => $e instanceof UIExtension)) {
-			$latte->addExtension(new UIExtension($control));
-		}
-
 		$this->injectDefaultVariables($template, $control);
 
 		Nette\Utils\Arrays::invoke($this->onCreate, $template);
