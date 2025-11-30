@@ -8,11 +8,12 @@
 namespace Nette\Bridges\ApplicationLatte;
 
 use Latte;
+use Nette\Application\UI\Control;
 
 
 interface LatteFactory
 {
-	function create(/*?Control $control = null*/): Latte\Engine;
+	function create(?Control $control = null): Latte\Engine;
 }
 
 
