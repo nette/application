@@ -43,6 +43,13 @@ final class AccessPolicy
 	}
 
 
+	public function isLinkable(): bool
+	{
+		$attrs = $this->getAttributes();
+		return !$attrs || !Nette\Utils\Arrays::some($attrs, fn($attr) => $attr->forward === true);
+	}
+
+
 	/**
 	 * @return Attributes\Requires[]
 	 */
