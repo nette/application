@@ -36,7 +36,7 @@ class TemplateFactory implements UI\TemplateFactory
 			throw new Nette\InvalidArgumentException("Class $templateClass does not implement " . Template::class . ' or it does not exist.');
 		}
 
-		$this->templateClass = $templateClass ?: DefaultTemplate::class;
+		$this->templateClass = $templateClass ?? DefaultTemplate::class;
 	}
 
 

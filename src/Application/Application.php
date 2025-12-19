@@ -170,7 +170,7 @@ class Application
 			return null;
 		}
 
-		$args = ['exception' => $e, 'previousPresenter' => $this->presenter, 'request' => Arrays::last($this->requests) ?: null];
+		$args = ['exception' => $e, 'previousPresenter' => $this->presenter, 'request' => Arrays::last($this->requests) ?? null];
 		if ($this->presenter instanceof UI\Presenter) {
 			try {
 				$this->presenter->forward(":$errorPresenter:", $args);

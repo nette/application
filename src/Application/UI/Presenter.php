@@ -480,7 +480,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		foreach ($this->getReflection()->getTemplateVariables($this) as $name) {
 			$template->$name ??= $this->$name;
 		}
-		if (!$template->getFile()) {
+		if ($template->getFile() === null) {
 			$template->setFile($this->findTemplateFile());
 		}
 		$this->sendResponse(new Responses\TextResponse($template));
