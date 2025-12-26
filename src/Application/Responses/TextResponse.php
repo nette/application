@@ -17,12 +17,9 @@ use Nette;
  */
 final class TextResponse implements Nette\Application\Response
 {
-	private mixed $source;
-
-
-	public function __construct(mixed $source)
-	{
-		$this->source = $source;
+	public function __construct(
+		private readonly mixed $source,
+	) {
 	}
 
 

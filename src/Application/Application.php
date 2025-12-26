@@ -48,22 +48,14 @@ class Application
 	/** @var Request[] */
 	private array $requests = [];
 	private ?IPresenter $presenter = null;
-	private Nette\Http\IRequest $httpRequest;
-	private Nette\Http\IResponse $httpResponse;
-	private IPresenterFactory $presenterFactory;
-	private Router $router;
 
 
 	public function __construct(
-		IPresenterFactory $presenterFactory,
-		Router $router,
-		Nette\Http\IRequest $httpRequest,
-		Nette\Http\IResponse $httpResponse,
+		private readonly IPresenterFactory $presenterFactory,
+		private readonly Router $router,
+		private readonly Nette\Http\IRequest $httpRequest,
+		private readonly Nette\Http\IResponse $httpResponse,
 	) {
-		$this->httpRequest = $httpRequest;
-		$this->httpResponse = $httpResponse;
-		$this->presenterFactory = $presenterFactory;
-		$this->router = $router;
 	}
 
 
