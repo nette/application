@@ -19,26 +19,20 @@ use function strlen;
 final class FileResponse implements Nette\Application\Response
 {
 	public bool $resuming = true;
-	private string $file;
-	private string $contentType;
-	private string $name;
-	private bool $forceDownload;
+	private readonly string $name;
 
 
 	public function __construct(
-		string $file,
+		private readonly string $file,
 		?string $name = null,
-		?string $contentType = null,
-		bool $forceDownload = true,
+		private readonly string $contentType = 'application/octet-stream',
+		private readonly bool $forceDownload = true,
 	) {
 		if (!is_file($file) || !is_readable($file)) {
 			throw new Nette\Application\BadRequestException("File '$file' doesn't exist or is not readable.");
 		}
 
-		$this->file = $file;
 		$this->name = $name ?? basename($file);
-		$this->contentType = $contentType ?? 'application/octet-stream';
-		$this->forceDownload = $forceDownload;
 	}
 
 

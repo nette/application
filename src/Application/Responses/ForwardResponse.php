@@ -17,12 +17,9 @@ use Nette;
  */
 final class ForwardResponse implements Nette\Application\Response
 {
-	private Nette\Application\Request $request;
-
-
-	public function __construct(Nette\Application\Request $request)
-	{
-		$this->request = $request;
+	public function __construct(
+		private readonly Nette\Application\Request $request,
+	) {
 	}
 
 

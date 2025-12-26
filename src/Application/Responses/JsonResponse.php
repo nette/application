@@ -17,14 +17,10 @@ use Nette;
  */
 final class JsonResponse implements Nette\Application\Response
 {
-	private mixed $payload;
-	private string $contentType;
-
-
-	public function __construct(mixed $payload, ?string $contentType = null)
-	{
-		$this->payload = $payload;
-		$this->contentType = $contentType ?? 'application/json';
+	public function __construct(
+		private readonly mixed $payload,
+		private readonly string $contentType = 'application/json',
+	) {
 	}
 
 
