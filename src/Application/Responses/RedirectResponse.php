@@ -16,14 +16,10 @@ use Nette\Http;
  */
 final class RedirectResponse implements Nette\Application\Response
 {
-	private string $url;
-	private int $httpCode;
-
-
-	public function __construct(string $url, int $httpCode = Http\IResponse::S302_Found)
-	{
-		$this->url = $url;
-		$this->httpCode = $httpCode;
+	public function __construct(
+		private readonly string $url,
+		private readonly int $httpCode = Http\IResponse::S302_Found,
+	) {
 	}
 
 
