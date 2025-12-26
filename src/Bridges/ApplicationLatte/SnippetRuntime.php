@@ -65,7 +65,7 @@ final class SnippetRuntime
 
 		$this->stack[] = [$name, $obStarted];
 		if ($name !== '') {
-			$this->control->redrawControl($name, false);
+			$this->control->redrawControl($name, redraw: false);
 		}
 	}
 

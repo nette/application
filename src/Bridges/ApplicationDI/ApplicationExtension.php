@@ -25,6 +25,7 @@ use function is_array, is_string, sprintf;
  */
 final class ApplicationExtension extends Nette\DI\CompilerExtension
 {
+	/** @var string[] */
 	private readonly array $scanDirs;
 	private int $invalidLinkMode;
 	private array $checked = [];

@@ -32,7 +32,7 @@ class TemplateFactory implements UI\TemplateFactory
 		private readonly ?Nette\Caching\Storage $cacheStorage = null,
 		$templateClass = null,
 	) {
-		if ($templateClass && (!class_exists($templateClass) || !is_a($templateClass, Template::class, true))) {
+		if ($templateClass && (!class_exists($templateClass) || !is_a($templateClass, Template::class, allow_string: true))) {
 			throw new Nette\InvalidArgumentException("Class $templateClass does not implement " . Template::class . ' or it does not exist.');
 		}
 
@@ -139,8 +139,8 @@ class TemplateFactory implements UI\TemplateFactory
 		}
 
 		if ($presenter) {
-			$latte->addFunction('isLinkCurrent', [$presenter, 'isLinkCurrent']);
-			$latte->addFunction('isModuleCurrent', [$presenter, 'isModuleCurrent']);
+			$latte->addFunction('isLinkCurrent', $presenter->isLinkCurrent(...));
+			$latte->addFunction('isModuleCurrent', $presenter->isModuleCurrent(...));
 		}
 
 		$latte->addFilter('modifyDate', fn($time, $delta, $unit = null) => $time
