@@ -15,10 +15,10 @@ use function func_num_args, strcasecmp;
  * Presenter request.
  *
  * @property string $presenterName
- * @property array $parameters
- * @property array $post
- * @property array $files
- * @property string|null $method
+ * @property array<string,mixed> $parameters
+ * @property array<string,mixed> $post
+ * @property array<string,mixed> $files
+ * @property ?string $method
  */
 final class Request
 {
@@ -37,9 +37,13 @@ final class Request
 	public function __construct(
 		private string $name,
 		private ?string $method = null,
+		/** @var array<string, mixed> */
 		private array $params = [],
+		/** @var array<string, mixed> */
 		private array $post = [],
+		/** @var array<string, mixed> */
 		private array $files = [],
+		/** @var array<string, bool> */
 		private array $flags = [],
 	) {
 	}
@@ -66,6 +70,7 @@ final class Request
 
 	/**
 	 * Sets variables provided to the presenter.
+	 * @param  array<string, mixed>  $params
 	 */
 	public function setParameters(array $params): static
 	{
@@ -76,6 +81,7 @@ final class Request
 
 	/**
 	 * Returns all variables provided to the presenter (usually via URL).
+	 * @return array<string, mixed>
 	 */
 	public function getParameters(): array
 	{
@@ -94,6 +100,7 @@ final class Request
 
 	/**
 	 * Sets variables provided to the presenter via POST.
+	 * @param  array<string, mixed>  $params
 	 */
 	public function setPost(array $params): static
 	{
@@ -116,6 +123,7 @@ final class Request
 
 	/**
 	 * Sets all uploaded files.
+	 * @param  array<string, mixed>  $files
 	 */
 	public function setFiles(array $files): static
 	{
@@ -126,6 +134,7 @@ final class Request
 
 	/**
 	 * Returns all uploaded files.
+	 * @return array<string, mixed>
 	 */
 	public function getFiles(): array
 	{
@@ -180,6 +189,7 @@ final class Request
 	}
 
 
+	/** @return array<string, mixed> */
 	public function toArray(): array
 	{
 		$params = $this->params;

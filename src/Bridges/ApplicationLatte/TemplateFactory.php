@@ -23,6 +23,7 @@ class TemplateFactory implements UI\TemplateFactory
 	private string $templateClass;
 
 
+	/** @param ?string  $templateClass */
 	public function __construct(
 		private readonly LatteFactory $latteFactory,
 		private readonly ?Nette\Http\IRequest $httpRequest = null,
@@ -39,9 +40,9 @@ class TemplateFactory implements UI\TemplateFactory
 
 
 	/**
-	 * @template T of Template = Template
-	 * @param class-string<T>|null $class
-	 * @return T
+	 * @template T of Template
+	 * @param ?class-string<T>  $class
+	 * @return ($class is null ? Template : T)
 	 */
 	public function createTemplate(?UI\Control $control = null, ?string $class = null): UI\Template
 	{

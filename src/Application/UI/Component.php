@@ -20,13 +20,16 @@ use function array_key_exists, array_slice, class_exists, func_get_arg, func_get
  *
  * @property-read Presenter $presenter
  * @property-read bool $linkCurrent
+ * @implements \ArrayAccess<string, Nette\ComponentModel\IComponent>
  */
 abstract class Component extends Nette\ComponentModel\Container implements SignalReceiver, StatePersistent, \ArrayAccess
 {
 	use Nette\ComponentModel\ArrayAccess;
 
-	/** @var array<callable(self): void>  Occurs when component is attached to presenter */
+	/** @var array<callable(static): void>  Occurs when component is attached to presenter */
 	public array $onAnchor = [];
+
+	/** @var array<string, mixed> */
 	protected array $params = [];
 
 
@@ -97,6 +100,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 
 	/**
 	 * Calls public method if exists.
+	 * @param  array<string, mixed>  $params
 	 */
 	protected function tryCall(string $method, array $params): bool
 	{
@@ -124,6 +128,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	/**
 	 * Descendant can override this method to check for permissions.
 	 * It is called with the presenter class and the render*(), action*(), and handle*() methods.
+	 * @param  \ReflectionClass<object>|\ReflectionMethod  $element
 	 */
 	public function checkRequirements(\ReflectionClass|\ReflectionMethod $element): void
 	{
@@ -144,6 +149,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 
 	/**
 	 * Loads state information.
+	 * @param  array<string, mixed>  $params
 	 */
 	public function loadState(array $params): void
 	{
@@ -172,6 +178,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 
 	/**
 	 * Saves state information for next request.
+	 * @param  array<string, mixed>  $params
 	 */
 	public function saveState(array &$params): void
 	{
@@ -181,6 +188,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 
 	/**
 	 * @internal used by presenter
+	 * @param  array<string, mixed>  $params
 	 */
 	public function saveStatePartial(array &$params, ComponentReflection $reflection): void
 	{
@@ -232,6 +240,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 
 	/**
 	 * Returns component parameters.
+	 * @return array<string, mixed>
 	 */
 	final public function getParameters(): array
 	{
@@ -371,6 +380,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	/**
 	 * Throws HTTP error.
 	 * @throws Nette\Application\BadRequestException
+	 * @return never
 	 */
 	public function error(string $message = '', int $httpCode = Nette\Http\IResponse::S404_NotFound): void
 	{

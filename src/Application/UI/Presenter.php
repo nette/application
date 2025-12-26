@@ -75,13 +75,13 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	public int $invalidLinkMode = self::InvalidLinkSilent;
 
-	/** @var array<callable(self): void>  Occurs before starup() */
+	/** @var array<callable(static): void>  Occurs before starup() */
 	public array $onStartup = [];
 
-	/** @var array<callable(self): void>  Occurs before render*() and after beforeRender() */
+	/** @var array<callable(static): void>  Occurs before render*() and after beforeRender() */
 	public array $onRender = [];
 
-	/** @var array<callable(self, Application\Response): void>  Occurs before shutdown() */
+	/** @var array<callable(static, Application\Response): void>  Occurs before shutdown() */
 	public array $onShutdown = [];
 
 	/** automatically call canonicalize() */
@@ -90,12 +90,21 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** use absolute Urls or paths? */
 	public bool $absoluteUrls = false;
 
-	/** @deprecated  use #[Requires(methods: ...)] to specify allowed methods */
+	/**
+	 * @var list<string>
+	 * @deprecated  use #[Requires(methods: ...)] to specify allowed methods
+	 */
 	public array $allowedMethods = ['GET', 'POST', 'HEAD', 'PUT', 'DELETE', 'PATCH'];
 	private ?Nette\Application\Request $request = null;
 	private ?Nette\Application\Response $response = null;
+
+	/** @var array<string, array<string, mixed>> */
 	private array $globalParams = [];
+
+	/** @var array<string, mixed> */
 	private array $globalState;
+
+	/** @var ?array<string, string|false> */
 	private ?array $globalStateSinces;
 	private string $action = '';
 	private string $view = '';
@@ -367,6 +376,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Returns pair signal receiver and name.
+	 * @return ?array{string, string}
 	 */
 	final public function getSignal(): ?array
 	{
@@ -537,7 +547,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Formats layout template file names.
-	 * @return string[]
+	 * @return non-empty-list<string>
 	 */
 	public function formatLayoutTemplateFiles(): array
 	{
@@ -574,7 +584,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Formats view template file names.
-	 * @return string[]
+	 * @return non-empty-list<string>
 	 */
 	public function formatTemplateFiles(): array
 	{
@@ -614,6 +624,11 @@ abstract class Presenter extends Control implements Application\IPresenter
 	}
 
 
+	/**
+	 * @template T of Template
+	 * @param ?class-string<T>  $class
+	 * @return ($class is null ? Template : T)
+	 */
 	protected function createTemplate(?string $class = null): Template
 	{
 		$class ??= $this->formatTemplateClass();
@@ -621,6 +636,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	}
 
 
+	/** @return ?class-string<Template> */
 	public function formatTemplateClass(): ?string
 	{
 		$base = preg_replace('#Presenter$#', '', static::class);
@@ -819,14 +835,20 @@ abstract class Presenter extends Control implements Application\IPresenter
 	}
 
 
-	/** @deprecated @internal */
+	/**
+	 * @deprecated @internal
+	 * @param  array<string, mixed>  $args
+	 */
 	protected function createRequest(Component $component, string $destination, array $args, string $mode): ?string
 	{
 		return $this->linkGenerator->link($destination, $args, $component, $mode);
 	}
 
 
-	/** @deprecated @internal */
+	/**
+	 * @deprecated @internal
+	 * @return array{absolute: bool, path: string, signal: bool, args: ?array<string, mixed>, fragment: string}
+	 */
 	public static function parseDestination(string $destination): array
 	{
 		return LinkGenerator::parseDestination($destination);
@@ -907,7 +929,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Descendant can override this method to return the names of custom persistent components.
-	 * @return string[]
+	 * @return list<string>
 	 */
 	public static function getPersistentComponents(): array
 	{
@@ -917,6 +939,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Saves state information for all subcomponents to $this->globalState.
+	 * @param  ?class-string  $forClass
+	 * @return array<string, mixed>
 	 */
 	public function getGlobalState(?string $forClass = null): array
 	{
@@ -1066,6 +1090,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Pops parameters for specified component.
+	 * @return array<string, mixed>
 	 * @internal
 	 */
 	final public function popGlobalParameters(string $id): array
@@ -1154,6 +1179,9 @@ abstract class Presenter extends Control implements Application\IPresenter
 	}
 
 
+	/**
+	 * @return ($namespace is null ? Http\Session : Http\SessionSection)
+	 */
 	final public function getSession(?string $namespace = null): Http\Session|Http\SessionSection
 	{
 		if (empty($this->session)) {

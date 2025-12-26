@@ -16,13 +16,16 @@ use function array_shift, class_exists, count, explode, is_array, is_string, pre
  */
 class PresenterFactory implements IPresenterFactory
 {
-	/** @var array[] of module => splited mask */
+	/** @var array<string, array{string, string, string}>  module => splited mask */
 	private array $mapping = [
 		'*' => ['', '*Module\\', '*Presenter'],
 		'Nette' => ['NetteModule\\', '*\\', '*Presenter'],
 	];
 
+	/** @var array<string, string> */
 	private array $aliases = [];
+
+	/** @var array<string, class-string<IPresenter>> */
 	private array $cache = [];
 
 	/** @var callable */
@@ -30,7 +33,7 @@ class PresenterFactory implements IPresenterFactory
 
 
 	/**
-	 * @param  ?callable(string): IPresenter  $factory
+	 * @param  ?callable(class-string<IPresenter>): IPresenter  $factory
 	 */
 	public function __construct(?callable $factory = null)
 	{
@@ -49,6 +52,7 @@ class PresenterFactory implements IPresenterFactory
 
 	/**
 	 * Generates and checks presenter class name.
+	 * @return class-string<IPresenter>
 	 * @throws InvalidPresenterException
 	 */
 	public function getPresenterClass(string &$name): string
@@ -76,6 +80,7 @@ class PresenterFactory implements IPresenterFactory
 
 	/**
 	 * Sets mapping as pairs [module => mask]
+	 * @param array<string, string|array{string, string, string}>  $mapping
 	 */
 	public function setMapping(array $mapping): static
 	{
@@ -121,6 +126,7 @@ class PresenterFactory implements IPresenterFactory
 
 	/**
 	 * Sets pairs [alias => destination]
+	 * @param array<string, string>  $aliases
 	 */
 	public function setAliases(array $aliases): static
 	{

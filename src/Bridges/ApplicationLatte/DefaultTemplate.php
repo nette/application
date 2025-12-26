@@ -42,6 +42,7 @@ final class DefaultTemplate extends Template
 
 	/**
 	 * Sets all parameters.
+	 * @param  array<string, mixed>  $params
 	 */
 	public function setParameters(array $params): static
 	{

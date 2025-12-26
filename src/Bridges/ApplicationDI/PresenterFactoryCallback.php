@@ -25,6 +25,7 @@ final class PresenterFactoryCallback
 	}
 
 
+	/** @param class-string<Nette\Application\IPresenter>  $class */
 	public function __invoke(string $class): Nette\Application\IPresenter
 	{
 		$services = $this->container->findByType($class);

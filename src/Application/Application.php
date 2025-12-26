@@ -25,25 +25,25 @@ class Application
 	public ?string $errorPresenter = null;
 	public ?string $error4xxPresenter = null;
 
-	/** @var array<callable(self): void>  Occurs before the application loads presenter */
+	/** @var array<callable(static): void>  Occurs before the application loads presenter */
 	public array $onStartup = [];
 
-	/** @var array<callable(self, ?\Throwable): void>  Occurs before the application shuts down */
+	/** @var array<callable(static, ?\Throwable): void>  Occurs before the application shuts down */
 	public array $onShutdown = [];
 
-	/** @var array<callable(self, Request): void>  Occurs when a new request is received */
+	/** @var array<callable(static, Request): void>  Occurs when a new request is received */
 	public array $onRequest = [];
 
-	/** @var array<callable(self, IPresenter): void>  Occurs when a presenter is created */
+	/** @var array<callable(static, IPresenter): void>  Occurs when a presenter is created */
 	public array $onPresenter = [];
 
-	/** @var array<callable(self, Response): void>  Occurs when a new response is ready for dispatch */
+	/** @var array<callable(static, Response): void>  Occurs when a new response is ready for dispatch */
 	public array $onResponse = [];
 
-	/** @var array<callable(self, \Throwable): void>  Occurs when an unhandled exception occurs in the application */
+	/** @var array<callable(static, \Throwable): void>  Occurs when an unhandled exception occurs in the application */
 	public array $onError = [];
 
-	/** @var Request[] */
+	/** @var list<Request> */
 	private array $requests = [];
 	private ?IPresenter $presenter = null;
 
@@ -197,7 +197,7 @@ class Application
 
 	/**
 	 * Returns all processed requests.
-	 * @return Request[]
+	 * @return list<Request>
 	 */
 	final public function getRequests(): array
 	{

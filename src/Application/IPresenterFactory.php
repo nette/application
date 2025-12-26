@@ -15,6 +15,7 @@ interface IPresenterFactory
 {
 	/**
 	 * Generates and checks presenter class name.
+	 * @return class-string<IPresenter>
 	 * @throws InvalidPresenterException
 	 */
 	function getPresenterClass(string &$name): string;

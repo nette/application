@@ -105,6 +105,8 @@ final class MicroPresenter implements Application\IPresenter
 
 	/**
 	 * Creates a template instance with default variables pre-populated.
+	 * @param  ?class-string<Application\UI\Template>  $class
+	 * @param  ?callable(): Latte\Engine  $latteFactory
 	 */
 	public function createTemplate(?string $class = null, ?callable $latteFactory = null): Application\UI\Template
 	{

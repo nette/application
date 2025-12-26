@@ -15,6 +15,12 @@ use Tracy;
 
 /**
  * Routing extension for Nette DI.
+ *
+ * @property object{
+ *     debugger: bool|null,
+ *     routes: array<string, string>,
+ *     cache: bool,
+ * } $config
  */
 final class RoutingExtension extends Nette\DI\CompilerExtension
 {

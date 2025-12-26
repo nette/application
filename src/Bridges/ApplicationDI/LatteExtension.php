@@ -18,6 +18,17 @@ use function class_exists, explode, is_string, str_contains, version_compare;
 
 /**
  * Latte extension for Nette DI.
+ *
+ * @property object{
+ *     debugger: bool|'all'|null,
+ *     macros: array<string>,
+ *     extensions: array<string|Nette\DI\Definitions\Statement>,
+ *     templateClass: string|null,
+ *     strictTypes: bool,
+ *     strictParsing: bool,
+ *     phpLinter: string|null,
+ *     locale: string|null,
+ * } $config
  */
 final class LatteExtension extends Nette\DI\CompilerExtension
 {

@@ -21,6 +21,7 @@ final class UIRuntime
 {
 	use Nette\StaticClass;
 
+	/** @param  array<string, array<mixed>>  $blocks */
 	public static function initialize(Latte\Runtime\Template $template, &$parentName, array $blocks): void
 	{
 		$providers = $template->global;

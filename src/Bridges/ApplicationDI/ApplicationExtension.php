@@ -20,14 +20,30 @@ use function is_array, is_string, sprintf;
 
 /**
  * Application extension for Nette DI.
+ *
+ * @property object{
+ *     debugger: bool|null,
+ *     errorPresenter: string|array{'4xx': string, '5xx': string},
+ *     catchExceptions: bool,
+ *     mapping: string|array<string, string|array<mixed>>|null,
+ *     aliases: array<string, string>,
+ *     scanDirs: list<string>|false,
+ *     scanComposer: bool,
+ *     scanFilter: string,
+ *     silentLinks: bool|null,
+ * } $config
  */
 final class ApplicationExtension extends Nette\DI\CompilerExtension
 {
+	/** @var string[] */
 	private readonly array $scanDirs;
 	private int $invalidLinkMode;
+
+	/** @var array<class-string, true> */
 	private array $checked = [];
 
 
+	/** @param  ?list<string>  $scanDirs */
 	public function __construct(
 		private readonly bool $debugMode = false,
 		?array $scanDirs = null,
@@ -157,7 +173,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 	}
 
 
-	/** @return string[] */
+	/** @return list<class-string<Nette\Application\IPresenter>> */
 	private function findPresenters(): array
 	{
 		$config = $this->getConfig();
@@ -252,6 +268,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 	}
 
 
+	/** @param class-string $class */
 	private function checkPresenter(string $class): void
 	{
 		if (!is_subclass_of($class, UI\Presenter::class) || isset($this->checked[$class])) {
