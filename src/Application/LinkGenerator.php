@@ -273,7 +273,7 @@ final class LinkGenerator
 
 		if ($relative) {
 			$hostUrl = $this->refUrl->getHostUrl() . '/';
-			if (strncmp($url, $hostUrl, strlen($hostUrl)) === 0) {
+			if (str_starts_with($url, $hostUrl)) {
 				$url = substr($url, strlen($hostUrl) - 1);
 			}
 		}

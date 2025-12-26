@@ -25,6 +25,7 @@ use function is_array, is_string, sprintf;
  */
 final class ApplicationExtension extends Nette\DI\CompilerExtension
 {
+	/** @var string[] */
 	private readonly array $scanDirs;
 	private int $invalidLinkMode;
 	private array $checked = [];
@@ -128,7 +129,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 
 		if ($this->config->debugger ?? $builder->getByType(Tracy\BlueScreen::class)) {
 			$builder->getDefinition($this->prefix('application'))
-				->addSetup([self::class, 'initializeBlueScreenPanel']);
+				->addSetup(self::initializeBlueScreenPanel(...));
 		}
 
 		$all = [];
