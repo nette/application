@@ -100,7 +100,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	 */
 	protected function tryCall(string $method, array $params): bool
 	{
-		$rc = $this->getReflection();
+		$rc = static::getReflection();
 		if (!$rc->hasMethod($method)) {
 			return false;
 		} elseif (!$rc->hasCallableMethod($method)) {
@@ -147,7 +147,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	 */
 	public function loadState(array $params): void
 	{
-		$reflection = $this->getReflection();
+		$reflection = static::getReflection();
 		foreach ($reflection->getParameters() as $name => $meta) {
 			if (isset($params[$name])) { // nulls are ignored
 				if (!ParameterConverter::convertType($params[$name], $meta['type'])) {
@@ -181,6 +181,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 
 	/**
 	 * @internal used by presenter
+	 * @param  array<string, mixed>  $params
 	 */
 	public function saveStatePartial(array &$params, ComponentReflection $reflection): void
 	{
@@ -258,7 +259,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	 */
 	public function signalReceived(string $signal): void
 	{
-		if (!$this->tryCall($this->formatSignalMethod($signal), $this->params)) {
+		if (!$this->tryCall(static::formatSignalMethod($signal), $this->params)) {
 			$class = static::class;
 			throw new BadSignalException("There is no handler for signal '$signal' in class $class.");
 		}

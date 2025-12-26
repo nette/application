@@ -60,6 +60,9 @@ final class AccessPolicy
 	}
 
 
+	/**
+	 * @param  Requires[]  $attrs
+	 */
 	private function applyInternalRules(array $attrs, Component $component): array
 	{
 		if (
