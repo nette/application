@@ -8,7 +8,7 @@
 namespace Nette\Application\UI;
 
 use Nette;
-use function array_key_exists, array_slice, class_exists, func_get_arg, func_get_args, func_num_args, get_debug_type, is_array, link, method_exists, sprintf, trigger_error;
+use function array_key_exists, array_slice, class_exists, func_get_arg, func_get_args, func_num_args, get_debug_type, is_array, method_exists, sprintf, trigger_error;
 
 
 /**
@@ -100,7 +100,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	 */
 	protected function tryCall(string $method, array $params): bool
 	{
-		$rc = $this->getReflection();
+		$rc = static::getReflection();
 		if (!$rc->hasMethod($method)) {
 			return false;
 		} elseif (!$rc->hasCallableMethod($method)) {
@@ -147,7 +147,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	 */
 	public function loadState(array $params): void
 	{
-		$reflection = $this->getReflection();
+		$reflection = static::getReflection();
 		foreach ($reflection->getParameters() as $name => $meta) {
 			if (isset($params[$name])) { // nulls are ignored
 				if (!ParameterConverter::convertType($params[$name], $meta['type'])) {
@@ -258,7 +258,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	 */
 	public function signalReceived(string $signal): void
 	{
-		if (!$this->tryCall($this->formatSignalMethod($signal), $this->params)) {
+		if (!$this->tryCall(static::formatSignalMethod($signal), $this->params)) {
 			$class = static::class;
 			throw new BadSignalException("There is no handler for signal '$signal' in class $class.");
 		}

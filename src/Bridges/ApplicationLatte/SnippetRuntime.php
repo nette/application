@@ -7,6 +7,7 @@
 
 namespace Nette\Bridges\ApplicationLatte;
 
+use Latte\Runtime\Block;
 use Nette;
 use Nette\Application\UI\Control;
 use Nette\Application\UI\Renderable;
@@ -63,7 +64,7 @@ final class SnippetRuntime
 
 		$this->stack[] = [$name, $obStarted];
 		if ($name !== '') {
-			$this->control->redrawControl($name, false);
+			$this->control->redrawControl($name, redraw: false);
 		}
 	}
 

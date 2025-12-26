@@ -85,7 +85,7 @@ class Route extends Nette\Routing\Route implements Nette\Routing\Router
 
 		$presenter = $params[self::PresenterKey] ?? null;
 		if (isset($this->getMetadata()[self::ModuleKey], $params[self::ModuleKey]) && is_string($presenter)) {
-			$params[self::PresenterKey] = $params[self::ModuleKey] . ':' . $params[self::PresenterKey];
+			$params[self::PresenterKey] = $params[self::ModuleKey] . ':' . $presenter;
 		}
 
 		unset($params[self::ModuleKey]);

@@ -113,7 +113,7 @@ final class MicroPresenter implements Application\IPresenter
 	{
 		$latte = $latteFactory
 			? $latteFactory()
-			: $this->getContext()->getByType(Nette\Bridges\ApplicationLatte\LatteFactory::class)->create();
+			: $this->context->getByType(Nette\Bridges\ApplicationLatte\LatteFactory::class)->create();
 		$template = $class
 			? new $class
 			: new Nette\Bridges\ApplicationLatte\DefaultTemplate($latte);
@@ -144,7 +144,7 @@ final class MicroPresenter implements Application\IPresenter
 	 * Throws HTTP error.
 	 * @throws Nette\Application\BadRequestException
 	 */
-	public function error(string $message = '', int $httpCode = Http\IResponse::S404_NotFound): void
+	public function error(string $message = '', int $httpCode = Http\IResponse::S404_NotFound): never
 	{
 		throw new Application\BadRequestException($message, $httpCode);
 	}

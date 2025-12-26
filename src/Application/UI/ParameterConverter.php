@@ -23,12 +23,12 @@ final class ParameterConverter
 	public static function toArguments(\ReflectionFunctionAbstract $method, array $args): array
 	{
 		$res = [];
-		foreach ($method->getParameters() as $i => $param) {
+		foreach ($method->getParameters() as $param) {
 			$name = $param->getName();
 			$type = self::getType($param);
 			if (isset($args[$name])) {
-				$res[$i] = $args[$name];
-				if (!self::convertType($res[$i], $type)) {
+				$value = $args[$name];
+				if (!self::convertType($value, $type)) {
 					throw new Nette\InvalidArgumentException(sprintf(
 						'Argument $%s passed to %s must be %s, %s given.',
 						$name,
@@ -38,11 +38,11 @@ final class ParameterConverter
 					));
 				}
 			} elseif ($param->isDefaultValueAvailable()) {
-				$res[$i] = $param->getDefaultValue();
+				$value = $param->getDefaultValue();
 			} elseif ($type === 'scalar' || $param->allowsNull()) {
-				$res[$i] = null;
+				$value = null;
 			} elseif ($type === 'array' || $type === 'iterable') {
-				$res[$i] = [];
+				$value = [];
 			} else {
 				throw new Nette\InvalidArgumentException(sprintf(
 					'Missing parameter $%s required by %s',
@@ -50,6 +50,8 @@ final class ParameterConverter
 					Reflection::toString($method),
 				));
 			}
+
+			$res[] = $value;
 		}
 
 		return $res;

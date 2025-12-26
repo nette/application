@@ -143,14 +143,15 @@ class Form extends Nette\Forms\Form implements SignalReceiver
 	 */
 	public function signalReceived(string $signal): void
 	{
+		$presenter = $this->getPresenter();
 		if ($signal !== 'submit') {
 			$class = static::class;
 			throw new BadSignalException("Missing handler for signal '$signal' in $class.");
 
-		} elseif (!$this->crossOrigin && !$this->getPresenter()->getHttpRequest()->isSameSite()) {
-			$this->getPresenter()->detectedCsrf();
+		} elseif (!$this->crossOrigin && !$presenter->getHttpRequest()->isSameSite()) {
+			$presenter->detectedCsrf();
 
-		} elseif (!$this->getPresenter()->getRequest()->hasFlag(Nette\Application\Request::RESTORED)) {
+		} elseif (!$presenter->getRequest()->hasFlag(Nette\Application\Request::RESTORED)) {
 			$this->fireEvents();
 		}
 	}

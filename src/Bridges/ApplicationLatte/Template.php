@@ -141,7 +141,7 @@ abstract class Template implements Nette\Application\UI\Template
 	/**
 	 * Prevents unserialization.
 	 */
-	final public function __unserialize($_)
+	final public function __unserialize(array $_)
 	{
 		throw new Nette\NotImplementedException('Object unserialization is not supported by class ' . static::class);
 	}

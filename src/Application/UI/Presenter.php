@@ -209,7 +209,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 			// autoload components
 			foreach ($this->globalParams as $id => $foo) {
-				$this->getComponent((string) $id, throw: false);
+				$this->getComponent($id, throw: false);
 			}
 
 			if ($this->autoCanonicalize) {
