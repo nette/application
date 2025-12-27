@@ -93,7 +93,7 @@ final class AccessPolicy
 			$this->presenter->error('Forwarded request is required by ' . Reflection::toString($this->element));
 		}
 
-		if ($attribute->sameOrigin && !$this->presenter->getHttpRequest()->isSameSite()) {
+		if ($attribute->sameOrigin && !$this->presenter->getHttpRequest()->isFrom('same-origin')) {
 			$this->presenter->detectedCsrf();
 		}
 
