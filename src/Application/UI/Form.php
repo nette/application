@@ -8,6 +8,7 @@
 namespace Nette\Application\UI;
 
 use Nette;
+use Nette\Http\FetchSite;
 
 
 /**
@@ -141,7 +142,7 @@ class Form extends Nette\Forms\Form implements SignalReceiver
 			$class = static::class;
 			throw new BadSignalException("Missing handler for signal '$signal' in $class.");
 
-		} elseif (!$this->crossOrigin && !$presenter->getHttpRequest()->isSameSite()) {
+		} elseif (!$this->crossOrigin && !$presenter->getHttpRequest()->isFrom(FetchSite::SameOrigin)) {
 			$presenter->detectedCsrf();
 
 		} elseif (!$presenter->getRequest()->hasFlag(Nette\Application\Request::RESTORED)) {
