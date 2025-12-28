@@ -1,5 +1,4 @@
-<?php
-%A%
+<?php%A%
 final class Template%a% extends Latte\Runtime\Template
 {
 	public const Blocks = [
