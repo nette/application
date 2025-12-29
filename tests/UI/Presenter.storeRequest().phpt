@@ -128,3 +128,140 @@ test('request storage without user context', function () {
 	Assert::same($key, $storedKey);
 	Assert::same([null, $applicationRequest], $storedValue);
 });
+
+
+test('restoreRequest() restores stored request', function () {
+	$storedData = [
+		'test_id',
+		new Application\Request('Test', 'POST', ['action' => 'edit', 'id' => 5], ['name' => 'John']),
+	];
+
+	$sessionSection = Mockery::mock(Http\SessionSection::class);
+	$sessionSection->shouldReceive('get')->with('abc123')->andReturn($storedData);
+	$sessionSection->shouldReceive('remove')->with('abc123')->once();
+
+	$session = Mockery::mock(Http\Session::class);
+	$session->shouldReceive('getSection')->andReturn($sessionSection);
+
+	$user = Mockery::mock(Nette\Security\User::class);
+	$user->shouldReceive('getId')->andReturn('test_id');
+
+	$presenter = new TestPresenter;
+	$presenter->injectPrimary(
+		new Http\Request(new Http\UrlScript),
+		new Http\Response,
+		new Application\PresenterFactory,
+		new Application\Routers\SimpleRouter,
+		$session,
+		$user,
+	);
+
+	$presenter->autoCanonicalize = false;
+	$presenter->run(new Application\Request('Test', 'GET', ['action' => 'default']));
+
+	Assert::exception(
+		fn() => $presenter->restoreRequest('abc123'),
+		Application\AbortException::class,
+	);
+
+	// Verified that get/remove were called (via Mockery expectations)
+});
+
+
+test('restoreRequest() ignores request with wrong user', function () {
+	$storedData = [
+		'different_user',
+		new Application\Request('Test', 'POST', ['action' => 'edit']),
+	];
+
+	$sessionSection = Mockery::mock(Http\SessionSection::class);
+	$sessionSection->shouldReceive('get')->with('abc123')->andReturn($storedData);
+	$sessionSection->shouldReceive('remove')->never();
+
+	$session = Mockery::mock(Http\Session::class);
+	$session->shouldReceive('getSection')->andReturn($sessionSection);
+
+	$user = Mockery::mock(Nette\Security\User::class);
+	$user->shouldReceive('getId')->andReturn('test_id');
+
+	$presenter = new TestPresenter;
+	$presenter->injectPrimary(
+		new Http\Request(new Http\UrlScript),
+		new Http\Response,
+		null,
+		new Application\Routers\SimpleRouter,
+		$session,
+		$user,
+	);
+
+	$presenter->autoCanonicalize = false;
+	$presenter->run(new Application\Request('Test', 'GET', ['action' => 'default']));
+
+	$presenter->restoreRequest('abc123');
+
+	// Request should not be restored due to user mismatch
+});
+
+
+test('restoreRequest() handles missing request', function () {
+	$sessionSection = Mockery::mock(Http\SessionSection::class);
+	$sessionSection->shouldReceive('get')->with('nonexistent')->andReturn(null);
+	$sessionSection->shouldReceive('remove')->never();
+
+	$session = Mockery::mock(Http\Session::class);
+	$session->shouldReceive('getSection')->andReturn($sessionSection);
+
+	$presenter = new TestPresenter;
+	$presenter->injectPrimary(
+		new Http\Request(new Http\UrlScript),
+		new Http\Response,
+		null,
+		new Application\Routers\SimpleRouter,
+		$session,
+	);
+
+	$presenter->autoCanonicalize = false;
+	$presenter->run(new Application\Request('Test', 'GET', ['action' => 'default']));
+
+	$presenter->restoreRequest('nonexistent');
+
+	// Should handle gracefully without error
+});
+
+
+test('restoreRequest() accepts request without user when stored without user', function () {
+	$storedData = [
+		null,
+		new Application\Request('Test', 'POST', ['action' => 'edit']),
+	];
+
+	$sessionSection = Mockery::mock(Http\SessionSection::class);
+	$sessionSection->shouldReceive('get')->with('abc123')->andReturn($storedData);
+	$sessionSection->shouldReceive('remove')->with('abc123')->once();
+
+	$session = Mockery::mock(Http\Session::class);
+	$session->shouldReceive('getSection')->andReturn($sessionSection);
+
+	$user = Mockery::mock(Nette\Security\User::class);
+	$user->shouldReceive('getId')->andReturn('test_id');
+
+	$presenter = new TestPresenter;
+	$presenter->injectPrimary(
+		new Http\Request(new Http\UrlScript),
+		new Http\Response,
+		new Application\PresenterFactory,
+		new Application\Routers\SimpleRouter,
+		$session,
+		$user,
+	);
+
+	$presenter->autoCanonicalize = false;
+	$presenter->run(new Application\Request('Test', 'GET', ['action' => 'default']));
+
+	Assert::exception(
+		fn() => $presenter->restoreRequest('abc123'),
+		Application\AbortException::class,
+	);
+
+	// Request stored without user (null) should be restorable by any user
+});
