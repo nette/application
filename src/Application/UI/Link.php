@@ -19,6 +19,7 @@ final class Link
 	public function __construct(
 		private readonly Component $component,
 		private readonly string $destination,
+		/** @var array<string, mixed> */
 		private array $params = [],
 	) {
 	}
@@ -63,6 +64,7 @@ final class Link
 
 	/**
 	 * Returns link parameters.
+	 * @return array<string, mixed>
 	 */
 	public function getParameters(): array
 	{

@@ -96,7 +96,11 @@ abstract class Presenter extends Control implements Application\IPresenter
 	public array $allowedMethods = ['GET', 'POST', 'HEAD', 'PUT', 'DELETE', 'PATCH'];
 	private ?Nette\Application\Request $request = null;
 	private ?Nette\Application\Response $response = null;
+
+	/** @var array<string, array<string, mixed>> */
 	private array $globalParams = [];
+
+	/** @var array<string, mixed> */
 	private array $globalState;
 	private ?array $globalStateSinces;
 	private string $action = '';
@@ -912,6 +916,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Saves state information for all subcomponents to $this->globalState.
+	 * @return array<string, mixed>
 	 */
 	public function getGlobalState(?string $forClass = null): array
 	{
@@ -1061,6 +1066,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * Pops parameters for specified component.
+	 * @return array<string, mixed>
 	 * @internal
 	 */
 	final public function popGlobalParameters(string $id): array

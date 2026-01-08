@@ -63,7 +63,8 @@ final class AccessPolicy
 
 
 	/**
-	 * @param  Requires[]  $attrs
+	 * @param  Attributes\Requires[]  $attrs
+	 * @return Attributes\Requires[]
 	 */
 	private function applyInternalRules(array $attrs, Component $component): array
 	{

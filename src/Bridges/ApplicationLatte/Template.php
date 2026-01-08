@@ -36,6 +36,7 @@ abstract class Template implements Nette\Application\UI\Template
 
 	/**
 	 * Renders template to output.
+	 * @param  array<string, mixed>  $params
 	 */
 	public function render(?string $file = null, array $params = []): void
 	{
@@ -46,6 +47,7 @@ abstract class Template implements Nette\Application\UI\Template
 
 	/**
 	 * Renders template to output.
+	 * @param  array<string, mixed>  $params
 	 */
 	public function renderToString(?string $file = null, array $params = []): string
 	{
@@ -126,6 +128,7 @@ abstract class Template implements Nette\Application\UI\Template
 
 	/**
 	 * Returns array of all parameters.
+	 * @return array<string, mixed>
 	 */
 	final public function getParameters(): array
 	{

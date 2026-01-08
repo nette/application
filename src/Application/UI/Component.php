@@ -29,6 +29,8 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 
 	/** @var array<callable(self): void>  Occurs when component is attached to presenter */
 	public array $onAnchor = [];
+
+	/** @var array<string, mixed> */
 	protected array $params = [];
 
 
@@ -99,6 +101,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 
 	/**
 	 * Calls public method if exists.
+	 * @param  array<string, mixed>  $params
 	 */
 	protected function tryCall(string $method, array $params): bool
 	{
@@ -146,6 +149,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 
 	/**
 	 * Loads state information.
+	 * @param  array<string, mixed>  $params
 	 */
 	public function loadState(array $params): void
 	{
@@ -174,6 +178,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 
 	/**
 	 * Saves state information for next request.
+	 * @param  array<string, mixed>  $params
 	 */
 	public function saveState(array &$params): void
 	{
@@ -235,6 +240,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 
 	/**
 	 * Returns component parameters.
+	 * @return array<string, mixed>
 	 */
 	final public function getParameters(): array
 	{

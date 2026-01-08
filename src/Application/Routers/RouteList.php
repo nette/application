@@ -33,6 +33,8 @@ class RouteList extends Nette\Routing\RouteList implements Nette\Routing\Router,
 
 	/**
 	 * Support for modules.
+	 * @param  array<string, mixed>  $params
+	 * @return array<string, mixed>|null
 	 */
 	protected function completeParameters(array $params): ?array
 	{
@@ -47,6 +49,7 @@ class RouteList extends Nette\Routing\RouteList implements Nette\Routing\Router,
 
 	/**
 	 * Constructs absolute URL from array.
+	 * @param  array<string, mixed>  $params
 	 */
 	public function constructUrl(array $params, Nette\Http\UrlScript $refUrl): ?string
 	{

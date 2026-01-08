@@ -24,6 +24,7 @@ final class ParameterConverter
 
 	/**
 	 * @param  array<string, mixed>  $args
+	 * @return mixed[]
 	 */
 	public static function toArguments(\ReflectionFunctionAbstract $method, array $args): array
 	{

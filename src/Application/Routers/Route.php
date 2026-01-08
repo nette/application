@@ -98,6 +98,7 @@ class Route extends Nette\Routing\Route implements Nette\Routing\Router
 
 	/**
 	 * Constructs absolute URL from array.
+	 * @param  array<string, mixed>  $params
 	 */
 	public function constructUrl(array $params, Nette\Http\UrlScript $refUrl): ?string
 	{
@@ -121,7 +122,10 @@ class Route extends Nette\Routing\Route implements Nette\Routing\Router
 	}
 
 
-	/** @internal */
+	/**
+	 * @return array<string, mixed>
+	 * @internal
+	 */
 	public function getConstantParameters(): array
 	{
 		$res = parent::getConstantParameters();

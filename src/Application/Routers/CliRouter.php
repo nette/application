@@ -22,6 +22,7 @@ final class CliRouter implements Nette\Routing\Router
 
 
 	public function __construct(
+		/** @var array<string, mixed> */
 		private readonly array $defaults = [],
 	) {
 	}
@@ -99,6 +100,7 @@ final class CliRouter implements Nette\Routing\Router
 
 	/**
 	 * Returns default values.
+	 * @return array<string, mixed>
 	 */
 	public function getDefaults(): array
 	{

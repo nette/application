@@ -115,6 +115,9 @@ final class ComponentReflection extends \ReflectionClass
 	}
 
 
+	/**
+	 * @return string[] names of public properties with #[TemplateVariable] attribute
+	 */
 	public function getTemplateVariables(Control $control): array
 	{
 		$res = [];

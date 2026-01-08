@@ -28,6 +28,8 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 	/** @var string[] */
 	private readonly array $scanDirs;
 	private int $invalidLinkMode;
+
+	/** @var array<class-string, true> */
 	private array $checked = [];
 
 
