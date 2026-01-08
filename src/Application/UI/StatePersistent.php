@@ -15,11 +15,13 @@ interface StatePersistent
 {
 	/**
 	 * Loads state information.
+	 * @param  array<string, mixed>  $params
 	 */
 	function loadState(array $params): void;
 
 	/**
 	 * Saves state information for next request.
+	 * @param  array<string, mixed>  $params
 	 */
 	function saveState(array &$params): void;
 }

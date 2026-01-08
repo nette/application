@@ -22,6 +22,7 @@ final class AccessPolicy
 	private Presenter $presenter;
 
 
+	/** @param  \ReflectionClass<object>|\ReflectionMethod  $element */
 	public function __construct(
 		private readonly \ReflectionClass|\ReflectionMethod $element,
 	) {
@@ -61,7 +62,8 @@ final class AccessPolicy
 
 
 	/**
-	 * @param  Requires[]  $attrs
+	 * @param  Attributes\Requires[]  $attrs
+	 * @return Attributes\Requires[]
 	 */
 	private function applyInternalRules(array $attrs, Component $component): array
 	{

@@ -16,13 +16,16 @@ use function array_shift, class_exists, count, explode, is_array, is_string, pre
  */
 class PresenterFactory implements IPresenterFactory
 {
-	/** @var array[] of module => splited mask */
+	/** @var array<string, array{string, string, string}>  module => splited mask */
 	private array $mapping = [
 		'*' => ['', '*Module\\', '*Presenter'],
 		'Nette' => ['NetteModule\\', '*\\', '*Presenter'],
 	];
 
+	/** @var array<string, string> */
 	private array $aliases = [];
+
+	/** @var array<string, string> */
 	private array $cache = [];
 
 	/** @var callable */
@@ -76,6 +79,7 @@ class PresenterFactory implements IPresenterFactory
 
 	/**
 	 * Sets mapping as pairs [module => mask]
+	 * @param array<string, string|array{string, string, string}>  $mapping
 	 */
 	public function setMapping(array $mapping): static
 	{
@@ -121,6 +125,7 @@ class PresenterFactory implements IPresenterFactory
 
 	/**
 	 * Sets pairs [alias => destination]
+	 * @param array<string, string>  $aliases
 	 */
 	public function setAliases(array $aliases): static
 	{

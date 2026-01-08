@@ -108,6 +108,7 @@ final class MicroPresenter implements Application\IPresenter
 
 	/**
 	 * Template factory.
+	 * @param  ?callable(): Latte\Engine  $latteFactory
 	 */
 	public function createTemplate(?string $class = null, ?callable $latteFactory = null): Application\UI\Template
 	{

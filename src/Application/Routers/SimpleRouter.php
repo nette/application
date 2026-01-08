@@ -20,6 +20,7 @@ final class SimpleRouter extends Nette\Routing\SimpleRouter implements Nette\Rou
 	private const PresenterKey = 'presenter';
 
 
+	/** @param  array<string, mixed>|string  $defaults */
 	public function __construct(array|string $defaults = [])
 	{
 		if (is_string($defaults)) {

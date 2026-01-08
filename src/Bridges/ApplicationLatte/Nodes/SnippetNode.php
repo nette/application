@@ -35,7 +35,7 @@ class SnippetNode extends StatementNode
 	public ?ElementNode $htmlElement;
 
 
-	/** @return \Generator<int, ?array, array{AreaNode, ?Tag}, static> */
+	/** @return \Generator<int, ?list<string>, array{AreaNode, ?Tag}, static> */
 	public static function create(Tag $tag, TemplateParser $parser): \Generator
 	{
 		$tag->outputMode = $tag::OutputKeepIndentation;

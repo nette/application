@@ -15,20 +15,26 @@ use const PREG_SPLIT_NO_EMPTY;
 
 /**
  * Helpers for Presenter & Component.
+ * @extends \ReflectionClass<object>
  * @property-read class-string<Control> $name
  * @property-read string $fileName
  * @internal
  */
 final class ComponentReflection extends \ReflectionClass
 {
+	/** @var array<string, array<string, array{def: mixed, type: string, since?: ?class-string}>> */
 	private static array $ppCache = [];
+
+	/** @var array<string, array<string, array{since: class-string}>> */
 	private static array $pcCache = [];
+
+	/** @var array<string, array<string, ?\ReflectionMethod>> */
 	private static array $armCache = [];
 
 
 	/**
 	 * Returns array of class properties that are public and have attribute #[Persistent] or #[Parameter] or annotation @persistent.
-	 * @return array<string, array{def: mixed, type: string, since: ?class-string}>
+	 * @return array<string, array{def: mixed, type: string, since?: ?class-string}>
 	 */
 	public function getParameters(): array
 	{
@@ -76,7 +82,7 @@ final class ComponentReflection extends \ReflectionClass
 
 	/**
 	 * Returns array of persistent properties. They are public and have attribute #[Persistent] or annotation @persistent.
-	 * @return array<string, array{def: mixed, type: string, since: class-string}>
+	 * @return array<string, array{def: mixed, type: string, since: ?class-string}>
 	 */
 	public function getPersistentParams(): array
 	{
@@ -113,6 +119,9 @@ final class ComponentReflection extends \ReflectionClass
 	}
 
 
+	/**
+	 * @return list<string>  names of public properties with #[TemplateVariable] attribute
+	 */
 	public function getTemplateVariables(Control $control): array
 	{
 		$res = [];
@@ -167,6 +176,7 @@ final class ComponentReflection extends \ReflectionClass
 
 	/**
 	 * Returns an annotation value.
+	 * @return ?list<mixed>
 	 */
 	public static function parseAnnotation(\Reflector $ref, string $name): ?array
 	{
@@ -214,7 +224,7 @@ final class ComponentReflection extends \ReflectionClass
 
 
 	/**
-	 * @return MethodReflection[]
+	 * @return list<MethodReflection>
 	 */
 	public function getMethods($filter = -1): array
 	{
@@ -226,7 +236,11 @@ final class ComponentReflection extends \ReflectionClass
 	}
 
 
-	/** @deprecated  */
+	/**
+	 * @deprecated
+	 * @param  array<string, mixed>  $args
+	 * @return list<mixed>
+	 */
 	public static function combineArgs(\ReflectionFunctionAbstract $method, array $args): array
 	{
 		return ParameterConverter::toArguments($method, $args);

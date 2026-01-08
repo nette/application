@@ -14,6 +14,7 @@ use function count, interface_exists, is_int, is_string, strlen, strncmp, substr
 
 /**
  * The router broker.
+ * @implements \ArrayAccess<int, Nette\Routing\Router>
  */
 class RouteList extends Nette\Routing\RouteList implements Nette\Routing\Router, \ArrayAccess
 {
@@ -31,6 +32,8 @@ class RouteList extends Nette\Routing\RouteList implements Nette\Routing\Router,
 
 	/**
 	 * Support for modules.
+	 * @param  array<string, mixed>  $params
+	 * @return ?array<string, mixed>
 	 */
 	protected function completeParameters(array $params): ?array
 	{
@@ -45,6 +48,7 @@ class RouteList extends Nette\Routing\RouteList implements Nette\Routing\Router,
 
 	/**
 	 * Constructs absolute URL from array.
+	 * @param  array<string, mixed>  $params
 	 */
 	public function constructUrl(array $params, Nette\Http\UrlScript $refUrl): ?string
 	{
@@ -60,6 +64,7 @@ class RouteList extends Nette\Routing\RouteList implements Nette\Routing\Router,
 	}
 
 
+	/** @param  array<string, mixed>|string|\Closure(Nette\Http\IRequest, Nette\Http\IResponse): Nette\Application\Response  $metadata */
 	public function addRoute(
 		#[Language('TEXT')]
 		string $mask,

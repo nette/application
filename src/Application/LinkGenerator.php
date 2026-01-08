@@ -33,6 +33,7 @@ final class LinkGenerator
 	/**
 	 * Generates URL to presenter.
 	 * @param  string  $destination  in format "[//] [[[module:]presenter:]action | signal! | this | @alias] [#fragment]"
+	 * @param  mixed[]  $args
 	 * @throws UI\InvalidLinkException
 	 */
 	public function link(
@@ -54,6 +55,7 @@ final class LinkGenerator
 
 	/**
 	 * @param  string  $destination  in format "[[[module:]presenter:]action | signal! | this | @alias]"
+	 * @param  mixed[]  $args
 	 * @param  string  $mode  forward|redirect|link
 	 * @throws UI\InvalidLinkException
 	 * @internal
@@ -233,7 +235,7 @@ final class LinkGenerator
 	/**
 	 * Parse destination in format "[//] [[[module:]presenter:]action | signal! | this | @alias] [?query] [#fragment]"
 	 * @throws UI\InvalidLinkException
-	 * @return array{absolute: bool, path: string, signal: bool, args: ?array, fragment: string}
+	 * @return array{absolute: bool, path: string, signal: bool, args: ?array<string, mixed>, fragment: string}
 	 * @internal
 	 */
 	public static function parseDestination(string $destination): array
@@ -290,6 +292,7 @@ final class LinkGenerator
 	}
 
 
+	/** @param  \ReflectionClass<object>|\ReflectionMethod  $element */
 	private function validateLinkTarget(
 		?UI\Presenter $presenter,
 		\ReflectionClass|\ReflectionMethod $element,

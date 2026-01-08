@@ -18,7 +18,10 @@ use Tracy;
  */
 final class RoutingPanel implements Tracy\IBarPanel
 {
+	/** @var array{path: string, domain: ?string, module: string, routes: array<mixed>} */
 	private array $routes;
+
+	/** @var ?array<string, mixed> */
 	private ?array $matched = null;
 
 
@@ -64,6 +67,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 	}
 
 
+	/** @return array{path: string, domain: ?string, module: string, routes: array<mixed>} */
 	private function analyse(Routing\RouteList $router, ?Nette\Http\IRequest $httpRequest): array
 	{
 		$res = [
@@ -114,6 +118,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 	}
 
 
+	/** @return \ReflectionClass<object>|\ReflectionMethod|string|null */
 	private function findSource(): \ReflectionClass|\ReflectionMethod|string|null
 	{
 		$params = $this->matched;

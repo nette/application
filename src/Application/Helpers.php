@@ -32,7 +32,7 @@ final class Helpers
 
 
 	/**
-	 * return string[]
+	 * @return array<string, class-string>
 	 */
 	public static function getClassesAndTraits(string $class): array
 	{

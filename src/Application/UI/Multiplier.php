@@ -12,6 +12,7 @@ use Nette;
 
 /**
  * Component multiplier.
+ * @template T of Nette\ComponentModel\IComponent
  */
 final class Multiplier extends Component
 {
@@ -19,12 +20,18 @@ final class Multiplier extends Component
 	private $factory;
 
 
+	/**
+	 * @param callable(string, self<T>): (T|null)  $factory
+	 */
 	public function __construct(callable $factory)
 	{
 		$this->factory = $factory;
 	}
 
 
+	/**
+	 * @return T|null
+	 */
 	protected function createComponent(string $name): ?Nette\ComponentModel\IComponent
 	{
 		return ($this->factory)($name, $this);

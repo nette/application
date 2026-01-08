@@ -43,7 +43,7 @@ class Application
 	/** @var array<callable(self, \Throwable): void>  Occurs when an unhandled exception occurs in the application */
 	public array $onError = [];
 
-	/** @var Request[] */
+	/** @var list<Request> */
 	private array $requests = [];
 	private ?IPresenter $presenter = null;
 
@@ -187,7 +187,7 @@ class Application
 
 	/**
 	 * Returns all processed requests.
-	 * @return Request[]
+	 * @return list<Request>
 	 */
 	final public function getRequests(): array
 	{

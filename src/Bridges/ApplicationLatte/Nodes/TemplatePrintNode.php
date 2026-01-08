@@ -25,6 +25,7 @@ class TemplatePrintNode extends Latte\Essential\Nodes\TemplatePrintNode
 	}
 
 
+	/** @param  array<string, mixed>  $params */
 	public static function printClass(array $params, string $parentClass): void
 	{
 		$bp = new Latte\Essential\Blueprint;

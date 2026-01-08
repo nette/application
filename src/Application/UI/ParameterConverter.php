@@ -22,6 +22,7 @@ final class ParameterConverter
 
 	/**
 	 * @param  array<string, mixed>  $args
+	 * @return list<mixed>
 	 */
 	public static function toArguments(\ReflectionFunctionAbstract $method, array $args): array
 	{
@@ -61,6 +62,7 @@ final class ParameterConverter
 
 	/**
 	 * Converts list of arguments to named parameters & check types.
+	 * @param  mixed[]  $args
 	 * @param  array<string, mixed>  $supplemental
 	 * @param  \ReflectionParameter[]  $missing arguments
 	 * @throws InvalidLinkException
