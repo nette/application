@@ -28,8 +28,8 @@ class PresenterFactory implements IPresenterFactory
 	/** @var array<string, string> */
 	private array $cache = [];
 
-	/** @var callable */
-	private $factory;
+	/** @var \Closure(string): IPresenter */
+	private \Closure $factory;
 
 
 	/**
@@ -37,7 +37,9 @@ class PresenterFactory implements IPresenterFactory
 	 */
 	public function __construct(?callable $factory = null)
 	{
-		$this->factory = $factory ?? fn(string $class): IPresenter => new $class;
+		$this->factory = $factory
+			? $factory(...)
+			: fn(string $class): IPresenter => new $class;
 	}
 
 

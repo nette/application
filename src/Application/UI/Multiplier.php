@@ -16,8 +16,8 @@ use Nette;
  */
 final class Multiplier extends Component
 {
-	/** @var callable */
-	private $factory;
+	/** @var \Closure(string, self<T>): (T|null) */
+	private \Closure $factory;
 
 
 	/**
@@ -25,7 +25,7 @@ final class Multiplier extends Component
 	 */
 	public function __construct(callable $factory)
 	{
-		$this->factory = $factory;
+		$this->factory = $factory(...);
 	}
 
 
