@@ -1,5 +1,201 @@
 parameters:
-	level: 5
+	level: 8
 
 	paths:
 		- src
+		- tests/types
+
+	excludePaths:
+		- src/compatibility.php
+		- src/compatibility-intf.php
+		- src/Bridges/ApplicationDI/LatteExtension.php
+		- src/Bridges/ApplicationLatte
+
+	fileExtensions:
+		- php
+		- phtml
+
+	ignoreErrors:
+		# === General ===
+
+		# Intentional pattern for factory methods and fluent interfaces
+		-
+			identifier: new.static
+
+		# === Application ===
+
+		# PresenterFactory: defensive type checks after regex validation — always true but kept for safety
+		-
+			path: src/Application/PresenterFactory.php
+			identifiers:
+				- function.alreadyNarrowedType
+				- identical.alwaysTrue
+				- booleanAnd.alwaysTrue
+
+		# PresenterFactory: default factory `new $class` yields object; $class is a validated class-string<IPresenter> at the call site
+		-
+			identifier: return.type
+			count: 1
+			path: src/Application/PresenterFactory.php
+
+		# CliRouter intentionally collects extra positional CLI args under int keys
+		-
+			identifier: return.type
+			path: src/Application/Routers/CliRouter.php
+
+		# Route/RouteList: defensive type checks — always true after prior validation
+		-
+			identifier: function.alreadyNarrowedType
+			paths:
+				- src/Application/Routers/Route.php
+				- src/Application/Routers/RouteList.php
+		-
+			identifier: nullCoalesce.offset
+			path: src/Application/Routers/Route.php
+
+		# parse_str() native type is wider than actual query string result
+		-
+			identifier: varTag.nativeType
+			path: src/Application/LinkGenerator.php
+
+		# MicroPresenter uses duck typing for template objects and nullable container
+		-
+			path: src/Application/MicroPresenter.php
+			identifiers:
+				- argument.type
+				- argument.templateType
+				- method.notFound
+				- method.nonObject
+				- property.notFound
+
+		# ErrorPresenter: $code is used in the required template file
+		-
+			identifier: closure.unusedUse
+			path: src/Application/ErrorPresenter.php
+
+		# BadRequestException intentionally narrows inherited Exception::$code to int (HTTP status codes only)
+		-
+			identifier: property.phpDocType
+			path: src/Application/exceptions.php
+
+		# Presenter readonly properties are assigned via injectPrimary() - intentional Nette DI pattern
+		-
+			identifier: property.uninitializedReadonly
+			path: src/Application/UI/Presenter.php
+		-
+			identifier: property.readOnlyAssignNotInConstructor
+			path: src/Application/UI/Presenter.php
+
+		# Presenter::detectedCsrf() redirect() throws AbortException, not InvalidLinkException
+		-
+			identifier: catch.neverThrown
+			path: src/Application/UI/Presenter.php
+
+		# run(): $response is guaranteed non-null after the VoidResponse guard; PHPStan re-widens the private property to ?Response after onShutdown/shutdown() calls, but the property can only be set via sendResponse() (non-null Response)
+		-
+			identifier: return.type
+			message: '#should return Nette\\Application\\Response but returns Nette\\Application\\Response\|null\.$#'
+			count: 1
+			path: src/Application/UI/Presenter.php
+
+		# getRequest() is nullable only before run(); these internal methods run during request handling when request is always set
+		-
+			identifier: method.nonObject
+			message: '#on Nette\\Application\\Request\|null\.$#'
+			count: 8
+			path: src/Application/UI/Presenter.php
+		-
+			identifier: classConstant.nonObject
+			message: '#on Nette\\Application\\Request\|null\.$#'
+			count: 1
+			path: src/Application/UI/Presenter.php
+
+		# Nette Forms compatibility - methods differ between versions
+		-
+			identifier: method.notFound
+			path: src/Application/UI/Form.php
+
+		# getRequest() is nullable only before run(); these internal methods run during request handling when request is always set
+		-
+			identifier: method.nonObject
+			message: '#on Nette\\Application\\Request\|null\.$#'
+			count: 6
+			path: src/Application/UI/Form.php
+
+		# Control::$template->flashes is set dynamically for flash messages
+		-
+			identifier: property.notFound
+			path: src/Application/UI/Control.php
+
+		# TemplateFactory::createTemplate() accepts optional $class parameter via phpDoc
+		-
+			identifier: arguments.count
+			paths:
+				- src/Application/UI/Presenter.php
+				- src/Application/UI/Control.php
+
+		# ComponentReflection: cache reference pattern causes always-true/unreachable false positives
+		-
+			path: src/Application/UI/ComponentReflection.php
+			identifiers:
+				- notIdentical.alwaysTrue
+				- deadCode.unreachable
+				- booleanAnd.rightAlwaysTrue
+
+		# ComponentReflection: static methods exist on Presenter subclass, called via $class:: dynamic dispatch
+		-
+			path: src/Application/UI/ComponentReflection.php
+			identifiers:
+				- staticMethod.notFound
+				- method.notFound
+				- return.type
+
+		# === Bridges ===
+
+		# Nette DI config access pattern - $config is array|object depending on DI version
+		-
+			identifier: property.nonObject
+			path: src/Bridges/ApplicationDI/ApplicationExtension.php
+
+		# DI extensions use Definition::addSetup()/getResultDefinition() from ServiceDefinition subclass
+		-
+			identifier: method.notFound
+			paths:
+				- src/Bridges/ApplicationDI/ApplicationExtension.php
+
+		# Tracy version_compare conditions and BlueScreen closure parameter counts
+		-
+			path: src/Bridges/ApplicationDI/ApplicationExtension.php
+			identifiers:
+				- booleanAnd.rightAlwaysTrue
+				- booleanAnd.leftAlwaysTrue
+				- arguments.count
+
+		# UIExtension: Latte filters/functions have varying callable signatures
+		-
+			identifier: missingType.callable
+			path: src/Bridges/ApplicationLatte/UIExtension.php
+
+		# Latte filter/function callbacks have variable signatures defined by user
+		-
+			identifier: missingType.callable
+			path: src/Bridges/ApplicationLatte/Template.php
+
+		# RoutingPanel uses Closure::bindTo to access private methods of RouteList
+		-
+			identifier: method.notFound
+			path: src/Bridges/ApplicationTracy/RoutingPanel.php
+
+		# RoutingPanel::analyse() return type and ReflectionClass with runtime class-string
+		-
+			path: src/Bridges/ApplicationTracy/RoutingPanel.php
+			identifier: return.type
+
+		# Tracy routing panel/tab: compiled Latte templates with runtime-dynamic state
+		-
+			path: src/Bridges/ApplicationTracy/dist/panel.phtml
+			identifiers:
+				- argument.type
+				- offsetAccess.notFound
+				- closure.unusedUse
+				- identical.alwaysFalse

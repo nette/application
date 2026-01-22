@@ -39,7 +39,8 @@ abstract class Template implements Nette\Application\UI\Template
 	public function render(?string $file = null, array $params = []): void
 	{
 		Nette\Utils\Arrays::toObject($params, $this);
-		$this->latte->render($file ?? $this->file, $this);
+		$file ??= $this->file ?? throw new Nette\InvalidStateException('Template file name was not set.');
+		$this->latte->render($file, $this);
 	}
 
 
@@ -50,7 +51,8 @@ abstract class Template implements Nette\Application\UI\Template
 	public function renderToString(?string $file = null, array $params = []): string
 	{
 		Nette\Utils\Arrays::toObject($params, $this);
-		return $this->latte->renderToString($file ?? $this->file, $this);
+		$file ??= $this->file ?? throw new Nette\InvalidStateException('Template file name was not set.');
+		return $this->latte->renderToString($file, $this);
 	}
 
 
@@ -59,7 +61,8 @@ abstract class Template implements Nette\Application\UI\Template
 	 */
 	public function __toString(): string
 	{
-		return $this->latte->renderToString($this->file, $this->getParameters());
+		$file = $this->file ?? throw new Nette\InvalidStateException('Template file name was not set.');
+		return $this->latte->renderToString($file, $this->getParameters());
 	}
 
 

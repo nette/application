@@ -79,7 +79,7 @@ final class MicroPresenter implements Application\IPresenter
 			$this->error($e->getMessage());
 		}
 
-		$response = $callback(...array_values($params));
+		$response = $callback(...$params);
 
 		if (is_string($response)) {
 			$response = [$response, []];

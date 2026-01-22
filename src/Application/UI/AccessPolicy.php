@@ -82,11 +82,11 @@ final class AccessPolicy
 	private function checkAttribute(Attributes\Requires $attribute): void
 	{
 		if ($attribute->methods !== null) {
-			$this->checkHttpMethod($attribute);
+			$this->checkHttpMethod($attribute->methods);
 		}
 
 		if ($attribute->actions !== null) {
-			$this->checkActions($attribute);
+			$this->checkActions($attribute->actions);
 		}
 
 		if ($attribute->forward && !$this->presenter->isForwarded()) {
@@ -103,7 +103,8 @@ final class AccessPolicy
 	}
 
 
-	private function checkActions(Attributes\Requires $attribute): void
+	/** @param  list<string>  $actions */
+	private function checkActions(array $actions): void
 	{
 		if (
 			$this->element instanceof \ReflectionMethod
@@ -112,19 +113,20 @@ final class AccessPolicy
 			throw new \LogicException('Requires(actions) used by ' . Reflection::toString($this->element) . ' is allowed only in presenter.');
 		}
 
-		if (!in_array($this->presenter->getAction(), $attribute->actions, strict: true)) {
+		if (!in_array($this->presenter->getAction(), $actions, strict: true)) {
 			$this->presenter->error("Action '{$this->presenter->getAction()}' is not allowed by " . Reflection::toString($this->element));
 		}
 	}
 
 
-	private function checkHttpMethod(Attributes\Requires $attribute): void
+	/** @param  list<string>  $methods */
+	private function checkHttpMethod(array $methods): void
 	{
 		if ($this->element instanceof \ReflectionClass) {
 			$this->presenter->allowedMethods = []; // bypass Presenter::checkHttpMethod()
 		}
 
-		$allowed = array_map(strtoupper(...), $attribute->methods);
+		$allowed = array_map(strtoupper(...), $methods);
 		$method = $this->presenter->getHttpRequest()->getMethod();
 
 		if ($allowed !== ['*'] && !in_array($method, $allowed, strict: true)) {

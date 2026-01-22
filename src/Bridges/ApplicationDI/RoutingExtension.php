@@ -90,7 +90,7 @@ final class RoutingExtension extends Nette\DI\CompilerExtension
 		if ($this->config->cache) {
 			$builder = $this->getContainerBuilder();
 			$def = $builder->getDefinitionByType(Nette\Routing\Router::class);
-			$method = $class->getMethod(Nette\DI\Container::getMethodName($def->getName()));
+			$method = $class->getMethod(Nette\DI\Container::getMethodName((string) $def->getName()));
 			try {
 				$router = eval($method->getBody());
 				if ($router instanceof Nette\Application\Routers\RouteList) {

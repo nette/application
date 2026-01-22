@@ -39,8 +39,9 @@ final class Helpers
 	{
 		$res = [$class => $class] + class_parents($class);
 		$addTraits = function (string $type) use (&$res, &$addTraits): void {
-			$res += class_uses($type);
-			foreach (class_uses($type) as $trait) {
+			$traits = class_uses($type) ?: [];
+			$res += $traits;
+			foreach ($traits as $trait) {
 				$addTraits($trait);
 			}
 		};

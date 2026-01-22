@@ -171,7 +171,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function isModuleCurrent(string $module): bool
 	{
-		$current = Helpers::splitName($this->getName())[0];
+		$current = Helpers::splitName((string) $this->getName())[0];
 		return str_starts_with($current . ':', ltrim($module . ':', ':'));
 	}
 
@@ -181,7 +181,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function isForwarded(): bool
 	{
-		return $this->forwarded || $this->request->isMethod($this->request::FORWARD);
+		return $this->forwarded || $this->request?->isMethod($this->request::FORWARD);
 	}
 
 
@@ -413,7 +413,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			return $this->signalReceiver === $component;
 		}
 
-		return $this->signalReceiver === $component && strcasecmp($signal, $this->signal) === 0;
+		return $this->signalReceiver === $component && strcasecmp((string) $signal, $this->signal) === 0;
 	}
 
 
@@ -518,7 +518,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			}
 		}
 
-		$file = strtr(Arrays::first($files), '/', DIRECTORY_SEPARATOR);
+		$file = strtr($files[0], '/', DIRECTORY_SEPARATOR);
 		$this->error("Page not found. Missing template '$file'.");
 	}
 
@@ -541,7 +541,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		}
 
 		if ($this->layout) {
-			$file = strtr(Arrays::first($files), '/', DIRECTORY_SEPARATOR);
+			$file = strtr($files[0], '/', DIRECTORY_SEPARATOR);
 			throw new Nette\FileNotFoundException("Layout not found. Missing template '$file'.");
 		}
 
@@ -555,13 +555,13 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function formatLayoutTemplateFiles(): array
 	{
-		if (preg_match('#/|\\\#', (string) $this->layout)) {
+		if (is_string($this->layout) && preg_match('#/|\\\#', $this->layout)) {
 			return [$this->layout];
 		}
 
 		$layout = $this->layout ?: 'layout';
-		$dir = dirname(static::getReflection()->getFileName());
-		$levels = substr_count($this->getName(), ':');
+		$dir = dirname((string) static::getReflection()->getFileName());
+		$levels = substr_count((string) $this->getName(), ':');
 		if (!is_dir("$dir/templates")) {
 			$dir = dirname($origDir = $dir);
 			if (!is_dir("$dir/templates")) {
@@ -573,7 +573,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			}
 		}
 
-		[, $presenter] = Helpers::splitName($this->getName());
+		[, $presenter] = Helpers::splitName((string) $this->getName());
 		$list = [
 			"$dir/templates/$presenter/@$layout.latte",
 			"$dir/templates/$presenter.@$layout.latte",
@@ -592,7 +592,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function formatTemplateFiles(): array
 	{
-		$dir = dirname(static::getReflection()->getFileName());
+		$dir = dirname((string) static::getReflection()->getFileName());
 		if (!is_dir("$dir/templates")) {
 			$dir = dirname($origDir = $dir);
 			if (!is_dir("$dir/templates")) {
@@ -602,7 +602,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			}
 		}
 
-		[, $presenter] = Helpers::splitName($this->getName());
+		[, $presenter] = Helpers::splitName((string) $this->getName());
 		return [
 			"$dir/templates/$presenter/$this->view.latte",
 			"$dir/templates/$presenter.$this->view.latte",
@@ -915,6 +915,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		}
 
 		$request = clone $data[1];
+		assert($request instanceof Application\Request);
 		$session->remove($key);
 		$params = $request->getParameters();
 		$params[self::FlashKey] = $this->getFlashKey();
@@ -970,13 +971,14 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 			$persistents = $this->getReflection()->getPersistentComponents();
 
+			$since = false;
 			foreach ($this->getComponentTree() as $component) {
 				if ($component->getParent() === $this) {
 					// counts on child-first search
-					$since = $persistents[$component->getName()]['since'] ?? false; // false = nonpersistent
+					$since = $persistents[(string) $component->getName()]['since'] ?? false; // false = nonpersistent
 				}
 
-				if (!$component instanceof StatePersistent) {
+				if (!$component instanceof StatePersistent || !$component instanceof Component) {
 					continue;
 				}
 
@@ -1036,13 +1038,14 @@ abstract class Presenter extends Control implements Application\IPresenter
 		// init $this->globalParams
 		$this->globalParams = [];
 		$selfParams = [];
+		$request = $this->getRequest();
 
-		$params = $this->request->getParameters();
-		if (($tmp = $this->request->getPost('_' . self::SignalKey)) !== null) {
+		$params = $request->getParameters();
+		if (($tmp = $request->getPost('_' . self::SignalKey)) !== null) {
 			$params[self::SignalKey] = $tmp;
 		} elseif ($this->isAjax()) {
-			$params += $this->request->getPost();
-			if (($tmp = $this->request->getPost(self::SignalKey)) !== null) {
+			$params += $request->getPost();
+			if (($tmp = $request->getPost(self::SignalKey)) !== null) {
 				$params[self::SignalKey] = $tmp;
 			}
 		}

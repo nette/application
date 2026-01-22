@@ -75,21 +75,24 @@ final class FileResponse implements Nette\Application\Response
 		);
 
 		$filesize = $length = filesize($this->file);
-		$handle = fopen($this->file, 'r');
-		if (!$handle) {
-			throw new Nette\Application\BadRequestException("Cannot open file: '{$this->file}'.");
+		if ($filesize === false) {
+			throw new Nette\Application\BadRequestException("Cannot stat file: '{$this->file}'.");
 		}
+		$handle = fopen($this->file, 'r') ?: throw new Nette\Application\BadRequestException("Cannot open file: '{$this->file}'.");
 
 		if ($this->resuming) {
 			$httpResponse->setHeader('Accept-Ranges', 'bytes');
-			if (preg_match('#^bytes=(\d*)-(\d*)$#D', (string) $httpRequest->getHeader('Range'), $matches)) {
+			if (preg_match('#^bytes=(\d+)?-(\d+)?$#D', (string) $httpRequest->getHeader('Range'), $matches, PREG_UNMATCHED_AS_NULL)) {
 				[, $start, $end] = $matches;
-				if ($start === '') {
-					$start = max(0, $filesize - $end);
+				if ($start === null) {
+					$start = max(0, $filesize - (int) $end);
 					$end = $filesize - 1;
 
-				} elseif ($end === '' || $end > $filesize - 1) {
-					$end = $filesize - 1;
+				} else {
+					$start = (int) $start;
+					$end = $end === null || (int) $end > $filesize - 1
+						? $filesize - 1
+						: (int) $end;
 				}
 
 				if ($end < $start) {
@@ -100,7 +103,7 @@ final class FileResponse implements Nette\Application\Response
 				$httpResponse->setCode(206);
 				$httpResponse->setHeader('Content-Range', 'bytes ' . $start . '-' . $end . '/' . $filesize);
 				$length = $end - $start + 1;
-				fseek($handle, (int) $start);
+				fseek($handle, $start);
 
 			} else {
 				$httpResponse->setHeader('Content-Range', 'bytes 0-' . ($filesize - 1) . '/' . $filesize);
@@ -109,7 +112,11 @@ final class FileResponse implements Nette\Application\Response
 
 		$httpResponse->setHeader('Content-Length', (string) $length);
 		while (!feof($handle) && $length > 0) {
-			echo $s = fread($handle, min(4_000_000, $length));
+			$s = fread($handle, min(4_000_000, $length));
+			if ($s === false) {
+				throw new Nette\IOException("Cannot read file '$this->file'.");
+			}
+			echo $s;
 			$length -= strlen($s);
 		}
 

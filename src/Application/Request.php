@@ -117,7 +117,7 @@ final class Request
 	{
 		return func_num_args() === 0
 			? $this->post
-			: ($this->post[$key] ?? null);
+			: ($this->post[(string) $key] ?? null);
 	}
 
 

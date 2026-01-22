@@ -37,7 +37,9 @@ final class PresenterFactoryCallback
 		}
 
 		if (count($services) === 1) {
-			return $this->container->createService($services[0]);
+			$presenter = $this->container->createService($services[0]);
+			assert($presenter instanceof Nette\Application\IPresenter);
+			return $presenter;
 		}
 
 		if ($this->touchToRefresh) {

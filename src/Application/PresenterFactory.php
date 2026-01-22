@@ -8,7 +8,7 @@
 namespace Nette\Application;
 
 use Nette;
-use function array_shift, class_exists, count, explode, is_array, is_string, preg_match, strtr;
+use function array_shift, class_exists, count, explode, is_array, is_string, is_subclass_of, preg_match, strtr;
 
 
 /**
@@ -70,7 +70,7 @@ class PresenterFactory implements IPresenterFactory
 
 		$reflection = new \ReflectionClass($class);
 		$class = $reflection->getName();
-		if (!$reflection->implementsInterface(IPresenter::class)) {
+		if (!is_subclass_of($class, IPresenter::class)) {
 			throw new InvalidPresenterException("Cannot load presenter '$name', class '$class' is not Nette\\Application\\IPresenter implementor.");
 		} elseif ($reflection->isAbstract()) {
 			throw new InvalidPresenterException("Cannot load presenter '$name', class '$class' is abstract.");
