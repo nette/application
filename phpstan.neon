@@ -5,4 +5,4 @@ parameters:
 		- src
 
 includes:
-	- vendor/phpstan/phpstan-nette/extension.neon
+	- phpstan-baseline.neon
