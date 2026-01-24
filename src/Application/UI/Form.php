@@ -20,9 +20,6 @@ class Form extends Nette\Forms\Form implements SignalReceiver
 	public array $onAnchor = [];
 
 
-	/**
-	 * Application form constructor.
-	 */
 	public function __construct(?Nette\ComponentModel\IContainer $parent = null, ?string $name = null)
 	{
 		parent::__construct();
@@ -58,7 +55,7 @@ class Form extends Nette\Forms\Form implements SignalReceiver
 
 
 	/**
-	 * Returns the presenter where this component belongs to.
+	 * Returns the presenter where this component belongs to. Throws if not attached.
 	 */
 	final public function getPresenter(): ?Presenter
 	{
@@ -72,7 +69,7 @@ class Form extends Nette\Forms\Form implements SignalReceiver
 
 
 	/**
-	 * Returns the presenter where this component belongs to.
+	 * Returns the presenter where this component belongs to, or null if not attached.
 	 */
 	final public function getPresenterIfExists(): ?Presenter
 	{

@@ -9,7 +9,7 @@ namespace Nette\Application\UI;
 
 
 /**
- * Defines template.
+ * Represents a template that can be rendered to output.
  */
 interface Template
 {

@@ -129,6 +129,9 @@ class PresenterFactory implements IPresenterFactory
 	}
 
 
+	/**
+	 * Returns the destination registered under the given alias, or throws if not found.
+	 */
 	public function getAlias(string $alias): string
 	{
 		return $this->aliases[$alias] ?? throw new Nette\InvalidStateException("Link alias '$alias' was not found.");

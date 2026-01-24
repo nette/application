@@ -72,6 +72,9 @@ class RouteList extends Nette\Routing\RouteList implements Nette\Routing\Router,
 	}
 
 
+	/**
+	 * Creates a sub-router scoped to the given module and attaches it to this list.
+	 */
 	public function withModule(string $module): static
 	{
 		$router = new static;

@@ -14,7 +14,7 @@ use function array_unshift, class_exists, is_a, iterator_to_array, preg_match, p
 
 
 /**
- * Creates a class of parameters of Latte templates.
+ * Creates Latte template instances and injects default variables into them.
  */
 class TemplateFactory implements UI\TemplateFactory
 {

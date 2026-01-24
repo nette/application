@@ -9,7 +9,7 @@ namespace Nette\Application\UI;
 
 
 /**
- * Defines Template factory.
+ * Creates template instances for controls and presenters.
  */
 interface TemplateFactory
 {

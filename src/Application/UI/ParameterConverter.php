@@ -60,7 +60,7 @@ final class ParameterConverter
 
 	/**
 	 * Converts list of arguments to named parameters & check types.
-	 * @param  \ReflectionParameter[]  $missing arguments
+	 * @param  \ReflectionParameter[]|null  $missing  collects parameters with missing values
 	 * @throws InvalidLinkException
 	 * @internal
 	 */

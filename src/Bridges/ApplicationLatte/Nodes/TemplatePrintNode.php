@@ -15,6 +15,7 @@ use Nette\Bridges\ApplicationLatte\Template;
 
 /**
  * {templatePrint [ClassName]}
+ * Generates template class extending Nette\Bridges\ApplicationLatte\Template.
  */
 class TemplatePrintNode extends Latte\Essential\Nodes\TemplatePrintNode
 {

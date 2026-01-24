@@ -32,9 +32,6 @@ final class MicroPresenter implements Application\IPresenter
 	}
 
 
-	/**
-	 * Gets the context.
-	 */
 	public function getContext(): ?Nette\DI\Container
 	{
 		return $this->context;
@@ -107,7 +104,7 @@ final class MicroPresenter implements Application\IPresenter
 
 
 	/**
-	 * Template factory.
+	 * Creates a template instance with default variables pre-populated.
 	 */
 	public function createTemplate(?string $class = null, ?callable $latteFactory = null): Application\UI\Template
 	{

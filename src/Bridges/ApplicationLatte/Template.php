@@ -43,7 +43,7 @@ abstract class Template implements Nette\Application\UI\Template
 
 
 	/**
-	 * Renders template to output.
+	 * Renders template to string.
 	 */
 	public function renderToString(?string $file = null, array $params = []): string
 	{

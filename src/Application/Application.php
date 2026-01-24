@@ -58,7 +58,7 @@ class Application
 
 
 	/**
-	 * Dispatch a HTTP request to a front controller.
+	 * Dispatches an HTTP request to a front controller.
 	 */
 	public function run(): void
 	{
@@ -87,6 +87,10 @@ class Application
 	}
 
 
+	/**
+	 * Creates request from the current HTTP request via router.
+	 * @throws BadRequestException
+	 */
 	public function createInitialRequest(): Request
 	{
 		$params = $this->router->match($this->httpRequest);
@@ -111,6 +115,9 @@ class Application
 	}
 
 
+	/**
+	 * Processes a presenter request and dispatches the response.
+	 */
 	public function processRequest(Request $request): void
 	{
 		process:
@@ -150,6 +157,9 @@ class Application
 	}
 
 
+	/**
+	 * Creates a forward request to the error presenter, or returns null if not configured.
+	 */
 	public function createErrorRequest(\Throwable $e): ?Request
 	{
 		$errorPresenter = $e instanceof BadRequestException
@@ -207,18 +217,12 @@ class Application
 	/********************* services ****************d*g**/
 
 
-	/**
-	 * Returns router.
-	 */
 	public function getRouter(): Router
 	{
 		return $this->router;
 	}
 
 
-	/**
-	 * Returns presenter factory.
-	 */
 	public function getPresenterFactory(): IPresenterFactory
 	{
 		return $this->presenterFactory;

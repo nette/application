@@ -24,7 +24,8 @@ use Nette\Bridges\ApplicationLatte\SnippetRuntime;
 
 
 /**
- * {snippet [name]}
+ * {snippet [name]} ... {/snippet}
+ * Defines AJAX snippet for partial page redrawing.
  */
 class SnippetNode extends StatementNode
 {
