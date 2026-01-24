@@ -21,7 +21,8 @@ use Nette\Utils\Strings;
 
 
 /**
- * {control name[:method] [params]}
+ * {control name[:method] [,] [params]}
+ * Renders a component by calling its render() method.
  */
 class ControlNode extends StatementNode
 {

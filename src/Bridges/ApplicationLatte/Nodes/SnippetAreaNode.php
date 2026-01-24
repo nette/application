@@ -21,7 +21,8 @@ use Nette\Bridges\ApplicationLatte\SnippetRuntime;
 
 
 /**
- * {snippetArea [name]}
+ * {snippetArea name} ... {/snippetArea}
+ * Container for dynamic snippets in loops.
  */
 class SnippetAreaNode extends StatementNode
 {

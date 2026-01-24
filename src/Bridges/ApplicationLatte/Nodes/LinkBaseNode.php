@@ -23,6 +23,7 @@ use Nette\Application\LinkGenerator;
 
 /**
  * {linkBase module}
+ * Sets base path prepended to relative link destinations.
  */
 class LinkBaseNode extends StatementNode
 {

@@ -12,7 +12,8 @@ use Latte\Compiler\PrintContext;
 
 
 /**
- * n:nonce
+ * <script n:nonce>
+ * Outputs CSP nonce attribute for inline scripts and styles.
  */
 class NNonceNode extends StatementNode
 {

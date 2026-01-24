@@ -19,6 +19,7 @@ use Latte\Compiler\Tag;
  * {link destination [,] [params]}
  * {plink destination [,] [params]}
  * n:href="destination [,] [params]"
+ * Generates URL to presenter action or signal.
  */
 class LinkNode extends StatementNode
 {
