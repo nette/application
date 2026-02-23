@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: renderSnippets and control with two templates.
  */
-
-declare(strict_types=1);
 
 use Nette\Http;
 use Tester\Assert;

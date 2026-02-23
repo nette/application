@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Nette\Application\LinkGenerator basic functions.
  */
-
-declare(strict_types=1);
 
 namespace {
 

@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Nette\Application\Responses\CallbackResponse.
  */
-
-declare(strict_types=1);
 
 use Nette\Application\Responses\CallbackResponse;
 use Nette\Http;

@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Nette\Application\Routers\CliRouter invalid argument
  */
-
-declare(strict_types=1);
 
 use Nette\Application\Routers\CliRouter;
 use Nette\Http;

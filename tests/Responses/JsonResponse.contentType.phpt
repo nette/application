@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Nette\Application\Responses\JsonResponse.
  */
-
-declare(strict_types=1);
 
 use Nette\Application\Responses\JsonResponse;
 use Nette\Http;

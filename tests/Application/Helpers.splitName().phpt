@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Helpers::splitName()
  */
-
-declare(strict_types=1);
 
 use Nette\Application\Helpers;
 use Tester\Assert;

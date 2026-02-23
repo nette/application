@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Nette\Application\Routers\Route with UrlEncoding
  */
-
-declare(strict_types=1);
 
 use Nette\Application\Routers\Route;
 

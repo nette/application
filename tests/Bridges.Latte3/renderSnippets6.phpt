@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: n:snippet and custom HTML attribute.
  */
-
-declare(strict_types=1);
 
 use Nette\Http;
 use Tester\Assert;

@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Nette\Application\Request
  */
-
-declare(strict_types=1);
 
 use Nette\Application\Request;
 use Tester\Assert;

@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: UIExtension filters
  */
-
-declare(strict_types=1);
 
 use Tester\Assert;
 

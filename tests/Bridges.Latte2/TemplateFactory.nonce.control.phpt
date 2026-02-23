@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: TemplateFactory nonce
  */
-
-declare(strict_types=1);
 
 use Nette\Application\UI;
 use Nette\Bridges\ApplicationLatte;

@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Location of #[Requires]
  */
-
-declare(strict_types=1);
 
 use Nette\Application;
 use Nette\Application\Attributes\Requires;

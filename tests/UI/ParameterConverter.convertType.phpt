@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: ParameterConverter::convertType()
  */
-
-declare(strict_types=1);
 
 use Nette\Application\UI\ParameterConverter;
 use Tester\Assert;
