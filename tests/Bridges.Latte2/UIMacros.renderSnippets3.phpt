@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: UIMacros, renderSnippets and control wrapped in a snippet
  */
-
-declare(strict_types=1);
 
 use Nette\Bridges\ApplicationLatte\UIMacros;
 use Tester\Assert;

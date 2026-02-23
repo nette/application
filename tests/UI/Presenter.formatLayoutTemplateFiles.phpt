@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Presenter::formatLayoutTemplateFiles.
  */
-
-declare(strict_types=1);
 
 use Tester\Assert;
 

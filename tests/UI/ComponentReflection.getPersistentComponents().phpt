@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 use Nette\Application\Attributes\Persistent;
 use Nette\Application\UI\Presenter;

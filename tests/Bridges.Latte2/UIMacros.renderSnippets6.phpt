@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: UIMacros and n:snippet and custom HTML attribute.
  */
-
-declare(strict_types=1);
 
 use Nette\Bridges\ApplicationLatte\UIMacros;
 use Tester\Assert;

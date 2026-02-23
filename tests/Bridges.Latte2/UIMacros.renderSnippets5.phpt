@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: UIMacros, n:snippet
  */
-
-declare(strict_types=1);
 
 use Nette\Bridges\ApplicationLatte\SnippetBridge;
 use Nette\Bridges\ApplicationLatte\UIMacros;

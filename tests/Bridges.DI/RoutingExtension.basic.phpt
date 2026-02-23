@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: RoutingExtension.
  */
-
-declare(strict_types=1);
 
 use Nette\Bridges\ApplicationDI\RoutingExtension;
 use Nette\DI;

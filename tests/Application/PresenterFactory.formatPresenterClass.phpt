@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Nette\Application\PresenterFactory.
  */
-
-declare(strict_types=1);
 
 use Nette\Application\PresenterFactory;
 use Tester\Assert;

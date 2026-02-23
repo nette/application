@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Nette\Application\UI\Control::isControlInvalid()
  */
-
-declare(strict_types=1);
 
 use Nette\Application\UI;
 use Tester\Assert;

@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: TemplateFactory in Bridge injects annotated variables into Template
  */
-
-declare(strict_types=1);
 
 use Nette\Application\Attributes\TemplateVariable;
 use Nette\Bridges\ApplicationLatte\LatteFactory;

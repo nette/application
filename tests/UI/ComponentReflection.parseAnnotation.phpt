@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: ComponentReflection annotation parser.
  */
-
-declare(strict_types=1);
 
 use Nette\Application\UI\ComponentReflection as Reflection;
 use Tester\Assert;
