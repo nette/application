@@ -11,6 +11,7 @@ namespace Nette\Bridges\ApplicationLatte;
 
 use Latte;
 use Nette;
+use function get_object_vars, is_array;
 
 
 /**
@@ -35,22 +36,22 @@ abstract class Template implements Nette\Application\UI\Template
 
 	/**
 	 * Renders template to output.
-	 * @param  array<string, mixed>  $params
+	 * @param  object|array<string, mixed>  $params
 	 */
-	public function render(?string $file = null, array $params = []): void
+	public function render(?string $file = null, object|array $params = []): void
 	{
-		Nette\Utils\Arrays::toObject($params, $this);
+		Nette\Utils\Arrays::toObject(is_array($params) ? $params : get_object_vars($params), $this);
 		$this->latte->render($file ?? $this->file, $this);
 	}
 
 
 	/**
 	 * Renders template to output.
-	 * @param  array<string, mixed>  $params
+	 * @param  object|array<string, mixed>  $params
 	 */
-	public function renderToString(?string $file = null, array $params = []): string
+	public function renderToString(?string $file = null, object|array $params = []): string
 	{
-		Nette\Utils\Arrays::toObject($params, $this);
+		Nette\Utils\Arrays::toObject(is_array($params) ? $params : get_object_vars($params), $this);
 		return $this->latte->renderToString($file ?? $this->file, $this);
 	}
 
