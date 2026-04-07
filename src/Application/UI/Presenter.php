@@ -12,8 +12,8 @@ namespace Nette\Application\UI;
 use Nette;
 use Nette\Application;
 use Nette\Application\Helpers;
+use Nette\Application\DefaultLinkGenerator;
 use Nette\Application\LinkGenerator;
-use Nette\Application\LinkGeneratorInterface;
 use Nette\Application\Responses;
 use Nette\Http;
 use Nette\Utils\Arrays;
@@ -118,7 +118,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	private readonly ?Nette\Http\Session $session;
 	private readonly ?Nette\Security\User $user;
 	private readonly ?TemplateFactory $templateFactory;
-	private ?LinkGeneratorInterface $linkGenerator = null;
+	private ?LinkGenerator $linkGenerator = null;
 
 
 	final public function getRequest(): ?Application\Request
@@ -828,7 +828,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	public static function parseDestination(string $destination): array
 	{
 		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
-		return LinkGenerator::parseDestination($destination);
+		return DefaultLinkGenerator::parseDestination($destination);
 	}
 
 
@@ -1126,7 +1126,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		?Http\Session $session = null,
 		?Nette\Security\User $user = null,
 		?TemplateFactory $templateFactory = null,
-		?LinkGeneratorInterface $linkGenerator = null,
+		?LinkGenerator $linkGenerator = null,
 	): void
 	{
 		$this->httpRequest = $httpRequest;
@@ -1138,7 +1138,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			$this->linkGenerator = $linkGenerator;
 		} elseif ($router && $presenterFactory) {
 			$url = $httpRequest->getUrl();
-			$this->linkGenerator = new LinkGenerator(
+			$this->linkGenerator = new DefaultLinkGenerator(
 				$router,
 				new Http\UrlScript($url->getHostUrl() . $url->getScriptPath()),
 				$presenterFactory,
@@ -1183,7 +1183,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	}
 
 
-	protected function getLinkGenerator(): LinkGeneratorInterface
+	protected function getLinkGenerator(): LinkGenerator
 	{
 		return $this->linkGenerator ?? throw new Nette\InvalidStateException('Unable to create link to other presenter, service PresenterFactory or Router has not been set.');
 	}

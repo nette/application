@@ -37,7 +37,7 @@ Assert::exception(
 
 
 // link generator
-$generator = new Application\LinkGenerator(
+$generator = new Application\DefaultLinkGenerator(
 	new Application\Routers\SimpleRouter,
 	new Http\UrlScript('http://localhost'),
 	$factory,

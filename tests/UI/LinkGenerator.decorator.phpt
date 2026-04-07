@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test: Custom LinkGeneratorInterface decorator can be injected into Presenter.
+ * Test: Custom LinkGenerator decorator can be injected into Presenter.
  */
 
 declare(strict_types=1);
@@ -25,22 +25,22 @@ namespace App\Presentation\Homepage {
 
 namespace {
 
-	use Nette\Application\LinkGeneratorInterface;
+	use Nette\Application\LinkGenerator;
 	use Nette\Application\Request;
 	use Nette\Application\UI\Component;
 	use Tester\Assert;
 
 
 	/**
-	 * A decorator that wraps another LinkGeneratorInterface and tracks calls.
+	 * A decorator that wraps another LinkGenerator and tracks calls.
 	 */
-	class TrackingLinkGenerator implements LinkGeneratorInterface
+	class TrackingLinkGenerator implements LinkGenerator
 	{
 		public int $linkCallCount = 0;
 
 
 		public function __construct(
-			private readonly LinkGeneratorInterface $inner,
+			private readonly LinkGenerator $inner,
 		) {
 		}
 
@@ -91,10 +91,10 @@ namespace {
 	/**
 	 * A decorator that modifies generated URLs by adding a prefix.
 	 */
-	class PrefixingLinkGenerator implements LinkGeneratorInterface
+	class PrefixingLinkGenerator implements LinkGenerator
 	{
 		public function __construct(
-			private readonly LinkGeneratorInterface $inner,
+			private readonly LinkGenerator $inner,
 			private readonly string $prefix,
 		) {
 		}
@@ -144,7 +144,7 @@ namespace {
 
 
 	test('injected decorator is used by Presenter', function () {
-		$inner = new Nette\Application\LinkGenerator(
+		$inner = new Nette\Application\DefaultLinkGenerator(
 			new Nette\Application\Routers\SimpleRouter,
 			new Nette\Http\UrlScript('http://nette.org/en/'),
 		);
@@ -164,7 +164,7 @@ namespace {
 
 
 	test('decorator can modify generated URLs', function () {
-		$inner = new Nette\Application\LinkGenerator(
+		$inner = new Nette\Application\DefaultLinkGenerator(
 			new Nette\Application\Routers\SimpleRouter,
 			new Nette\Http\UrlScript('http://nette.org/en/'),
 		);
@@ -178,7 +178,7 @@ namespace {
 
 
 	test('decorator preserves null return for test mode', function () {
-		$inner = new Nette\Application\LinkGenerator(
+		$inner = new Nette\Application\DefaultLinkGenerator(
 			new Nette\Application\Routers\SimpleRouter,
 			new Nette\Http\UrlScript('http://nette.org/en/'),
 		);
@@ -193,7 +193,7 @@ namespace {
 	});
 
 
-	test('LinkGeneratorInterface is resolvable from DI container', function () {
+	test('LinkGenerator is resolvable from DI container', function () {
 		$compiler = new Nette\DI\Compiler;
 		$compiler->addExtension('application', new Nette\Bridges\ApplicationDI\ApplicationExtension(false));
 
@@ -206,9 +206,9 @@ namespace {
 		eval($code);
 
 		$container = new DecoratorTestContainer;
-		$service = $container->getByType(Nette\Application\LinkGeneratorInterface::class);
-		Assert::type(Nette\Application\LinkGeneratorInterface::class, $service);
+		$service = $container->getByType(Nette\Application\LinkGenerator::class);
 		Assert::type(Nette\Application\LinkGenerator::class, $service);
+		Assert::type(Nette\Application\DefaultLinkGenerator::class, $service);
 	});
 
 }
