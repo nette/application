@@ -20,7 +20,7 @@ use Latte\Compiler\Nodes\TemplateNode;
 use Latte\Compiler\NodeTraverser;
 use Latte\Compiler\PrintContext;
 use Latte\Compiler\Tag;
-use Nette\Application\LinkGenerator;
+use Nette\Application\DefaultLinkGenerator;
 
 
 /**
@@ -66,12 +66,12 @@ class LinkBaseNode extends StatementNode
 		(new NodeTraverser)->traverse($node, function (Node $link) use ($base) {
 			if ($link instanceof LinkNode) {
 				if ($link->destination instanceof StringNode && $base instanceof StringNode) {
-					$link->destination->value = LinkGenerator::applyBase($link->destination->value, $base->value);
+					$link->destination->value = DefaultLinkGenerator::applyBase($link->destination->value, $base->value);
 				} else {
 					$origDestination = $link->destination;
 					$link->destination = new AuxiliaryNode(
 						fn(PrintContext $context) => $context->format(
-							LinkGenerator::class . '::applyBase(%node, %node)',
+							DefaultLinkGenerator::class . '::applyBase(%node, %node)',
 							$origDestination,
 							$base,
 						),

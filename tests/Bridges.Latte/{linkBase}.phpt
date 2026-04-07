@@ -32,10 +32,10 @@ Assert::contains(
 
 // dynamic
 Assert::contains(
-	'$this->global->uiControl->link(Nette\Application\LinkGenerator::applyBase($link, \'Base\'))',
+	'$this->global->uiControl->link(Nette\Application\DefaultLinkGenerator::applyBase($link, \'Base\'))',
 	$latte->compile('{linkBase Base}{link $link}'),
 );
 Assert::contains(
-	'$this->global->uiControl->link(Nette\Application\LinkGenerator::applyBase(\'foo\', $base))',
+	'$this->global->uiControl->link(Nette\Application\DefaultLinkGenerator::applyBase(\'foo\', $base))',
 	$latte->compile('{linkBase $base}{link foo}'),
 );
