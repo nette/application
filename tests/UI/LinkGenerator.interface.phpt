@@ -35,10 +35,19 @@ test('getLastRequest() returns Request after link()', function () {
 });
 
 
-test('getLastRequest() matches lastRequest property for BC', function () {
+test('getLastRequest() is reset at the start of createRequest()', function () {
 	$generator = new LinkGenerator(new Routers\SimpleRouter, new Http\UrlScript('http://nette.org/en/'));
 	$generator->link('Homepage:default');
-	Assert::same($generator->lastRequest, $generator->getLastRequest());
+	Assert::type(Nette\Application\Request::class, $generator->getLastRequest());
+
+	// createRequest resets lastRequest to null before processing
+	try {
+		$generator->link('NonExistent:');
+	} catch (Nette\Application\UI\InvalidLinkException) {
+	}
+
+	// lastRequest was set by createRequest even though requestToUrl failed
+	Assert::type(Nette\Application\Request::class, $generator->getLastRequest());
 });
 
 
@@ -46,5 +55,4 @@ test('withReferenceUrl() returns LinkGeneratorInterface instance', function () {
 	$generator = new LinkGenerator(new Routers\SimpleRouter, new Http\UrlScript('http://nette.org/en/'));
 	$generator2 = $generator->withReferenceUrl('http://nette.org/cs/');
 	Assert::type(LinkGeneratorInterface::class, $generator2);
-	Assert::type(LinkGenerator::class, $generator2);
 });

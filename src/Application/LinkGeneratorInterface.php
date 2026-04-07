@@ -11,12 +11,12 @@ namespace Nette\Application;
 
 
 /**
- * Link generator interface.
+ * Defines the contract for link generation.
  */
 interface LinkGeneratorInterface
 {
 	/**
-	 * Generates URL to presenter.
+	 * Generates URL to presenter. Returns null when $mode is 'forward' or 'test'.
 	 * @param  string  $destination  in format "[//] [[[module:]presenter:]action | signal! | this | @alias] [#fragment]"
 	 * @throws UI\InvalidLinkException
 	 */
@@ -29,10 +29,11 @@ interface LinkGeneratorInterface
 
 
 	/**
+	 * Creates a Request object for the given destination. Intended to be called by Presenter internals,
+	 * not by end-user code directly.
 	 * @param  string  $destination  in format "[[[module:]presenter:]action | signal! | this | @alias]"
 	 * @param  string  $mode  forward|redirect|link
 	 * @throws UI\InvalidLinkException
-	 * @internal
 	 */
 	public function createRequest(
 		?UI\Component $component,
@@ -45,7 +46,7 @@ interface LinkGeneratorInterface
 	/**
 	 * Converts Request to URL.
 	 */
-	public function requestToUrl(Request $request, ?bool $relative = false): string;
+	public function requestToUrl(Request $request, bool $relative = false): string;
 
 
 	/**
@@ -55,8 +56,8 @@ interface LinkGeneratorInterface
 
 
 	/**
-	 * Returns the last created Request.
-	 * @internal
+	 * Returns the last created Request. Intended to be called by Presenter internals,
+	 * not by end-user code directly.
 	 */
 	public function getLastRequest(): ?Request;
 }

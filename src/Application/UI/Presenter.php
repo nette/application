@@ -118,7 +118,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	private readonly ?Nette\Http\Session $session;
 	private readonly ?Nette\Security\User $user;
 	private readonly ?TemplateFactory $templateFactory;
-	private readonly LinkGeneratorInterface $linkGenerator;
+	private ?LinkGeneratorInterface $linkGenerator = null;
 
 
 	final public function getRequest(): ?Application\Request

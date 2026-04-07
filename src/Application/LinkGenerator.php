@@ -262,7 +262,7 @@ class LinkGenerator implements LinkGeneratorInterface
 	/**
 	 * Converts Request to URL.
 	 */
-	public function requestToUrl(Request $request, ?bool $relative = false): string
+	public function requestToUrl(Request $request, bool $relative = false): string
 	{
 		$url = $this->router->constructUrl($request->toArray(), $this->refUrl);
 		if ($url === null) {
