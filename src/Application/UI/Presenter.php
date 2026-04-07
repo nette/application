@@ -11,8 +11,8 @@ namespace Nette\Application\UI;
 
 use Nette;
 use Nette\Application;
-use Nette\Application\Helpers;
 use Nette\Application\DefaultLinkGenerator;
+use Nette\Application\Helpers;
 use Nette\Application\LinkGenerator;
 use Nette\Application\Responses;
 use Nette\Http;

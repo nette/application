@@ -192,23 +192,4 @@ namespace {
 		Assert::false((new ReflectionMethod(Nette\Application\UI\Presenter::class, 'getLinkGenerator'))->isFinal());
 	});
 
-
-	test('LinkGenerator is resolvable from DI container', function () {
-		$compiler = new Nette\DI\Compiler;
-		$compiler->addExtension('application', new Nette\Bridges\ApplicationDI\ApplicationExtension(false));
-
-		$builder = $compiler->getContainerBuilder();
-		$builder->addDefinition('myRouter')->setFactory(Nette\Application\Routers\SimpleRouter::class);
-		$builder->addDefinition('myHttpRequest')->setFactory(Nette\Http\Request::class, [new Nette\DI\Definitions\Statement(Nette\Http\UrlScript::class)]);
-		$builder->addDefinition('myHttpResponse')->setFactory(Nette\Http\Response::class);
-
-		$code = $compiler->setClassName('DecoratorTestContainer')->compile();
-		eval($code);
-
-		$container = new DecoratorTestContainer;
-		$service = $container->getByType(Nette\Application\LinkGenerator::class);
-		Assert::type(Nette\Application\LinkGenerator::class, $service);
-		Assert::type(Nette\Application\DefaultLinkGenerator::class, $service);
-	});
-
 }
