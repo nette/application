@@ -143,11 +143,10 @@ namespace {
 	}
 
 
-	test('custom LinkGeneratorInterface can be injected into Presenter', function () {
+	test('injected decorator is used by Presenter', function () {
 		$inner = new Nette\Application\LinkGenerator(
 			new Nette\Application\Routers\SimpleRouter,
 			new Nette\Http\UrlScript('http://nette.org/en/'),
-			new Nette\Application\PresenterFactory,
 		);
 		$decorator = new TrackingLinkGenerator($inner);
 
@@ -158,25 +157,9 @@ namespace {
 			linkGenerator: $decorator,
 		);
 
-		$reflection = new ReflectionMethod($presenter, 'getLinkGenerator');
-		$linkGenerator = $reflection->invoke($presenter);
-		Assert::type(TrackingLinkGenerator::class, $linkGenerator);
-		Assert::same($decorator, $linkGenerator);
-	});
-
-
-	test('decorator intercepts link generation calls', function () {
-		$inner = new Nette\Application\LinkGenerator(
-			new Nette\Application\Routers\SimpleRouter,
-			new Nette\Http\UrlScript('http://nette.org/en/'),
-			new Nette\Application\PresenterFactory,
-		);
-		$decorator = new TrackingLinkGenerator($inner);
-
-		$countBefore = $decorator->linkCallCount;
-		$decorator->link('Homepage:default');
-
-		Assert::same($countBefore + 1, $decorator->linkCallCount);
+		Assert::same(0, $decorator->linkCallCount);
+		$presenter->link(':Homepage:default');
+		Assert::same(1, $decorator->linkCallCount);
 	});
 
 
@@ -184,7 +167,6 @@ namespace {
 		$inner = new Nette\Application\LinkGenerator(
 			new Nette\Application\Routers\SimpleRouter,
 			new Nette\Http\UrlScript('http://nette.org/en/'),
-			new Nette\Application\PresenterFactory,
 		);
 		$decorator = new PrefixingLinkGenerator($inner, '/proxy');
 
@@ -195,12 +177,23 @@ namespace {
 	});
 
 
-	test('Presenter::getLinkGenerator() is overridable', function () {
+	test('decorator preserves null return for test mode', function () {
+		$inner = new Nette\Application\LinkGenerator(
+			new Nette\Application\Routers\SimpleRouter,
+			new Nette\Http\UrlScript('http://nette.org/en/'),
+		);
+		$decorator = new PrefixingLinkGenerator($inner, '/proxy');
+
+		Assert::null($decorator->link('Homepage:default', [], null, 'test'));
+	});
+
+
+	test('Presenter::getLinkGenerator() is not final', function () {
 		Assert::false((new ReflectionMethod(Nette\Application\UI\Presenter::class, 'getLinkGenerator'))->isFinal());
 	});
 
 
-	test('custom LinkGeneratorInterface is autowired via DI container', function () {
+	test('LinkGeneratorInterface is resolvable from DI container', function () {
 		$compiler = new Nette\DI\Compiler;
 		$compiler->addExtension('application', new Nette\Bridges\ApplicationDI\ApplicationExtension(false));
 
@@ -213,9 +206,9 @@ namespace {
 		eval($code);
 
 		$container = new DecoratorTestContainer;
-		$linkGenerator = $container->getByType(Nette\Application\LinkGeneratorInterface::class);
-		Assert::type(Nette\Application\LinkGeneratorInterface::class, $linkGenerator);
-		Assert::type(Nette\Application\LinkGenerator::class, $linkGenerator);
+		$service = $container->getByType(Nette\Application\LinkGeneratorInterface::class);
+		Assert::type(Nette\Application\LinkGeneratorInterface::class, $service);
+		Assert::type(Nette\Application\LinkGenerator::class, $service);
 	});
 
 }
