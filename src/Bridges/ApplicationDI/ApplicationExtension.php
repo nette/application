@@ -114,6 +114,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 		}
 
 		$builder->addDefinition($this->prefix('linkGenerator'))
+			->setType(Nette\Application\LinkGeneratorInterface::class)
 			->setFactory(Nette\Application\LinkGenerator::class, [
 				1 => new Definitions\Statement([new Definitions\Statement('@Nette\Http\IRequest::getUrl'), 'withoutUserInfo']),
 			]);

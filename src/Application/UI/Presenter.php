@@ -13,6 +13,7 @@ use Nette;
 use Nette\Application;
 use Nette\Application\Helpers;
 use Nette\Application\LinkGenerator;
+use Nette\Application\LinkGeneratorInterface;
 use Nette\Application\Responses;
 use Nette\Http;
 use Nette\Utils\Arrays;
@@ -117,7 +118,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	private readonly ?Nette\Http\Session $session;
 	private readonly ?Nette\Security\User $user;
 	private readonly ?TemplateFactory $templateFactory;
-	private readonly LinkGenerator $linkGenerator;
+	private readonly LinkGeneratorInterface $linkGenerator;
 
 
 	final public function getRequest(): ?Application\Request
@@ -742,7 +743,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	final public function getLastCreatedRequest(): ?Application\Request
 	{
-		return $this->linkGenerator->lastRequest;
+		return $this->linkGenerator->getLastRequest();
 	}
 
 
@@ -752,7 +753,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	final public function getLastCreatedRequestFlag(string $flag): bool
 	{
-		return (bool) $this->linkGenerator->lastRequest?->hasFlag($flag);
+		return (bool) $this->linkGenerator->getLastRequest()?->hasFlag($flag);
 	}
 
 
@@ -1125,6 +1126,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		?Http\Session $session = null,
 		?Nette\Security\User $user = null,
 		?TemplateFactory $templateFactory = null,
+		?LinkGeneratorInterface $linkGenerator = null,
 	): void
 	{
 		$this->httpRequest = $httpRequest;
@@ -1132,7 +1134,9 @@ abstract class Presenter extends Control implements Application\IPresenter
 		$this->session = $session;
 		$this->user = $user;
 		$this->templateFactory = $templateFactory;
-		if ($router && $presenterFactory) {
+		if ($linkGenerator) {
+			$this->linkGenerator = $linkGenerator;
+		} elseif ($router && $presenterFactory) {
 			$url = $httpRequest->getUrl();
 			$this->linkGenerator = new LinkGenerator(
 				$router,
@@ -1179,7 +1183,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	}
 
 
-	final protected function getLinkGenerator(): LinkGenerator
+	protected function getLinkGenerator(): LinkGeneratorInterface
 	{
 		return $this->linkGenerator ?? throw new Nette\InvalidStateException('Unable to create link to other presenter, service PresenterFactory or Router has not been set.');
 	}

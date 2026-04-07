@@ -18,7 +18,7 @@ use function array_intersect_key, array_key_exists, http_build_query, is_string,
 /**
  * Link generator.
  */
-final class LinkGenerator
+class LinkGenerator implements LinkGeneratorInterface
 {
 	/** @internal */
 	public ?Request $lastRequest = null;
@@ -285,11 +285,17 @@ final class LinkGenerator
 
 	public function withReferenceUrl(string $url): static
 	{
-		return new self(
+		return new static(
 			$this->router,
 			new UrlScript($url),
 			$this->presenterFactory,
 		);
+	}
+
+
+	public function getLastRequest(): ?Request
+	{
+		return $this->lastRequest;
 	}
 
 
