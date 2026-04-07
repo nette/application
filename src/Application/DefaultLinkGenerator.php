@@ -16,7 +16,7 @@ use function array_intersect_key, array_key_exists, http_build_query, is_string,
 
 
 /**
- * Link generator.
+ * Default link generator.
  */
 class DefaultLinkGenerator implements LinkGenerator
 {

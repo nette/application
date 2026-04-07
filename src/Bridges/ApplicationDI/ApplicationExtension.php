@@ -12,6 +12,7 @@ namespace Nette\Bridges\ApplicationDI;
 use Composer\Autoload\ClassLoader;
 use Nette;
 use Nette\Application\Attributes;
+use Nette\Application\DefaultLinkGenerator;
 use Nette\Application\LinkGenerator;
 use Nette\Application\UI;
 use Nette\DI\Definitions;
@@ -116,7 +117,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 
 		$builder->addDefinition($this->prefix('linkGenerator'))
 			->setType(LinkGenerator::class)
-			->setFactory(Nette\Application\DefaultLinkGenerator::class, [
+			->setFactory(DefaultLinkGenerator::class, [
 				1 => new Definitions\Statement([new Definitions\Statement('@Nette\Http\IRequest::getUrl'), 'withoutUserInfo']),
 			]);
 
