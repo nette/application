@@ -1,0 +1,131 @@
+<?php declare(strict_types=1);
+
+/** @var ?array<string,mixed> $matched */
+/** @var array{path:string,domain:?string,module:string,routes:array<mixed>} $routes */
+/** @var \ReflectionClass<Nette\Application\IPresenter>|\ReflectionMethod|string|null $source */
+/** @var Nette\Http\UrlScript $url */
+/** @var string $method */
+use Nette\Application\UI\Presenter;
+echo "\n";
+$_blocks['route'] = function ($route,$path) use (&$_blocks) {
+	$mark = ['yes' => 'MATCHED', 'may' => 'MAY MATCH', 'no' => 'no match', 'oneway' => 'one-way', 'error' => 'ERROR'][$route->matched] ?? $route->matched /* pos 9:2 */;
+	$mask = $route->mask !== null ? $path . $route->mask : $route->class /* pos 10:2 */;
+	$defaults = [] /* pos 11:2 */;
+	foreach ($route->defaults as $k => $v) /* pos 12:2 */ {
+		$defaults[] = $k . '=' . (is_string($v) ? $v : (is_scalar($v) ? var_export($v, true) : get_debug_type($v))) /* pos 12:40 */;
+	}
+
+	echo '- [';
+	echo Tracy\Helpers::escapeMd($mark) /* pos 13:6 */;
+	echo '] `';
+	echo $mask /* pos 13:16 */;
+	echo '`';
+	if ($defaults) /* pos 13:33 */ {
+		echo ' (';
+		echo Tracy\Helpers::escapeMd(implode(', ', $defaults)) /* pos 13:49 */;
+		echo ')';
+	}
+	if ($route->error) /* pos 13:82 */ {
+		echo ' — ';
+		echo Tracy\Helpers::escapeMd($route->error->getMessage()) /* pos 13:105 */;
+	}
+	echo "\n";
+};
+echo "\n";
+$_blocks['routeList'] = function ($list,$path) use (&$_blocks) {
+	if ($list['domain']) /* pos 17:2 */ {
+		echo '- domain: `';
+		echo Tracy\Helpers::escapeMd($list['domain']) /* pos 17:31 */;
+		echo '`
+';
+	}
+	if ($list['module']) /* pos 19:2 */ {
+		echo '- module: `';
+		echo Tracy\Helpers::escapeMd($list['module']) /* pos 19:31 */;
+		echo '`
+';
+	}
+	$path .= $list['path'] /* pos 21:2 */;
+	foreach ($list['routes'] as $router) /* pos 22:2 */ {
+		if (is_array($router)) /* pos 23:3 */ {
+			$_blocks['routeList']($router,$path);
+		} else /* pos 25:3 */ {
+			$_blocks['route']($router,$path);
+		}
+
+	}
+
+};
+echo '
+## Routing
+
+`';
+echo Tracy\Helpers::escapeMd($method) /* pos 33:2 */;
+echo ' ';
+echo Tracy\Helpers::escapeMd($url->getAbsoluteUrl()) /* pos 33:12 */;
+echo '`
+
+';
+if ($matched === null) /* pos 35:1 */ {
+	echo '**Matched:** no route
+';
+} else /* pos 37:1 */ {
+	$target = ($matched[Presenter::PresenterKey] ?? '?') . ':' . ($matched[Presenter::ActionKey] ?? Presenter::DefaultAction) /* pos 38:2 */;
+	echo '**Matched:** ';
+	echo Tracy\Helpers::escapeMd($target) /* pos 39:15 */;
+	if (isset($matched[Presenter::SignalKey])) /* pos 39:24 */ {
+		echo Tracy\Helpers::escapeMd($matched[Presenter::SignalKey]) /* pos 39:66 */;
+		echo '!';
+	}
+	echo "\n";
+	if (is_string($source)) /* pos 40:2 */ {
+		echo '**Handler:** ';
+		echo Tracy\Helpers::escapeMd($source) /* pos 41:16 */;
+		echo ' (class not found)
+';
+	} elseif ($source instanceof \ReflectionMethod) /* pos 42:2 */ {
+		echo '**Handler:** ';
+		echo Tracy\Helpers::escapeMd($source->getDeclaringClass()->getName()) /* pos 43:16 */;
+		echo '::';
+		echo Tracy\Helpers::escapeMd($source->getName()) /* pos 43:59 */;
+		echo '() in ';
+		echo Tracy\Helpers::escapeMd($source->getFileName()) /* pos 43:85 */;
+		echo ':';
+		echo Tracy\Helpers::escapeMd($source->getStartLine()) /* pos 43:110 */;
+		echo "\n";
+	} elseif ($source instanceof \ReflectionClass) /* pos 44:2 */ {
+		echo '**Handler:** ';
+		echo Tracy\Helpers::escapeMd($source->getName()) /* pos 45:16 */;
+		echo ' in ';
+		echo Tracy\Helpers::escapeMd($source->getFileName()) /* pos 45:40 */;
+		echo ':';
+		echo Tracy\Helpers::escapeMd($source->getStartLine()) /* pos 45:65 */;
+		echo "\n";
+	}
+
+
+	$skip = [Presenter::PresenterKey => 1, Presenter::ActionKey => 1, Presenter::SignalKey => 1] /* pos 47:2 */;
+	$extras = array_diff_key($matched, $skip) /* pos 48:2 */;
+	if ($extras) /* pos 49:2 */ {
+		echo '**Parameters:**
+';
+		foreach ($extras as $key => $value) /* pos 51:3 */ {
+			echo '- ';
+			echo Tracy\Helpers::escapeMd($key) /* pos 52:6 */;
+			echo ' = ';
+			echo Tracy\Helpers::escapeMd(is_string($value) ? $value : (is_scalar($value) ? var_export($value, true) : get_debug_type($value))) /* pos 52:15 */;
+			echo "\n";
+
+		}
+
+	}
+}
+echo '
+### Routes
+';
+if (empty($routes['routes'])) /* pos 58:1 */ {
+	echo '(none defined)
+';
+} else /* pos 60:1 */ {
+	$_blocks['routeList']($routes,'');
+}
