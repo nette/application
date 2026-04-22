@@ -211,3 +211,10 @@ parameters:
 				- offsetAccess.notFound
 				- closure.unusedUse
 				- identical.alwaysFalse
+
+		# Tracy routing agent panel: compiled Latte template with recursive block array (self-referencing $_blocks)
+		-
+			path: src/Bridges/ApplicationTracy/dist/panel.agent.phtml
+			identifiers:
+				- offsetAccess.notFound
+				- closure.unusedUse

@@ -67,6 +67,19 @@ final class RoutingPanel implements Tracy\IBarPanel
 	}
 
 
+	public function getAgentInfo(): string
+	{
+		return Nette\Utils\Helpers::capture(function () {
+			$matched = $this->matched;
+			$routes = $this->routes;
+			$source = $this->matched ? $this->findSource() : null;
+			$url = $this->httpRequest->getUrl();
+			$method = $this->httpRequest->getMethod();
+			require __DIR__ . '/dist/panel.agent.phtml';
+		});
+	}
+
+
 	/** @return array{path: string, domain: ?string, module: string, routes: array<mixed>} */
 	private function analyse(Routing\RouteList $router, ?Nette\Http\IRequest $httpRequest): array
 	{
