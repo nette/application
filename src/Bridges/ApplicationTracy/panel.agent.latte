@@ -1,0 +1,62 @@
+{varType ?array<string, mixed> $matched}
+{varType array{path: string, domain: ?string, module: string, routes: array<mixed>} $routes}
+{varType \ReflectionClass<Nette\Application\IPresenter>|\ReflectionMethod|string|null $source}
+{varType Nette\Http\UrlScript $url}
+{varType string $method}
+{use Nette\Application\UI\Presenter}
+
+{define route $route, $path}
+	{do $mark = [yes => 'MATCHED', may => 'MAY MATCH', no => 'no match', oneway => 'one-way', error => 'ERROR'][$route->matched] ?? $route->matched}
+	{do $mask = $route->mask !== null ? $path . $route->mask : $route->class}
+	{do $defaults = []}
+	{foreach $route->defaults as $k => $v}{do $defaults[] = $k . '=' . (is_string($v) ? $v : (is_scalar($v) ? var_export($v, true) : get_debug_type($v)))}{/foreach}
+		- [{$mark}] `{$mask|noescape}`{if $defaults} ({=implode(', ', $defaults)}){/if}{if $route->error} — {$route->error->getMessage()}{/if}
+{/define}
+
+{define routeList $list, $path}
+	{if $list[domain]}- domain: `{$list[domain]}`
+	{/if}
+	{if $list[module]}- module: `{$list[module]}`
+	{/if}
+	{do $path .= $list[path]}
+	{foreach $list[routes] as $router}
+		{if is_array($router)}
+			{include routeList $router, $path}
+		{else}
+			{include route $router, $path}
+		{/if}
+	{/foreach}
+{/define}
+
+## Routing
+
+`{$method} {$url->getAbsoluteUrl()}`
+
+{if $matched === null}
+	**Matched:** no route
+{else}
+	{do $target = ($matched[Presenter::PresenterKey] ?? '?') . ':' . ($matched[Presenter::ActionKey] ?? Presenter::DefaultAction)}
+	**Matched:** {$target}{if isset($matched[Presenter::SignalKey])}{$matched[Presenter::SignalKey]}!{/if}
+	{if is_string($source)}
+		**Handler:** {$source} (class not found)
+	{elseif $source instanceof \ReflectionMethod}
+		**Handler:** {$source->getDeclaringClass()->getName()}::{$source->getName()}() in {$source->getFileName()}:{$source->getStartLine()}
+	{elseif $source instanceof \ReflectionClass}
+		**Handler:** {$source->getName()} in {$source->getFileName()}:{$source->getStartLine()}
+	{/if}
+	{do $skip = [Presenter::PresenterKey => 1, Presenter::ActionKey => 1, Presenter::SignalKey => 1]}
+	{do $extras = array_diff_key($matched, $skip)}
+	{if $extras}
+		**Parameters:**
+		{foreach $extras as $key => $value}
+			- {$key} = {is_string($value) ? $value : (is_scalar($value) ? var_export($value, true) : get_debug_type($value))}
+		{/foreach}
+	{/if}
+{/if}
+
+### Routes
+{if empty($routes[routes])}
+	(none defined)
+{else}
+	{include routeList $routes, ''}
+{/if}
