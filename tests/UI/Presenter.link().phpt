@@ -89,6 +89,22 @@ class TestPresenter extends Application\UI\Presenter
 		Assert::same('/index.php?a=1&action=product&presenter=Test', $this->link('product', ['a' => 1]));
 		Assert::same('#error: Passed more parameters than method TestPresenter::actionParams() expects.', $this->link('params', 1, 2, 3, 4, 5));
 
+		// fragment via args
+		Assert::same('/index.php?action=product&presenter=Test#fragment', $this->link('product', ['#' => 'fragment']));
+		Assert::same('/index.php?x=1&action=product&presenter=Test#fragment', $this->link('product', ['x' => 1, '#' => 'fragment']));
+		Assert::same('/index.php?action=product&presenter=Test#b', $this->link('product#a', ['#' => 'b'])); // args win over destination
+		Assert::same('/index.php?action=product&presenter=Test#a', $this->link('product#a', ['#' => ''])); // empty arg falls back to destination
+		Assert::same('/index.php?action=product&presenter=Test', $this->link('product', ['#' => ''])); // empty fragment omitted
+		Assert::same('/index.php?action=product&presenter=Test', $this->link('product', ['#' => null]));
+		Assert::same(['pint' => null, 'parr' => null, 'pbool' => null, 'action' => 'product'], $this->getLastCreatedRequest()->getParameters()); // # not propagated to request
+		Assert::same('http://localhost/index.php?x=1&action=product&presenter=Test#fragment', $this->link('//product', ['x' => 1, '#' => 'fragment']));
+		Assert::same('/index.php?action=product&presenter=Test#hello%20world%20%26%20co', $this->link('product', ['#' => 'hello world & co'])); // URL encoding
+		Assert::same('/index.php?action=product&presenter=Test#42', $this->link('product', ['#' => 42])); // scalar coercion
+		Assert::same("#error: Value of '#' must be scalar, array given.", $this->link('product', ['#' => [1, 2]]));
+		Assert::same("#error: Value of '#' must be scalar, stdClass given.", $this->link('product', ['#' => new stdClass]));
+		Assert::same('/index.php?mycontrol-x=1&mycontrol-y=2&action=default&do=mycontrol-click&presenter=Test#frag', $this['mycontrol']->link('click', ['x' => 1, 'y' => 2, '#' => 'frag'])); // component signal + fragment
+		Assert::same('/index.php?action=product&presenter=Test#frag', (string) new Application\UI\Link($this, 'product', ['#' => 'frag'])); // Link class
+
 		// absolute
 		Assert::same('http://localhost/index.php?x=1&y=2&action=product&presenter=Test#fragment', $this->link('//product#fragment', ['x' => 1, 'y' => 2]));
 		$this->absoluteUrls = true;

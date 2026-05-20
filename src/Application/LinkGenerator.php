@@ -10,7 +10,7 @@ namespace Nette\Application;
 use Nette\Http\UrlScript;
 use Nette\Routing\Router;
 use Nette\Utils\Reflection;
-use function array_intersect_key, array_key_exists, http_build_query, is_string, is_subclass_of, parse_str, preg_match, rtrim, str_contains, str_ends_with, strcasecmp, strlen, strtr, substr, trigger_error, urldecode;
+use function array_intersect_key, array_key_exists, http_build_query, is_scalar, is_string, is_subclass_of, parse_str, preg_match, rtrim, str_contains, str_ends_with, strcasecmp, strlen, strtr, substr, trigger_error, urldecode;
 
 
 /**
@@ -46,11 +46,19 @@ final class LinkGenerator
 	{
 		$parts = self::parseDestination($destination);
 		$args = $parts['args'] ?? $args;
+		$hash = $args['#'] ?? null;
+		unset($args['#']);
+		if ($hash !== null && !is_scalar($hash)) {
+			throw new UI\InvalidLinkException("Value of '#' must be scalar, " . get_debug_type($hash) . ' given.');
+		}
+		$fragment = (string) $hash !== ''
+			? '#' . rawurlencode((string) $hash)
+			: $parts['fragment'];
 		$request = $this->createRequest($component, $parts['path'] . ($parts['signal'] ? '!' : ''), $args, $mode ?? 'link');
 		$relative = $mode === 'link' && !$parts['absolute'] && !$component?->getPresenter()->absoluteUrls;
 		return $mode === 'forward' || $mode === 'test'
 			? null
-			: $this->requestToUrl($request, $relative) . $parts['fragment'];
+			: $this->requestToUrl($request, $relative) . $fragment;
 	}
 
 
