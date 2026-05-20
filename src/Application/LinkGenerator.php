@@ -46,11 +46,19 @@ final class LinkGenerator
 	{
 		$parts = self::parseDestination($destination);
 		$args = $parts['args'] ?? $args;
+		$hash = $args['#'] ?? null;
+		unset($args['#']);
+		if ($hash !== null && !is_scalar($hash)) {
+			throw new UI\InvalidLinkException("Value of '#' must be scalar, " . get_debug_type($hash) . ' given.');
+		}
+		$fragment = (string) $hash !== ''
+			? '#' . rawurlencode((string) $hash)
+			: $parts['fragment'];
 		$request = $this->createRequest($component, $parts['path'] . ($parts['signal'] ? '!' : ''), $args, $mode ?? 'link');
 		$relative = $mode === 'link' && !$parts['absolute'] && !$component?->getPresenter()->absoluteUrls;
 		return $mode === 'forward' || $mode === 'test'
 			? null
-			: $this->requestToUrl($request, $relative) . $parts['fragment'];
+			: $this->requestToUrl($request, $relative) . $fragment;
 	}
 
 
