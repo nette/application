@@ -132,7 +132,7 @@ final class UIExtension extends Latte\Extension
 		$auto = $tag->parser->stream->is('auto');
 		$node = ExtendsNode::create($tag);
 		if ($auto) {
-			$node->extends = new AuxiliaryNode(fn() => '$this->global->uiPresenter->findLayoutTemplateFile()');
+			$node->extends = new AuxiliaryNode(fn() => '($this->getReferringTemplate() ? null : $this->global->uiPresenter->findLayoutTemplateFile())');
 		}
 		return $node;
 	}
