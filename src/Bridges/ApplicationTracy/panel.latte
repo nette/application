@@ -1,3 +1,8 @@
+{varType ?array<string, mixed> $matched}
+{varType array{path: string, domain: ?string, module: string, routes: array<mixed>} $routes}
+{varType \ReflectionClass<Nette\Application\IPresenter>|\ReflectionMethod|string|null $source}
+{varType Nette\Http\UrlScript $url}
+{varType string $method}
 {use Nette\Application\UI\Presenter}
 {use Tracy\Dumper}
 
@@ -103,7 +108,7 @@
 </div>
 
 <div class="tracy-inner-container">
-	{if empty($routes)}
+	{if empty($routes[routes])}
 		<p>No routes defined.</p>
 	{else}
 		<div class="nette-RoutingPanel-grid">
@@ -116,12 +121,10 @@
 
 			{define routeList $list, $path = ''}
 				<div class="nette-RoutingPanel-grid-inner">
-					{if $list[domain] || $list[module]}
-						<div class="nette-RoutingPanel-grid-group-header">
-							{if $list[domain]}domain = {$list[domain]}{/if}
-							{if $list[module]}module = {$list[module]}{/if}
-						</div>
-					{/if}
+					<div n:if="$list[domain] || $list[module]" class="nette-RoutingPanel-grid-group-header">
+						{if $list[domain]}domain = {$list[domain]}{/if}
+						{if $list[module]}module = {$list[module]}{/if}
+					</div>
 					{do $path .= $list[path]}
 					{foreach $list[routes] as $router}
 						{if is_array($router)}
@@ -141,7 +144,7 @@
 
 					<div>
 						<code title="{$route->class}">
-							{if $path !== ''}<small>{$path}</small>{/if}
+							<small n:if="$path !== ''">{$path}</small>
 							{isset($route->mask) ? str_replace(['/', '-'], ['<wbr>/', '<wbr>-'], htmlspecialchars($route->mask)) : str_replace('\\', '<wbr>\\', htmlspecialchars($route->class))|noescape}
 						</code>
 					</div>
@@ -161,7 +164,7 @@
 								{if isset($params[Presenter::PresenterKey])}
 									<strong>{$params[presenter]}:{$params[Presenter::ActionKey] ?? Presenter::DefaultAction}</strong>
 									<br>
-									{do unset($params[Presenter::PresenterKey], $params[Presenter::ActionKey])}
+									{do $params = array_diff_key($params, [Presenter::PresenterKey => 1, Presenter::ActionKey => 1])}
 								{/if}
 								{foreach $params as $key => $value}
 									{$key}&nbsp;=&nbsp;{if is_string($value)}{$value}<br>{Dumper::toHtml($value, [Dumper::COLLAPSE => true, Dumper::LIVE => true])}{/if}
