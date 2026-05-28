@@ -128,9 +128,9 @@ abstract class Presenter extends Control implements Application\IPresenter
 	}
 
 
-	final public function getRequest(): ?Application\Request
+	final public function getRequest(): Application\Request
 	{
-		return $this->request;
+		return $this->request ?? throw new Nette\InvalidStateException('Request is not set, presenter is not running.');
 	}
 
 
@@ -181,7 +181,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function isForwarded(): bool
 	{
-		return $this->forwarded || $this->request?->isMethod($this->request::FORWARD);
+		return $this->forwarded || $this->request?->isMethod(Application\Request::FORWARD);
 	}
 
 
@@ -787,7 +787,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function canonicalize(?string $destination = null, ...$args): void
 	{
-		$request = $this->request;
+		$request = $this->getRequest();
 		if ($this->isAjax() || (!$request->isMethod('get') && !$request->isMethod('head'))) {
 			return;
 		}
