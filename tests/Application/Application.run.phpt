@@ -368,7 +368,11 @@ Assert::noError(function () use ($httpRequest, $httpResponse) {
 
 	Assert::same('GET', $requests[0]->getMethod());
 	Assert::same('UI', $requests[0]->getPresenterName());
-	Assert::null($presenter->getRequest()); // Good presenter did not run
+	Assert::exception(
+		fn() => $presenter->getRequest(),
+		Nette\InvalidStateException::class,
+		'Request is not set, presenter is not running.',
+	); // Good presenter did not run
 
 	Assert::same('FORWARD', $requests[1]->getMethod());
 	Assert::same('UIError', $requests[1]->getPresenterName());
