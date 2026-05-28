@@ -101,28 +101,9 @@ parameters:
 			count: 1
 			path: src/Application/UI/Presenter.php
 
-		# getRequest() is nullable only before run(); these internal methods run during request handling when request is always set
-		-
-			identifier: method.nonObject
-			message: '#on Nette\\Application\\Request\|null\.$#'
-			count: 8
-			path: src/Application/UI/Presenter.php
-		-
-			identifier: classConstant.nonObject
-			message: '#on Nette\\Application\\Request\|null\.$#'
-			count: 1
-			path: src/Application/UI/Presenter.php
-
 		# Nette Forms compatibility - methods differ between versions
 		-
 			identifier: method.notFound
-			path: src/Application/UI/Form.php
-
-		# getRequest() is nullable only before run(); these internal methods run during request handling when request is always set
-		-
-			identifier: method.nonObject
-			message: '#on Nette\\Application\\Request\|null\.$#'
-			count: 6
 			path: src/Application/UI/Form.php
 
 		# Control::$template->flashes is set dynamically for flash messages
