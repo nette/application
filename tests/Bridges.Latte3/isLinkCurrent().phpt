@@ -15,7 +15,7 @@ if (version_compare(Latte\Engine::VERSION, '3', '<')) {
 Tester\Environment::bypassFinals();
 
 $presenter = Mockery::mock(Nette\Application\UI\Presenter::class);
-$presenter->shouldReceive('getPresenterIfExists')->andReturn($presenter);
+$presenter->shouldReceive('getPresenter')->andReturn($presenter);
 $presenter->shouldReceive('getHttpResponse')->andReturn((Mockery::mock(Nette\Http\IResponse::class))->shouldIgnoreMissing());
 $presenter->shouldIgnoreMissing();
 

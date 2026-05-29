@@ -31,7 +31,7 @@ final class AccessPolicy
 
 	public function checkAccess(Component $component): void
 	{
-		$this->presenter ??= $component->getPresenterIfExists() ??
+		$this->presenter ??= $component->getPresenter(throw: false) ??
 			throw new Nette\InvalidStateException('Presenter is required for checking requirements of ' . Reflection::toString($this->element));
 
 		$attrs = $this->getAttributes();

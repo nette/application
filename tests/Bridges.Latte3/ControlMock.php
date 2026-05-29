@@ -41,7 +41,7 @@ class ControlMock extends Nette\Application\UI\Control
 	}
 
 
-	public function getPresenter(): Nette\Application\UI\Presenter
+	public function getPresenter(bool $throw = true): Nette\Application\UI\Presenter
 	{
 		$presenter = new class extends Nette\Application\UI\Presenter {
 		};

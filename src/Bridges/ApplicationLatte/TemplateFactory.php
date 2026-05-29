@@ -70,7 +70,7 @@ class TemplateFactory implements UI\TemplateFactory
 
 	private function injectDefaultVariables(Template $template, ?UI\Control $control): void
 	{
-		$presenter = $control?->getPresenterIfExists();
+		$presenter = $control?->getPresenter(throw: false);
 		$baseUrl = $this->httpRequest
 			? rtrim($this->httpRequest->getUrl()->withoutUserInfo()->getBaseUrl(), '/')
 			: null;
@@ -123,7 +123,7 @@ class TemplateFactory implements UI\TemplateFactory
 
 		$latte->addProvider('cacheStorage', $this->cacheStorage);
 
-		$presenter = $control?->getPresenterIfExists();
+		$presenter = $control?->getPresenter(throw: false);
 		if ($control) {
 			$latte->addProvider('uiControl', $control);
 			$latte->addProvider('uiPresenter', $presenter);

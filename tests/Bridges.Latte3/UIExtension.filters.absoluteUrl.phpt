@@ -26,7 +26,7 @@ $response = Mockery::mock(Nette\Http\IResponse::class);
 $response->shouldIgnoreMissing();
 
 $presenter = Mockery::mock(Nette\Application\UI\Presenter::class);
-$presenter->shouldReceive('getPresenterIfExists')->andReturn($presenter);
+$presenter->shouldReceive('getPresenter')->andReturn($presenter);
 $presenter->shouldReceive('getHttpRequest')->andReturn($request);
 $presenter->shouldReceive('getHttpResponse')->andReturn($response);
 $presenter->shouldIgnoreMissing();

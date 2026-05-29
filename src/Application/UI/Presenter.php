@@ -134,12 +134,16 @@ abstract class Presenter extends Control implements Application\IPresenter
 	}
 
 
-	final public function getPresenter(): static
+	/**
+	 * @return ($throw is true ? static : static)
+	 */
+	final public function getPresenter(bool $throw = true): static
 	{
 		return $this;
 	}
 
 
+	/** @deprecated */
 	final public function getPresenterIfExists(): static
 	{
 		return $this;

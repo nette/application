@@ -13,7 +13,7 @@ Tester\Environment::bypassFinals();
 $latte = new Latte\Engine;
 
 $presenter = Mockery::mock(Nette\Application\UI\Presenter::class);
-$presenter->shouldReceive('getPresenterIfExists')->andReturn($presenter);
+$presenter->shouldReceive('getPresenter')->andReturn($presenter);
 $presenter->shouldReceive('getHttpResponse')->andReturn((Mockery::mock(Nette\Http\IResponse::class))->shouldIgnoreMissing());
 $presenter->shouldIgnoreMissing();
 

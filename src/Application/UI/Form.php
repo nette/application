@@ -8,7 +8,6 @@
 namespace Nette\Application\UI;
 
 use Nette;
-use function func_num_args;
 
 
 /**
@@ -56,20 +55,17 @@ class Form extends Nette\Forms\Form implements SignalReceiver
 
 	/**
 	 * Returns the presenter where this component belongs to. Throws if not attached.
+	 * @return ($throw is true ? Presenter : ?Presenter)
 	 */
-	final public function getPresenter(): ?Presenter
+	final public function getPresenter(bool $throw = true): ?Presenter
 	{
-		if (func_num_args()) {
-			trigger_error(__METHOD__ . '() parameter $throw is deprecated, use getPresenterIfExists()', E_USER_DEPRECATED);
-			$throw = func_get_arg(0);
-		}
-
-		return $this->lookup(Presenter::class, throw: $throw ?? true);
+		return $this->lookup(Presenter::class, $throw);
 	}
 
 
 	/**
 	 * Returns the presenter where this component belongs to, or null if not attached.
+	 * @deprecated
 	 */
 	final public function getPresenterIfExists(): ?Presenter
 	{
@@ -89,7 +85,7 @@ class Form extends Nette\Forms\Form implements SignalReceiver
 	 */
 	public function isAnchored(): bool
 	{
-		return $this->hasPresenter();
+		return (bool) $this->getPresenter(throw: false);
 	}
 
 

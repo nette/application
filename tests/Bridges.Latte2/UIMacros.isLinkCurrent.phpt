@@ -20,7 +20,7 @@ $latteFactory = Mockery::mock(Nette\Bridges\ApplicationLatte\LatteFactory::class
 $latteFactory->shouldReceive('create')->andReturn($latte);
 
 $presenter = Mockery::mock(Nette\Application\UI\Presenter::class);
-$presenter->shouldReceive('getPresenterIfExists')->andReturn($presenter);
+$presenter->shouldReceive('getPresenter')->andReturn($presenter);
 $presenter->shouldReceive('getHttpResponse')->andReturn((Mockery::mock(Nette\Http\IResponse::class))->shouldIgnoreMissing());
 $presenter->shouldIgnoreMissing();
 

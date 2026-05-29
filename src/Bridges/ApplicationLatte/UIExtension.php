@@ -30,7 +30,7 @@ final class UIExtension extends Latte\Extension
 
 	public function getFilters(): array
 	{
-		$presenter = $this->control?->getPresenterIfExists();
+		$presenter = $this->control?->getPresenter(throw: false);
 		return [
 			'modifyDate' => fn($time, $delta, $unit = null) => $time
 				? Nette\Utils\DateTime::from($time)->modify($delta . $unit)
@@ -45,7 +45,7 @@ final class UIExtension extends Latte\Extension
 
 	public function getFunctions(): array
 	{
-		if ($presenter = $this->control?->getPresenterIfExists()) {
+		if ($presenter = $this->control?->getPresenter(throw: false)) {
 			return [
 				'isLinkCurrent' => $presenter->isLinkCurrent(...),
 				'isModuleCurrent' => $presenter->isModuleCurrent(...),
@@ -57,7 +57,7 @@ final class UIExtension extends Latte\Extension
 
 	public function getProviders(): array
 	{
-		$presenter = $this->control?->getPresenterIfExists();
+		$presenter = $this->control?->getPresenter(throw: false);
 		$httpResponse = $presenter?->getHttpResponse();
 		return [
 			'coreParentFinder' => $this->findLayoutTemplate(...),

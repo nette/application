@@ -35,20 +35,17 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 
 	/**
 	 * Returns the presenter where this component belongs to. Throws if not attached.
+	 * @return ($throw is true ? Presenter : ?Presenter)
 	 */
-	public function getPresenter(): ?Presenter
+	public function getPresenter(bool $throw = true): ?Presenter
 	{
-		if (func_num_args()) {
-			trigger_error(__METHOD__ . '() parameter $throw is deprecated, use getPresenterIfExists()', E_USER_DEPRECATED);
-			$throw = func_get_arg(0);
-		}
-
-		return $this->lookup(Presenter::class, throw: $throw ?? true);
+		return $this->lookup(Presenter::class, $throw);
 	}
 
 
 	/**
 	 * Returns the presenter where this component belongs to, or null if not attached.
+	 * @deprecated
 	 */
 	public function getPresenterIfExists(): ?Presenter
 	{
