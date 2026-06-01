@@ -7,8 +7,6 @@ parameters:
 
 	excludePaths:
 		- src/compatibility-intf.php
-		- src/Bridges/ApplicationDI/LatteExtension.php
-		- src/Bridges/ApplicationLatte
 
 	fileExtensions:
 		- php
@@ -161,6 +159,7 @@ parameters:
 			identifier: method.notFound
 			paths:
 				- src/Bridges/ApplicationDI/ApplicationExtension.php
+				- src/Bridges/ApplicationDI/LatteExtension.php
 
 		# Tracy version_compare conditions and BlueScreen closure parameter counts
 		-
@@ -169,6 +168,39 @@ parameters:
 				- booleanAnd.rightAlwaysTrue
 				- booleanAnd.leftAlwaysTrue
 				- arguments.count
+
+		# NNonceNode has no child nodes; empty by-reference generators require the `false && yield` idiom (same as Latte's NopNode)
+		-
+			path: src/Bridges/ApplicationLatte/Nodes/NNonceNode.php
+			identifiers:
+				- generator.valueType
+				- booleanAnd.leftAlwaysFalse
+
+		# n:snippet is always placed on a paired element, so its content is never null
+		-
+			identifier: argument.type
+			message: '#\$inner of method .*SnippetNode::printContent\(\) expects .*AreaNode, .*AreaNode\|null given#'
+			count: 1
+			path: src/Bridges/ApplicationLatte/Nodes/SnippetNode.php
+
+		# enter()/leave() keep the stack balanced, so it is never empty when leave() pops during snippet rendering
+		-
+			identifier: offsetAccess.nonArray
+			count: 1
+			path: src/Bridges/ApplicationLatte/SnippetRuntime.php
+
+		# render() is a control convention method not declared in any interface/base class (duck typing)
+		-
+			identifier: method.notFound
+			message: '#Call to an undefined method .*Control::render\(\)#'
+			count: 1
+			path: src/Bridges/ApplicationLatte/SnippetRuntime.php
+
+		# a rendered snippet block always has at least one render function, so reset() never returns false
+		-
+			identifier: callable.nonCallable
+			count: 1
+			path: src/Bridges/ApplicationLatte/SnippetRuntime.php
 
 		# UIExtension: Latte filters/functions have varying callable signatures
 		-
