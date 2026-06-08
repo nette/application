@@ -299,7 +299,7 @@ final class LinkGenerator
 		string $mode,
 	): void
 	{
-		if (!in_array($mode, ['test', 'forward']) && !(new UI\AccessPolicy($element))->isLinkable()) {
+		if (!in_array($mode, ['test', 'forward'], true) && !(new UI\AccessPolicy($element))->isLinkable()) {
 			throw new UI\InvalidLinkException("Link to forbidden $message from '{$presenter->getName()}:{$presenter->getAction()}'.");
 		} elseif ($presenter?->invalidLinkMode
 			&& (UI\ComponentReflection::parseAnnotation($element, 'deprecated') || $element->getAttributes(Attributes\Deprecated::class))
