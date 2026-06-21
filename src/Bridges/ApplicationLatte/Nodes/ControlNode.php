@@ -47,7 +47,8 @@ class ControlNode extends StatementNode
 		$start = $stream->getIndex();
 		$node->args = $tag->parser->parseArguments();
 		$start -= $stream->getIndex();
-		$depth = $wrap = null;
+		$depth = 0;
+		$wrap = null;
 		for (; $start < 0; $start++) {
 			$token = $stream->peek($start);
 			match (true) {

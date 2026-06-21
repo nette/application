@@ -43,6 +43,7 @@ class LinkNode extends StatementNode
 		$node->mode = $tag->name;
 
 		if ($tag->isNAttribute()) {
+			assert($tag->htmlElement !== null);
 			// move at the beginning
 			$node->position = $tag->position;
 			array_unshift($tag->htmlElement->attributes->children, $node);

@@ -57,11 +57,12 @@ class LinkBaseNode extends StatementNode
 
 	public static function applyLinkBasePass(TemplateNode $node): void
 	{
-		$base = NodeHelpers::findFirst($node, fn(Node $node) => $node instanceof self)?->base;
-		if ($base === null) {
+		$found = NodeHelpers::findFirst($node, fn(Node $node) => $node instanceof self);
+		if (!$found instanceof self) {
 			return;
 		}
 
+		$base = $found->base;
 		(new NodeTraverser)->traverse($node, function (Node $link) use ($base) {
 			if ($link instanceof LinkNode) {
 				if ($link->destination instanceof StringNode && $base instanceof StringNode) {

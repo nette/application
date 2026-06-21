@@ -62,6 +62,7 @@ class SnippetNode extends StatementNode
 		}
 
 		if ($tag->isNAttribute()) {
+			assert($tag->htmlElement !== null);
 			if ($tag->prefix !== $tag::PrefixNone) {
 				throw new CompileException("Use n:snippet instead of {$tag->getNotation()}", $tag->position);
 
@@ -96,8 +97,8 @@ class SnippetNode extends StatementNode
 		}
 
 		if ($this->htmlElement) {
+			$inner = $this->htmlElement->content;
 			try {
-				$inner = $this->htmlElement->content;
 				$this->htmlElement->content = new AuxiliaryNode(fn() => $this->printContent($context, $inner));
 				return $this->content->print($context);
 			} finally {

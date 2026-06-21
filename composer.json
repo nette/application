@@ -27,6 +27,7 @@
 	},
 	"require-dev": {
 		"nette/tester": "^2.6",
+		"nette/caching": "^3.2",
 		"nette/di": "^3.2",
 		"nette/forms": "^3.2",
 		"nette/robot-loader": "^4.0",

@@ -46,7 +46,9 @@ class TemplatePrintNode extends Latte\Essential\Nodes\TemplatePrintNode
 		$bp->printCode($code);
 
 		if ($control instanceof UI\Control) {
-			$file = dirname((new \ReflectionClass($control))->getFileName()) . '/' . $class->getName() . '.php';
+			$controlFile = (new \ReflectionClass($control))->getFileName()
+				?: throw new \LogicException('Cannot determine file of class ' . $control::class . '.');
+			$file = dirname($controlFile) . '/' . $class->getName() . '.php';
 			if (file_exists($file)) {
 				echo "unsaved, file {$bp->clickableFile($file)} already exists";
 			} else {
