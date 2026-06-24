@@ -21,12 +21,6 @@ parameters:
 
 		# === Application ===
 
-		# isSameSite() was removed from the IRequest interface in newer nette/http (replaced by isFrom()), but isFrom()/FetchSite don't exist in older versions still allowed by composer.json (^3.3.2). The runtime call works on the concrete Request in all versions.
-		-
-			identifier: method.notFound
-			message: '#Call to an undefined method Nette\\Http\\IRequest::isSameSite\(\)#'
-			path: src/Application/UI/AccessPolicy.php
-
 		# PresenterFactory: defensive type checks after regex validation — always true but kept for safety
 		-
 			path: src/Application/PresenterFactory.php
