@@ -24,6 +24,7 @@ use function array_key_exists, array_slice, class_exists, func_get_arg, func_get
  */
 abstract class Component extends Nette\ComponentModel\Container implements SignalReceiver, StatePersistent, \ArrayAccess
 {
+	use Nette\SmartObject;
 	use Nette\ComponentModel\ArrayAccess;
 
 	/** @var array<callable(static): void>  Occurs when component is attached to presenter */
