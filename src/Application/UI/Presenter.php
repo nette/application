@@ -734,7 +734,12 @@ abstract class Presenter extends Control implements Application\IPresenter
 		$args = func_num_args() < 3 && is_array($args)
 			? $args
 			: array_slice(func_get_args(), 1);
-		$request = $this->linkGenerator->createRequest($this, $destination, $args, 'forward');
+		try {
+			$request = $this->linkGenerator->createRequest($this, $destination, $args, 'forward');
+		} catch (InvalidRequestParameterException $e) {
+			$this->error($e->getMessage());
+		}
+
 		$this->sendResponse(new Responses\ForwardResponse($request));
 	}
 

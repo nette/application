@@ -329,7 +329,11 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 			$args = func_num_args() < 3 && is_array($args)
 				? $args
 				: array_slice(func_get_args(), 1);
-			$this->getPresenter()->getLinkGenerator()->createRequest($this, $destination, $args, 'test');
+			try {
+				$this->getPresenter()->getLinkGenerator()->createRequest($this, $destination, $args, 'test');
+			} catch (InvalidRequestParameterException) {
+				return false;
+			}
 		}
 
 		return $this->getPresenter()->getLastCreatedRequestFlag('current');
@@ -350,7 +354,13 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 			: array_slice(func_get_args(), 1);
 		$presenter = $this->getPresenter();
 		$presenter->saveGlobalState();
-		$presenter->redirectUrl($presenter->getLinkGenerator()->link($destination, $args, $this, 'redirect'));
+		try {
+			$url = $presenter->getLinkGenerator()->link($destination, $args, $this, 'redirect');
+		} catch (InvalidRequestParameterException $e) {
+			$this->error($e->getMessage());
+		}
+
+		$presenter->redirectUrl($url);
 	}
 
 
@@ -367,10 +377,13 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 			? $args
 			: array_slice(func_get_args(), 1);
 		$presenter = $this->getPresenter();
-		$presenter->redirectUrl(
-			$presenter->getLinkGenerator()->link($destination, $args, $this, 'redirect'),
-			Nette\Http\IResponse::S301_MovedPermanently,
-		);
+		try {
+			$url = $presenter->getLinkGenerator()->link($destination, $args, $this, 'redirect');
+		} catch (InvalidRequestParameterException $e) {
+			$this->error($e->getMessage());
+		}
+
+		$presenter->redirectUrl($url, Nette\Http\IResponse::S301_MovedPermanently);
 	}
 
 

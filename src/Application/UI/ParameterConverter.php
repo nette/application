@@ -81,6 +81,7 @@ final class ParameterConverter
 		foreach ($method->getParameters() as $param) {
 			$type = self::getType($param);
 			$name = $param->getName();
+			$fromSupplemental = false;
 
 			if (array_key_exists($i, $args)) {
 				$args[$name] = $args[$i];
@@ -92,6 +93,7 @@ final class ParameterConverter
 
 			} elseif (array_key_exists($name, $supplemental)) {
 				$args[$name] = $supplemental[$name];
+				$fromSupplemental = true;
 			}
 
 			if (!isset($args[$name])) {
@@ -110,13 +112,16 @@ final class ParameterConverter
 			}
 
 			if (!self::convertType($args[$name], $type)) {
-				throw new InvalidLinkException(sprintf(
+				$message = sprintf(
 					'Argument $%s passed to %s must be %s, %s given.',
 					$name,
 					Reflection::toString($method),
 					$type,
 					get_debug_type($args[$name]),
-				));
+				);
+				throw $fromSupplemental
+					? new InvalidRequestParameterException($message)
+					: new InvalidLinkException($message);
 			}
 
 			$def = $param->isDefaultValueAvailable()
