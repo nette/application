@@ -11,6 +11,7 @@ use Nette;
 use Nette\Application\UI\Presenter;
 use Nette\Routing;
 use Tracy;
+use function is_string;
 
 
 /**
@@ -123,6 +124,9 @@ final class RoutingPanel implements Tracy\IBarPanel
 	{
 		$params = $this->matched;
 		$presenter = $params['presenter'] ?? '';
+		if (!is_string($presenter)) {
+			return null;
+		}
 		try {
 			$class = $this->presenterFactory->getPresenterClass($presenter);
 		} catch (Nette\Application\InvalidPresenterException) {
@@ -134,9 +138,10 @@ final class RoutingPanel implements Tracy\IBarPanel
 
 		if (is_a($class, Nette\Application\UI\Presenter::class, allow_string: true)) {
 			$rc = $class::getReflection();
-			if (isset($params[Presenter::SignalKey])) {
+			if (isset($params[Presenter::SignalKey]) && is_string($params[Presenter::SignalKey])) {
 				return $rc->getSignalMethod($params[Presenter::SignalKey]);
 			} elseif (isset($params[Presenter::ActionKey])
+				&& is_string($params[Presenter::ActionKey])
 				&& ($method = $rc->getActionRenderMethod($params[Presenter::ActionKey]))
 			) {
 				return $method;
