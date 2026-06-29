@@ -60,7 +60,7 @@ Assert::match(
 				$ʟ_tmp->renderType('param') /* pos 1:1 */;
 		%A%
 		XX,
-	$latte->compile('{control form:type param}'),
+	$latte->compile('{control form:type, param}'),
 );
 
 Assert::match(
@@ -69,7 +69,7 @@ Assert::match(
 				$ʟ_tmp->render(...$params) /* pos 1:1 */;
 		%A%
 		XX,
-	$latte->compile('{control form (expand) $params}'),
+	$latte->compile('{control form, (expand) $params}'),
 );
 
 Assert::match(
@@ -78,7 +78,7 @@ Assert::match(
 				$ʟ_tmp->renderType(['param' => 123]) /* pos 1:1 */;
 		%A%
 		XX,
-	$latte->compile('{control form:type param => 123}'),
+	$latte->compile('{control form:type, param => 123}'),
 );
 
 Assert::match(
