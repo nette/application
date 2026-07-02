@@ -18,11 +18,25 @@ class Form extends Nette\Forms\Form implements SignalReceiver
 	/** @var array<callable(static): void>  Occurs when form is attached to presenter */
 	public array $onAnchor = [];
 
+	/** which Sec-Fetch-Site values are accepted for submission; null disables the check */
+	private ?Nette\Http\FetchSite $allowedOrigin = Nette\Http\FetchSite::SameOrigin;
+
 
 	public function __construct(?Nette\ComponentModel\IContainer $parent = null, ?string $name = null)
 	{
 		parent::__construct();
 		$parent?->addComponent($this, $name);
+	}
+
+
+	/**
+	 * Forward compatibility with nette/forms 4.0: no default submission source materializes,
+	 * the form is anchored via the presenter and detects submission in receiveHttpData().
+	 * Under nette/forms 3.x the method is unused.
+	 */
+	protected function createDefaultSource(): ?Nette\Forms\SubmissionSource
+	{
+		return null;
 	}
 
 
@@ -89,6 +103,15 @@ class Form extends Nette\Forms\Form implements SignalReceiver
 	}
 
 
+	/**
+	 * Disables the same-origin (Sec-Fetch) CSRF check, allowing cross-origin form submissions.
+	 */
+	public function allowCrossOrigin(): void
+	{
+		$this->allowedOrigin = null;
+	}
+
+
 	#[\Deprecated('use allowCrossOrigin()')]
 	public function disableSameSiteProtection(): void
 	{
@@ -141,7 +164,7 @@ class Form extends Nette\Forms\Form implements SignalReceiver
 			$class = static::class;
 			throw new BadSignalException("Missing handler for signal '$signal' in $class.");
 
-		} elseif (!$this->crossOrigin && !$presenter->getHttpRequest()->isFrom(Nette\Http\FetchSite::SameOrigin)) {
+		} elseif ($this->allowedOrigin && !$presenter->getHttpRequest()->isFrom($this->allowedOrigin)) {
 			$presenter->detectedCsrf();
 
 		} elseif (!$presenter->getRequest()->hasFlag(Nette\Application\Request::RESTORED)) {
