@@ -21,7 +21,6 @@ use function is_string;
  *
  * @property object{
  *     debugger: bool|'all'|null,
- *     macros: array<string>,
  *     extensions: array<string|Nette\DI\Definitions\Statement>,
  *     templateClass: string|null,
  *     strictTypes: bool,
