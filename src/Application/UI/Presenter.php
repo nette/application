@@ -69,6 +69,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @deprecated use Presenter::DefaultAction */
 	public const DEFAULT_ACTION = self::DefaultAction;
 
+	private const MaxSwitches = 20;
+
 	public int $invalidLinkMode = self::InvalidLinkSilent;
 
 	/** @var array<callable(static): void>  Occurs before starup() */
@@ -210,10 +212,15 @@ abstract class Presenter extends Control implements Application\IPresenter
 			}
 
 			// calls $this->action<Action>()
+			$switched = 0;
 			try {
 				actionMethod:
 				$this->tryCall(static::formatActionMethod($this->action), $this->params);
 			} catch (Application\SwitchException $e) {
+				if (++$switched > self::MaxSwitches) {
+					throw new \LogicException('Infinite loop of switch() calls detected.', 0, $e);
+				}
+
 				$this->changeAction($e->getMessage());
 				$this->autoCanonicalize = false;
 				goto actionMethod;
@@ -244,6 +251,10 @@ abstract class Presenter extends Control implements Application\IPresenter
 				renderMethod:
 				$this->tryCall(static::formatRenderMethod($this->view), $this->params);
 			} catch (Application\SwitchException $e) {
+				if (++$switched > self::MaxSwitches) {
+					throw new \LogicException('Infinite loop of switch() calls detected.', 0, $e);
+				}
+
 				$this->setView($e->getMessage());
 				goto renderMethod;
 			}

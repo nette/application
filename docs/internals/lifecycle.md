@@ -28,7 +28,9 @@ beforeRender → onRender → render → afterRender → sendTemplate**.
 
 A `SwitchException` escaping anywhere other than the two retry sites above is
 turned by `run()` into a `LogicException` ("Switch is only allowed inside
-action*() or render*() method").
+action*() or render*() method"). The two retry sites share one counter; more than
+`Presenter::MaxSwitches` switches in a single `run()` end with a `LogicException`
+too, so actions switching to each other cannot loop forever.
 
 ## Termination is by exception; there is no explicit "frozen" flag
 
