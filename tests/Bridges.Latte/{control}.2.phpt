@@ -51,15 +51,15 @@ $latte->renderToString('
 
 {control $name:$name}
 
-{control form var1}
+{control form, var1}
 
-{control form var1, 1, 2}
+{control form, var1, 1, 2}
 
-{control form wrap => 5, 1, 2}
+{control form, wrap => 5, 1, 2}
 
-{control form [var1 => 5], 1, 2}
+{control form, [var1 => 5], 1, 2}
 
-{control form 5, 1, var1: 2}
+{control form, 5, 1, var1: 2}
 ', $params);
 
 Assert::same([
