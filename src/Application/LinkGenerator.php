@@ -221,9 +221,10 @@ final class LinkGenerator
 
 				$globalState = $refPresenter->getGlobalState($path === 'this' ? null : $presenterClass);
 				if ($current && $args) {
-					$tmp = Route::objectsToArrays($globalState + $refPresenter->getParameters());
-					foreach (Route::objectsToArrays($args) as $key => $val) {
-						if (http_build_query([$val]) !== (isset($tmp[$key]) ? http_build_query([$tmp[$key]]) : '')) {
+					$tmp = $globalState + $refPresenter->getParameters();
+					$serialize = fn($val) => http_build_query(Route::objectsToArrays([$val instanceof \BackedEnum ? $val->value : $val]));
+					foreach ($args as $key => $val) {
+						if ($serialize($val) !== (isset($tmp[$key]) ? $serialize($tmp[$key]) : '')) {
 							$current = false;
 							break;
 						}
@@ -256,6 +257,12 @@ final class LinkGenerator
 		if (($mode === 'redirect' || $mode === 'forward') && $refPresenter?->hasFlashSession()) {
 			$flashKey = $refPresenter->getParameter(UI\Presenter::FlashKey);
 			$args[UI\Presenter::FlashKey] = is_string($flashKey) && $flashKey !== '' ? $flashKey : null;
+		}
+
+		foreach ($args as $key => $val) {
+			if ($val instanceof \BackedEnum) { // URL carries the case value
+				$args[$key] = $val->value;
+			}
 		}
 
 		return $this->lastRequest = new Request($presenter, Request::Forward, $args, flags: ['current' => $current]);
