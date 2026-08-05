@@ -62,7 +62,7 @@ class TemplateFactory implements UI\TemplateFactory
 	{
 		$presenter = $control?->getPresenter(throw: false);
 		$baseUrl = $this->httpRequest
-			? rtrim($this->httpRequest->getUrl()->withoutUserInfo()->getBaseUrl(), '/')
+			? rtrim($this->httpRequest->getUrl()->getBaseUrl(), '/')
 			: null;
 		$flashes = $presenter instanceof UI\Presenter && $presenter->hasFlashSession()
 			? (array) $presenter->getFlashSession()->get($control->getParameterId('flash'))
