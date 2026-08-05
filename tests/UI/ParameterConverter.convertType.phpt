@@ -33,6 +33,18 @@ function testIt(string $type, $val, $res = null)
 }
 
 
+enum TestStringEnum: string
+{
+	case Foo = 'foo';
+	case One = '1';
+}
+
+enum TestIntEnum: int
+{
+	case One = 1;
+}
+
+
 $obj = new stdClass;
 
 testIt('scalar', null, null);
@@ -273,3 +285,28 @@ testIt('int|array', 0, 0);
 testIt('int|array', 1, 1);
 testIt('int|array', 1.0, 1);
 testIt('int|array', 1.2);
+
+
+testIt(TestStringEnum::class, null);
+testIt(TestStringEnum::class, []);
+testIt(TestStringEnum::class, $obj);
+testIt(TestStringEnum::class, TestStringEnum::Foo, TestStringEnum::Foo);
+testIt(TestStringEnum::class, TestIntEnum::One);
+testIt(TestStringEnum::class, 'foo', TestStringEnum::Foo);
+testIt(TestStringEnum::class, 'bar');
+testIt(TestStringEnum::class, '');
+testIt(TestStringEnum::class, 1, TestStringEnum::One);
+testIt(TestStringEnum::class, true, TestStringEnum::One);
+
+testIt(TestIntEnum::class, null);
+testIt(TestIntEnum::class, TestIntEnum::One, TestIntEnum::One);
+testIt(TestIntEnum::class, '1', TestIntEnum::One);
+testIt(TestIntEnum::class, 1, TestIntEnum::One);
+testIt(TestIntEnum::class, 1.0, TestIntEnum::One);
+testIt(TestIntEnum::class, '1.0');
+testIt(TestIntEnum::class, 2);
+testIt(TestIntEnum::class, 'foo');
+
+testIt('?' . TestStringEnum::class, 'foo', TestStringEnum::Foo);
+testIt(TestStringEnum::class . '|int', 2, 2);
+testIt(TestStringEnum::class . '|int', 'foo', TestStringEnum::Foo);

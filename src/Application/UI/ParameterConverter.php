@@ -153,7 +153,8 @@ final class ParameterConverter
 				$type === 'scalar' => !is_array($val), // special type due to historical reasons
 				$type === 'mixed' => true,
 				$type === 'callable' => false, // intentionally disabled for security reasons
-				default => $val instanceof $type,
+				default => $val instanceof $type
+					|| (is_subclass_of($type, \BackedEnum::class) && self::castEnum($val, $type)),
 			}) {
 				return true;
 			}
@@ -185,6 +186,29 @@ final class ParameterConverter
 		}
 
 		$val = $tmp;
+		return true;
+	}
+
+
+	/**
+	 * Lossless conversion of scalar to backed enum case.
+	 * @param  class-string<\BackedEnum>  $type
+	 */
+	private static function castEnum(mixed &$val, string $type): bool
+	{
+		if (!is_scalar($val)) {
+			return false;
+		}
+
+		$tmp = $val;
+		if (
+			!self::castScalar($tmp, (string) (new \ReflectionEnum($type))->getBackingType())
+			|| !($case = $type::tryFrom($tmp))
+		) {
+			return false;
+		}
+
+		$val = $case;
 		return true;
 	}
 
