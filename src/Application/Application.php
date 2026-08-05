@@ -95,6 +95,10 @@ class Application
 	 */
 	public function createInitialRequest(): Request
 	{
+		if ($this->httpRequest->isMethod(Request::Forward)) {
+			throw new BadRequestException('Invalid request. Method FORWARD is reserved for internal use.');
+		}
+
 		$params = $this->router->match($this->httpRequest);
 		$presenter = $params[UI\Presenter::PresenterKey] ?? null;
 
