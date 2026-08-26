@@ -9,7 +9,6 @@ namespace Nette\Bridges\ApplicationLatte;
 
 use Nette;
 use Nette\Application\UI;
-use function class_exists, is_a, preg_replace, property_exists, rtrim;
 
 
 /**

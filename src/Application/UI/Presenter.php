@@ -14,7 +14,7 @@ use Nette\Application\LinkGenerator;
 use Nette\Application\Responses;
 use Nette\Http;
 use Nette\Utils\Arrays;
-use function array_slice, count, dirname, func_get_args, func_num_args, implode, in_array, is_array, is_dir, is_file, is_string, ltrim, preg_match, preg_replace, str_starts_with, strcasecmp, strlen, strncmp, strpos, strrpos, strtr, substr, substr_count, trigger_error, ucfirst;
+use function array_slice, count, func_get_args, func_num_args, in_array, is_array, is_string, strlen;
 use const DIRECTORY_SEPARATOR;
 
 

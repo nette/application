@@ -10,7 +10,6 @@ namespace Nette\Bridges\ApplicationLatte;
 use Latte\Runtime\Block;
 use Nette;
 use Nette\Application\UI\Control;
-use function array_pop, array_shift, end, ob_end_clean, ob_get_clean, ob_start, reset, trigger_error;
 
 
 /**

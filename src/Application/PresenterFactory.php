@@ -8,7 +8,7 @@
 namespace Nette\Application;
 
 use Nette;
-use function array_shift, class_exists, count, explode, is_array, is_string, is_subclass_of, preg_match, strtr;
+use function count, is_array, is_string;
 
 
 /**

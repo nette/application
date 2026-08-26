@@ -9,7 +9,7 @@ namespace Nette\Application\Routers;
 
 use JetBrains\PhpStorm\Language;
 use Nette;
-use function count, is_int, is_string, strlen, strncmp, substr;
+use function count, is_int, is_string, strlen;
 
 
 /**
