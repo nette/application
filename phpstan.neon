@@ -36,7 +36,6 @@ parameters:
 			identifiers:
 				- function.alreadyNarrowedType
 				- identical.alwaysTrue
-				- booleanAnd.alwaysTrue
 
 		# PresenterFactory: default factory `new $class` yields object; $class is a validated class-string<IPresenter> at the call site
 		-
@@ -59,11 +58,6 @@ parameters:
 			identifier: nullCoalesce.offset
 			path: src/Application/Routers/Route.php
 
-		# parse_str() native type is wider than actual query string result
-		-
-			identifier: varTag.nativeType
-			path: src/Application/LinkGenerator.php
-
 		# MicroPresenter uses duck typing for template objects and nullable container
 		-
 			path: src/Application/MicroPresenter.php
@@ -73,11 +67,6 @@ parameters:
 				- method.notFound
 				- method.nonObject
 				- property.notFound
-
-		# ErrorPresenter: $code is used in the required template file
-		-
-			identifier: closure.unusedUse
-			path: src/Application/ErrorPresenter.php
 
 		# BadRequestException intentionally narrows inherited Exception::$code to int (HTTP status codes only)
 		-

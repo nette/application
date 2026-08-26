@@ -852,7 +852,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 	/**
 	 * @deprecated @internal
-	 * @return array{absolute: bool, path: string, signal: bool, args: ?array<string, mixed>, fragment: string}
+	 * @return array{absolute: bool, path: string, signal: bool, args: mixed[]|null, fragment: string}
 	 */
 	public static function parseDestination(string $destination): array
 	{
