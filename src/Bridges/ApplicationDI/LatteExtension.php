@@ -88,7 +88,7 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 
 		foreach ($config->extensions as $extension) {
 			if ($extension === Latte\Essential\TranslatorExtension::class) {
-				$extension = new Statement($extension, [new Nette\DI\Definitions\Reference(Nette\Localization\Translator::class)]);
+				$extension = new Statement($extension, ['@' . Nette\Localization\Translator::class]);
 			}
 			$this->addExtension($extension);
 		}
