@@ -146,7 +146,7 @@ function testHelpersGetClassesAndTraits(): void
 function testParseDestination(): void
 {
 	assertType(
-		'array{absolute: bool, path: string, signal: bool, args: array<string, mixed>|null, fragment: string}',
+		'array{absolute: bool, path: string, signal: bool, args: array<mixed>|null, fragment: string}',
 		LinkGenerator::parseDestination('Presenter:action'),
 	);
 }

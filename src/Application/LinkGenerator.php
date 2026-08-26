@@ -251,7 +251,7 @@ final class LinkGenerator
 		if (!empty($signal)) {
 			assert($component !== null);
 			$args[UI\Presenter::SignalKey] = $component->getParameterId($signal);
-			$current = $current && $args[UI\Presenter::SignalKey] === $refPresenter?->getParameter(UI\Presenter::SignalKey);
+			$current = $current && $args[UI\Presenter::SignalKey] === $refPresenter->getParameter(UI\Presenter::SignalKey);
 		}
 
 		if (($mode === 'redirect' || $mode === 'forward') && $refPresenter?->hasFlashSession()) {
@@ -272,7 +272,7 @@ final class LinkGenerator
 	/**
 	 * Parse destination in format "[//] [[[module:]presenter:]action | signal! | this | @alias] [?query] [#fragment]"
 	 * @throws UI\InvalidLinkException
-	 * @return array{absolute: bool, path: string, signal: bool, args: ?array<string, mixed>, fragment: string}
+	 * @return array{absolute: bool, path: string, signal: bool, args: mixed[]|null, fragment: string}
 	 * @internal
 	 */
 	public static function parseDestination(string $destination): array
@@ -287,9 +287,7 @@ final class LinkGenerator
 
 		if (!empty($matches['query'])) {
 			trigger_error("Link format is obsolete, use arguments instead of query string in '$destination'.", E_USER_DEPRECATED);
-			parse_str(substr($matches['query'], 1), $parsed);
-			/** @var array<string, mixed> $args */
-			$args = $parsed;
+			parse_str(substr($matches['query'], 1), $args);
 		}
 
 		return [
