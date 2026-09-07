@@ -20,7 +20,7 @@ use function is_array, is_object, is_string;
  */
 final class MicroPresenter implements Application\IPresenter
 {
-	private ?Application\Request $request;
+	private ?Application\Request $request = null;
 
 
 	public function __construct(
@@ -109,7 +109,9 @@ final class MicroPresenter implements Application\IPresenter
 	{
 		$latte = $latteFactory
 			? $latteFactory()
-			: $this->context->getByType(Nette\Bridges\ApplicationLatte\LatteFactory::class)->create();
+			: ($this->context ?? throw new Nette\InvalidStateException('Unable to create template, provide the $latteFactory parameter or DI container.'))
+				->getByType(Nette\Bridges\ApplicationLatte\LatteFactory::class)
+				->create();
 		$template = $class
 			? new $class
 			: new Nette\Bridges\ApplicationLatte\DefaultTemplate($latte);
