@@ -66,7 +66,7 @@ class Application
 			Arrays::invoke($this->onStartup, $this);
 			$this->processRequest($this->createInitialRequest())
 				->send($this->httpRequest, $this->httpResponse);
-			Arrays::invoke($this->onShutdown, $this);
+			Arrays::invoke($this->onShutdown, $this, null);
 
 		} catch (\Throwable $e) {
 			$this->sendHttpCode($e);
@@ -182,6 +182,8 @@ class Application
 				$this->presenter->forward(":$errorPresenter:", $args);
 			} catch (AbortException) {
 				return $this->presenter->getLastCreatedRequest();
+			} catch (\Throwable) {
+				// a misconfigured error presenter must not replace $e, it fails in a controlled way inside processRequest()
 			}
 		}
 
