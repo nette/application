@@ -94,10 +94,14 @@ test('robotLoader discovery', function () {
 	$builder->addDefinition('myRouter')->setCreator(Nette\Application\Routers\SimpleRouter::class);
 	$builder->addDefinition('myHttpRequest')->setCreator(Nette\Http\Request::class, [new Statement(Nette\Http\UrlScript::class)]);
 	$builder->addDefinition('myHttpResponse')->setCreator(Nette\Http\Response::class);
-	$code = $compiler->setClassName('Container4')->compile();
+	$code = $compiler->addConfig([
+		'application' => [
+			'scanFilter' => '*Presenter*',
+		],
+	])->setClassName('Container4')->compile();
 	eval($code);
 
-	$container = new Container2;
+	$container = new Container4;
 	Assert::count(3, $container->findByType(BasePresenter::class));
 	Assert::count(1, $container->findByType(Presenter1::class));
 	Assert::count(1, $container->findByType(Presenter2::class));
