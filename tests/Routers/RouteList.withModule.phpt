@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 
 use Nette\Application\Routers\RouteList;
+use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
 
@@ -41,3 +42,14 @@ testRouteIn(
 );
 
 testRouteIn($list, '/none');
+
+
+// Nette:Micro is exempt from module prefixing in both directions
+$list = new RouteList;
+$list->withModule('Admin')
+	->addRoute('micro', fn() => new Nette\Application\Responses\VoidResponse);
+
+$url = new Nette\Http\UrlScript('http://example.com/micro', '/');
+$params = $list->match(new Nette\Http\Request($url));
+Assert::same('Nette:Micro', $params['presenter']);
+Assert::same('http://example.com/micro', $list->constructUrl($params, $url));

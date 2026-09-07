@@ -52,12 +52,13 @@ class RouteList extends Nette\Routing\RouteList implements Nette\Routing\Router,
 	 */
 	public function constructUrl(array $params, Nette\Http\UrlScript $refUrl): ?string
 	{
-		if ($this->module) {
-			if (!str_starts_with($params[self::PresenterKey], $this->module)) {
+		$presenter = $params[self::PresenterKey] ?? null;
+		if ($this->module && is_string($presenter) && strncmp($presenter, 'Nette:', 6)) { // mirrors completeParameters()
+			if (!str_starts_with($presenter, $this->module)) {
 				return null;
 			}
 
-			$params[self::PresenterKey] = substr($params[self::PresenterKey], strlen($this->module));
+			$params[self::PresenterKey] = substr($presenter, strlen($this->module));
 		}
 
 		return parent::constructUrl($params, $refUrl);
