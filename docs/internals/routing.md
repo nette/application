@@ -26,7 +26,7 @@ The Application `RouteList` adds module scoping on match: `completeParameters`
 **prepends the list's `module` to the matched presenter — unless it starts with
 `Nette:`**. `constructUrl` is the mirror: with a `module` set, the target presenter
 must start with that prefix (else `null` — not this list's route), and the prefix
-is stripped before delegating down. `withModule($m)` creates a nested list whose
+is stripped before delegating down; a `Nette:` presenter is passed down unchanged. `withModule($m)` creates a nested list whose
 `module` is `$m.':'` (a whole group under a module), which is distinct from the
 per-route `<module>` mask parameter above. `warmupCache` is *invoked* from `RoutingExtension::afterCompile`
 (only when `routing: cache`), but is defined in the base package.
@@ -38,8 +38,9 @@ presenter except `Nette:Micro`**: `str_starts_with($presenter, 'Nette:') &&
 $presenter !== 'Nette:Micro'` → `BadRequestException`. Framework-internal presenters
 must not be directly reachable from the network, but `Nette:Micro` is the legitimate
 target that closure routes produce (mapped to `NetteModule\MicroPresenter`), so it
-is the single allowed exception. `completeParameters`' `Nette:`-prefix skip exists
-for the same reason — module scoping must not be applied to it.
+is the single allowed exception. The `Nette:`-prefix skip in `completeParameters`
+and `constructUrl` exists for the same reason — module scoping must not be applied
+to it.
 
 ## Request loop and error routing
 
