@@ -29,10 +29,12 @@ final readonly class PresenterFactoryCallback
 	{
 		$services = $this->container->findByType($class);
 		if (count($services) > 1) {
-			$services = array_values(array_filter($services, fn($service) => $this->container->getServiceType($service) === $class));
-			if (count($services) > 1) {
+			$exact = array_values(array_filter($services, fn($service) => $this->container->getServiceType($service) === $class));
+			if (count($exact) !== 1) {
 				throw new Nette\Application\InvalidPresenterException("Multiple services of type $class found: " . implode(', ', $services) . '.');
 			}
+
+			$services = $exact;
 		}
 
 		if (count($services) === 1) {
@@ -43,10 +45,10 @@ final readonly class PresenterFactoryCallback
 
 		if ($this->touchToRefresh && class_exists($class)) {
 			touch($this->touchToRefresh);
+			header('Refresh: 5');
 			echo 'Class '
 				. htmlspecialchars($class)
 				. ' was not found in DI container.<br><br>If you just created this presenter, it should be enough to refresh the page. It will happen automatically in 5 seconds.<br><br>Otherwise, please check the configuration of your DI container.';
-			header('Refresh: 5');
 			exit;
 		}
 
