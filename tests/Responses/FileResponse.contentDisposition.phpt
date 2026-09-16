@@ -68,3 +68,18 @@ test('filename with special characters', function () {
 		$response->getHeader('Content-Disposition'),
 	);
 });
+
+
+test('filename injection into Content-Disposition is neutralized', function () {
+	$file = __FILE__;
+	$fileName = 'evil".pdf; filename="hack.exe';
+	$fileResponse = new FileResponse($file, $fileName);
+
+	ob_start();
+	$fileResponse->send(new Http\Request(new Http\UrlScript), $response = new Http\Response);
+	ob_get_clean();
+
+	// quotes and backslashes are stripped from the quoted filename, so the header cannot be broken apart
+	$header = $response->getHeader('Content-Disposition');
+	Assert::same('attachment; filename="evil.pdf; filename=hack.exe"; filename*=utf-8\'\'' . rawurlencode($fileName), $header);
+});
