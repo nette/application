@@ -98,6 +98,7 @@ final class FileResponse implements Nette\Application\Response
 
 				if ($end < $start) {
 					$httpResponse->setCode(416); // requested range not satisfiable
+					$httpResponse->setHeader('Content-Range', 'bytes */' . $filesize);
 					return;
 				}
 
@@ -105,9 +106,6 @@ final class FileResponse implements Nette\Application\Response
 				$httpResponse->setHeader('Content-Range', 'bytes ' . $start . '-' . $end . '/' . $filesize);
 				$length = $end - $start + 1;
 				fseek($handle, $start);
-
-			} else {
-				$httpResponse->setHeader('Content-Range', 'bytes 0-' . ($filesize - 1) . '/' . $filesize);
 			}
 		}
 
