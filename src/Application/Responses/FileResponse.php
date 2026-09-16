@@ -67,10 +67,11 @@ final class FileResponse implements Nette\Application\Response
 	public function send(Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse): void
 	{
 		$httpResponse->setContentType($this->contentType);
+		$name = str_replace(["\r", "\n", "\0", '"', '\\'], '', $this->name);
 		$httpResponse->setHeader(
 			'Content-Disposition',
 			($this->forceDownload ? 'attachment' : 'inline')
-			. '; filename="' . $this->name . '"'
+			. '; filename="' . $name . '"'
 			. '; filename*=utf-8\'\'' . rawurlencode($this->name),
 		);
 
