@@ -338,9 +338,23 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/** @deprecated  use #[Requires(methods: ...)] to specify allowed methods */
 	protected function checkHttpMethod(): void
 	{
-		if ($this->allowedMethods
-			&& !in_array($method = $this->httpRequest->getMethod(), $this->allowedMethods, true)
-		) {
+		if (!$this->allowedMethods) {
+			return;
+		}
+
+		$rc = static::getReflection();
+		foreach ([static::formatActionMethod($this->action), static::formatRenderMethod($this->action)] as $method) {
+			if ($rc->hasCallableMethod($method)
+				&& Arrays::some(
+					$rc->getMethod($method)->getAttributes(Application\Attributes\Requires::class, \ReflectionAttribute::IS_INSTANCEOF),
+					fn($ra) => $ra->newInstance()->methods !== null,
+				)
+			) {
+				return; // #[Requires(methods:)] on the action or render method takes precedence over $allowedMethods
+			}
+		}
+
+		if (!in_array($method = $this->httpRequest->getMethod(), $this->allowedMethods, true)) {
 			$this->httpResponse->setHeader('Allow', implode(',', $this->allowedMethods));
 			$this->error("Method $method is not allowed", Nette\Http\IResponse::S405_MethodNotAllowed);
 		}

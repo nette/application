@@ -24,7 +24,9 @@ site runs only the attribute policy.
 - `methods:` — allowed HTTP methods; `['*']` is a wildcard. **Trap:** a
   *class-level* `methods:` empties `$presenter->allowedMethods` to bypass the
   deprecated legacy `Presenter::checkHttpMethod()`, so the attribute fully replaces
-  it. Violation → 405 with an `Allow` header.
+  it. The legacy check runs before the method-level attributes, so it skips itself
+  when the `action*` or `render*` method of the current action carries `methods:`.
+  Violation → 405 with an `Allow` header.
 - `actions:` — method-level use is allowed **only in presenters**
   (`LogicException` otherwise). Violation → 4xx via `error()`.
 - `forward: true` — the element is reachable only via forward; it also makes the
