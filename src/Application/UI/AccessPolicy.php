@@ -30,11 +30,14 @@ final class AccessPolicy
 
 	public function checkAccess(Component $component): void
 	{
+		$attrs = self::applyInternalRules($this->getAttributes(), $component);
+		if (!$attrs) {
+			return;
+		}
+
 		$this->presenter ??= $component->getPresenter(throw: false)
 			?? throw new Nette\InvalidStateException('Presenter is required for checking requirements of ' . Reflection::toString($this->element));
 
-		$attrs = $this->getAttributes();
-		$attrs = self::applyInternalRules($attrs, $component);
 		foreach ($attrs as $attribute) {
 			$this->checkAttribute($attribute);
 		}
