@@ -31,7 +31,7 @@ class Requires
 		public ?bool $sameOrigin = null,
 		public ?bool $ajax = null,
 	) {
-		$this->methods = $methods === null ? null : (array) $methods;
+		$this->methods = $methods === null ? null : array_map(strtoupper(...), (array) $methods);
 		$this->actions = $actions === null ? null : (array) $actions;
 	}
 }

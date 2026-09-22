@@ -51,6 +51,15 @@ final class AccessPolicy
 	}
 
 
+	public function allowsHttpMethod(string $method): bool
+	{
+		return Nette\Utils\Arrays::some(
+			$this->getAttributes(),
+			fn($attr) => $attr->methods !== null && self::matchesHttpMethod($attr->methods, $method),
+		);
+	}
+
+
 	/**
 	 * @return Attributes\Requires[]
 	 */
@@ -131,15 +140,21 @@ final class AccessPolicy
 			$this->presenter->allowedMethods = []; // dresscode:ignore upgrading.declarations.deprecatedMember -- bypass Presenter::checkHttpMethod()
 		}
 
-		$allowed = array_map(strtoupper(...), $methods);
 		$method = $this->presenter->getHttpRequest()->getMethod();
 
-		if ($allowed !== ['*'] && !in_array($method, $allowed, true)) {
-			$this->presenter->getHttpResponse()->setHeader('Allow', implode(',', $allowed));
+		if (!self::matchesHttpMethod($methods, $method)) {
+			$this->presenter->getHttpResponse()->setHeader('Allow', implode(',', $methods));
 			$this->presenter->error(
 				"Method $method is not allowed by " . Reflection::toString($this->element),
 				Nette\Http\IResponse::S405_MethodNotAllowed,
 			);
 		}
+	}
+
+
+	/** @param  list<string>  $methods */
+	private static function matchesHttpMethod(array $methods, string $method): bool
+	{
+		return $methods === ['*'] || in_array($method, $methods, true);
 	}
 }
