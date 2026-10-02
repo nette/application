@@ -156,11 +156,15 @@ final class ComponentReflection extends \ReflectionClass
 	public function getActionRenderMethod(string $action): ?\ReflectionMethod
 	{
 		$class = $this->name;
-		return self::$armCache[$class][$action] ??=
-			$this->hasCallableMethod($name = $class::formatActionMethod($action))
-			|| $this->hasCallableMethod($name = $class::formatRenderMethod($action))
-				? parent::getMethod($name)
-				: null;
+		if (!array_key_exists($action, self::$armCache[$class] ?? [])) {
+			self::$armCache[$class][$action] =
+				$this->hasCallableMethod($name = $class::formatActionMethod($action))
+				|| $this->hasCallableMethod($name = $class::formatRenderMethod($action))
+					? parent::getMethod($name)
+					: null;
+		}
+
+		return self::$armCache[$class][$action];
 	}
 
 
