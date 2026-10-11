@@ -123,7 +123,7 @@ final class UIExtension extends Latte\Extension
 	{
 		$header = $httpResponse->getHeader('Content-Security-Policy')
 			?: $httpResponse->getHeader('Content-Security-Policy-Report-Only');
-		return preg_match('#\s\'nonce-([\w+/]+=*)\'#', (string) $header, $m) ? $m[1] : null;
+		return preg_match('#(?:^|\s)\'nonce-([\w+/-]+=*)\'#', (string) $header, $m) ? $m[1] : null;
 	}
 
 
