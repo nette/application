@@ -97,6 +97,12 @@ final class UIExtension extends Latte\Extension
 	}
 
 
+	public function getCacheKey(Latte\Engine $engine): mixed
+	{
+		return ['snippetAttribute' => Nodes\SnippetNode::$snippetAttribute];
+	}
+
+
 	/**
 	 * Render snippets instead of template in snippet-mode.
 	 */
