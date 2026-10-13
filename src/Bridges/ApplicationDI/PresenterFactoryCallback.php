@@ -8,7 +8,7 @@
 namespace Nette\Bridges\ApplicationDI;
 
 use Nette;
-use function array_filter, array_values, class_exists, count, implode, touch;
+use function count;
 
 
 /**

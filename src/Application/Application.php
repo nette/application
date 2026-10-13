@@ -10,7 +10,7 @@ namespace Nette\Application;
 use Nette;
 use Nette\Routing\Router;
 use Nette\Utils\Arrays;
-use function count, is_string, str_starts_with, strcasecmp;
+use function count, is_string;
 
 
 /**
