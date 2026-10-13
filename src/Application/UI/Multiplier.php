@@ -17,7 +17,7 @@ use Nette;
 final class Multiplier extends Component
 {
 	/** @var \Closure(string, self<T>): (T|null) */
-	private \Closure $factory;
+	private readonly \Closure $factory;
 
 
 	/**

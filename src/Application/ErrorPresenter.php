@@ -14,10 +14,10 @@ use Tracy\ILogger;
 /**
  * Default Error Presenter.
  */
-final class ErrorPresenter implements Application\IPresenter
+final readonly class ErrorPresenter implements Application\IPresenter
 {
 	public function __construct(
-		private readonly ?ILogger $logger = null,
+		private ?ILogger $logger = null,
 	) {
 	}
 

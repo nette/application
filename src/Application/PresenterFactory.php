@@ -29,7 +29,7 @@ class PresenterFactory implements IPresenterFactory
 	private array $cache = [];
 
 	/** @var \Closure(class-string<IPresenter>): IPresenter */
-	private \Closure $factory;
+	private readonly \Closure $factory;
 
 
 	/**

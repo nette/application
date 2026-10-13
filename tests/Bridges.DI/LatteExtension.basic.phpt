@@ -12,12 +12,10 @@ require __DIR__ . '/../bootstrap.php';
 
 class MyExtension extends Latte\Extension
 {
-	public $arg;
 
 
-	public function __construct($arg = null)
+	public function __construct(public $arg = null)
 	{
-		$this->arg = $arg;
 	}
 }
 

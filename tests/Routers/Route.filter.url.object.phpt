@@ -52,7 +52,7 @@ Assert::null(testRouteOut($route, [
 
 class RouterObject
 {
-	private int $id;
+	private readonly int $id;
 
 
 	public function __construct($id)

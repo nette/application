@@ -13,11 +13,11 @@ use Nette;
 /**
  * JSON response used mainly for AJAX requests.
  */
-final class JsonResponse implements Nette\Application\Response
+final readonly class JsonResponse implements Nette\Application\Response
 {
 	public function __construct(
-		private readonly mixed $payload,
-		private readonly string $contentType = 'application/json',
+		private mixed $payload,
+		private string $contentType = 'application/json',
 	) {
 	}
 

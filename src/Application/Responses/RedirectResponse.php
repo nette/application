@@ -14,11 +14,11 @@ use Nette\Http;
 /**
  * Redirects to new URI.
  */
-final class RedirectResponse implements Nette\Application\Response
+final readonly class RedirectResponse implements Nette\Application\Response
 {
 	public function __construct(
-		private readonly string $url,
-		private readonly int $httpCode = Http\IResponse::S302_Found,
+		private string $url,
+		private int $httpCode = Http\IResponse::S302_Found,
 	) {
 	}
 

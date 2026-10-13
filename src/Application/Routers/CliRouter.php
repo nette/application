@@ -14,14 +14,14 @@ use function is_array;
 /**
  * The unidirectional router for CLI. (experimental)
  */
-final class CliRouter implements Nette\Routing\Router
+final readonly class CliRouter implements Nette\Routing\Router
 {
 	private const PresenterKey = 'action';
 
 
 	public function __construct(
 		/** @var array<string, mixed> */
-		private readonly array $defaults = [],
+		private array $defaults = [],
 	) {
 	}
 

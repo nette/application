@@ -13,7 +13,7 @@ use Nette;
 /**
  * Callback response.
  */
-final class CallbackResponse implements Nette\Application\Response
+final readonly class CallbackResponse implements Nette\Application\Response
 {
 	/** @var \Closure(Nette\Http\IRequest, Nette\Http\IResponse): void */
 	private \Closure $callback;

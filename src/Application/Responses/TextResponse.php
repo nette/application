@@ -13,10 +13,10 @@ use Nette;
 /**
  * String output response.
  */
-final class TextResponse implements Nette\Application\Response
+final readonly class TextResponse implements Nette\Application\Response
 {
 	public function __construct(
-		private readonly mixed $source,
+		private mixed $source,
 	) {
 	}
 
