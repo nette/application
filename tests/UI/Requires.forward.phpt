@@ -57,7 +57,7 @@ class TestSwitchViewPresenter extends Nette\Application\UI\Presenter
 // forwarded request
 $presenter = createPresenter(TestForwardPresenter::class);
 Assert::noError(
-	fn() => $presenter->run(new Application\Request('', Application\Request::FORWARD)),
+	fn() => $presenter->run(new Application\Request('', Application\Request::Forward)),
 );
 
 Assert::exception(

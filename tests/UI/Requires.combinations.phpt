@@ -236,7 +236,7 @@ test('forward requirement satisfied', function () {
 	$presenter = createPresenter(ForwardPresenter::class);
 
 	Assert::noError(
-		fn() => $presenter->run(new Application\Request('Test', Application\Request::FORWARD)),
+		fn() => $presenter->run(new Application\Request('Test', Application\Request::Forward)),
 	);
 });
 

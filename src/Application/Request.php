@@ -25,13 +25,22 @@ final class Request
 	use Nette\SmartObject;
 
 	/** method */
-	public const FORWARD = 'FORWARD';
+	public const Forward = 'FORWARD';
 
 	/** flag */
-	public const RESTORED = 'restored';
+	public const Restored = 'restored';
 
 	/** flag */
-	public const VARYING = 'varying';
+	public const Varying = 'varying';
+
+	/** @deprecated use Request::Forward */
+	public const FORWARD = self::Forward;
+
+	/** @deprecated use Request::Restored */
+	public const RESTORED = self::Restored;
+
+	/** @deprecated use Request::Varying */
+	public const VARYING = self::Varying;
 
 
 	public function __construct(
