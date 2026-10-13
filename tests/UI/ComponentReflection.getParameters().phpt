@@ -1,9 +1,7 @@
 <?php declare(strict_types=1);
 
-use Nette\Application\Attributes\Parameter;
-use Nette\Application\Attributes\Persistent;
-use Nette\Application\UI\ComponentReflection;
-use Nette\Application\UI\Presenter;
+use Nette\Application\Attributes\{Parameter, Persistent};
+use Nette\Application\UI\{ComponentReflection, Presenter};
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';

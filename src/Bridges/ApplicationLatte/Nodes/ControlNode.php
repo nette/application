@@ -8,15 +8,11 @@
 namespace Nette\Bridges\ApplicationLatte\Nodes;
 
 use Latte;
-use Latte\Compiler\Escaper;
-use Latte\Compiler\Nodes\Php\ArrayItemNode;
+use Latte\Compiler\{Escaper, PrintContext, Tag};
+use Latte\Compiler\Nodes\Php\{ArrayItemNode, ExpressionNode, ModifierNode};
 use Latte\Compiler\Nodes\Php\Expression\ArrayNode;
-use Latte\Compiler\Nodes\Php\ExpressionNode;
-use Latte\Compiler\Nodes\Php\ModifierNode;
 use Latte\Compiler\Nodes\Php\Scalar\StringNode;
 use Latte\Compiler\Nodes\StatementNode;
-use Latte\Compiler\PrintContext;
-use Latte\Compiler\Tag;
 use Nette\Utils\Strings;
 
 

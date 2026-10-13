@@ -4,9 +4,8 @@
  * Test: #[Requires] option sameSite
  */
 
-use Nette\Application;
+use Nette\{Application, Http};
 use Nette\Application\Attributes\Requires;
-use Nette\Http;
 use Nette\Http\Helpers;
 use Tester\Assert;
 

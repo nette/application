@@ -4,8 +4,7 @@
  * Test: Nette\Application\UI\Presenter and checking params.
  */
 
-use Nette\Application;
-use Nette\Http;
+use Nette\{Application, Http};
 use Tester\Assert;
 
 

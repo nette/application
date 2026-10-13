@@ -9,9 +9,8 @@ namespace NetteModule;
 
 use Latte;
 use Nette;
-use Nette\Application;
+use Nette\{Application, Http};
 use Nette\Application\Responses;
-use Nette\Http;
 use Nette\Routing\Router;
 use function is_array, is_object, is_string;
 

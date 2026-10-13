@@ -7,8 +7,7 @@
 
 namespace NetteModule;
 
-use Nette\Application;
-use Nette\Http;
+use Nette\{Application, Http};
 use Tracy\ILogger;
 
 

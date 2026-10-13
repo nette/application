@@ -8,8 +8,7 @@
 namespace Nette\Bridges\ApplicationLatte\Nodes;
 
 use Latte;
-use Latte\Compiler\PhpHelpers;
-use Latte\Compiler\PrintContext;
+use Latte\Compiler\{PhpHelpers, PrintContext};
 use Nette\Application\UI;
 use Nette\Bridges\ApplicationLatte\Template;
 
