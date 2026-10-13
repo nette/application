@@ -224,9 +224,10 @@ if (empty($routes['routes'])) /* pos 111:2 */ {
 			echo '&nbsp;=&nbsp;';
 			if (is_string($value)) /* pos 155:28 */ {
 				echo Tracy\Helpers::escapeHtml($value) /* pos 155:50 */;
-				echo '<br>';
+			} else /* pos 155:58 */ {
 				echo Dumper::toHtml($value, [Dumper::COLLAPSE => true, Dumper::LIVE => true]) /* pos 155:62 */;
 			}
+			echo '<br>';
 			echo "\n";
 
 		}
@@ -256,9 +257,10 @@ if (empty($routes['routes'])) /* pos 111:2 */ {
 				echo '&nbsp;=&nbsp;';
 				if (is_string($value)) /* pos 170:29 */ {
 					echo Tracy\Helpers::escapeHtml($value) /* pos 170:51 */;
-					echo '<br>';
+				} else /* pos 170:59 */ {
 					echo Dumper::toHtml($value, [Dumper::COLLAPSE => true, Dumper::LIVE => true]) /* pos 170:63 */;
 				}
+				echo '<br>';
 				echo "\n";
 
 			}

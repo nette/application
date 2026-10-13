@@ -152,7 +152,7 @@
 					<div>
 						<code>
 							{foreach $route->defaults as $key => $value}
-								{$key}&nbsp;=&nbsp;{if is_string($value)}{$value}<br>{Dumper::toHtml($value, [Dumper::COLLAPSE => true, Dumper::LIVE => true])}{/if}
+								{$key}&nbsp;=&nbsp;{if is_string($value)}{$value}{else}{Dumper::toHtml($value, [Dumper::COLLAPSE => true, Dumper::LIVE => true])}{/if}<br>
 							{/foreach}
 						</code>
 					</div>
@@ -167,7 +167,7 @@
 									{do $params = array_diff_key($params, [Presenter::PresenterKey => 1, Presenter::ActionKey => 1])}
 								{/if}
 								{foreach $params as $key => $value}
-									{$key}&nbsp;=&nbsp;{if is_string($value)}{$value}<br>{Dumper::toHtml($value, [Dumper::COLLAPSE => true, Dumper::LIVE => true])}{/if}
+									{$key}&nbsp;=&nbsp;{if is_string($value)}{$value}{else}{Dumper::toHtml($value, [Dumper::COLLAPSE => true, Dumper::LIVE => true])}{/if}<br>
 								{/foreach}
 							</code>
 						{elseif $route->error}
