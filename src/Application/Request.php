@@ -8,7 +8,7 @@
 namespace Nette\Application;
 
 use Nette;
-use function func_num_args, strcasecmp;
+use function func_num_args;
 
 
 /**

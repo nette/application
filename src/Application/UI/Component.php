@@ -8,7 +8,7 @@
 namespace Nette\Application\UI;
 
 use Nette;
-use function array_key_exists, array_slice, func_get_arg, func_get_args, func_num_args, get_debug_type, is_array, method_exists, sprintf, trigger_error;
+use function array_key_exists, array_slice, func_get_args, func_num_args, is_array, sprintf;
 
 
 /**

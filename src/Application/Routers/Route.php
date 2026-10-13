@@ -8,7 +8,7 @@
 namespace Nette\Application\Routers;
 
 use Nette;
-use function is_string, lcfirst, preg_replace, rawurlencode, str_replace, strlen, strncmp, strrpos, strtolower, strtr, substr, ucwords;
+use function is_string, strlen;
 
 
 /**
