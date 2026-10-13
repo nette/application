@@ -8,17 +8,10 @@
 namespace Nette\Bridges\ApplicationLatte\Nodes;
 
 use Latte\CompileException;
-use Latte\Compiler\Block;
-use Latte\Compiler\Nodes\AreaNode;
-use Latte\Compiler\Nodes\AuxiliaryNode;
+use Latte\Compiler\{Block, PrintContext, Tag, TemplateParser};
+use Latte\Compiler\Nodes\{AreaNode, AuxiliaryNode, Php, StatementNode};
 use Latte\Compiler\Nodes\Html\ElementNode;
-use Latte\Compiler\Nodes\Php;
-use Latte\Compiler\Nodes\Php\Expression;
-use Latte\Compiler\Nodes\Php\Scalar;
-use Latte\Compiler\Nodes\StatementNode;
-use Latte\Compiler\PrintContext;
-use Latte\Compiler\Tag;
-use Latte\Compiler\TemplateParser;
+use Latte\Compiler\Nodes\Php\{Expression, Scalar};
 use Latte\Runtime\Template;
 use Nette\Bridges\ApplicationLatte\SnippetRuntime;
 

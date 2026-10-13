@@ -5,20 +5,12 @@
  */
 
 use Nette\Application;
-use Nette\Application\Helpers;
-use Nette\Application\LinkGenerator;
+use Nette\Application\{Helpers, LinkGenerator};
 use Nette\Application\Routers\RouteList;
-use Nette\Application\UI\Component;
-use Nette\Application\UI\ComponentReflection;
-use Nette\Application\UI\Control;
-use Nette\Application\UI\Multiplier;
-use Nette\Application\UI\Presenter;
-use Nette\Application\UI\Template;
-use Nette\Bridges\ApplicationLatte\DefaultTemplate;
-use Nette\Bridges\ApplicationLatte\TemplateFactory;
+use Nette\Application\UI\{Component, ComponentReflection, Control, Multiplier, Presenter, Template};
+use Nette\Bridges\ApplicationLatte\{DefaultTemplate, TemplateFactory};
 use Nette\ComponentModel\IComponent;
-use Nette\Http\Session;
-use Nette\Http\SessionSection;
+use Nette\Http\{Session, SessionSection};
 use Nette\Routing\Router;
 use function PHPStan\Testing\assertType;
 

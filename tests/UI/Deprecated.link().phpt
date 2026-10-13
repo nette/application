@@ -4,9 +4,8 @@
  * Test: Nette\Application\UI\Presenter::link() and #[Deprecated]
  */
 
-use Nette\Application;
+use Nette\{Application, Http};
 use Nette\Application\Attributes\Deprecated;
-use Nette\Http;
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';

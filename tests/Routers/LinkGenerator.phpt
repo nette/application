@@ -39,9 +39,7 @@ namespace App\Presentation\Module\My {
 
 namespace {
 
-	use Nette\Application\LinkGenerator;
-	use Nette\Application\PresenterFactory;
-	use Nette\Application\Routers;
+	use Nette\Application\{LinkGenerator, PresenterFactory, Routers};
 	use Nette\Http;
 	use Tester\Assert;
 

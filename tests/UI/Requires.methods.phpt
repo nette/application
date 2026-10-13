@@ -4,9 +4,8 @@
  * Test: #[Requires] option actions
  */
 
-use Nette\Application;
+use Nette\{Application, Http};
 use Nette\Application\Attributes\Requires;
-use Nette\Http;
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';

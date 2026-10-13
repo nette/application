@@ -4,9 +4,8 @@
  * Test: Nette\Application\UI\Presenter redirects and forwards
  */
 
-use Nette\Application;
+use Nette\{Application, Http};
 use Nette\Application\Attributes\Persistent;
-use Nette\Http;
 use Tester\Assert;
 
 

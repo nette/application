@@ -4,9 +4,8 @@
  * Test: Nette\Application\UI\Component::redirect()
  */
 
-use Nette\Application;
+use Nette\{Application, Http};
 use Nette\Application\PresenterFactory;
-use Nette\Http;
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';

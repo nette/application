@@ -8,11 +8,8 @@
 namespace Nette\Application\UI;
 
 use Nette;
-use Nette\Application;
-use Nette\Application\Helpers;
-use Nette\Application\LinkGenerator;
-use Nette\Application\Responses;
-use Nette\Http;
+use Nette\{Application, Http};
+use Nette\Application\{Helpers, LinkGenerator, Responses};
 use Nette\Utils\Arrays;
 use function array_slice, count, func_get_args, func_num_args, is_array, is_string, strlen;
 

@@ -4,9 +4,8 @@
  * Test: Nette\Application\UI\Presenter::link() and #[Requires(forward: true)]
  */
 
-use Nette\Application;
+use Nette\{Application, Http};
 use Nette\Application\Attributes\Requires;
-use Nette\Http;
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';

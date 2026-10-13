@@ -9,8 +9,7 @@ namespace Nette\Bridges\ApplicationDI;
 
 use Composer\Autoload\ClassLoader;
 use Nette;
-use Nette\Application\Attributes;
-use Nette\Application\UI;
+use Nette\Application\{Attributes, UI};
 use Nette\DI\Definitions;
 use Nette\Schema\Expect;
 use Nette\Utils\Reflection;
