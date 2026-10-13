@@ -177,7 +177,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function isForwarded(): bool
 	{
-		return $this->forwarded || $this->request?->isMethod(Application\Request::FORWARD);
+		return $this->forwarded || $this->request?->isMethod(Application\Request::Forward);
 	}
 
 
@@ -819,7 +819,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			return;
 		}
 
-		$code = $request->hasFlag($request::VARYING)
+		$code = $request->hasFlag($request::Varying)
 			? Http\IResponse::S302_Found
 			: Http\IResponse::S301_MovedPermanently;
 		$this->sendResponse(new Responses\RedirectResponse($url, $code));
@@ -931,7 +931,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 		$params[self::FlashKey] = $this->getFlashKey();
 		$request->setParameters($params);
 		if ($request->isMethod('POST')) {
-			$request->setFlag(Application\Request::RESTORED);
+			$request->setFlag(Application\Request::Restored);
 			$this->sendResponse(new Responses\ForwardResponse($request));
 		} else {
 			$this->redirectUrl($this->linkGenerator->requestToUrl($request));

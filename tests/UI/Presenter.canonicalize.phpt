@@ -172,7 +172,7 @@ test('canonicalize() uses 302 for varying requests', function () {
 	$presenter->autoCanonicalize = true;
 
 	$request = new Application\Request('Varying', 'GET', ['action' => 'default']);
-	$request->setFlag($request::VARYING);
+	$request->setFlag($request::Varying);
 
 	$response = $presenter->run($request);
 

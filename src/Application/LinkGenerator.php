@@ -258,7 +258,7 @@ final class LinkGenerator
 			$args[UI\Presenter::FlashKey] = is_string($flashKey) && $flashKey !== '' ? $flashKey : null;
 		}
 
-		return $this->lastRequest = new Request($presenter, Request::FORWARD, $args, flags: ['current' => $current]);
+		return $this->lastRequest = new Request($presenter, Request::Forward, $args, flags: ['current' => $current]);
 	}
 
 
