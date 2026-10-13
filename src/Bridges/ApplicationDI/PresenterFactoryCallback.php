@@ -15,11 +15,11 @@ use function count;
  * PresenterFactory callback.
  * @internal
  */
-final class PresenterFactoryCallback
+final readonly class PresenterFactoryCallback
 {
 	public function __construct(
-		private readonly Nette\DI\Container $container,
-		private readonly ?string $touchToRefresh,
+		private Nette\DI\Container $container,
+		private ?string $touchToRefresh,
 	) {
 	}
 

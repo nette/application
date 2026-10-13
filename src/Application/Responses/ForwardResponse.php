@@ -13,10 +13,10 @@ use Nette;
 /**
  * Forwards to new request.
  */
-final class ForwardResponse implements Nette\Application\Response
+final readonly class ForwardResponse implements Nette\Application\Response
 {
 	public function __construct(
-		private readonly Nette\Application\Request $request,
+		private Nette\Application\Request $request,
 	) {
 	}
 
