@@ -83,7 +83,7 @@ class TestMethodCreateComponentControl extends Nette\Application\UI\Control
 // class-level attribute
 $presenter = createPresenter(TestClassPresenter::class);
 Assert::noError(
-	fn() => $presenter->run(new Application\Request('', Application\Request::FORWARD)),
+	fn() => $presenter->run(new Application\Request('', Application\Request::Forward)),
 );
 
 Assert::exception(
@@ -96,7 +96,7 @@ Assert::exception(
 // method action<name>()
 $presenter = createPresenter(TestMethodActionPresenter::class);
 Assert::noError(
-	fn() => $presenter->run(new Application\Request('', Application\Request::FORWARD)),
+	fn() => $presenter->run(new Application\Request('', Application\Request::Forward)),
 );
 
 Assert::exception(
@@ -109,7 +109,7 @@ Assert::exception(
 // method render<name>()
 $presenter = createPresenter(TestMethodRenderPresenter::class);
 Assert::noError(
-	fn() => $presenter->run(new Application\Request('', Application\Request::FORWARD)),
+	fn() => $presenter->run(new Application\Request('', Application\Request::Forward)),
 );
 
 Assert::exception(
@@ -122,7 +122,7 @@ Assert::exception(
 // method handle<name>()
 $presenter = createPresenter(TestMethodHandlePresenter::class);
 Assert::noError(
-	fn() => $presenter->run(new Application\Request('', Application\Request::FORWARD, ['do' => 'foo'])),
+	fn() => $presenter->run(new Application\Request('', Application\Request::Forward, ['do' => 'foo'])),
 );
 
 Assert::exception(
@@ -135,7 +135,7 @@ Assert::exception(
 // method createComponent<name>()
 $presenter = createPresenter(TestMethodCreateComponentPresenter::class);
 Assert::noError(
-	fn() => $presenter->run(new Application\Request('', Application\Request::FORWARD, ['foo-a' => 1])),
+	fn() => $presenter->run(new Application\Request('', Application\Request::Forward, ['foo-a' => 1])),
 );
 
 Assert::exception(
@@ -148,7 +148,7 @@ Assert::exception(
 // method createComponent<name>() in component
 $presenter = createPresenter(TestMethodCreateComponentPresenter::class);
 Assert::noError(
-	fn() => $presenter->run(new Application\Request('', Application\Request::FORWARD, ['bar-foo-a' => 1])),
+	fn() => $presenter->run(new Application\Request('', Application\Request::Forward, ['bar-foo-a' => 1])),
 );
 
 Assert::exception(

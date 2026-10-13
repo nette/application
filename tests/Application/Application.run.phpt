@@ -113,7 +113,7 @@ test('error presenter handling for route mismatch', function () use ($httpReques
 
 	$requests = $app->getRequests();
 	Assert::count(1, $requests);
-	Assert::same(Request::FORWARD, $requests[0]->getMethod());
+	Assert::same(Request::Forward, $requests[0]->getMethod());
 	Assert::same('Error', $requests[0]->getPresenterName());
 
 	Assert::equal($requests[0], $errorPresenter->request);
@@ -141,7 +141,7 @@ test('error presenter invoked directly via router', function () use ($httpReques
 	Assert::count(2, $requests);
 	Assert::same('GET', $requests[0]->getMethod());
 	Assert::same('Error', $requests[0]->getPresenterName());
-	Assert::same(Request::FORWARD, $requests[1]->getMethod());
+	Assert::same(Request::Forward, $requests[1]->getMethod());
 	Assert::same('Error', $requests[1]->getPresenterName());
 
 	Assert::equal($requests[1], $errorPresenter->request);
@@ -182,7 +182,7 @@ test('missing presenter fallback to error presenter', function () use ($httpRequ
 	Assert::count(2, $requests);
 	Assert::same('GET', $requests[0]->getMethod());
 	Assert::same('Missing', $requests[0]->getPresenterName());
-	Assert::same(Request::FORWARD, $requests[1]->getMethod());
+	Assert::same(Request::Forward, $requests[1]->getMethod());
 	Assert::same('Error', $requests[1]->getPresenterName());
 
 	Assert::equal($requests[1], $errorPresenter->request);
@@ -224,7 +224,7 @@ test('presenter exception propagation to error presenter', function () use ($htt
 	Assert::count(2, $requests);
 	Assert::same('GET', $requests[0]->getMethod());
 	Assert::same('Bad', $requests[0]->getPresenterName());
-	Assert::same(Request::FORWARD, $requests[1]->getMethod());
+	Assert::same(Request::Forward, $requests[1]->getMethod());
 	Assert::same('Error', $requests[1]->getPresenterName());
 
 	Assert::equal($requests[1], $errorPresenter->request);

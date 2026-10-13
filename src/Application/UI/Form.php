@@ -144,7 +144,7 @@ class Form extends Nette\Forms\Form implements SignalReceiver
 		} elseif (!$this->crossOrigin && !$presenter->getHttpRequest()->isFrom(Nette\Http\FetchSite::SameOrigin)) {
 			$presenter->detectedCsrf();
 
-		} elseif (!$presenter->getRequest()->hasFlag(Nette\Application\Request::RESTORED)) {
+		} elseif (!$presenter->getRequest()->hasFlag(Nette\Application\Request::Restored)) {
 			$this->fireEvents();
 		}
 	}

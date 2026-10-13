@@ -131,7 +131,7 @@ class Application
 		Arrays::invoke($this->onRequest, $this, $request);
 
 		if (
-			!$request->isMethod($request::FORWARD)
+			!$request->isMethod($request::Forward)
 			&& (!strcasecmp($request->getPresenterName(), (string) $this->errorPresenter)
 				|| !strcasecmp($request->getPresenterName(), (string) $this->error4xxPresenter))
 		) {
@@ -181,7 +181,7 @@ class Application
 			}
 		}
 
-		return new Request($errorPresenter, Request::FORWARD, $args);
+		return new Request($errorPresenter, Request::Forward, $args);
 	}
 
 
