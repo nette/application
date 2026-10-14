@@ -69,7 +69,7 @@ final class AccessPolicy
 		if (
 			$this->element instanceof \ReflectionMethod
 			&& str_starts_with($this->element->getName(), $component::formatSignalMethod(''))
-			&& !ComponentReflection::parseAnnotation($this->element, 'crossOrigin')
+			&& !ComponentReflection::parseAnnotation($this->element, 'crossOrigin') // dresscode:ignore upgrading.declarations.deprecatedMember -- @crossOrigin is still supported
 			&& !Nette\Utils\Arrays::some($attrs, fn($attr) => $attr->sameOrigin === false)
 		) {
 			$attrs[] = new Attributes\Requires(sameOrigin: true);
@@ -125,7 +125,7 @@ final class AccessPolicy
 	private function checkHttpMethod(array $methods): void
 	{
 		if ($this->element instanceof \ReflectionClass) {
-			$this->presenter->allowedMethods = []; // bypass Presenter::checkHttpMethod()
+			$this->presenter->allowedMethods = []; // dresscode:ignore upgrading.declarations.deprecatedMember -- bypass Presenter::checkHttpMethod()
 		}
 
 		$allowed = array_map(strtoupper(...), $methods);
