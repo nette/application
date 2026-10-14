@@ -1,0 +1,44 @@
+use:
+	- nette
+	- modernizations
+
+typeAnalysis: phpstan
+
+paths:
+	- src
+	- tests
+
+excludePaths:
+	- tests/**/expected
+	- tests/**/fixtures*
+
+fileExtensions:
+	- php
+	- phpt
+
+imports: {grouping: {class: grouped}}
+
+overrides:
+	-
+		paths: [src]
+		nameResolution: certain
+		use:
+			- compilerOptimizations
+			- deprecations
+
+	- # the deprecated members are what the BC code keeps alive
+		paths:
+			- src/Application/Application.php
+			- src/Application/LinkGenerator.php
+			- src/Application/UI/AccessPolicy.php
+			- src/Application/UI/ComponentReflection.php
+			- src/Application/UI/MethodReflection.php
+			- src/Application/UI/Presenter.php
+			- src/Bridges/ApplicationLatte/TemplateFactory.php
+		upgrading: {declarations: {deprecatedMember: keep}}
+
+	- # the deprecated ArrayAccess keeps its parameter names
+		paths:
+			- src/Application/Routers/RouteList.php
+			- src/Application/UI/Component.php
+		classes: {overridingMethod: {parameterName: keep}}
