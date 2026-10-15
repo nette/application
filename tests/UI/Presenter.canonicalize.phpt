@@ -8,7 +8,6 @@ use Nette\{Application, Http};
 use Nette\Application\Attributes\Persistent;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/functions.php';
 
@@ -173,7 +172,7 @@ test('canonicalize() uses 302 for varying requests', function () {
 	$presenter->autoCanonicalize = true;
 
 	$request = new Application\Request('Varying', 'GET', ['action' => 'default']);
-	$request->setFlag($request::VARYING, true);
+	$request->setFlag($request::VARYING);
 
 	$response = $presenter->run($request);
 

@@ -7,7 +7,6 @@
 use Nette\Application\UI\ParameterConverter;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 

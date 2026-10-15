@@ -5,7 +5,6 @@ use Nette\DI;
 use Nette\DI\Definitions\Statement;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/files/MyPresenter.php';
 

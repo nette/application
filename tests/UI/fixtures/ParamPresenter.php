@@ -6,7 +6,7 @@ class ParamPresenter extends Nette\Application\UI\Presenter
 	public $bool = true;
 
 
-	public function actionDefault($a, $b = null, array $c, array $d = null, $e = 1, $f = 1.0, $g = false)
+	public function actionDefault($a, $b = null, array $c, ?array $d = null, $e = 1, $f = 1.0, $g = false)
 	{
 	}
 }

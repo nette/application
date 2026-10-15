@@ -4,17 +4,17 @@ use Nette\Bridges\ApplicationDI\ApplicationExtension;
 use Nette\DI;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 
 test('', function () {
 	$compiler = new DI\Compiler;
-	$compiler->addExtension('application', new ApplicationExtension(false));
+	$compiler->addExtension('application', new ApplicationExtension);
 
 	$builder = $compiler->getContainerBuilder();
 	$builder->addDefinition('myRouter')->setFactory(Nette\Application\Routers\SimpleRouter::class);
-	$builder->addDefinition('myHttpRequest')->setFactory(Nette\Http\Request::class, [new DI\Definitions\Statement(Nette\Http\UrlScript::class)]);
+	$builder->addDefinition('myHttpRequest')
+		->setFactory(Nette\Http\Request::class, [new DI\Definitions\Statement(Nette\Http\UrlScript::class)]);
 	$builder->addDefinition('myHttpResponse')->setFactory(Nette\Http\Response::class);
 
 	$code = $compiler->setClassName('Container1')->compile();

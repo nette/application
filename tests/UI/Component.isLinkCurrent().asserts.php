@@ -33,7 +33,7 @@ function callIsComponentLinkCurrent(
 		$presenterFactory,
 		new Application\Routers\SimpleRouter,
 	);
-	$presenter->onStartup[] = function () use (&$res, $component,  $destination, $args) {
+	$presenter->onStartup[] = function () use (&$res, $component, $destination, $args) {
 		$res = $component->isLinkCurrent($destination, $args);
 	};
 	$presenter->run($request);
