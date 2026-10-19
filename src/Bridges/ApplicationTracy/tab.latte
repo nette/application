@@ -10,7 +10,7 @@
 		{if $matched === null}
 			no route
 		{elseif isset($matched[Presenter::PresenterKey])}
-			{$matched[Presenter::PresenterKey]}:{$matched[Presenter::ActionKey] ?? Presenter::DefaultAction}{if isset($matched[Presenter::SignalKey])}{$matched[Presenter::SignalKey]}!{/if}
+			{$matched[Presenter::PresenterKey]}:{$matched[Presenter::ActionKey] ?? Presenter::DefaultAction}{if isset($matched[Presenter::SignalKey])} {$matched[Presenter::SignalKey]}!{/if}
 		{/if}
 	</span>
 </span>
