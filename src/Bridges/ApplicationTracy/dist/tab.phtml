@@ -18,7 +18,8 @@ if ($matched === null) /* pos 10:3 */ {
 	echo ':';
 	echo Tracy\Helpers::escapeHtml($matched[Presenter::ActionKey] ?? Presenter::DefaultAction) /* pos 13:40 */;
 	if (isset($matched[Presenter::SignalKey])) /* pos 13:100 */ {
-		echo Tracy\Helpers::escapeHtml($matched[Presenter::SignalKey]) /* pos 13:142 */;
+		echo ' ';
+		echo Tracy\Helpers::escapeHtml($matched[Presenter::SignalKey]) /* pos 13:143 */;
 		echo '!';
 	}
 	echo "\n";
