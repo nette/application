@@ -12,10 +12,10 @@ test('', function () {
 	$compiler->addExtension('application', new ApplicationExtension);
 
 	$builder = $compiler->getContainerBuilder();
-	$builder->addDefinition('myRouter')->setFactory(Nette\Application\Routers\SimpleRouter::class);
+	$builder->addDefinition('myRouter')->setCreator(Nette\Application\Routers\SimpleRouter::class);
 	$builder->addDefinition('myHttpRequest')
-		->setFactory(Nette\Http\Request::class, [new DI\Definitions\Statement(Nette\Http\UrlScript::class)]);
-	$builder->addDefinition('myHttpResponse')->setFactory(Nette\Http\Response::class);
+		->setCreator(Nette\Http\Request::class, [new DI\Definitions\Statement(Nette\Http\UrlScript::class)]);
+	$builder->addDefinition('myHttpResponse')->setCreator(Nette\Http\Response::class);
 
 	$code = $compiler->setClassName('Container1')->compile();
 	eval($code);

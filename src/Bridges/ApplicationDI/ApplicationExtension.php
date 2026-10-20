@@ -92,7 +92,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 			: UI\Presenter::InvalidLinkWarning;
 
 		$application = $builder->addDefinition($this->prefix('application'))
-			->setFactory(Nette\Application\Application::class);
+			->setCreator(Nette\Application\Application::class);
 		if ($config->catchExceptions || !$this->debugMode) {
 			$application->addSetup(
 				'$error4xxPresenter',
@@ -114,7 +114,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 
 		$presenterFactory = $builder->addDefinition($this->prefix('presenterFactory'))
 			->setType(Nette\Application\IPresenterFactory::class)
-			->setFactory(Nette\Application\PresenterFactory::class, [new Definitions\Statement(
+			->setCreator(Nette\Application\PresenterFactory::class, [new Definitions\Statement(
 				Nette\Bridges\ApplicationDI\PresenterFactoryCallback::class,
 				[1 => $touch ?? null],
 			)]);
@@ -130,7 +130,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 		}
 
 		$builder->addDefinition($this->prefix('linkGenerator'))
-			->setFactory(Nette\Application\LinkGenerator::class, [
+			->setCreator(Nette\Application\LinkGenerator::class, [
 				1 => new Definitions\Statement([new Definitions\Statement('@Nette\Http\IRequest::getUrl'), 'withoutUserInfo']),
 			]);
 

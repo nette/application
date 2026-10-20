@@ -14,10 +14,10 @@ function createCompiler(string $config): DI\Compiler
 	$compiler = new DI\Compiler;
 	$compiler->loadConfig(Tester\FileMock::create($config, 'neon'));
 	$builder = $compiler->getContainerBuilder();
-	$builder->addDefinition('myRouter')->setFactory(Nette\Application\Routers\SimpleRouter::class);
+	$builder->addDefinition('myRouter')->setCreator(Nette\Application\Routers\SimpleRouter::class);
 	$builder->addDefinition('myHttpRequest')
-		->setFactory(Nette\Http\Request::class, [new DI\Definitions\Statement(Nette\Http\UrlScript::class)]);
-	$builder->addDefinition('myHttpResponse')->setFactory(Nette\Http\Response::class);
+		->setCreator(Nette\Http\Request::class, [new DI\Definitions\Statement(Nette\Http\UrlScript::class)]);
+	$builder->addDefinition('myHttpResponse')->setCreator(Nette\Http\Response::class);
 	return $compiler;
 }
 

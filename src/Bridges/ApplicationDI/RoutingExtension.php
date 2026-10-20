@@ -49,7 +49,7 @@ final class RoutingExtension extends Nette\DI\CompilerExtension
 		$builder = $this->getContainerBuilder();
 
 		$router = $builder->addDefinition($this->prefix('router'))
-			->setFactory(Nette\Application\Routers\RouteList::class);
+			->setCreator(Nette\Application\Routers\RouteList::class);
 
 		foreach ($this->config->routes as $mask => $action) {
 			$router->addSetup('$service->addRoute(?, ?)', [$mask, $action]);
@@ -79,7 +79,7 @@ final class RoutingExtension extends Nette\DI\CompilerExtension
 		if (!$builder->getByType(Nette\Routing\Router::class)) {
 			$builder->addDefinition($this->prefix('router'))
 				->setType(Nette\Routing\Router::class)
-				->setFactory(Nette\Routing\SimpleRouter::class);
+				->setCreator(Nette\Routing\SimpleRouter::class);
 			$builder->addAlias('router', $this->prefix('router'));
 		}
 	}

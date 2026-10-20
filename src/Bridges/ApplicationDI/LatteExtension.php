@@ -68,7 +68,7 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 		$builder->addFactoryDefinition($this->prefix('latteFactory'))
 			->setImplement(ApplicationLatte\LatteFactory::class)
 			->getResultDefinition()
-				->setFactory(Latte\Engine::class)
+				->setCreator(Latte\Engine::class)
 				->addSetup('setCacheDirectory', [$this->tempDir])
 				->addSetup('setAutoRefresh', [$this->debugMode])
 				->addSetup('setFeature', [Latte\Feature::StrictTypes, $config->strictTypes])
@@ -94,7 +94,7 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 		}
 
 		$builder->addDefinition($this->prefix('templateFactory'))
-			->setFactory(ApplicationLatte\TemplateFactory::class)
+			->setCreator(ApplicationLatte\TemplateFactory::class)
 			->setArguments(['templateClass' => $config->templateClass]);
 
 		if ($this->name === 'latte') {
