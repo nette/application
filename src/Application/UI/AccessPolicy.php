@@ -18,6 +18,8 @@ use Nette\Utils\Reflection;
  */
 final class AccessPolicy
 {
+	/** @var array<class-string, Attributes\Requires[]> */
+	private static array $classAttrsCache = [];
 	private Presenter $presenter;
 
 
@@ -56,10 +58,46 @@ final class AccessPolicy
 	 */
 	private function getAttributes(): array
 	{
-		return array_map(
-			fn($ra) => $ra->newInstance(),
-			$this->element->getAttributes(Attributes\Requires::class, \ReflectionAttribute::IS_INSTANCEOF),
-		);
+		return $this->element instanceof \ReflectionMethod
+			? array_map(
+				fn($ra) => $ra->newInstance(),
+				$this->element->getAttributes(Attributes\Requires::class, \ReflectionAttribute::IS_INSTANCEOF),
+			)
+			: self::$classAttrsCache[$this->element->getName()] ??= $this->getClassAttributes($this->element);
+	}
+
+
+	/**
+	 * Collects class-level attributes including those inherited from ancestor classes.
+	 * A rule explicitly set in a descendant overrides the same rule of all its ancestors.
+	 * @param  \ReflectionClass<object>  $class
+	 * @return Attributes\Requires[]
+	 */
+	private function getClassAttributes(\ReflectionClass $class): array
+	{
+		$res = $overridden = [];
+		for ($rc = $class; $rc; $rc = $rc->getParentClass()) {
+			$defined = [];
+			foreach ($rc->getAttributes(Attributes\Requires::class, \ReflectionAttribute::IS_INSTANCEOF) as $ra) {
+				$attr = $ra->newInstance();
+				$used = false;
+				foreach (array_keys(array_filter(get_object_vars($attr), fn($value) => $value !== null)) as $prop) {
+					if (isset($overridden[$prop])) {
+						$attr->$prop = null;
+					} else {
+						$defined[$prop] = $used = true;
+					}
+				}
+
+				if ($used) {
+					$res[] = $attr;
+				}
+			}
+
+			$overridden += $defined;
+		}
+
+		return $res;
 	}
 
 

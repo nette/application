@@ -4,6 +4,12 @@
 repeatable, class- or method-level, and matched with `IS_INSTANCEOF`, so subclasses
 (like the deprecated `#[CrossOrigin]`) count as `Requires` instances.
 
+Class-level attributes are **inherited**, unlike PHP attributes in general:
+`AccessPolicy` collects them along the whole ancestor chain, so a rule on a base
+presenter applies to every descendant. A rule (a property of `Requires`) set
+explicitly in a descendant overrides the same rule of all its ancestors; the
+other rules keep combining. Method-level attributes follow plain PHP semantics.
+
 ## Enforcement runs at three sites
 
 No single file shows this; the policy is applied wherever user code is about to run:
