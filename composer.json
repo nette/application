@@ -1,17 +1,13 @@
 {
 	"name": "nette/application",
-	"description": "🏆 Nette Application: a full-stack component-based MVC kernel for PHP that helps you write powerful and modern web applications. Write less, have cleaner code and your work will bring you joy.",
-	"keywords": ["nette", "mvc", "framework", "component-based", "routing", "seo", "mvp", "presenter", "control", "forms"],
-	"homepage": "https://nette.org",
+	"description": "🏆 Nette Application: the heart of Nette, a component-based MVC framework. Presenters, components that keep their own state, AJAX snippets, and security built in.",
+	"keywords": ["nette", "web framework", "mvc", "mvp", "presenter", "components", "ajax"],
+	"homepage": "https://doc.nette.org/application",
 	"license": ["BSD-3-Clause", "GPL-2.0-only", "GPL-3.0-only"],
 	"authors": [
 		{
 			"name": "David Grudl",
 			"homepage": "https://davidgrudl.com"
-		},
-		{
-			"name": "Nette Community",
-			"homepage": "https://nette.org/contributors"
 		}
 	],
 	"require": {
