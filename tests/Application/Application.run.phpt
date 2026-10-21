@@ -77,6 +77,7 @@ class UIErrorPresenter extends Nette\Application\UI\Presenter
 
 $httpRequest = Mockery::mock(Nette\Http\IRequest::class);
 $httpRequest->shouldReceive('getMethod')->andReturn('GET');
+$httpRequest->shouldReceive('isMethod')->with(Request::Forward)->andReturn(false);
 $httpRequest->shouldReceive('getPost')->andReturn([]);
 $httpRequest->shouldReceive('getFiles')->andReturn([]);
 $httpRequest->shouldReceive('isSecured')->andReturn(false);
@@ -148,6 +149,32 @@ test('error presenter invoked directly via router', function () use ($httpReques
 	Assert::equal($requests[0], $errorPresenter->request->getParameter('request'));
 	Assert::null($errorPresenter->request->getParameter('previousPresenter'));
 	Assert::type(BadRequestException::class, $errorPresenter->request->getParameter('exception'));
+});
+
+
+test('error presenter is not reachable by HTTP method FORWARD', function () use ($httpResponse) {
+	foreach (['FORWARD', 'forward'] as $method) {
+		$httpRequest = new Nette\Http\Request(new Nette\Http\UrlScript, method: $method);
+		$errorPresenter = new ErrorPresenter;
+
+		$presenterFactory = Mockery::mock(IPresenterFactory::class);
+		$presenterFactory->shouldReceive('createPresenter')->with('Error')->andReturn($errorPresenter);
+
+		$router = Mockery::mock(Router::class);
+		$router->shouldReceive('match')->andReturn(['presenter' => 'Error']);
+
+		$app = new Application($presenterFactory, $router, $httpRequest, $httpResponse);
+		$app->errorPresenter = 'Error';
+		$app->run();
+
+		$requests = $app->getRequests();
+		Assert::count(1, $requests);
+		Assert::same(Request::Forward, $requests[0]->getMethod());
+		Assert::null($requests[0]->getParameter('request'));
+		$e = $errorPresenter->request->getParameter('exception');
+		Assert::type(BadRequestException::class, $e);
+		Assert::same('Invalid request. Method FORWARD is reserved for internal use.', $e->getMessage());
+	}
 });
 
 
