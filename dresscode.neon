@@ -26,17 +26,6 @@ overrides:
 			- compilerOptimizations
 			- deprecations
 
-	- # the deprecated members are what the BC code keeps alive
-		paths:
-			- src/Application/Application.php
-			- src/Application/LinkGenerator.php
-			- src/Application/UI/AccessPolicy.php
-			- src/Application/UI/ComponentReflection.php
-			- src/Application/UI/MethodReflection.php
-			- src/Application/UI/Presenter.php
-			- src/Bridges/ApplicationLatte/TemplateFactory.php
-		upgrading: {declarations: {deprecatedMember: keep}}
-
 	- # the deprecated ArrayAccess keeps its parameter names
 		paths:
 			- src/Application/Routers/RouteList.php
