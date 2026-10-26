@@ -42,6 +42,12 @@ the default. `TemplateFactory::createTemplate` instantiates it around a fresh La
 engine and injects the default variables (`user`, `baseUrl`, `basePath`, `flashes`,
 `control`, `presenter`).
 
+**`flashes` depends on this injection.** `Control::flashMessage()` writes the
+message to the flash session and into the template only if the template already
+exists; it never creates one. A template created later gets the messages solely
+from the factory, which reads them from the flash session, so a custom
+`TemplateFactory` has to inject `flashes` the same way.
+
 ## `#[TemplateVariable]`
 
 At `sendTemplate`, `completeTemplate()` copies every `#[TemplateVariable]` property
