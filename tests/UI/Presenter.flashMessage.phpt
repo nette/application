@@ -142,7 +142,7 @@ test('multiple flash messages are stored', function () {
 });
 
 
-test('flash message is available in template', function () {
+test('flash message is written to an already created template', function () {
 	$messages = [];
 	$sessionSection = Mockery::mock(Http\SessionSection::class);
 	$sessionSection->shouldReceive('get')->andReturnUsing(function () use (&$messages) {
@@ -160,6 +160,45 @@ test('flash message is available in template', function () {
 	$latte->shouldIgnoreMissing();
 	$templateFactory = Mockery::mock(Application\UI\TemplateFactory::class);
 	$templateFactory->shouldReceive('createTemplate')->andReturn(new Nette\Bridges\ApplicationLatte\DefaultTemplate($latte));
+
+	$presenter = new TestPresenter;
+	$presenter->injectPrimary(
+		new Http\Request(new Http\UrlScript),
+		new Http\Response,
+		session: $session,
+		templateFactory: $templateFactory,
+	);
+	$presenter->autoCanonicalize = false;
+
+	$presenter->run(new Application\Request('Test', 'GET', ['action' => 'default']));
+
+	$template = $presenter->getTemplate();
+	$presenter->flashMessage('Template message');
+
+	Assert::count(1, $template->flashes);
+	Assert::same('Template message', $template->flashes[0]->message);
+});
+
+
+test('flash message is injected into a template created later', function () {
+	$messages = [];
+	$sessionSection = Mockery::mock(Http\SessionSection::class);
+	$sessionSection->shouldReceive('get')->andReturnUsing(function () use (&$messages) {
+		return $messages;
+	});
+	$sessionSection->shouldReceive('set')->andReturnUsing(function ($id, $value) use (&$messages) {
+		$messages = $value;
+	});
+
+	$session = Mockery::mock(Http\Session::class);
+	$session->shouldReceive('getSection')->andReturn($sessionSection);
+	$session->shouldReceive('hasSection')->andReturn(true);
+
+	$latte = Mockery::mock(Latte\Engine::class);
+	$latte->shouldIgnoreMissing();
+	$latteFactory = Mockery::mock(Nette\Bridges\ApplicationLatte\LatteFactory::class);
+	$latteFactory->shouldReceive('create')->andReturn($latte);
+	$templateFactory = new Nette\Bridges\ApplicationLatte\TemplateFactory($latteFactory);
 
 	$presenter = new TestPresenter;
 	$presenter->injectPrimary(

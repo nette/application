@@ -104,10 +104,14 @@ abstract class Control extends Component implements Renderable
 			'message' => $message,
 			'type' => $type,
 		];
-		$messages = $this->getPresenter()->getFlashSession()->get($id);
+		$session = $this->getPresenter()->getFlashSession();
+		$messages = $session->get($id);
 		$messages[] = $flash;
-		$this->getTemplate()->flashes = $messages;
-		$this->getPresenter()->getFlashSession()->set($id, $messages);
+		$session->set($id, $messages);
+		if (isset($this->template)) { // a not-yet-created template gets flashes injected by the template factory
+			$this->template->flashes = $messages;
+		}
+
 		return $flash;
 	}
 
