@@ -54,10 +54,6 @@ final class RoutingExtension extends Nette\DI\CompilerExtension
 		foreach ($this->config->routes as $mask => $action) {
 			$router->addSetup('$service->addRoute(?, ?)', [$mask, $action]);
 		}
-
-		if ($this->name === 'routing') {
-			$builder->addAlias('router', $this->prefix('router'));
-		}
 	}
 
 
