@@ -133,11 +133,6 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 			->setCreator(Nette\Application\LinkGenerator::class, [
 				1 => new Definitions\Statement('@Nette\Http\IRequest::getUrl'),
 			]);
-
-		if ($this->name === 'application') {
-			$builder->addAlias('application', $this->prefix('application'));
-			$builder->addAlias('nette.presenterFactory', $this->prefix('presenterFactory'));
-		}
 	}
 
 
