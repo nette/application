@@ -96,11 +96,6 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 		$builder->addDefinition($this->prefix('templateFactory'))
 			->setCreator(ApplicationLatte\TemplateFactory::class)
 			->setArguments(['templateClass' => $config->templateClass]);
-
-		if ($this->name === 'latte') {
-			$builder->addAlias('nette.latteFactory', $this->prefix('latteFactory'));
-			$builder->addAlias('nette.templateFactory', $this->prefix('templateFactory'));
-		}
 	}
 
 
