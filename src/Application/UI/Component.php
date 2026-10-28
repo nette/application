@@ -79,6 +79,8 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 	{
 		if (!$component instanceof SignalReceiver && !$component instanceof StatePersistent) {
 			throw new Nette\InvalidStateException("Component '$name' of type " . get_debug_type($component) . ' is not intended to be used in the Presenter.');
+		} elseif ($component instanceof StatePersistent && !$component instanceof self) {
+			throw new Nette\InvalidStateException("Component '$name' of type " . get_debug_type($component) . ' cannot carry persistent state, only ' . self::class . ' can.');
 		}
 
 		return parent::addComponent($component, $name, $insertBefore);
