@@ -91,6 +91,25 @@ test('global wildcard mapping strategy', function () {
 });
 
 
+test('mapping of a submodule', function () {
+	$factory = new PresenterFactory;
+
+	$factory->setMapping([
+		'Foo' => 'My\App\*Mod\*Presenter',
+		'Foo:Bar' => 'Other\App\*Mod\*Presenter',
+		'Foo:Bar:Baz' => 'Third\*Presenter',
+	]);
+
+	Assert::same('App\Presentation\Foo\FooPresenter', $factory->formatPresenterClass('Foo'));
+	Assert::same('My\App\BarPresenter', $factory->formatPresenterClass('Foo:Bar'));
+	Assert::same('My\App\QuxMod\BarPresenter', $factory->formatPresenterClass('Foo:Qux:Bar'));
+	Assert::same('Other\App\BazPresenter', $factory->formatPresenterClass('Foo:Bar:Baz'));
+	Assert::same('Other\App\QuxMod\BazPresenter', $factory->formatPresenterClass('Foo:Bar:Qux:Baz'));
+	Assert::same('Third\QuxPresenter', $factory->formatPresenterClass('Foo:Bar:Baz:Qux'));
+	Assert::same('App\Presentation\Bar\Baz\BazPresenter', $factory->formatPresenterClass('Bar:Baz'));
+});
+
+
 test('array-based hierarchical mapping', function () {
 	$factory = new PresenterFactory;
 	$factory->setMapping([

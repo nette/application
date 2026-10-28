@@ -55,7 +55,8 @@ errorPresenter` and anything else to `errorPresenter` (5xx); `sendHttpCode` maps
 
 `formatPresenterClass` maps a presenter name to a class through the mapping masks
 (the hard default is `App\Presentation\*\**Presenter`; `setMapping` overrides), by
-substituting `**`→`Part\Part` and `*`→`Part` per `:`-separated segment. Names are
+substituting `**`→`Part\Part` and `*`→`Part` per `:`-separated segment. A mapping
+key may name a submodule (`Admin:Forum`); the longest matching module prefix wins. Names are
 charset-validated, the class is checked for `IPresenter`/non-abstract, and resolved
 classes are cached. Aliases are resolved in the **link** layer (the `@alias`
 destination), not in routing.
