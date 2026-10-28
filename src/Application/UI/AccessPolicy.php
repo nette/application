@@ -10,7 +10,6 @@ namespace Nette\Application\UI;
 use Nette;
 use Nette\Application\Attributes;
 use Nette\Utils\Reflection;
-use function array_map, implode, in_array, str_starts_with, strtoupper;
 
 
 /**
@@ -113,7 +112,7 @@ final class AccessPolicy
 			throw new \LogicException('Requires(actions) used by ' . Reflection::toString($this->element) . ' is allowed only in presenter.');
 		}
 
-		if (!in_array($this->presenter->getAction(), $actions, strict: true)) {
+		if (!in_array($this->presenter->getAction(), $actions, true)) {
 			$this->presenter->error("Action '{$this->presenter->getAction()}' is not allowed by " . Reflection::toString($this->element));
 		}
 	}
@@ -129,7 +128,7 @@ final class AccessPolicy
 		$allowed = array_map(strtoupper(...), $methods);
 		$method = $this->presenter->getHttpRequest()->getMethod();
 
-		if ($allowed !== ['*'] && !in_array($method, $allowed, strict: true)) {
+		if ($allowed !== ['*'] && !in_array($method, $allowed, true)) {
 			$this->presenter->getHttpResponse()->setHeader('Allow', implode(',', $allowed));
 			$this->presenter->error(
 				"Method $method is not allowed by " . Reflection::toString($this->element),

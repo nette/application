@@ -9,7 +9,6 @@ namespace Nette\Bridges\ApplicationLatte;
 
 use Latte;
 use Nette;
-use function version_compare;
 
 
 /**

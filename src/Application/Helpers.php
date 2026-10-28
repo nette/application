@@ -8,7 +8,6 @@
 namespace Nette\Application;
 
 use Nette;
-use function class_parents, class_uses, strrpos, substr;
 
 
 /**

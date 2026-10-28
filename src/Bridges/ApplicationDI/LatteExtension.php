@@ -13,7 +13,7 @@ use Nette\Bridges\ApplicationLatte;
 use Nette\DI\Definitions\Statement;
 use Nette\Schema\Expect;
 use Tracy;
-use function class_exists, explode, is_string, str_contains, version_compare;
+use function is_string;
 
 
 /**
