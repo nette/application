@@ -8,7 +8,7 @@
 namespace Nette\Application;
 
 use Nette\Http\UrlScript;
-use Nette\Routing\Router;
+use Nette\Routing\{Route, Router};
 use Nette\Utils\Reflection;
 use function array_key_exists, is_string, strlen;
 
@@ -213,8 +213,8 @@ final class LinkGenerator
 
 				$globalState = $refPresenter->getGlobalState($path === 'this' ? null : $presenterClass);
 				if ($current && $args) {
-					$tmp = $globalState + $refPresenter->getParameters();
-					foreach ($args as $key => $val) {
+					$tmp = Route::objectsToArrays($globalState + $refPresenter->getParameters());
+					foreach (Route::objectsToArrays($args) as $key => $val) {
 						if (http_build_query([$val]) !== (isset($tmp[$key]) ? http_build_query([$tmp[$key]]) : '')) {
 							$current = false;
 							break;
@@ -295,7 +295,7 @@ final class LinkGenerator
 		if ($url === null) {
 			$params = $request->getParameters();
 			unset($params[UI\Presenter::ActionKey], $params[UI\Presenter::PresenterKey]);
-			$params = urldecode(http_build_query($params, '', ', '));
+			$params = urldecode(http_build_query(Route::objectsToArrays($params), '', ', '));
 			throw new UI\InvalidLinkException("No route for {$request->getPresenterName()}:{$request->getParameter('action')}($params)");
 		}
 

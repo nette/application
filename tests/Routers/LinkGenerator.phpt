@@ -73,6 +73,12 @@ namespace {
 	}, Nette\Application\UI\InvalidLinkException::class, 'No route for Homepage:default(id=10)');
 
 
+	testException('route mismatch exception with object parameter', function () use ($pf) {
+		$generator = new LinkGenerator(new Routers\Route('/', 'Product:'), new Http\UrlScript('http://nette.org/en/'), $pf);
+		$generator->link('Homepage:default', ['id' => (object) ['a' => 1]]);
+	}, Nette\Application\UI\InvalidLinkException::class, 'No route for Homepage:default(id[a]=1)');
+
+
 	testException('invalid action parameter propagation', function () use ($pf) {
 		$generator = new LinkGenerator(new Routers\Route('/', 'Homepage:'), new Http\UrlScript('http://nette.org/en/'), $pf);
 		$generator->link('Homepage:missing', [10]);
