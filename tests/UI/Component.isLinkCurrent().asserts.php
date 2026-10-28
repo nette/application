@@ -54,6 +54,12 @@ Assert::false(callIsLinkCurrent(
 ));
 
 Assert::false(callIsLinkCurrent(
+	new Application\Request('Test', Http\Request::Get, ['int' => 1, 'bool' => true]),
+	'Test:default',
+	['foo' => (object) ['a' => 1]],
+));
+
+Assert::false(callIsLinkCurrent(
 	new Application\Request('Test', Http\Request::Get, [Application\UI\Presenter::ActionKey => 'otherAction']),
 	'Test:default',
 	[],
