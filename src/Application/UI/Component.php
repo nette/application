@@ -158,7 +158,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 					$this->error(sprintf(
 						"Value passed to persistent parameter '%s' in %s must be %s, %s given.",
 						$name,
-						$this instanceof Presenter ? 'presenter ' . $this->getName() : "component '{$this->getUniqueId()}'",
+						$this->describe(),
 						$meta['type'],
 						get_debug_type($params[$name]),
 					));
@@ -166,8 +166,18 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 
 				$this->$name = $params[$name];
 
-			} else {
+			} elseif (isset($this->$name) || array_key_exists('since', $meta)) {
 				$params[$name] = $this->$name ?? null;
+
+			} elseif ($meta['required']) {
+				$this->error(sprintf(
+					"Missing parameter '%s' required by %s.",
+					$name,
+					$this->describe(),
+				));
+
+			} else {
+				$params[$name] = $this->$name = $meta['def'];
 			}
 		}
 
@@ -212,7 +222,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 				throw new InvalidLinkException(sprintf(
 					"Value passed to persistent parameter '%s' in %s must be %s, %s given.",
 					$name,
-					$this instanceof Presenter ? 'presenter ' . $this->getName() : "component '{$this->getUniqueId()}'",
+					$this->describe(),
 					$meta['type'],
 					get_debug_type($params[$name]),
 				));
@@ -222,6 +232,17 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 				$params[$name] = null; // value transmit is unnecessary
 			}
 		}
+	}
+
+
+	/**
+	 * Identifies the presenter or component in error messages.
+	 */
+	private function describe(): string
+	{
+		return $this instanceof Presenter
+			? 'presenter ' . $this->getName()
+			: "component '{$this->getUniqueId()}'";
 	}
 
 

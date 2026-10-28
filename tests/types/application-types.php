@@ -168,7 +168,10 @@ function testApplicationTypes(Application\Application $app): void
 
 function testComponentReflectionTypes(ComponentReflection $ref): void
 {
-	assertType('array<string, array{def: mixed, type: string, since?: class-string|null}>', $ref->getParameters());
+	assertType(
+		'array<string, array{def: mixed, type: string, required: bool}|array{def: mixed, type: string, since: class-string|null}>',
+		$ref->getParameters(),
+	);
 	assertType('array<string, array{def: mixed, type: string, since: class-string|null}>', $ref->getPersistentParams());
 	assertType('array<string, array{since: class-string}>', $ref->getPersistentComponents());
 }

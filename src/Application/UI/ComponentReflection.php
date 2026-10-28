@@ -22,7 +22,7 @@ use const PHP_VERSION_ID;
  */
 final class ComponentReflection extends \ReflectionClass
 {
-	/** @var array<string, array<string, array{def: mixed, type: string, since?: ?class-string}>> */
+	/** @var array<string, array<string, array{def: mixed, type: string, since: ?class-string}|array{def: mixed, type: string, required: bool}>> */
 	private static array $ppCache = [];
 
 	/** @var array<string, array<string, array{since: class-string}>> */
@@ -34,7 +34,7 @@ final class ComponentReflection extends \ReflectionClass
 
 	/**
 	 * Returns array of class properties that are public and have attribute #[Persistent] or #[Parameter].
-	 * @return array<string, array{def: mixed, type: string, since?: ?class-string}>
+	 * @return array<string, array{def: mixed, type: string, since: ?class-string}|array{def: mixed, type: string, required: bool}>
 	 */
 	public function getParameters(): array
 	{
@@ -58,9 +58,14 @@ final class ComponentReflection extends \ReflectionClass
 					'since' => $isPresenter ? Reflection::getPropertyDeclaringClass($prop)->getName() : null,
 				];
 			} elseif ($prop->getAttributes(Attributes\Parameter::class)) {
+				$type = (string) ($prop->getType() ?? 'mixed');
+				$def = $prop->hasDefaultValue()
+					? $prop->getDefaultValue()
+					: ($type === 'array' || $type === 'iterable' ? [] : null);
 				$params[$prop->getName()] = [
-					'def' => $prop->hasDefaultValue() ? $prop->getDefaultValue() : null,
-					'type' => (string) ($prop->getType() ?? 'mixed'),
+					'def' => $def,
+					'type' => $type,
+					'required' => $def === null && $prop->getType()?->allowsNull() === false,
 				];
 			}
 		}

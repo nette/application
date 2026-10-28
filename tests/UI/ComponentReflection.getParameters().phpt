@@ -34,6 +34,25 @@ class TwoPresenter extends OnePresenter
 }
 
 
+class TypedPresenter extends Presenter
+{
+	#[Parameter]
+	public string $required;
+
+	#[Parameter]
+	public ?string $nullable;
+
+	#[Parameter]
+	public array $list;
+
+	#[Parameter]
+	public iterable $iterable;
+
+	#[Parameter]
+	public string $default = 'def';
+}
+
+
 Assert::same(
 	[
 		'yes1' => [
@@ -49,6 +68,7 @@ Assert::same(
 		'yes3' => [
 			'def' => null,
 			'type' => 'mixed',
+			'required' => false,
 		],
 	],
 	(new ComponentReflection(OnePresenter::class))->getParameters(),
@@ -59,10 +79,12 @@ Assert::same(
 		'yes2' => [
 			'def' => null,
 			'type' => 'mixed',
+			'required' => false,
 		],
 		'yes4' => [
 			'def' => null,
 			'type' => 'mixed',
+			'required' => false,
 		],
 		'yes1' => [
 			'def' => null,
@@ -72,7 +94,39 @@ Assert::same(
 		'yes3' => [
 			'def' => null,
 			'type' => 'mixed',
+			'required' => false,
 		],
 	],
 	(new ComponentReflection(TwoPresenter::class))->getParameters(),
+);
+
+Assert::same(
+	[
+		'required' => [
+			'def' => null,
+			'type' => 'string',
+			'required' => true,
+		],
+		'nullable' => [
+			'def' => null,
+			'type' => '?string',
+			'required' => false,
+		],
+		'list' => [
+			'def' => [],
+			'type' => 'array',
+			'required' => false,
+		],
+		'iterable' => [
+			'def' => [],
+			'type' => 'iterable',
+			'required' => false,
+		],
+		'default' => [
+			'def' => 'def',
+			'type' => 'string',
+			'required' => false,
+		],
+	],
+	(new ComponentReflection(TypedPresenter::class))->getParameters(),
 );
