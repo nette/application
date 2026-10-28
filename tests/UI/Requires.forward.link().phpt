@@ -90,7 +90,24 @@ Assert::error(
 
 Assert::noError(fn() => $presenter->link('Test:'));
 
+Assert::false($presenter->isLinkCurrent('foo'));
+Assert::false($presenter->isLinkCurrent('Forward:'));
+Assert::false($presenter->isLinkCurrent('Forward:*'));
+
 Assert::error( // no error
 	fn() => $presenter->forward('Forward:'),
 	Application\AbortException::class,
 );
+
+
+$presenter = new ForwardPresenter;
+$presenter->injectPrimary(
+	new Http\Request($url),
+	new Http\Response,
+	$presenterFactory,
+	new Application\Routers\SimpleRouter,
+);
+$presenter->run(new Application\Request('Forward', Application\Request::Forward));
+
+Assert::true($presenter->isLinkCurrent('this'));
+Assert::true($presenter->isLinkCurrent('Forward:*'));
