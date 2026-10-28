@@ -585,7 +585,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	 */
 	public function formatLayoutTemplateFiles(): array
 	{
-		if (is_string($this->layout) && preg_match('#/|\\\#', $this->layout)) {
+		if (is_string($this->layout) && strpbrk($this->layout, '/\\') !== false) {
 			return [$this->layout];
 		}
 

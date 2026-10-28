@@ -97,4 +97,7 @@ test('explicit layout file assignment', function () {
 	Assert::same([
 		__DIR__ . '/file.latte',
 	], $presenter->formatLayoutTemplateFiles());
+
+	$presenter->setLayout('dir\file.latte');
+	Assert::same(['dir\file.latte'], $presenter->formatLayoutTemplateFiles());
 });
