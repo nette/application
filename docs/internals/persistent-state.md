@@ -22,7 +22,9 @@ presenter — a `since` (the declaring class, used to scope which links may carr
 
 `ComponentReflection::getParameters()` returns both `#[Persistent]` and
 `#[Parameter]` properties, so `loadState()` fills and type-validates **both** the
-same way (a bad value → `error()` → 404). The asymmetry is on the way out: only
+same way (a bad value → `error()` → 404). A missing `#[Parameter]` whose property
+is still uninitialized is required: non-nullable → `error()` → 404, nullable →
+`null`; a missing `#[Persistent]` leaves its property untouched. The asymmetry is on the way out: only
 persistent entries carry a `since` key, and `getPersistentParams()` filters on its
 presence — a `#[Parameter]` property is never written back by `saveState` and never
 reaches a URL.
