@@ -23,7 +23,7 @@ $latte->addExtension(new Nette\Bridges\ApplicationLatte\UIExtension($presenter))
 
 Assert::matchFile(
 	__DIR__ . '/expected/ifCurrent.php',
-	@$latte->compile( // is deprecated
+	@$latte->compile( // @ {ifCurrent} is deprecated
 		<<<'XX'
 			{ifCurrent}empty{/ifCurrent}
 

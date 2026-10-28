@@ -31,7 +31,12 @@ final class UIMacros extends Latte\Macros\MacroSet
 		$me = new static($compiler);
 		$me->addMacro('control', [$me, 'macroControl']);
 
-		$me->addMacro('href', null, null, fn(MacroNode $node, PhpWriter $writer): string => ' ?> href="<?php ' . $me->macroLink($node, $writer) . ' ?>"<?php ');
+		$me->addMacro(
+			'href',
+			null,
+			null,
+			fn(MacroNode $node, PhpWriter $writer): string => ' ?> href="<?php ' . $me->macroLink($node, $writer) . ' ?>"<?php ',
+		);
 		$me->addMacro('plink', [$me, 'macroLink']);
 		$me->addMacro('link', [$me, 'macroLink']);
 		$me->addMacro('ifCurrent', [$me, 'macroIfCurrent'], '}'); // deprecated; use n:class="$presenter->linkCurrent ? ..."

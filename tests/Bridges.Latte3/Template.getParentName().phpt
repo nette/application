@@ -11,9 +11,12 @@ if (version_compare(Latte\Engine::VERSION, '3', '<')) {
 Tester\Environment::bypassFinals();
 
 $presenter = Mockery::mock(Nette\Application\UI\Presenter::class)
-	->shouldReceive('getPresenter')->andReturnSelf()
-	->shouldReceive('getHttpResponse')->andReturn(Mockery::mock(Nette\Http\IResponse::class)->shouldIgnoreMissing())
-	->shouldReceive('findLayoutTemplateFile')->andReturn('layout.latte')
+	->shouldReceive('getPresenter')
+	->andReturnSelf()
+	->shouldReceive('getHttpResponse')
+	->andReturn(Mockery::mock(Nette\Http\IResponse::class)->shouldIgnoreMissing())
+	->shouldReceive('findLayoutTemplateFile')
+	->andReturn('layout.latte')
 	->mock();
 
 $latte = new Latte\Engine;

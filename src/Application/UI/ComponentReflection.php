@@ -107,7 +107,7 @@ final class ComponentReflection extends \ReflectionClass
 		$names = $attrs
 			? $attrs[0]->getArguments()
 			: (array) self::parseAnnotation($this, 'persistent');
-		$names = array_merge($names, $class::getPersistentComponents());
+		$names = [...$names, ...$class::getPersistentComponents()];
 		$components = array_fill_keys($names, ['since' => $class]);
 
 		if ($this->isSubclassOf(Presenter::class)) {

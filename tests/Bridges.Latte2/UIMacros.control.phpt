@@ -24,7 +24,7 @@ Assert::match(
 	$latte->compile('{control form}'),
 );
 
-@Assert::match(
+@Assert::match( // @ modifiers in {control} are deprecated
 	<<<'XX'
 		%A%
 				/* %a% */ $_tmp = $this->global->uiControl->getComponent("form");
@@ -36,7 +36,7 @@ Assert::match(
 		%A%
 		XX,
 	$latte->compile('{control form|filter}'),
-); // @deprecated
+);
 
 Assert::match(
 	<<<'XX'

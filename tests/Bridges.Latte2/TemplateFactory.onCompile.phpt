@@ -48,12 +48,9 @@ test('', function () {
 test('', function () {
 	class Event implements IteratorAggregate
 	{
-		public $events;
-
-
-		public function __construct($events)
-		{
-			$this->events = $events;
+		public function __construct(
+			public $events,
+		) {
 		}
 
 

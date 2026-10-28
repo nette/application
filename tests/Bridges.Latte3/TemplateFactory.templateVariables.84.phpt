@@ -5,7 +5,6 @@
  * @phpVersion 8.4
  */
 
-use Latte\Attributes\{TemplateFilter, TemplateFunction};
 use Nette\Application\Attributes\TemplateVariable;
 use Nette\Bridges\ApplicationLatte\{LatteFactory, TemplateFactory};
 use Nette\Http;

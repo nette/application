@@ -27,7 +27,10 @@ class IfCurrentNode extends StatementNode
 	/** @return \Generator<int, ?list<string>, array{AreaNode, ?Tag}, static> */
 	public static function create(Tag $tag): \Generator
 	{
-		trigger_error("Tag {ifCurrent} is deprecated, use {if isLinkCurrent('...')} instead (on line {$tag->position->line})", E_USER_DEPRECATED);
+		trigger_error(
+			"Tag {ifCurrent} is deprecated, use {if isLinkCurrent('...')} instead (on line {$tag->position->line})",
+			E_USER_DEPRECATED,
+		);
 		$node = $tag->node = new static;
 		if (!$tag->parser->isEnd()) {
 			$node->destination = $tag->parser->parseUnquotedStringOrExpression();

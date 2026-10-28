@@ -11,7 +11,8 @@ if (version_compare(Latte\Engine::VERSION, '3', '>')) {
 
 
 $presenter = Mockery::mock(Nette\Application\UI\Presenter::class)
-	->shouldReceive('findLayoutTemplateFile')->andReturn('layout.latte')
+	->shouldReceive('findLayoutTemplateFile')
+	->andReturn('layout.latte')
 	->mock();
 
 $latte = new Latte\Engine;

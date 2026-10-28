@@ -5,7 +5,6 @@ use Nette\Application\Responses\{ForwardResponse, TextResponse};
 use Nette\Routing\Router;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 

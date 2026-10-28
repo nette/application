@@ -28,7 +28,7 @@ class TestPresenter extends Nette\Application\UI\Presenter
 
 
 $presenter = new TestPresenter;
-$presenter->injectPrimary(new Http\Request(new Http\UrlScript('/')), new Http\Response);
+$presenter->injectPrimary(new Http\Request(new Http\UrlScript), new Http\Response);
 ob_start();
 $presenter->render('<div n:snippet=test>hello</div>');
 $content = ob_get_clean();
@@ -36,7 +36,7 @@ Assert::same('<div data-snippet="snippet--test">hello</div>', $content);
 
 
 $presenter = new TestPresenter;
-$presenter->injectPrimary(new Http\Request(new Http\UrlScript('/')), new Http\Response);
+$presenter->injectPrimary(new Http\Request(new Http\UrlScript), new Http\Response);
 Assert::exception(
 	fn() => $presenter->render('<div n:snippet=test data-snippet>hello</div>'),
 	Latte\CompileException::class,

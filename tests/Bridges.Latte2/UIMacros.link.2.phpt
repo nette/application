@@ -88,33 +88,33 @@ Assert::match(<<<'EOD'
 
 	<a href="link:['default!#hash',10,20]"></a>
 	EOD, strtr($latte->renderToString(<<<'EOD'
-	{plink Homepage:}
+		{plink Homepage:}
 
-	{plink  Homepage: }
+		{plink  Homepage: }
 
-	{plink Homepage:action }
+		{plink Homepage:action }
 
-	{plink 'Homepage:action' }
+		{plink 'Homepage:action' }
 
-	{plink Homepage:action 10, 20, '{one}&two'}
+		{plink Homepage:action 10, 20, '{one}&two'}
 
-	{plink Homepage:action#hash 10, 20, '{one}&two'}
+		{plink Homepage:action#hash 10, 20, '{one}&two'}
 
-	{plink #hash}
+		{plink #hash}
 
-	{plink : 10 }
+		{plink : 10 }
 
-	{plink default 10, 'a' => 20, 'b' => 30}
+		{plink default 10, 'a' => 20, 'b' => 30}
 
-	{link  $action}
+		{link  $action}
 
-	<a href="{plink $arr['link'], $arr['param']}"></a>
+		<a href="{plink $arr['link'], $arr['param']}"></a>
 
-	<a href="{link default! 10, 'a' => 20, 'b' => 30}"></a>
+		<a href="{link default! 10, 'a' => 20, 'b' => 30}"></a>
 
-	<a n:href="Homepage:"></a>
+		<a n:href="Homepage:"></a>
 
-	<a n:href="default! 10, 'a' => 20, 'b' => 30"></a>
+		<a n:href="default! 10, 'a' => 20, 'b' => 30"></a>
 
-	<a n:href="default!#hash 10, 20"></a>
-	EOD, $params), ['&#039;' => "'", '&apos;' => "'", '&#123;' => '{']));
+		<a n:href="default!#hash 10, 20"></a>
+		EOD, $params), ['&#039;' => "'", '&apos;' => "'", '&#123;' => '{']));

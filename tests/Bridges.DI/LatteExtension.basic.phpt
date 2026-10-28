@@ -16,12 +16,9 @@ if (version_compare(Latte\Engine::VERSION, '3', '<')) {
 
 class MyExtension extends Latte\Extension
 {
-	public $arg;
-
-
-	public function __construct($arg = null)
-	{
-		$this->arg = $arg;
+	public function __construct(
+		public $arg = null,
+	) {
 	}
 }
 
@@ -49,7 +46,7 @@ services:
 ', 'neon'));
 
 $compiler = new DI\Compiler;
-$compiler->addExtension('latte', new Nette\Bridges\ApplicationDI\LatteExtension('', debugMode: false));
+$compiler->addExtension('latte', new Nette\Bridges\ApplicationDI\LatteExtension(''));
 $compiler->addExtension('another', new AnotherExtension);
 $code = $compiler->addConfig($config)->compile();
 eval($code);

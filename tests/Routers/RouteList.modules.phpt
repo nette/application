@@ -6,7 +6,6 @@
 
 use Nette\Application\Routers\{Route, RouteList};
 
-
 require __DIR__ . '/../bootstrap.php';
 
 require __DIR__ . '/Route.php';

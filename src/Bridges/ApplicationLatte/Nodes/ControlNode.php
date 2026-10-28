@@ -79,7 +79,8 @@ class ControlNode extends StatementNode
 
 		$method = match (true) {
 			!$this->method => 'render',
-			$this->method instanceof StringNode && Strings::match($this->method->value, '#^\w*$#D') => 'render' . ucfirst($this->method->value),
+			$this->method instanceof StringNode && Strings::match($this->method->value, '#^\w*$#D')
+				=> 'render' . ucfirst($this->method->value),
 			default => "{'render' . " . $this->method->print($context) . '}',
 		};
 

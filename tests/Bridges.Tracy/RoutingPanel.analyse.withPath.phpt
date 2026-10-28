@@ -32,7 +32,7 @@ test('URL: /', function () use ($router) {
 		'routes' => [
 			(object) [
 				'matched' => 'no',
-				'class' => 'Nette\Application\Routers\Route',
+				'class' => Nette\Application\Routers\Route::class,
 				'defaults' => ['presenter' => 'Sign', 'action' => 'in'],
 				'mask' => 'sign-in',
 				'params' => null,
@@ -45,7 +45,7 @@ test('URL: /', function () use ($router) {
 				'routes' => [
 					(object) [
 						'matched' => 'no',
-						'class' => 'Nette\Application\Routers\Route',
+						'class' => Nette\Application\Routers\Route::class,
 						'defaults' => ['presenter' => 'Admin:Home', 'action' => 'default'],
 						'mask' => '',
 						'params' => null,
@@ -53,7 +53,7 @@ test('URL: /', function () use ($router) {
 					],
 					(object) [
 						'matched' => 'no',
-						'class' => 'Nette\Application\Routers\Route',
+						'class' => Nette\Application\Routers\Route::class,
 						'defaults' => ['module' => 'Admin', 'action' => 'default'],
 						'mask' => '<presenter>/<action=default>',
 						'params' => null,
@@ -63,7 +63,7 @@ test('URL: /', function () use ($router) {
 			],
 			(object) [
 				'matched' => 'yes',
-				'class' => 'Nette\Application\Routers\Route',
+				'class' => Nette\Application\Routers\Route::class,
 				'defaults' => ['presenter' => 'Article', 'action' => 'homepage'],
 				'mask' => '',
 				'params' => ['presenter' => 'Article', 'action' => 'homepage'],
@@ -71,7 +71,7 @@ test('URL: /', function () use ($router) {
 			],
 			(object) [
 				'matched' => 'no',
-				'class' => 'Nette\Application\Routers\Route',
+				'class' => Nette\Application\Routers\Route::class,
 				'defaults' => ['action' => 'default'],
 				'mask' => '<presenter>/<action=default>',
 				'params' => null,
@@ -95,7 +95,7 @@ test('URL: /foo', function () use ($router) {
 		'routes' => [
 			(object) [
 				'matched' => 'no',
-				'class' => 'Nette\Application\Routers\Route',
+				'class' => Nette\Application\Routers\Route::class,
 				'defaults' => ['presenter' => 'Sign', 'action' => 'in'],
 				'mask' => 'sign-in',
 				'params' => null,
@@ -108,7 +108,7 @@ test('URL: /foo', function () use ($router) {
 				'routes' => [
 					(object) [
 						'matched' => 'no',
-						'class' => 'Nette\Application\Routers\Route',
+						'class' => Nette\Application\Routers\Route::class,
 						'defaults' => ['presenter' => 'Admin:Home', 'action' => 'default'],
 						'mask' => '',
 						'params' => null,
@@ -116,7 +116,7 @@ test('URL: /foo', function () use ($router) {
 					],
 					(object) [
 						'matched' => 'no',
-						'class' => 'Nette\Application\Routers\Route',
+						'class' => Nette\Application\Routers\Route::class,
 						'defaults' => ['module' => 'Admin', 'action' => 'default'],
 						'mask' => '<presenter>/<action=default>',
 						'params' => null,
@@ -126,7 +126,7 @@ test('URL: /foo', function () use ($router) {
 			],
 			(object) [
 				'matched' => 'no',
-				'class' => 'Nette\Application\Routers\Route',
+				'class' => Nette\Application\Routers\Route::class,
 				'defaults' => ['presenter' => 'Article', 'action' => 'homepage'],
 				'mask' => '',
 				'params' => null,
@@ -134,7 +134,7 @@ test('URL: /foo', function () use ($router) {
 			],
 			(object) [
 				'matched' => 'yes',
-				'class' => 'Nette\Application\Routers\Route',
+				'class' => Nette\Application\Routers\Route::class,
 				'defaults' => ['action' => 'default'],
 				'mask' => '<presenter>/<action=default>',
 				'params' => ['presenter' => 'Foo', 'action' => 'default'],
@@ -158,7 +158,7 @@ test('URL: /admin', function () use ($router) {
 		'routes' => [
 			(object) [
 				'matched' => 'no',
-				'class' => 'Nette\Application\Routers\Route',
+				'class' => Nette\Application\Routers\Route::class,
 				'defaults' => ['presenter' => 'Sign', 'action' => 'in'],
 				'mask' => 'sign-in',
 				'params' => null,
@@ -171,7 +171,7 @@ test('URL: /admin', function () use ($router) {
 				'routes' => [
 					(object) [
 						'matched' => 'yes',
-						'class' => 'Nette\Application\Routers\Route',
+						'class' => Nette\Application\Routers\Route::class,
 						'defaults' => ['presenter' => 'Admin:Home', 'action' => 'default'],
 						'mask' => '',
 						'params' => ['presenter' => 'Admin:Home', 'action' => 'default'],
@@ -179,7 +179,7 @@ test('URL: /admin', function () use ($router) {
 					],
 					(object) [
 						'matched' => 'no',
-						'class' => 'Nette\Application\Routers\Route',
+						'class' => Nette\Application\Routers\Route::class,
 						'defaults' => ['module' => 'Admin', 'action' => 'default'],
 						'mask' => '<presenter>/<action=default>',
 						'params' => null,
@@ -189,7 +189,7 @@ test('URL: /admin', function () use ($router) {
 			],
 			(object) [
 				'matched' => 'no',
-				'class' => 'Nette\Application\Routers\Route',
+				'class' => Nette\Application\Routers\Route::class,
 				'defaults' => ['presenter' => 'Article', 'action' => 'homepage'],
 				'mask' => '',
 				'params' => null,
@@ -197,7 +197,7 @@ test('URL: /admin', function () use ($router) {
 			],
 			(object) [
 				'matched' => 'may',
-				'class' => 'Nette\Application\Routers\Route',
+				'class' => Nette\Application\Routers\Route::class,
 				'defaults' => ['action' => 'default'],
 				'mask' => '<presenter>/<action=default>',
 				'params' => ['presenter' => 'Admin', 'action' => 'default'],
@@ -221,7 +221,7 @@ test('URL: /admin/', function () use ($router) {
 		'routes' => [
 			(object) [
 				'matched' => 'no',
-				'class' => 'Nette\Application\Routers\Route',
+				'class' => Nette\Application\Routers\Route::class,
 				'defaults' => ['presenter' => 'Sign', 'action' => 'in'],
 				'mask' => 'sign-in',
 				'params' => null,
@@ -234,7 +234,7 @@ test('URL: /admin/', function () use ($router) {
 				'routes' => [
 					(object) [
 						'matched' => 'yes',
-						'class' => 'Nette\Application\Routers\Route',
+						'class' => Nette\Application\Routers\Route::class,
 						'defaults' => ['presenter' => 'Admin:Home', 'action' => 'default'],
 						'mask' => '',
 						'params' => ['presenter' => 'Admin:Home', 'action' => 'default'],
@@ -242,7 +242,7 @@ test('URL: /admin/', function () use ($router) {
 					],
 					(object) [
 						'matched' => 'no',
-						'class' => 'Nette\Application\Routers\Route',
+						'class' => Nette\Application\Routers\Route::class,
 						'defaults' => ['module' => 'Admin', 'action' => 'default'],
 						'mask' => '<presenter>/<action=default>',
 						'params' => null,
@@ -252,7 +252,7 @@ test('URL: /admin/', function () use ($router) {
 			],
 			(object) [
 				'matched' => 'no',
-				'class' => 'Nette\Application\Routers\Route',
+				'class' => Nette\Application\Routers\Route::class,
 				'defaults' => ['presenter' => 'Article', 'action' => 'homepage'],
 				'mask' => '',
 				'params' => null,
@@ -260,7 +260,7 @@ test('URL: /admin/', function () use ($router) {
 			],
 			(object) [
 				'matched' => 'may',
-				'class' => 'Nette\Application\Routers\Route',
+				'class' => Nette\Application\Routers\Route::class,
 				'defaults' => ['action' => 'default'],
 				'mask' => '<presenter>/<action=default>',
 				'params' => ['presenter' => 'Admin', 'action' => 'default'],
@@ -284,7 +284,7 @@ test('URL: /admin/foo', function () use ($router) {
 		'routes' => [
 			(object) [
 				'matched' => 'no',
-				'class' => 'Nette\Application\Routers\Route',
+				'class' => Nette\Application\Routers\Route::class,
 				'defaults' => ['presenter' => 'Sign', 'action' => 'in'],
 				'mask' => 'sign-in',
 				'params' => null,
@@ -297,7 +297,7 @@ test('URL: /admin/foo', function () use ($router) {
 				'routes' => [
 					(object) [
 						'matched' => 'no',
-						'class' => 'Nette\Application\Routers\Route',
+						'class' => Nette\Application\Routers\Route::class,
 						'defaults' => ['presenter' => 'Admin:Home', 'action' => 'default'],
 						'mask' => '',
 						'params' => null,
@@ -305,7 +305,7 @@ test('URL: /admin/foo', function () use ($router) {
 					],
 					(object) [
 						'matched' => 'yes',
-						'class' => 'Nette\Application\Routers\Route',
+						'class' => Nette\Application\Routers\Route::class,
 						'defaults' => ['module' => 'Admin', 'action' => 'default'],
 						'mask' => '<presenter>/<action=default>',
 						'params' => ['presenter' => 'Admin:Foo', 'action' => 'default'],
@@ -315,7 +315,7 @@ test('URL: /admin/foo', function () use ($router) {
 			],
 			(object) [
 				'matched' => 'no',
-				'class' => 'Nette\Application\Routers\Route',
+				'class' => Nette\Application\Routers\Route::class,
 				'defaults' => ['presenter' => 'Article', 'action' => 'homepage'],
 				'mask' => '',
 				'params' => null,
@@ -323,7 +323,7 @@ test('URL: /admin/foo', function () use ($router) {
 			],
 			(object) [
 				'matched' => 'may',
-				'class' => 'Nette\Application\Routers\Route',
+				'class' => Nette\Application\Routers\Route::class,
 				'defaults' => ['action' => 'default'],
 				'mask' => '<presenter>/<action=default>',
 				'params' => ['presenter' => 'Admin', 'action' => 'foo'],

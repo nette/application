@@ -20,13 +20,12 @@ class SnippetBridge implements ISnippetBridge
 {
 	use Nette\SmartObject;
 
-	private Control $control;
 	private ?\stdClass $payload = null;
 
 
-	public function __construct(Control $control)
-	{
-		$this->control = $control;
+	public function __construct(
+		private Control $control,
+	) {
 	}
 
 

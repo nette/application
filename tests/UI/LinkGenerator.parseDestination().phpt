@@ -4,7 +4,6 @@ use Nette\Application\LinkGenerator;
 use Nette\Application\UI\InvalidLinkException;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 

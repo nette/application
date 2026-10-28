@@ -7,7 +7,6 @@
 use Nette\{Application, Http};
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 
@@ -160,6 +159,6 @@ test('Presenter link() with persistent parameters', function () {
 	$presenter->invalidLinkMode = TestPresenter::InvalidLinkWarning;
 	$presenter->autoCanonicalize = false;
 
-	$request = new Application\Request('Test', Http\Request::Get, []);
+	$request = new Application\Request('Test', Http\Request::Get);
 	$presenter->run($request);
 });
