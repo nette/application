@@ -107,7 +107,7 @@ final class ComponentReflection extends \ReflectionClass
 		$names = $attrs
 			? $attrs[0]->getArguments()
 			: (array) self::parseAnnotation($this, 'persistent');
-		$names = array_merge($names, $class::getPersistentComponents());
+		$names = [...$names, ...$class::getPersistentComponents()];
 		$components = array_fill_keys($names, ['since' => $class]);
 
 		if ($this->isSubclassOf(Presenter::class)) {
@@ -199,7 +199,7 @@ final class ComponentReflection extends \ReflectionClass
 			'persistent' => '#[Nette\Application\Attributes\Persistent]',
 			'deprecated' => '#[Nette\Application\Attributes\Deprecated]',
 			'crossOrigin' => '#[Nette\Application\Attributes\Requires(sameOrigin: false)]',
-			default => 'alternative'
+			default => 'alternative',
 		};
 		trigger_error("Annotation @$name is deprecated, use $alt (used in " . Reflection::toString($ref) . ')', E_USER_DEPRECATED);
 		return $res;

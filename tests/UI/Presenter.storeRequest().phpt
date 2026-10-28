@@ -7,7 +7,6 @@
 use Nette\{Application, Http};
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 
@@ -62,7 +61,7 @@ test('request storage with user context', function () {
 		$userMock,
 	);
 
-	$applicationRequest = new Application\Request('', '', []);
+	$applicationRequest = new Application\Request('', '');
 	$presenter->run($applicationRequest);
 
 	$expiration = '+1 year';
@@ -113,7 +112,7 @@ test('request storage without user context', function () {
 		$sessionMock,
 	);
 
-	$applicationRequest = new Application\Request('', '', []);
+	$applicationRequest = new Application\Request('', '');
 	$presenter->run($applicationRequest);
 
 	$expiration = '+1 year';

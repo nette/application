@@ -12,6 +12,7 @@ use Latte\Compiler\{PhpHelpers, PrintContext};
 use Nette\Application\UI;
 use Nette\Bridges\ApplicationLatte\Template;
 
+
 /**
  * {templatePrint [ClassName]}
  * Generates template class extending Nette\Bridges\ApplicationLatte\Template.

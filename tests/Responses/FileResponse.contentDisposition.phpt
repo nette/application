@@ -8,7 +8,6 @@ use Nette\Application\Responses\FileResponse;
 use Nette\Http;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 if (PHP_SAPI === 'cli') {
@@ -28,7 +27,10 @@ test('default attachment content disposition', function () {
 	$fileResponse->send(new Http\Request(new Http\UrlScript), $response = new Http\Response);
 
 	Assert::same($origData, ob_get_clean());
-	Assert::same('attachment; filename="' . $fileName . '"; filename*=utf-8\'\'' . rawurlencode($fileName), $response->getHeader('Content-Disposition'));
+	Assert::same(
+		'attachment; filename="' . $fileName . '"; filename*=utf-8\'\'' . rawurlencode($fileName),
+		$response->getHeader('Content-Disposition'),
+	);
 });
 
 
@@ -44,7 +46,10 @@ test('inline content disposition', function () {
 	$fileResponse->send(new Http\Request(new Http\UrlScript), $response = new Http\Response);
 
 	Assert::same($origData, ob_get_clean());
-	Assert::same('inline; filename="' . $fileName . '"; filename*=utf-8\'\'' . rawurlencode($fileName), $response->getHeader('Content-Disposition'));
+	Assert::same(
+		'inline; filename="' . $fileName . '"; filename*=utf-8\'\'' . rawurlencode($fileName),
+		$response->getHeader('Content-Disposition'),
+	);
 });
 
 
@@ -58,5 +63,8 @@ test('filename with special characters', function () {
 	$fileResponse->send(new Http\Request(new Http\UrlScript), $response = new Http\Response);
 
 	Assert::same($origData, ob_get_clean());
-	Assert::same('attachment; filename="' . $fileName . '"; filename*=utf-8\'\'' . rawurlencode($fileName), $response->getHeader('Content-Disposition'));
+	Assert::same(
+		'attachment; filename="' . $fileName . '"; filename*=utf-8\'\'' . rawurlencode($fileName),
+		$response->getHeader('Content-Disposition'),
+	);
 });

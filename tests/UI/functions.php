@@ -1,6 +1,5 @@
 <?php declare(strict_types=1);
 
-
 function createPresenter(string $class, ...$options): Nette\Application\UI\Presenter
 {
 	$presenter = new $class;

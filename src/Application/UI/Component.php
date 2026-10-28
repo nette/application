@@ -165,6 +165,7 @@ abstract class Component extends Nette\ComponentModel\Container implements Signa
 				}
 
 				$this->$name = $params[$name];
+
 			} else {
 				$params[$name] = $this->$name ?? null;
 			}

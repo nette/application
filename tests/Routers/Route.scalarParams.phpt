@@ -7,15 +7,13 @@
 use Nette\Application\Routers\Route;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 require __DIR__ . '/Route.php';
 
 
 test('numeric and boolean parameter serialization', function () {
-	$route = new Route('<presenter>/<param>', [
-	]);
+	$route = new Route('<presenter>/<param>');
 
 	Assert::same(
 		'http://example.com/homepage/12',

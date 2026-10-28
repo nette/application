@@ -8,7 +8,6 @@ use Nette\Application\Request;
 use Nette\Http;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 
@@ -30,7 +29,7 @@ function createContainer()
 	$latteFactory = Mockery::mock(Nette\Bridges\ApplicationLatte\LatteFactory::class);
 	$latteFactory->shouldReceive('create')->andReturn(new Latte\Engine);
 	$container = Mockery::mock(Nette\DI\Container::class);
-	$container->shouldReceive('getByType')->with('Nette\Bridges\ApplicationLatte\LatteFactory')->andReturn($latteFactory);
+	$container->shouldReceive('getByType')->with(Nette\Bridges\ApplicationLatte\LatteFactory::class)->andReturn($latteFactory);
 	return $container;
 }
 

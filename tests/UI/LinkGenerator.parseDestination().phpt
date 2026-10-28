@@ -4,7 +4,6 @@ use Nette\Application\LinkGenerator;
 use Nette\Application\UI\InvalidLinkException;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 
@@ -46,7 +45,7 @@ Assert::same([
 	'signal' => false,
 	'args' => [],
 	'fragment' => '#fragment',
-], @LinkGenerator::parseDestination('a:b?#fragment')); // deprecated
+], @LinkGenerator::parseDestination('a:b?#fragment')); // @ query string in link is deprecated
 
 Assert::same([
 	'absolute' => false,
@@ -54,7 +53,7 @@ Assert::same([
 	'signal' => false,
 	'args' => ['a' => 'b', 'c' => 'd'],
 	'fragment' => '#fragment',
-], @LinkGenerator::parseDestination('a:b?a=b&c=d#fragment')); // deprecated
+], @LinkGenerator::parseDestination('a:b?a=b&c=d#fragment')); // @ query string in link is deprecated
 
 Assert::exception(
 	fn() => LinkGenerator::parseDestination(''),

@@ -7,7 +7,6 @@
 use Nette\Application\Request;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 
@@ -30,7 +29,10 @@ test('callback invocation with parameters', function () {
 
 test('dependency injection in callback', function () {
 	$container = Mockery::mock(Nette\DI\Container::class)
-		->shouldReceive('getByType')->with('stdClass', false)->once()->andReturn(new stdClass)
+		->shouldReceive('getByType')
+		->with('stdClass', false)
+		->once()
+		->andReturn(new stdClass)
 		->mock();
 
 	$presenter = new NetteModule\MicroPresenter($container);

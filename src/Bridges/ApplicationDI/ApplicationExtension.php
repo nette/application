@@ -92,10 +92,16 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 			: UI\Presenter::InvalidLinkWarning;
 
 		$application = $builder->addDefinition($this->prefix('application'))
-			->setFactory(Nette\Application\Application::class);
+			->setCreator(Nette\Application\Application::class);
 		if ($config->catchExceptions || !$this->debugMode) {
-			$application->addSetup('$error4xxPresenter', [is_array($config->errorPresenter) ? $config->errorPresenter['4xx'] : $config->errorPresenter]);
-			$application->addSetup('$errorPresenter', [is_array($config->errorPresenter) ? $config->errorPresenter['5xx'] : $config->errorPresenter]);
+			$application->addSetup(
+				'$error4xxPresenter',
+				[is_array($config->errorPresenter) ? $config->errorPresenter['4xx'] : $config->errorPresenter],
+			);
+			$application->addSetup(
+				'$errorPresenter',
+				[is_array($config->errorPresenter) ? $config->errorPresenter['5xx'] : $config->errorPresenter],
+			);
 		}
 
 		$this->compiler->addExportedType(Nette\Application\Application::class);
@@ -108,7 +114,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 
 		$presenterFactory = $builder->addDefinition($this->prefix('presenterFactory'))
 			->setType(Nette\Application\IPresenterFactory::class)
-			->setFactory(Nette\Application\PresenterFactory::class, [new Definitions\Statement(
+			->setCreator(Nette\Application\PresenterFactory::class, [new Definitions\Statement(
 				Nette\Bridges\ApplicationDI\PresenterFactoryCallback::class,
 				[1 => $touch ?? null],
 			)]);
@@ -124,7 +130,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 		}
 
 		$builder->addDefinition($this->prefix('linkGenerator'))
-			->setFactory(Nette\Application\LinkGenerator::class, [
+			->setCreator(Nette\Application\LinkGenerator::class, [
 				1 => new Definitions\Statement([new Definitions\Statement('@Nette\Http\IRequest::getUrl'), 'withoutUserInfo']),
 			]);
 
@@ -208,7 +214,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 			$classFile = dirname((string) $rc->getFileName()) . '/autoload_classmap.php';
 			if (is_file($classFile)) {
 				$this->getContainerBuilder()->addDependency($classFile);
-				$classes = array_merge($classes, array_keys((fn($path) => require $path)($classFile)));
+				$classes = [...$classes, ...array_keys((fn($path) => require $path)($classFile))];
 			}
 		}
 
@@ -286,22 +292,40 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 			if (($rp->getAttributes($attr = Attributes\Parameter::class) || $rp->getAttributes($attr = Attributes\Persistent::class))
 				&& (!$rp->isPublic() || $rp->isStatic() || $rp->isReadOnly())
 			) {
-				throw new Nette\InvalidStateException(sprintf('Property %s: attribute %s can be used only with public non-static property.', Reflection::toString($rp), $attr));
+				throw new Nette\InvalidStateException(sprintf(
+					'Property %s: attribute %s can be used only with public non-static property.',
+					Reflection::toString($rp),
+					$attr,
+				));
 			}
 		}
 
 		$re = $class::formatActionMethod('') . '.|' . $class::formatRenderMethod('') . '.|' . $class::formatSignalMethod('') . '.';
 		foreach ($rc->getMethods() as $rm) {
 			if (preg_match("#^(?!handleInvalidLink)($re)#", $rm->getName()) && (!$rm->isPublic() || $rm->isStatic())) {
-				throw new Nette\InvalidStateException(sprintf('Method %s: this method must be public non-static.', Reflection::toString($rm)));
+				throw new Nette\InvalidStateException(sprintf(
+					'Method %s: this method must be public non-static.',
+					Reflection::toString($rm),
+				));
 			} elseif (preg_match('#^createComponent.#', $rm->getName()) && ($rm->isPrivate() || $rm->isStatic())) {
-				throw new Nette\InvalidStateException(sprintf('Method %s: this method must be non-private non-static.', Reflection::toString($rm)));
+				throw new Nette\InvalidStateException(sprintf(
+					'Method %s: this method must be non-private non-static.',
+					Reflection::toString($rm),
+				));
 			} elseif ($rm->getAttributes(Attributes\Requires::class, \ReflectionAttribute::IS_INSTANCEOF)
 				&& !preg_match("#^$re|createComponent.#", $rm->getName())
 			) {
-				throw new Nette\InvalidStateException(sprintf('Method %s: attribute %s can be used only with action, render, handle or createComponent methods.', Reflection::toString($rm), Attributes\Requires::class));
+				throw new Nette\InvalidStateException(sprintf(
+					'Method %s: attribute %s can be used only with action, render, handle or createComponent methods.',
+					Reflection::toString($rm),
+					Attributes\Requires::class,
+				));
 			} elseif ($rm->getAttributes(Attributes\Deprecated::class) && !preg_match("#^$re#", $rm->getName())) {
-				throw new Nette\InvalidStateException(sprintf('Method %s: attribute %s can be used only with action, render or handle methods.', Reflection::toString($rm), Attributes\Deprecated::class));
+				throw new Nette\InvalidStateException(sprintf(
+					'Method %s: attribute %s can be used only with action, render or handle methods.',
+					Reflection::toString($rm),
+					Attributes\Deprecated::class,
+				));
 			}
 		}
 	}

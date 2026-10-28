@@ -8,7 +8,7 @@
 namespace Nette\Application\UI;
 
 use Nette;
-use function count, sprintf;
+use function sprintf;
 
 
 /**
@@ -140,7 +140,7 @@ abstract class Control extends Component implements Renderable
 		if ($snippet !== null) {
 			return $this->invalidSnippets[$snippet] ?? isset($this->invalidSnippets["\0"]);
 
-		} elseif (count($this->invalidSnippets) > 0) {
+		} elseif ($this->invalidSnippets !== []) {
 			return true;
 		}
 

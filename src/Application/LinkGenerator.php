@@ -154,7 +154,12 @@ final class LinkGenerator
 					throw new UI\InvalidLinkException("Unknown signal '$signal', missing handler {$reflection->getName()}::{$component::formatSignalMethod($signal)}()");
 				}
 
-				$this->validateLinkTarget($refPresenter, $method, "signal '$signal'" . ($component === $refPresenter ? '' : ' in ' . $component::class), $mode);
+				$this->validateLinkTarget(
+					$refPresenter,
+					$method,
+					"signal '$signal'" . ($component === $refPresenter ? '' : ' in ' . $component::class),
+					$mode,
+				);
 
 				// convert indexed parameters to named
 				UI\ParameterConverter::toParameters($method, $args, [], $missing);
@@ -180,7 +185,9 @@ final class LinkGenerator
 				$action = UI\Presenter::DefaultAction;
 			}
 
-			$current = $refPresenter && ($action === '*' || strcasecmp($action, $refPresenter->getAction()) === 0) && $presenterClass === $refPresenter::class;
+			$current = $refPresenter
+				&& ($action === '*' || strcasecmp($action, $refPresenter->getAction()) === 0)
+				&& $presenterClass === $refPresenter::class;
 
 			$reflection = new UI\ComponentReflection($presenterClass);
 			$this->validateLinkTarget($refPresenter, $reflection, "presenter '$presenter'", $mode);
@@ -195,7 +202,12 @@ final class LinkGenerator
 			if ($method = $reflection->getActionRenderMethod($action)) {
 				$this->validateLinkTarget($refPresenter, $method, "action '$presenter:$action'", $mode);
 
-				UI\ParameterConverter::toParameters($method, $args, $path === 'this' ? ($refPresenter?->getParameters() ?? []) : [], $missing);
+				UI\ParameterConverter::toParameters(
+					$method,
+					$args,
+					$path === 'this' ? ($refPresenter?->getParameters() ?? []) : [],
+					$missing,
+				);
 
 			} elseif (array_key_exists(0, $args)) {
 				throw new UI\InvalidLinkException("Unable to pass parameters to action '$presenter:$action', missing corresponding method $presenterClass::{$presenterClass::formatRenderMethod($action)}().");
@@ -258,7 +270,11 @@ final class LinkGenerator
 	 */
 	public static function parseDestination(string $destination): array
 	{
-		if (!preg_match('~^ (?<absolute>//)?+ (?<path>[^!?#]++) (?<signal>!)?+ (?<query>\?[^#]*)?+ (?<fragment>\#.*)?+ $~x', $destination, $matches)) {
+		if (!preg_match(
+			'~^ (?<absolute>//)?+ (?<path>[^!?#]++) (?<signal>!)?+ (?<query>\?[^#]*)?+ (?<fragment>\#.*)?+ $~x',
+			$destination,
+			$matches,
+		)) {
 			throw new UI\InvalidLinkException("Invalid destination '$destination'.");
 		}
 

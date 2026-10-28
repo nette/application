@@ -21,8 +21,8 @@ final class AccessPolicy
 	private Presenter $presenter;
 
 
-	/** @param  \ReflectionClass<object>|\ReflectionMethod  $element */
 	public function __construct(
+		/** @var \ReflectionClass<object>|\ReflectionMethod */
 		private readonly \ReflectionClass|\ReflectionMethod $element,
 	) {
 	}
@@ -30,8 +30,8 @@ final class AccessPolicy
 
 	public function checkAccess(Component $component): void
 	{
-		$this->presenter ??= $component->getPresenter(throw: false) ??
-			throw new Nette\InvalidStateException('Presenter is required for checking requirements of ' . Reflection::toString($this->element));
+		$this->presenter ??= $component->getPresenter(throw: false)
+			?? throw new Nette\InvalidStateException('Presenter is required for checking requirements of ' . Reflection::toString($this->element));
 
 		$attrs = $this->getAttributes();
 		$attrs = self::applyInternalRules($attrs, $component);
@@ -97,7 +97,10 @@ final class AccessPolicy
 		}
 
 		if ($attribute->ajax && !$this->presenter->getHttpRequest()->isAjax()) {
-			$this->presenter->error('AJAX request is required by ' . Reflection::toString($this->element), Nette\Http\IResponse::S403_Forbidden);
+			$this->presenter->error(
+				'AJAX request is required by ' . Reflection::toString($this->element),
+				Nette\Http\IResponse::S403_Forbidden,
+			);
 		}
 	}
 

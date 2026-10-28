@@ -4,6 +4,8 @@
  * PHPStan type tests for Application.
  */
 
+// dresscode:disable hygiene.defaultArgument -- the named arguments say what the call does
+
 use Nette\Application;
 use Nette\Application\{Helpers, LinkGenerator};
 use Nette\Application\Routers\RouteList;
@@ -153,7 +155,7 @@ function testParseDestination(): void
 function testTemplateFactoryCreateTemplate(TemplateFactory $factory): void
 {
 	$template = $factory->createTemplate();
-	assertType('Nette\Bridges\ApplicationLatte\Template', $template);
+	assertType(Nette\Bridges\ApplicationLatte\Template::class, $template);
 }
 
 
