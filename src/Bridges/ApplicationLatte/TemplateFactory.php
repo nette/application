@@ -28,7 +28,7 @@ class TemplateFactory implements UI\TemplateFactory
 		private readonly ?Nette\Security\User $user = null,
 		$templateClass = null,
 	) {
-		if ($templateClass && (!class_exists($templateClass) || !is_a($templateClass, Template::class, allow_string: true))) {
+		if ($templateClass && !is_a($templateClass, Template::class, allow_string: true)) {
 			throw new Nette\InvalidArgumentException("Class $templateClass does not implement " . Template::class . ' or it does not exist.');
 		}
 
