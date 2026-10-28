@@ -51,6 +51,7 @@ namespace {
 		$generator = new LinkGenerator(new Routers\SimpleRouter, new Http\UrlScript('http://nette.org/en/'), $pf);
 		Assert::same('http://nette.org/en/?action=default&presenter=Homepage', $generator->link('Homepage:default'));
 		Assert::same('http://nette.org/en/?action=default&presenter=Module%3AMy', $generator->link('Module:My:default'));
+		Assert::same('http://nette.org/en/?action=default&presenter=Module%3AMy', $generator->link(':Module:My:default'));
 		Assert::same('http://nette.org/en/?presenter=Module%3AMy', $generator->link('Module:My:'));
 		Assert::same('http://nette.org/en/?action=default&presenter=Homepage', $generator->link('Homepage:'));
 		Assert::same('http://nette.org/en/?a=10&action=default&presenter=Homepage', $generator->link('Homepage:', [10]));
