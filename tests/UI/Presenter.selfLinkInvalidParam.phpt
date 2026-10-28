@@ -9,7 +9,6 @@ use Nette\{Application, Http};
 use Nette\Application\UI\{InvalidLinkException, InvalidRequestParameterException, Presenter};
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 

@@ -4,6 +4,8 @@
  * Test: LatteExtension v3
  */
 
+// dresscode:disable hygiene.defaultArgument -- the named arguments say what the call does
+
 use Nette\DI;
 use Tester\Assert;
 
@@ -12,12 +14,9 @@ require __DIR__ . '/../bootstrap.php';
 
 class MyExtension extends Latte\Extension
 {
-	public $arg;
-
-
-	public function __construct($arg = null)
-	{
-		$this->arg = $arg;
+	public function __construct(
+		public $arg = null,
+	) {
 	}
 }
 

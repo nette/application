@@ -2,15 +2,14 @@
 
 use Nette\Application\Routers\RouteList;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 require __DIR__ . '/Route.php';
 
 
 $list = new RouteList;
-$list->addRoute('foo', ['presenter' => 'foo'], RouteList::ONE_WAY);
-$list->addRoute('bar', ['presenter' => 'bar'], RouteList::ONE_WAY);
+$list->addRoute('foo', ['presenter' => 'foo'], oneWay: 1);
+$list->addRoute('bar', ['presenter' => 'bar'], oneWay: 1);
 $list->addRoute('hello', ['presenter' => 'hello']);
 
 

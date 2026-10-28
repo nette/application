@@ -8,7 +8,6 @@ use Nette\Application\Responses\FileResponse;
 use Nette\Http;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 
@@ -29,9 +28,9 @@ test('large file content delivery', function () {
 
 	$data = '';
 	for ($i = 0; $i < 20000; $i++) {
-		$data .= 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi efficitur nisl mauris, ' .
-			'sed bibendum leo tempor ornare. Etiam sodales enim sem. Proin lobortis metus at sagittis ' .
-			'imperdiet. In non fringilla libero, ac porta purus. Nam gravida quis tellus quis semper.';
+		$data .= 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi efficitur nisl mauris, '
+			. 'sed bibendum leo tempor ornare. Etiam sodales enim sem. Proin lobortis metus at sagittis '
+			. 'imperdiet. In non fringilla libero, ac porta purus. Nam gravida quis tellus quis semper.';
 	}
 
 	file_put_contents($file, $data);

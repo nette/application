@@ -80,7 +80,6 @@ class TestMethodCreateComponentControl extends Nette\Application\UI\Control
 }
 
 
-
 // class-level attribute
 $presenter = createPresenter(TestClassPresenter::class);
 Assert::noError(

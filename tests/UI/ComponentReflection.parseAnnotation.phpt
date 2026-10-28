@@ -7,7 +7,6 @@
 use Nette\Application\UI\ComponentReflection as Reflection;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 
@@ -32,11 +31,11 @@ class TestClass
 
 $rc = new ReflectionClass('TestClass');
 
-Assert::same(['value ="Johno\'s addendum"', 'mode=True', true, true], @Reflection::parseAnnotation($rc, 'title'));
-Assert::null(@Reflection::parseAnnotation($rc, 'public'));
-Assert::null(@Reflection::parseAnnotation($rc, 'private'));
-Assert::same(['item 1'], @Reflection::parseAnnotation($rc, 'components'));
-Assert::same([true, false, null], @Reflection::parseAnnotation($rc, 'persistent'));
-Assert::same([true], @Reflection::parseAnnotation($rc, 'renderable'));
-Assert::same(['loggedIn'], @Reflection::parseAnnotation($rc, 'Secured\User'));
-Assert::null(@Reflection::parseAnnotation($rc, 'missing'));
+Assert::same(['value ="Johno\'s addendum"', 'mode=True', true, true], @Reflection::parseAnnotation($rc, 'title')); // @ annotations are deprecated
+Assert::null(Reflection::parseAnnotation($rc, 'public'));
+Assert::null(Reflection::parseAnnotation($rc, 'private'));
+Assert::same(['item 1'], @Reflection::parseAnnotation($rc, 'components')); // @ annotations are deprecated
+Assert::same([true, false, null], @Reflection::parseAnnotation($rc, 'persistent')); // @ annotations are deprecated
+Assert::same([true], @Reflection::parseAnnotation($rc, 'renderable')); // @ annotations are deprecated
+Assert::same(['loggedIn'], @Reflection::parseAnnotation($rc, 'Secured\User')); // @ annotations are deprecated
+Assert::null(Reflection::parseAnnotation($rc, 'missing'));

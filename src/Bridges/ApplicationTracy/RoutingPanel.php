@@ -88,7 +88,7 @@ final class RoutingPanel implements Tracy\IBarPanel
 				continue;
 			}
 
-			$matched = $flags[$i] & $router::ONE_WAY ? 'oneway' : 'no';
+			$matched = $flags[$i] ? 'oneway' : 'no';
 			$params = $e = null;
 			try {
 				if (
@@ -109,7 +109,9 @@ final class RoutingPanel implements Tracy\IBarPanel
 			$res['routes'][] = (object) [
 				'matched' => $matched,
 				'class' => $innerRouter::class,
-				'defaults' => $innerRouter instanceof Routing\Route || $innerRouter instanceof Routing\SimpleRouter ? $innerRouter->getDefaults() : [],
+				'defaults' => $innerRouter instanceof Routing\Route || $innerRouter instanceof Routing\SimpleRouter
+					? $innerRouter->getDefaults()
+					: [],
 				'mask' => $innerRouter instanceof Routing\Route ? $innerRouter->getMask() : null,
 				'params' => $params,
 				'error' => $e,

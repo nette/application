@@ -7,7 +7,6 @@
 use Nette\{Application, Http};
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/functions.php';
 
@@ -129,7 +128,7 @@ test('multiple flash messages are stored', function () {
 
 	$presenter->run(new Application\Request('Test', 'GET', ['action' => 'default']));
 
-	$presenter->flashMessage('First message', 'info');
+	$presenter->flashMessage('First message');
 	$presenter->flashMessage('Second message', 'error');
 	$presenter->flashMessage('Third message', 'success');
 
@@ -186,10 +185,13 @@ test('flash session expires after presenter run', function () {
 	$sessionSection = Mockery::mock(Http\SessionSection::class);
 	$sessionSection->shouldReceive('get')->andReturn([]);
 	$sessionSection->shouldReceive('set')->once();
-	$sessionSection->shouldReceive('setExpiration')->once()->with('30 seconds')->andReturnUsing(function () use (&$expirationSet, $sessionSection) {
-		$expirationSet = true;
-		return $sessionSection;
-	});
+	$sessionSection->shouldReceive('setExpiration')
+		->once()
+		->with('30 seconds')
+		->andReturnUsing(function () use (&$expirationSet, $sessionSection) {
+			$expirationSet = true;
+			return $sessionSection;
+		});
 
 	$session = Mockery::mock(Http\Session::class);
 	$session->shouldReceive('getSection')->andReturn($sessionSection);

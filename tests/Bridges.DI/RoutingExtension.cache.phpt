@@ -9,7 +9,6 @@ use Nette\Bridges\ApplicationDI\RoutingExtension;
 use Nette\DI;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 
@@ -43,7 +42,7 @@ test('router without cache', function () {
 	', 'neon'));
 
 	$compiler = new DI\Compiler;
-	$compiler->addExtension('routing', new RoutingExtension(false));
+	$compiler->addExtension('routing', new RoutingExtension);
 	$code = $compiler->addConfig($config)->setClassName('Container1')->compile();
 	eval($code);
 
@@ -64,7 +63,7 @@ test('router with cache', function () {
 	', 'neon'));
 
 	$compiler = new DI\Compiler;
-	$compiler->addExtension('routing', new RoutingExtension(false));
+	$compiler->addExtension('routing', new RoutingExtension);
 	$code = $compiler->addConfig($config)->setClassName('Container2')->compile();
 	eval($code);
 
@@ -91,6 +90,6 @@ testException('non-cacheable router factory', function () {
 	', 'neon'));
 
 	$compiler = new DI\Compiler;
-	$compiler->addExtension('routing', new RoutingExtension(false));
+	$compiler->addExtension('routing', new RoutingExtension);
 	$code = $compiler->addConfig($config)->setClassName('Container3')->compile();
 }, Nette\DI\ServiceCreationException::class, 'Unable to cache router due to error: %a%');

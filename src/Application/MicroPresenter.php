@@ -94,11 +94,9 @@ final class MicroPresenter implements Application\IPresenter
 			$response->setFile((string) $templateSource);
 		}
 
-		if ($response instanceof Application\UI\Template) {
-			return new Responses\TextResponse($response);
-		} else {
-			return $response ?: new Responses\VoidResponse;
-		}
+		return $response instanceof Application\UI\Template
+			? new Responses\TextResponse($response)
+			: ($response ?: new Responses\VoidResponse);
 	}
 
 

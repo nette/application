@@ -7,7 +7,6 @@
 use Nette\{Application, Http};
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 
@@ -31,7 +30,7 @@ function testLink($domain)
 		new Application\Routers\SimpleRouter,
 	);
 
-	$request = new Application\Request('Test', Http\Request::Get, []);
+	$request = new Application\Request('Test', Http\Request::Get);
 	$presenter->run($request);
 
 	Assert::same('http://' . $domain . '/index.php?action=default&presenter=Test', $presenter->link('//this'));

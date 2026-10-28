@@ -8,7 +8,6 @@ use Nette\{Application, Http};
 use Nette\Application\Attributes\Persistent;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/functions.php';
 

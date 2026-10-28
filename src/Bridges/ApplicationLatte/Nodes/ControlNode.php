@@ -77,7 +77,8 @@ class ControlNode extends StatementNode
 
 		$method = match (true) {
 			!$this->method => 'render',
-			$this->method instanceof StringNode && Strings::match($this->method->value, '#^\w*$#D') => 'render' . ucfirst($this->method->value),
+			$this->method instanceof StringNode && Strings::match($this->method->value, '#^\w*$#D') => 'render'
+				. ucfirst($this->method->value),
 			default => "{'render' . " . $this->method->print($context) . '}',
 		};
 
@@ -88,8 +89,8 @@ class ControlNode extends StatementNode
 			$this->name,
 		);
 
-		if ($this->escape) {
-			return $context->format(
+		return $this->escape
+			? $context->format(
 				<<<'XX'
 					%raw
 					if ($ʟ_tmp instanceof Nette\Application\UI\Renderable) $ʟ_tmp->redrawControl(null, false);
@@ -105,10 +106,8 @@ class ControlNode extends StatementNode
 				$this->position,
 				Latte\ContentType::Html,
 				new ModifierNode([], $this->escape),
-			);
-
-		} else {
-			return $context->format(
+			)
+			: $context->format(
 				<<<'XX'
 					%raw
 					if ($ʟ_tmp instanceof Nette\Application\UI\Renderable) $ʟ_tmp->redrawControl(null, false);
@@ -121,7 +120,6 @@ class ControlNode extends StatementNode
 				$this->args,
 				$this->position,
 			);
-		}
 	}
 
 

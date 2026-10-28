@@ -43,7 +43,9 @@ final readonly class PresenterFactoryCallback
 
 		if ($this->touchToRefresh && class_exists($class)) {
 			touch($this->touchToRefresh);
-			echo 'Class ' . htmlspecialchars($class) . ' was not found in DI container.<br><br>If you just created this presenter, it should be enough to refresh the page. It will happen automatically in 5 seconds.<br><br>Otherwise, please check the configuration of your DI container.';
+			echo 'Class '
+				. htmlspecialchars($class)
+				. ' was not found in DI container.<br><br>If you just created this presenter, it should be enough to refresh the page. It will happen automatically in 5 seconds.<br><br>Otherwise, please check the configuration of your DI container.';
 			header('Refresh: 5');
 			exit;
 		}
