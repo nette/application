@@ -4,8 +4,7 @@
  * Test: Nette\Application\Routers\RouteList default usage.
  */
 
-use Nette\Application\Routers\Route;
-use Nette\Application\Routers\RouteList;
+use Nette\Application\Routers\{Route, RouteList};
 use Tester\Assert;
 
 

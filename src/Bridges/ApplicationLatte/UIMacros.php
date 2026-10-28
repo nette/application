@@ -8,9 +8,7 @@
 namespace Nette\Bridges\ApplicationLatte;
 
 use Latte;
-use Latte\CompileException;
-use Latte\MacroNode;
-use Latte\PhpWriter;
+use Latte\{CompileException, MacroNode, PhpWriter};
 use Nette\Utils\Strings;
 
 

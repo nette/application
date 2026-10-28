@@ -4,8 +4,7 @@
  * Test: UIMacros, renderSnippets and control with two templates.
  */
 
-use Nette\Bridges\ApplicationLatte\SnippetBridge;
-use Nette\Bridges\ApplicationLatte\UIMacros;
+use Nette\Bridges\ApplicationLatte\{SnippetBridge, UIMacros};
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';

@@ -5,9 +5,7 @@
  */
 
 use Nette\Application\UI;
-use Nette\Bridges\ApplicationLatte\LatteFactory;
-use Nette\Bridges\ApplicationLatte\Template;
-use Nette\Bridges\ApplicationLatte\TemplateFactory;
+use Nette\Bridges\ApplicationLatte\{LatteFactory, Template, TemplateFactory};
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';

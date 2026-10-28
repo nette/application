@@ -5,11 +5,8 @@
  * not an uncaught 500.
  */
 
-use Nette\Application;
-use Nette\Application\UI\InvalidLinkException;
-use Nette\Application\UI\InvalidRequestParameterException;
-use Nette\Application\UI\Presenter;
-use Nette\Http;
+use Nette\{Application, Http};
+use Nette\Application\UI\{InvalidLinkException, InvalidRequestParameterException, Presenter};
 use Tester\Assert;
 
 

@@ -1,13 +1,7 @@
 <?php declare(strict_types=1);
 
-use Nette\Application\Application;
-use Nette\Application\ApplicationException;
-use Nette\Application\BadRequestException;
-use Nette\Application\IPresenterFactory;
-use Nette\Application\Request;
-use Nette\Application\Response;
-use Nette\Application\Responses\ForwardResponse;
-use Nette\Application\Responses\TextResponse;
+use Nette\Application\{Application, ApplicationException, BadRequestException, IPresenterFactory, Request, Response};
+use Nette\Application\Responses\{ForwardResponse, TextResponse};
 use Nette\Routing\Router;
 use Tester\Assert;
 

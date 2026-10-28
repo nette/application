@@ -4,8 +4,7 @@
  * Test: Nette\Application\UI\Component::redirect()
  */
 
-use Nette\Application;
-use Nette\Http;
+use Nette\{Application, Http};
 use Tester\Assert;
 
 

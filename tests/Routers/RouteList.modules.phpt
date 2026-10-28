@@ -4,8 +4,7 @@
  * Test: Nette\Application\Routers\RouteList & Route & module.
  */
 
-use Nette\Application\Routers\Route;
-use Nette\Application\Routers\RouteList;
+use Nette\Application\Routers\{Route, RouteList};
 
 
 require __DIR__ . '/../bootstrap.php';

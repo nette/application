@@ -9,8 +9,7 @@ namespace Nette\Bridges\ApplicationLatte;
 
 use Latte\Runtime\ISnippetBridge;
 use Nette;
-use Nette\Application\UI\Control;
-use Nette\Application\UI\Renderable;
+use Nette\Application\UI\{Control, Renderable};
 
 
 /**

@@ -4,8 +4,7 @@
  * Test: Nette\Application\UI\Presenter::link() and persistent parameters
  */
 
-use Nette\Application;
-use Nette\Http;
+use Nette\{Application, Http};
 use Tester\Assert;
 
 

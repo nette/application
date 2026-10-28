@@ -4,8 +4,7 @@
  * Test: TemplateFactory in Bridge properly handles Latte::onCompile
  */
 
-use Nette\Bridges\ApplicationLatte\LatteFactory;
-use Nette\Bridges\ApplicationLatte\TemplateFactory;
+use Nette\Bridges\ApplicationLatte\{LatteFactory, TemplateFactory};
 use Nette\Http;
 use Tester\Assert;
 
