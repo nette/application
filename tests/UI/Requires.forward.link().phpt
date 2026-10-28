@@ -61,7 +61,7 @@ $presenter->injectPrimary(
 
 $presenter->invalidLinkMode = TestPresenter::InvalidLinkWarning;
 
-$request = new Application\Request('Test', Http\Request::Get, []);
+$request = new Application\Request('Test', Http\Request::Get);
 $presenter->run($request);
 
 Assert::error(

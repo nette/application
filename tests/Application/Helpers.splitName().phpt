@@ -7,7 +7,6 @@
 use Nette\Application\Helpers;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 

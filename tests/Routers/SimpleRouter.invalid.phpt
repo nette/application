@@ -8,7 +8,6 @@ use Nette\Application\Routers\SimpleRouter;
 use Nette\Http;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 

@@ -66,10 +66,10 @@ final class RoutingExtension extends Nette\DI\CompilerExtension
 		$builder = $this->getContainerBuilder();
 
 		if (
-			$this->debugMode &&
-			($this->config->debugger ?? $builder->getByType(Tracy\Bar::class)) &&
-			($name = $builder->getByType(Nette\Application\Application::class)) &&
-			($application = $builder->getDefinition($name)) instanceof Definitions\ServiceDefinition
+			$this->debugMode
+			&& ($this->config->debugger ?? $builder->getByType(Tracy\Bar::class))
+			&& ($name = $builder->getByType(Nette\Application\Application::class))
+			&& ($application = $builder->getDefinition($name)) instanceof Definitions\ServiceDefinition
 		) {
 			$application->addSetup('@Tracy\Bar::addPanel', [
 				new Definitions\Statement(Nette\Bridges\ApplicationTracy\RoutingPanel::class),
@@ -98,6 +98,7 @@ final class RoutingExtension extends Nette\DI\CompilerExtension
 				}
 
 				$s = serialize($router);
+
 			} catch (\Throwable $e) {
 				throw new Nette\DI\ServiceCreationException('Unable to cache router due to error: ' . $e->getMessage(), 0, $e);
 			}

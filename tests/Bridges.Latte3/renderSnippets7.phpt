@@ -14,21 +14,21 @@ if (version_compare(Latte\Engine::VERSION, '3', '<')) {
 
 $dataSets = [
 
-	//simple snippet
+	// simple snippet
 	[
 		['main' => '{snippet foo}hello{/snippet}'],
 		['foo' => 'hello'],
 		'<div id="foo">hello</div>',
 		['foo'],
 	],
-	//snippetArea with nested snippet
+	// snippetArea with nested snippet
 	[
 		['main' => '{snippetArea fooWrapper}{do $global->value = hello}{snippet foo}{$global->value}{/snippet}{/snippetArea}'],
 		['foo' => 'hello'],
 		'<div id="foo">hello</div>',
 		['fooWrapper', 'foo'],
 	],
-	//two nested snippets
+	// two nested snippets
 	[
 		['main' => '{snippet foo}{snippet foo2}hello{/snippet}{/snippet}'],
 		['foo' => '<div id="foo2">hello</div>'],
@@ -47,7 +47,7 @@ $dataSets = [
 		'<div id="foo"><div id="foo2">hello</div></div>',
 		['foo', 'foo2'],
 	],
-	//included template
+	// included template
 	[
 		[
 			'main' => '{snippet foo}{include file "sub"}{/snippet}',
@@ -57,7 +57,7 @@ $dataSets = [
 		'<div id="foo"><div id="subFoo">hello</div></div>',
 		['foo'],
 	],
-	//included template 2
+	// included template 2
 	[
 		[
 			'main' => '{snippet foo}{include file "sub"}{/snippet}',
@@ -67,7 +67,7 @@ $dataSets = [
 		'<div id="foo"><div id="subFoo">hello</div></div>',
 		['foo', 'subFoo'],
 	],
-	//included template - expected empty payload
+	// included template - expected empty payload
 	[
 		[
 			'main' => '{include file "sub"}',
@@ -77,7 +77,7 @@ $dataSets = [
 		'<div id="subFoo">hello</div>',
 		['subFoo'],
 	],
-	//included template - snippetArea
+	// included template - snippetArea
 	[
 		[
 			'main' => '{snippetArea foo}{include file "sub"}{/snippetArea}',
@@ -87,7 +87,7 @@ $dataSets = [
 		'<div id="subFoo">hello</div>',
 		['foo', 'subFoo'],
 	],
-	//nested included template - snippetArea
+	// nested included template - snippetArea
 	[
 		[
 			'main' => '{snippetArea foo}{include file "sub"}{/snippetArea}',
@@ -98,7 +98,7 @@ $dataSets = [
 		'<div id="sub2Foo">hello</div>',
 		['foo', 'sub2Foo'],
 	],
-	//dynamic snippets
+	// dynamic snippets
 	[
 		[
 			'main' => '
@@ -113,7 +113,7 @@ $dataSets = [
 		"\n<div id=\"foo\">\n\t\t<div id=\"bar-1\">1</div>\n\t\t<div id=\"bar-2\">2</div>\n</div>",
 		['foo'],
 	],
-	//dynamic snippets with a snippetArea
+	// dynamic snippets with a snippetArea
 	[
 		[
 			'main' => '
@@ -128,7 +128,7 @@ $dataSets = [
 		"\n\t\t<div id=\"bar-1\">1</div>\n\t\t<div id=\"bar-2\">2</div>",
 		['foo'],
 	],
-	//snippetArea with a dynamic snippet and included template
+	// snippetArea with a dynamic snippet and included template
 	[
 		[
 			'main' => '
@@ -144,7 +144,7 @@ $dataSets = [
 		"\n\t\t<div id=\"bar-1\">1</div>\n\t\t<div id=\"bar-2\">2</div>",
 		['foo'],
 	],
-	//extends
+	// extends
 	[
 		[
 			'main' => '{extends "layout"}{block content}{snippet foo}hello{/snippet}',
@@ -154,7 +154,7 @@ $dataSets = [
 		'<div id="foo">hello</div><div id="layoutFoo">world</div>',
 		['foo', 'layoutFoo'],
 	],
-	//import
+	// import
 	[
 		[
 			'main' => '{import "blocks1"}{import "blocks2"}{snippet foo}{include block1}{include block2}{/snippet}',
@@ -165,7 +165,7 @@ $dataSets = [
 		'<div id="foo">hello world</div>',
 		['foo'],
 	],
-	//import and extends
+	// import and extends
 	[
 		[
 			'main' => '{extends "layout"}{import "blocks1"}{import "blocks2"}{block content}{snippet foo}{include block1}{include block2}{/snippet}',
@@ -177,7 +177,7 @@ $dataSets = [
 		'<div id="foo">hello world</div>',
 		['foo'],
 	],
-	//embed
+	// embed
 	[
 		[
 			'main' => '{embed file "embed"}{block embed}{snippet bar}world{/snippet}{/block}{/embed}',
@@ -190,7 +190,7 @@ $dataSets = [
 ];
 
 foreach ($dataSets as $data) {
-	//snippet mode
+	// snippet mode
 	$control = new ControlMock;
 	$control->invalid = array_fill_keys($data[3], value: true);
 
@@ -202,7 +202,7 @@ foreach ($dataSets as $data) {
 
 	Assert::same($data[1], $control->payload);
 
-	//non snippet mode
+	// non snippet mode
 	$control = new ControlMock;
 	$control->snippetMode = false;
 	$control->invalid = array_fill_keys($data[3], value: true);

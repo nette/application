@@ -5,7 +5,6 @@ use Nette\Bridges\ApplicationDI\ApplicationExtension;
 use Nette\DI;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/files/MyPresenter.php';
 
@@ -16,7 +15,8 @@ function createCompiler(string $config): DI\Compiler
 	$compiler->loadConfig(Tester\FileMock::create($config, 'neon'));
 	$builder = $compiler->getContainerBuilder();
 	$builder->addDefinition('myRouter')->setFactory(Nette\Application\Routers\SimpleRouter::class);
-	$builder->addDefinition('myHttpRequest')->setFactory(Nette\Http\Request::class, [new DI\Definitions\Statement(Nette\Http\UrlScript::class)]);
+	$builder->addDefinition('myHttpRequest')
+		->setFactory(Nette\Http\Request::class, [new DI\Definitions\Statement(Nette\Http\UrlScript::class)]);
 	$builder->addDefinition('myHttpResponse')->setFactory(Nette\Http\Response::class);
 	return $compiler;
 }
@@ -70,7 +70,7 @@ test('silentLinks enabled without debugger', function () {
 	services:
 		presenter: Presenter1
 	');
-	$compiler->addExtension('application', new ApplicationExtension(false));
+	$compiler->addExtension('application', new ApplicationExtension);
 	$code = $compiler->setClassName('Container6')->compile();
 	eval($code);
 
@@ -90,7 +90,7 @@ test('silentLinks disabled without debugger', function () {
 	services:
 		presenter: Presenter1
 	');
-	$compiler->addExtension('application', new ApplicationExtension(false));
+	$compiler->addExtension('application', new ApplicationExtension);
 	$code = $compiler->setClassName('Container7')->compile();
 	eval($code);
 

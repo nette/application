@@ -7,7 +7,6 @@
 use Nette\Application\UI\ComponentReflection as Reflection;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 

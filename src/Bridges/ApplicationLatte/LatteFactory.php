@@ -12,7 +12,7 @@ use Latte;
 
 interface LatteFactory
 {
-	function create(/*?Control $control = null*/): Latte\Engine;
+	function create(/* ?Control $control = null */): Latte\Engine;
 }
 
 

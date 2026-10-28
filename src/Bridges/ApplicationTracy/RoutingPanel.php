@@ -109,7 +109,9 @@ final class RoutingPanel implements Tracy\IBarPanel
 			$res['routes'][] = (object) [
 				'matched' => $matched,
 				'class' => $innerRouter::class,
-				'defaults' => $innerRouter instanceof Routing\Route || $innerRouter instanceof Routing\SimpleRouter ? $innerRouter->getDefaults() : [],
+				'defaults' => $innerRouter instanceof Routing\Route || $innerRouter instanceof Routing\SimpleRouter
+					? $innerRouter->getDefaults()
+					: [],
 				'mask' => $innerRouter instanceof Routing\Route ? $innerRouter->getMask() : null,
 				'params' => $params,
 				'error' => $e,

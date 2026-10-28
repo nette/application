@@ -82,7 +82,10 @@ final class LatteExtension extends Nette\DI\CompilerExtension
 
 			$builder->getDefinition($this->prefix('latteFactory'))
 				->getResultDefinition()
-				->addSetup('?', [$builder::literal('func_num_args() && $service->addExtension(new Nette\Bridges\ApplicationLatte\UIExtension(func_get_arg(0)))')]);
+				->addSetup(
+					'?',
+					[$builder::literal('func_num_args() && $service->addExtension(new Nette\Bridges\ApplicationLatte\UIExtension(func_get_arg(0)))')],
+				);
 
 			if ($builder->getByType(Nette\Caching\Storage::class)) {
 				$this->addExtension(new Statement(Nette\Bridges\CacheLatte\CacheExtension::class));

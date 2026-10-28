@@ -44,7 +44,7 @@ function testPresenterGetPresenter(Component $component): void
 	$presenter = $component->getPresenter();
 	assertType(Presenter::class, $presenter);
 
-	$presenter = $component->getPresenter(throw: true);
+	$presenter = $component->getPresenter();
 	assertType(Presenter::class, $presenter);
 
 	$presenterOrNull = $component->getPresenter(throw: false);

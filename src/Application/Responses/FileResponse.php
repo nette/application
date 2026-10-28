@@ -70,8 +70,8 @@ final class FileResponse implements Nette\Application\Response
 		$httpResponse->setHeader(
 			'Content-Disposition',
 			($this->forceDownload ? 'attachment' : 'inline')
-				. '; filename="' . $this->name . '"'
-				. '; filename*=utf-8\'\'' . rawurlencode($this->name),
+			. '; filename="' . $this->name . '"'
+			. '; filename*=utf-8\'\'' . rawurlencode($this->name),
 		);
 
 		$filesize = $length = filesize($this->file);

@@ -14,7 +14,6 @@ if (version_compare(Latte\Engine::VERSION, '3', '>')) {
 }
 
 
-
 class TestPresenter extends Nette\Application\UI\Presenter
 {
 	public function render(string $template)

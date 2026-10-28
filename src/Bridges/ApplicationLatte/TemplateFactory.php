@@ -117,7 +117,7 @@ class TemplateFactory implements UI\TemplateFactory
 				Nette\Bridges\FormsLatte\FormMacros::install($latte->getCompiler());
 			}
 
-			$control?->templatePrepareFilters($template);
+			$control?->templatePrepareFilters($template); // dresscode:ignore upgrading.declarations.deprecatedMember -- still supported with Latte 2
 		});
 
 		$latte->addProvider('cacheStorage', $this->cacheStorage);
@@ -142,8 +142,7 @@ class TemplateFactory implements UI\TemplateFactory
 		}
 
 		$latte->addFilter('modifyDate', fn($time, $delta, $unit = null) => $time
-				? Nette\Utils\DateTime::from($time)->modify($delta . $unit)
-				: null);
-
+			? Nette\Utils\DateTime::from($time)->modify($delta . $unit)
+			: null);
 	}
 }

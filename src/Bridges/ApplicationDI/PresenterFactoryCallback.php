@@ -49,7 +49,7 @@ final class PresenterFactoryCallback
 		try {
 			$presenter = $this->container->createInstance($class);
 			$this->container->callInjects($presenter);
-		} catch (Nette\DI\MissingServiceException | Nette\DI\ServiceCreationException $e) {
+		} catch (Nette\DI\MissingServiceException|Nette\DI\ServiceCreationException $e) {
 			if ($this->touchToRefresh && class_exists($class)) {
 				throw new \Exception("Refresh your browser. New presenter $class was found.", 0, $e);
 			}

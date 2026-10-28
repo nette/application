@@ -26,6 +26,7 @@ namespace ModuleModule {
 
 	use Nette;
 
+
 	class MyPresenter implements Nette\Application\IPresenter
 	{
 		public function run(Nette\Application\Request $request): Nette\Application\Response
@@ -41,7 +42,6 @@ namespace {
 	use Nette\Http;
 	use Tester\Assert;
 
-
 	$pf = new PresenterFactory;
 
 
@@ -52,7 +52,10 @@ namespace {
 		Assert::same('http://nette.org/en/?presenter=Module%3AMy', $generator->link('Module:My:'));
 		Assert::same('http://nette.org/en/?action=default&presenter=Homepage', $generator->link('Homepage:'));
 		Assert::same('http://nette.org/en/?a=10&action=default&presenter=Homepage', $generator->link('Homepage:', [10]));
-		Assert::same('http://nette.org/en/?id=20&b=10&action=detail&presenter=Homepage', $generator->link('Homepage:detail', [10, 'id' => 20]));
+		Assert::same(
+			'http://nette.org/en/?id=20&b=10&action=detail&presenter=Homepage',
+			$generator->link('Homepage:detail', [10, 'id' => 20]),
+		);
 		Assert::same('http://nette.org/en/?action=default&presenter=Homepage#frag:ment', $generator->link('Homepage:#frag:ment'));
 		Assert::same('http://nette.org/en/?id=10&action=missing&presenter=Homepage', $generator->link('Homepage:missing', ['id' => 10]));
 	});
@@ -83,7 +86,10 @@ namespace {
 		Assert::same('http://nette.org/en/?presenter=Module%3AMy', $generator->link('Module:My:'));
 		Assert::same('http://nette.org/en/?presenter=Homepage', $generator->link('Homepage:'));
 		Assert::same('http://nette.org/en/?0=10&presenter=Homepage', $generator->link('Homepage:', [10]));
-		Assert::same('http://nette.org/en/?0=10&id=20&action=detail&presenter=Homepage', $generator->link('Homepage:detail', [10, 'id' => 20]));
+		Assert::same(
+			'http://nette.org/en/?0=10&id=20&action=detail&presenter=Homepage',
+			$generator->link('Homepage:detail', [10, 'id' => 20]),
+		);
 		Assert::same('http://nette.org/en/?presenter=Homepage#frag:ment', $generator->link('Homepage:#frag:ment'));
 		Assert::same('http://nette.org/en/?action=default&presenter=Homepage', $generator->link('Homepage:default'));
 	});

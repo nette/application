@@ -34,11 +34,13 @@ final class UIExtension extends Latte\Extension
 			'modifyDate' => fn($time, $delta, $unit = null) => $time
 				? Nette\Utils\DateTime::from($time)->modify($delta . $unit)
 				: null,
-		] + ($presenter ? [
-			'absoluteUrl' => fn(\Stringable|string|null $link): ?string => $link === null
+		] + ($presenter
+			? [
+				'absoluteUrl' => fn(\Stringable|string|null $link): ?string => $link === null
 					? null
 					: $presenter->getHttpRequest()->getUrl()->resolve((string) $link)->getAbsoluteUrl(),
-		] : []);
+			]
+			: []);
 	}
 
 
@@ -77,7 +79,7 @@ final class UIExtension extends Latte\Extension
 			'plink' => Nodes\LinkNode::create(...),
 			'link' => Nodes\LinkNode::create(...),
 			'linkBase' => Nodes\LinkBaseNode::create(...),
-			'ifCurrent' => Nodes\IfCurrentNode::create(...),
+			'ifCurrent' => Nodes\IfCurrentNode::create(...), // dresscode:ignore upgrading.declarations.deprecatedClass -- {ifCurrent} is still supported
 			'templatePrint' => Nodes\TemplatePrintNode::create(...),
 			'snippet' => Nodes\SnippetNode::create(...),
 			'snippetArea' => Nodes\SnippetAreaNode::create(...),
@@ -131,7 +133,9 @@ final class UIExtension extends Latte\Extension
 		$auto = $tag->parser->stream->is('auto');
 		$node = ExtendsNode::create($tag);
 		if ($auto) {
-			$node->extends = new AuxiliaryNode(fn() => '($this->getReferringTemplate() ? null : $this->global->uiPresenter->findLayoutTemplateFile())');
+			$node->extends = new AuxiliaryNode(
+				fn() => '($this->getReferringTemplate() ? null : $this->global->uiPresenter->findLayoutTemplateFile())',
+			);
 		}
 		return $node;
 	}

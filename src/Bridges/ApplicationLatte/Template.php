@@ -97,8 +97,8 @@ abstract class Template implements Nette\Application\UI\Template
 			$this->latte->addFilter(
 				'translate',
 				fn(Latte\Runtime\FilterInfo $fi, ...$args): string => $translator === null
-						? $args[0]
-						: $translator->translate(...$args),
+					? $args[0]
+					: $translator->translate(...$args),
 			);
 		} else {
 			$this->latte->addExtension(new Latte\Essential\TranslatorExtension($translator, $language));

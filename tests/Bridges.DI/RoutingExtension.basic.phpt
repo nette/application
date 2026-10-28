@@ -8,7 +8,6 @@ use Nette\Bridges\ApplicationDI\RoutingExtension;
 use Nette\DI;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 
@@ -22,7 +21,7 @@ test('', function () {
 	', 'neon'));
 
 	$compiler = new DI\Compiler;
-	$compiler->addExtension('routing', new RoutingExtension(false));
+	$compiler->addExtension('routing', new RoutingExtension);
 	$code = $compiler->addConfig($config)->setClassName('Container1')->compile();
 	eval($code);
 
