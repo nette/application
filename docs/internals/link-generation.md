@@ -15,7 +15,7 @@ The `$mode` string is **not** just `link`/`redirect`/`forward`. There are **five
 | `link` | relative (unless `absoluteUrls` or `//` prefix) | no | the normal case |
 | `redirect` | absolute | yes* | `Component::redirect` |
 | `forward` | — (returns null) | yes* | Request via `$lastRequest`; no `isLinkable` enforcement |
-| `test` | — (returns null) | no | `isLinkCurrent`; skips the missing-param check |
+| `test` | — (returns null) | no | `isLinkCurrent`; skips the missing-param check and `isLinkable` enforcement |
 | `redirectX` | absolute | no | **canonicalization only** |
 
 `redirectX` is **not a phantom** — it is live in `Presenter::canonicalize()`. It
