@@ -71,7 +71,7 @@ Assert::same(
 			'required' => false,
 		],
 	],
-	(new ComponentReflection(OnePresenter::class))->getParameters(),
+	new ComponentReflection(OnePresenter::class)->getParameters(),
 );
 
 Assert::same(
@@ -97,7 +97,7 @@ Assert::same(
 			'required' => false,
 		],
 	],
-	(new ComponentReflection(TwoPresenter::class))->getParameters(),
+	new ComponentReflection(TwoPresenter::class)->getParameters(),
 );
 
 Assert::same(
@@ -128,5 +128,5 @@ Assert::same(
 			'required' => false,
 		],
 	],
-	(new ComponentReflection(TypedPresenter::class))->getParameters(),
+	new ComponentReflection(TypedPresenter::class)->getParameters(),
 );

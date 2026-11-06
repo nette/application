@@ -2,7 +2,6 @@
 
 /**
  * Test: TemplateFactory in Bridge injects annotated variables into Template
- * @phpVersion 8.4
  */
 
 use Nette\Application\Attributes\TemplateVariable;

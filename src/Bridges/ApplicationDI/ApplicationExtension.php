@@ -225,7 +225,7 @@ final class ApplicationExtension extends Nette\DI\CompilerExtension
 				&& fnmatch($config->scanFilter, $class)
 				&& class_exists($class)
 				&& is_subclass_of($class, Nette\Application\IPresenter::class)
-				&& !(new \ReflectionClass($class))->isAbstract()
+				&& !new \ReflectionClass($class)->isAbstract()
 			) {
 				$presenters[] = $class;
 			}

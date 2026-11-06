@@ -202,7 +202,7 @@ final class ParameterConverter
 
 		$tmp = $val;
 		if (
-			!self::castScalar($tmp, (string) (new \ReflectionEnum($type))->getBackingType())
+			!self::castScalar($tmp, (string) new \ReflectionEnum($type)->getBackingType())
 			|| !($case = $type::tryFrom($tmp))
 		) {
 			return false;

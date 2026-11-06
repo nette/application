@@ -199,7 +199,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 		try {
 			// CHECK REQUIREMENTS
-			(new AccessPolicy(static::getReflection()))->checkAccess($this);
+			new AccessPolicy(static::getReflection())->checkAccess($this);
 			$this->checkRequirements(static::getReflection());
 			$this->checkHttpMethod();
 
@@ -356,7 +356,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 		$rc = static::getReflection();
 		foreach ([static::formatActionMethod($this->action), static::formatRenderMethod($this->action)] as $name) {
-			if ($rc->hasCallableMethod($name) && (new AccessPolicy($rc->getMethod($name)))->allowsHttpMethod($method)) {
+			if ($rc->hasCallableMethod($name) && new AccessPolicy($rc->getMethod($name))->allowsHttpMethod($method)) {
 				return;
 			}
 		}
