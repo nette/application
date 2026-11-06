@@ -182,6 +182,7 @@ final class ComponentReflection extends \ReflectionClass
 	}
 
 
+	// dresscode:ignore upgrading.phpdoc.deprecated -- the library itself calls it
 	/**
 	 * Returns an annotation value.
 	 * @deprecated

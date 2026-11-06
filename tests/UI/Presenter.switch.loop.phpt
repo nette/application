@@ -28,7 +28,7 @@ class SwitchLoopPresenter extends Nette\Application\UI\Presenter
 
 $presenter = createPresenter(SwitchLoopPresenter::class);
 Assert::exception(
-	fn() => $presenter->run(new Application\Request('', Application\Request::FORWARD, ['action' => 'foo'])),
+	fn() => $presenter->run(new Application\Request('', Application\Request::Forward, ['action' => 'foo'])),
 	LogicException::class,
 	'Infinite loop of switch() calls detected.',
 );

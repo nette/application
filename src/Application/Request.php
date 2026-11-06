@@ -33,13 +33,13 @@ final class Request
 	/** flag */
 	public const Varying = 'varying';
 
-	/** @deprecated use Request::Forward */
+	#[\Deprecated('use Request::Forward', since: '3.3.1')]
 	public const FORWARD = self::Forward;
 
-	/** @deprecated use Request::Restored */
+	#[\Deprecated('use Request::Restored', since: '3.3.1')]
 	public const RESTORED = self::Restored;
 
-	/** @deprecated use Request::Varying */
+	#[\Deprecated('use Request::Varying', since: '3.3.1')]
 	public const VARYING = self::Varying;
 
 

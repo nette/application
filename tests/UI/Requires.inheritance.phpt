@@ -47,7 +47,7 @@ class CombiningRequiresPresenter extends BaseRequiresPresenter
 // rule inherited from ancestor is enforced
 $presenter = createPresenter(InheritingRequiresPresenter::class);
 Assert::noError(
-	fn() => $presenter->run(new Application\Request('', Application\Request::FORWARD)),
+	fn() => $presenter->run(new Application\Request('', Application\Request::Forward)),
 );
 
 Assert::exception(
@@ -74,12 +74,12 @@ Assert::exception(
 
 $presenter = createPresenter(CombiningRequiresPresenter::class, method: 'POST');
 Assert::noError(
-	fn() => $presenter->run(new Application\Request('', Application\Request::FORWARD)),
+	fn() => $presenter->run(new Application\Request('', Application\Request::Forward)),
 );
 
 $presenter = createPresenter(CombiningRequiresPresenter::class);
 Assert::exception(
-	fn() => $presenter->run(new Application\Request('', Application\Request::FORWARD)),
+	fn() => $presenter->run(new Application\Request('', Application\Request::Forward)),
 	Application\BadRequestException::class,
 	'Method GET is not allowed by CombiningRequiresPresenter',
 );
