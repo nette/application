@@ -65,15 +65,15 @@ class Form extends Nette\Forms\Form implements SignalReceiver
 
 	/**
 	 * Returns the presenter where this component belongs to, or null if not attached.
-	 * @deprecated
 	 */
+	#[\Deprecated]
 	final public function getPresenterIfExists(): ?Presenter
 	{
 		return $this->lookup(Presenter::class, throw: false);
 	}
 
 
-	/** @deprecated */
+	#[\Deprecated]
 	public function hasPresenter(): bool
 	{
 		return (bool) $this->lookup(Presenter::class, throw: false);

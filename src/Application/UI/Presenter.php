@@ -42,31 +42,31 @@ abstract class Presenter extends Control implements Application\IPresenter
 		FlashKey = '_fid',
 		DefaultAction = 'default';
 
-	/** @deprecated use Presenter::InvalidLinkSilent */
+	#[\Deprecated('use Presenter::InvalidLinkSilent')]
 	public const INVALID_LINK_SILENT = self::InvalidLinkSilent;
 
-	/** @deprecated use Presenter::InvalidLinkWarning */
+	#[\Deprecated('use Presenter::InvalidLinkWarning')]
 	public const INVALID_LINK_WARNING = self::InvalidLinkWarning;
 
-	/** @deprecated use Presenter::InvalidLinkException */
+	#[\Deprecated('use Presenter::InvalidLinkException')]
 	public const INVALID_LINK_EXCEPTION = self::InvalidLinkException;
 
-	/** @deprecated use Presenter::InvalidLinkTextual */
+	#[\Deprecated('use Presenter::InvalidLinkTextual')]
 	public const INVALID_LINK_TEXTUAL = self::InvalidLinkTextual;
 
-	/** @deprecated use Presenter::PresenterKey */
+	#[\Deprecated('use Presenter::PresenterKey')]
 	public const PRESENTER_KEY = self::PresenterKey;
 
-	/** @deprecated use Presenter::SignalKey */
+	#[\Deprecated('use Presenter::SignalKey')]
 	public const SIGNAL_KEY = self::SignalKey;
 
-	/** @deprecated use Presenter::ActionKey */
+	#[\Deprecated('use Presenter::ActionKey')]
 	public const ACTION_KEY = self::ActionKey;
 
-	/** @deprecated use Presenter::FlashKey */
+	#[\Deprecated('use Presenter::FlashKey')]
 	public const FLASH_KEY = self::FlashKey;
 
-	/** @deprecated use Presenter::DefaultAction */
+	#[\Deprecated('use Presenter::DefaultAction')]
 	public const DEFAULT_ACTION = self::DefaultAction;
 
 	private const MaxSwitches = 20;
@@ -141,14 +141,14 @@ abstract class Presenter extends Control implements Application\IPresenter
 	}
 
 
-	/** @deprecated */
+	#[\Deprecated]
 	final public function getPresenterIfExists(): static
 	{
 		return $this;
 	}
 
 
-	/** @deprecated */
+	#[\Deprecated]
 	final public function hasPresenter(): bool
 	{
 		return true;
@@ -346,6 +346,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	}
 
 
+	// dresscode:ignore upgrading.phpdoc.deprecated -- run() calls it
 	/** @deprecated  use #[Requires(methods: ...)] to specify allowed methods */
 	protected function checkHttpMethod(): void
 	{
