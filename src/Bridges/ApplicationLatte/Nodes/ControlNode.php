@@ -17,7 +17,7 @@ use Nette\Utils\Strings;
 
 
 /**
- * {control name[:method] [, params]}
+ * {control name[:method] [,] [params]}
  * Renders a component by calling its render() method.
  */
 class ControlNode extends StatementNode
@@ -39,7 +39,7 @@ class ControlNode extends StatementNode
 			$node->method = $tag->parser->parseExpression();
 		}
 
-		$tag->parser->consumeCommaBeforeArguments(strict: false);
+		$stream->tryConsume(',');
 		$start = $stream->getIndex();
 		$node->args = $tag->parser->parseArguments();
 		$start -= $stream->getIndex();
