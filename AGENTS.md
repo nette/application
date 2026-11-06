@@ -27,7 +27,7 @@ templating integration, and the request/response cycle. It is a library package,
 not a runnable application, and integrates with the rest of the framework through
 `src/Bridges` (DI, Latte, Tracy).
 
-- **PHP Version**: 8.3 - 8.5
+- **PHP Version**: 8.4 - 8.6
 - **Package**: `nette/application`
 
 ## Essential Commands
