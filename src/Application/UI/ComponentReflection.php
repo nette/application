@@ -10,7 +10,6 @@ namespace Nette\Application\UI;
 use Nette\Application\Attributes;
 use Nette\Utils\Reflection;
 use function array_key_exists;
-use const PHP_VERSION_ID;
 
 
 /**
@@ -135,7 +134,7 @@ final class ComponentReflection extends \ReflectionClass
 				$name = $prop->getName();
 				if (!$prop->isPublic()) {
 					throw new \LogicException("Property {$this->getName()}::\$$name must be public to be used as TemplateVariable.");
-				} elseif ($prop->isInitialized($control) || (PHP_VERSION_ID >= 80400 && $prop->hasHook(\PropertyHookType::Get))) {
+				} elseif ($prop->isInitialized($control) || $prop->hasHook(\PropertyHookType::Get)) {
 					$res[] = $name;
 				}
 			}
