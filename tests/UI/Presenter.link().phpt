@@ -116,6 +116,22 @@ class TestPresenter extends Application\UI\Presenter
 			$this->link('params', 1, 2, 3, 4, 5),
 		);
 
+		// positional and named arguments
+		Assert::same('/index.php?str=a&int=1&action=params&presenter=Test', $this->link('params', [1, 'str' => 'a']));
+		Assert::same('/index.php?str=a&int=1&action=params&presenter=Test', $this->link('params', ['str' => 'a', 1]));
+		Assert::same(
+			'#error: Parameter $int of TestPresenter::actionParams() is passed both by position and by name.',
+			$this->link('params', [1, 'int' => 2]),
+		);
+		Assert::same(
+			'#error: Parameter $int of TestPresenter::actionParams() is passed both by position and by name.',
+			$this->link('params', ['int' => 2, 1]),
+		);
+		Assert::same(
+			'#error: Parameter $bool of TestPresenter::actionParams() is passed both by position and by name.',
+			$this->link('params', [1, true, 'bool' => false]),
+		);
+
 		// fragment via args
 		Assert::same('/index.php?action=product&presenter=Test#fragment', $this->link('product', ['#' => 'fragment']));
 		Assert::same('/index.php?x=1&action=product&presenter=Test#fragment', $this->link('product', ['x' => 1, '#' => 'fragment']));
