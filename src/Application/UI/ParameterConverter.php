@@ -84,6 +84,14 @@ final class ParameterConverter
 			$fromSupplemental = false;
 
 			if (array_key_exists($i, $args)) {
+				if (array_key_exists($name, $args)) {
+					throw new InvalidLinkException(sprintf(
+						'Parameter $%s of %s is passed both by position and by name.',
+						$name,
+						Reflection::toString($method),
+					));
+				}
+
 				$args[$name] = $args[$i];
 				unset($args[$i]);
 				$i++;
