@@ -89,7 +89,7 @@ class Form extends Nette\Forms\Form implements SignalReceiver
 	}
 
 
-	#[\Deprecated('use allowCrossOrigin()')]
+	#[\Deprecated('use allowCrossOrigin()', since: '3.0.8')]
 	public function disableSameSiteProtection(): void
 	{
 		$this->allowCrossOrigin();

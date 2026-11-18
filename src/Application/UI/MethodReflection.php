@@ -13,7 +13,7 @@ namespace Nette\Application\UI;
  */
 final class MethodReflection extends \ReflectionMethod
 {
-	#[\Deprecated]
+	#[\Deprecated(since: '3.3')]
 	public function hasAnnotation(string $name): bool
 	{
 		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
@@ -21,7 +21,7 @@ final class MethodReflection extends \ReflectionMethod
 	}
 
 
-	#[\Deprecated]
+	#[\Deprecated(since: '3.3')]
 	public function getAnnotation(string $name): mixed
 	{
 		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);

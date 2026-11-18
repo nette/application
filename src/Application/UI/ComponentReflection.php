@@ -215,14 +215,14 @@ final class ComponentReflection extends \ReflectionClass
 	}
 
 
-	#[\Deprecated]
+	#[\Deprecated(since: '3.3')]
 	public function hasAnnotation(string $name): bool
 	{
 		return (bool) self::parseAnnotation($this, $name);
 	}
 
 
-	#[\Deprecated]
+	#[\Deprecated(since: '3.3')]
 	public function getAnnotation(string $name): mixed
 	{
 		$res = self::parseAnnotation($this, $name);
@@ -254,7 +254,7 @@ final class ComponentReflection extends \ReflectionClass
 	 * @param  array<string, mixed>  $args
 	 * @return list<mixed>
 	 */
-	#[\Deprecated]
+	#[\Deprecated(since: '3.2.3')]
 	public static function combineArgs(\ReflectionFunctionAbstract $method, array $args): array
 	{
 		return ParameterConverter::toArguments($method, $args);
