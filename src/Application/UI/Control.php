@@ -88,7 +88,7 @@ abstract class Control extends Component implements Renderable
 	}
 
 
-	#[\Deprecated]
+	#[\Deprecated(since: '3.1.8')]
 	public function templatePrepareFilters(Template $template): void
 	{
 	}

@@ -871,7 +871,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/**
 	 * @param  array<string, mixed>  $args
 	 */
-	#[\Deprecated]
+	#[\Deprecated(since: '3.2.3')]
 	protected function createRequest(Component $component, string $destination, array $args, string $mode): ?string
 	{
 		return $this->linkGenerator->link($destination, $args, $component, $mode);
@@ -881,14 +881,14 @@ abstract class Presenter extends Control implements Application\IPresenter
 	/**
 	 * @return array{absolute: bool, path: string, signal: bool, args: mixed[]|null, fragment: string}
 	 */
-	#[\Deprecated]
+	#[\Deprecated(since: '3.2.3')]
 	public static function parseDestination(string $destination): array
 	{
 		return LinkGenerator::parseDestination($destination);
 	}
 
 
-	#[\Deprecated]
+	#[\Deprecated(since: '3.2.3')]
 	protected function requestToUrl(Application\Request $request, ?bool $relative = null): string
 	{
 		return $this->linkGenerator->requestToUrl($request, $relative ?? !$this->absoluteUrls);
