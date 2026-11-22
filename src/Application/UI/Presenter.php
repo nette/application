@@ -346,6 +346,16 @@ abstract class Presenter extends Control implements Application\IPresenter
 	}
 
 
+	/**
+	 * This method will be called when the user is not allowed the resource required by #[Requires(allowed: ...)].
+	 * It responds with 403; override it to redirect a guest to the sign-in page, for example.
+	 */
+	public function denyAccess(): never
+	{
+		throw new Application\ForbiddenRequestException;
+	}
+
+
 	/** @deprecated  use #[Requires(methods: ...)] to specify allowed methods */
 	protected function checkHttpMethod(): void
 	{

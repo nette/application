@@ -152,6 +152,10 @@ final class AccessPolicy
 				Nette\Http\IResponse::S403_Forbidden,
 			);
 		}
+
+		if ($attribute->allowed !== null && !$this->presenter->getUser()->isAllowed($attribute->allowed)) {
+			$this->presenter->denyAccess();
+		}
 	}
 
 
